@@ -39,12 +39,12 @@ of domains or specify a domain by ID.
 
 #### Tags:
 
- - No Tags
+ - Domains
 
 #### Properties
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/domains)
-- [OpenAPI](https://api.hubspot.com/api-catalog-public/v1/apis/cms/v3/domains)
+- [OpenAPI](properties/hubspot-domains-api-openapi.yml)
 ### HubSpot Source Code API
 
 Endpoints for interacting with files in the CMS Developer File System.
@@ -58,12 +58,12 @@ which are used to create CMS content.
 
 #### Tags:
 
- - No Tags
+ - Sources, Code, Environments, Content, Path, Validate, Extract, Async, Task, Status
 
 #### Properties
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/source-code)
-- [OpenAPI](https://api.hubspot.com/public/api/spec/v1/specs/cms/v3/source-code)
+- [OpenAPI](properties/hubspot-source-code-api-openapi.yml)
 ### HubSpot Posts API
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and
@@ -76,13 +76,12 @@ Blog Tags.
 
 #### Tags:
 
- - No Tags
+ - Blogs, Posts, Schedules, Batch, Read, Multi, Language, Blog  Posts, Objects, Draft, Revisions, Restore, Variations, Clone, Detach, Groups, Live, Archive, Reset, Attach, Set, Primary
 
 #### Properties
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/blog-post)
-- [OpenAPI](
-https://api.hubspot.com/api-catalog-public/v1/apis/cms/v3/blogs/blog-posts)
+- [OpenAPI](properties/hubspot-posts-api-openapi.yml)
 ### HubSpot Authors API
 
 Use the blog authors API to manage author information for your blog
@@ -95,13 +94,12 @@ posts.
 
 #### Tags:
 
- - No Tags
+ - Blogs, Authors, Objects, Batch, Multi, Language, Detach, Groups, Set, Primary, Archive, Read, Attach, Variations, Languages
 
 #### Properties
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/blog-authors)
-- [OpenAPI](
-https://api.hubspot.com/api-catalog-public/v1/apis/cms/v3/blogs/authors)
+- [OpenAPI](properties/hubspot-authors-api-openapi.yml)
 ### HubSpot URL Redirects API
 
 URL redirects allow you to redirect traffic from a HubSpot-hosted page or
@@ -115,13 +113,12 @@ flexible pattern redirect to dynamically update the structure of URLs.
 
 #### Tags:
 
- - No Tags
+ - Redirects
 
 #### Properties
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/url-redirects)
-- [OpenAPI](
-https://api.hubspot.com/api-catalog-public/v1/apis/cms/v3/url-redirects)
+- [OpenAPI](properties/hubspot-url-redirects-api-openapi.yml)
 
 ## Common Properties
 
