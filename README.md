@@ -1,11 +1,6 @@
 # HubSpot (hubspot)
+HubSpot provides a full platform of marketing, sales, customer service, and CRM software plus the methodology, resources, and support to help businesses grow better.
 
-HubSpot is a leading CRM platform that provides software and support to help
-businesses grow better. Our platform includes marketing, sales, service, and
-website management products that start free and scale to meet our customers'
-needs at any stage of growth. Today, thousands of customers around the world
-use our powerful and easy-to-use tools and integrations to attract, engage,
-and delight customers.
 
 **URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/apis-json/artisanal/main/apis/hubspot.yml)
 
@@ -17,12 +12,12 @@ and delight customers.
 
 ## Tags:
 
- - CRM, Marketing, Sales, Content, Commerce, Operations
+ - Analytics, CRM, Commerce, Content, Customer Service, Email Marketing, Marketing, Marketing Automation, Operations, Sales, T1
 
 ## Timestamps
 
 - **Created:** 2023/11/14 
-- **Modified:** 2025-06-05 
+- **Modified:** 2025-09-05 
 
 ## APIs
 
@@ -34,8 +29,6 @@ of domains or specify a domain by ID.
 
 **Human URL:** [https://developers.hubspot.com/docs/api/overview](https://developers.hubspot.com/docs/api/overview)
 
-**Base URL:** [https://api.example.com](https://api.example.com)
-
 
 #### Tags:
 
@@ -45,6 +38,7 @@ of domains or specify a domain by ID.
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/domains)
 - [OpenAPI](properties/hubspot-domains-api-openapi.yml)
+
 ### HubSpot Source Code API
 
 Endpoints for interacting with files in the CMS Developer File System.
@@ -52,8 +46,6 @@ These files include HTML templates, CSS, JS, modules, and other assets
 which are used to create CMS content.
 
 **Human URL:** [https://developers.hubspot.com/docs/api/cms/source-code](https://developers.hubspot.com/docs/api/cms/source-code)
-
-**Base URL:** [https://api.example.com](https://api.example.com)
 
 
 #### Tags:
@@ -64,14 +56,13 @@ which are used to create CMS content.
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/source-code)
 - [OpenAPI](properties/hubspot-source-code-api-openapi.yml)
+
 ### HubSpot Posts API
 
 Use these endpoints for interacting with Blog Posts, Blog Authors, and
 Blog Tags.
 
 **Human URL:** [https://developers.hubspot.com/docs/api/cms/blog-post](https://developers.hubspot.com/docs/api/cms/blog-post)
-
-**Base URL:** [https://api.example.com](https://api.example.com)
 
 
 #### Tags:
@@ -82,14 +73,13 @@ Blog Tags.
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/blog-post)
 - [OpenAPI](properties/hubspot-posts-api-openapi.yml)
+
 ### HubSpot Authors API
 
 Use the blog authors API to manage author information for your blog
 posts. 
 
 **Human URL:** [https://developers.hubspot.com/docs/api/cms/blog-authors](https://developers.hubspot.com/docs/api/cms/blog-authors)
-
-**Base URL:** [https://api.example.com](https://api.example.com)
 
 
 #### Tags:
@@ -100,6 +90,7 @@ posts.
 
 - [Documentation](https://developers.hubspot.com/docs/api/cms/blog-authors)
 - [OpenAPI](properties/hubspot-authors-api-openapi.yml)
+
 ### HubSpot URL Redirects API
 
 URL redirects allow you to redirect traffic from a HubSpot-hosted page or
@@ -107,8 +98,6 @@ blog post to any URL. You can also update URL redirects in bulk and use a
 flexible pattern redirect to dynamically update the structure of URLs.
 
 **Human URL:** [https://developers.hubspot.com/docs/api/cms/url-redirects](https://developers.hubspot.com/docs/api/cms/url-redirects)
-
-**Base URL:** [https://api.example.com](https://api.example.com)
 
 
 #### Tags:
@@ -131,7 +120,7 @@ flexible pattern redirect to dynamically update the structure of URLs.
 - [Blog](https://developers.hubspot.com/blog)
 - [Newsletter](https://offers.hubspot.com/developer-newsletter-signup)
 - [Events](https://www.hubspot.com/developer-community-events)
-- [Marketplace](https://ecosystem.hubspot.com/marketplace/apps)
+- [Integrations](https://ecosystem.hubspot.com/marketplace/apps)
 - [Privacy Policy](https://legal.hubspot.com/privacy-policy)
 - [Terms of Service](https://legal.hubspot.com/terms-of-service)
 - [Portal](https://developers.hubspot.com/)
@@ -139,21 +128,31 @@ flexible pattern redirect to dynamically update the structure of URLs.
 - [Guide](https://developers.hubspot.com/docs/guides/api)
 - [Documentation](https://developers.hubspot.com/docs/reference/api/overview)
 - [Login](https://app.hubspot.com/login)
-- [RequestDemo](https://offers.hubspot.com/crm-platform-demo?hubs_signup-url=https://offers.hubspot.com/crm-platform-demo&hubs_signup-cta=login-demo-existing)
-- [PrivacyPolicy](https://legal.hubspot.com/privacy-policy?hubs_content=offers.hubspot.com/crm-platform-demo&hubs_content-cta=Privacy+Policy&hubs_signup-url=https://offers.hubspot.com/crm-platform-demo&hubs_signup-cta=login-demo-existing&_gl=1*1qpu9zs*_gcl_au*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*FPAU*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*_ga*ODc5MDE2NDY5LjE3NDkxNjkwMjc.*_ga_LXTM6CQ0XK*czE3NDkxNjkwMjckbzEkZzEkdDE3NDkxNjkxNzYkajU0JGwwJGgw*_fplc*UWl6QVF1M3AzRFBnWnNtQXdvRFQlMkJqQXVIN0tRVHYxZzhkWmF6dENUSTN5aWxMc2JYajZ0SXZpb2thNHJLMjRqSWF4NWgwdnRoa1JoMUpiRjhFNHVYOW9hNVVMSnZYMTR1TlJSM2gwQUtURDdXVGJYZEVQVldYQkJFbVRmcEElM0QlM0Q.&_ga=2.42878181.1120551293.1749169027-879016469.1749169027)
+- [RequestDemo](https://offers.hubspot.com/crm-platform-demo)
+- [PrivacyPolicy](https://legal.hubspot.com/privacy-policy)
 - [About](https://www.hubspot.com/our-story)
-- [Blog](https://blog.hubspot.com/?hubs_content=www.hubspot.com/our-story&hubs_content-cta=Blog&_gl=1*1phb45r*_gcl_au*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*FPAU*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*_ga*ODc5MDE2NDY5LjE3NDkxNjkwMjc.*_ga_LXTM6CQ0XK*czE3NDkxNjkwMjckbzEkZzEkdDE3NDkxNjkxOTMkajM3JGwwJGgw*_fplc*UWl6QVF1M3AzRFBnWnNtQXdvRFQlMkJqQXVIN0tRVHYxZzhkWmF6dENUSTN5aWxMc2JYajZ0SXZpb2thNHJLMjRqSWF4NWgwdnRoa1JoMUpiRjhFNHVYOW9hNVVMSnZYMTR1TlJSM2gwQUtURDdXVGJYZEVQVldYQkJFbVRmcEElM0QlM0Q.)
-- [Security](https://legal.hubspot.com/security?hubs_content=blog.hubspot.com/&hubs_content-cta=Security&_ga=2.40198370.1120551293.1749169027-879016469.1749169027&_gl=1*17mzhr6*_gcl_au*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*FPAU*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*_ga*ODc5MDE2NDY5LjE3NDkxNjkwMjc.*_ga_LXTM6CQ0XK*czE3NDkxNjkwMjckbzEkZzEkdDE3NDkxNjkyMDMkajI3JGwwJGgw*_fplc*UWl6QVF1M3AzRFBnWnNtQXdvRFQlMkJqQXVIN0tRVHYxZzhkWmF6dENUSTN5aWxMc2JYajZ0SXZpb2thNHJLMjRqSWF4NWgwdnRoa1JoMUpiRjhFNHVYOW9hNVVMSnZYMTR1TlJSM2gwQUtURDdXVGJYZEVQVldYQkJFbVRmcEElM0QlM0Q.)
-- [Affiliate](https://www.hubspot.com/partners/affiliates?_gl=1*1qccb8u*_gcl_au*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*FPAU*NDQ3NTExOTU2LjE3NDkxNjkxNzA.*_ga*ODc5MDE2NDY5LjE3NDkxNjkwMjc.*_ga_LXTM6CQ0XK*czE3NDkxNjkwMjckbzEkZzEkdDE3NDkxNjkyNjAkajYwJGwwJGgw*_fplc*UWl6QVF1M3AzRFBnWnNtQXdvRFQlMkJqQXVIN0tRVHYxZzhkWmF6dENUSTN5aWxMc2JYajZ0SXZpb2thNHJLMjRqSWF4NWgwdnRoa1JoMUpiRjhFNHVYOW9hNVVMSnZYMTR1TlJSM2gwQUtURDdXVGJYZEVQVldYQkJFbVRmcEElM0QlM0Q.)
+- [Blog](https://blog.hubspot.com/)
+- [Security](https://legal.hubspot.com/security)
+- [Affiliate](https://www.hubspot.com/partners/affiliates)
 - [Affiliate](https://www.hubspot.com/partners/affiliates)
 - [Partners](https://www.hubspot.com/partners)
 - [Pricing](https://www.hubspot.com/pricing/marketing/enterprise)
 - [CaseStudies](https://www.hubspot.com/case-studies)
-- [Features](undefined)
+- [X-portal](https://developers.hubspot.com)
+- [X-signup](https://app.hubspot.com/signup/developers)
+- [X-authentication](https://developers.hubspot.com/docs/api/oauth-quickstart-guide)
+- [X-status](https://status.hubspot.com)
+- [X-support](https://developers.hubspot.com/community/)
+- [X-sdks](https://developers.hubspot.com/docs/api/sdks)
+- [X-blog](https://developers.hubspot.com/blog)
+- [X-privacy](https://legal.hubspot.com/privacy-policy)
+- [X-terms-of-service](https://legal.hubspot.com/terms-of-service)
 
 ## Maintainers
 
 **FN:** API Evangelist
 
 **Email:** info@apievangelist.com
+**FN:** HubSpot
 
+**Email:** developers@hubspot.com
