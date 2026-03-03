@@ -1,0 +1,421 @@
+openapi: 3.1.0
+info:
+  title: HubSpot CRM Lists API
+  description: >-
+    The Lists API allows you to create and manage lists of CRM records based on
+    static membership or dynamic filter criteria. Lists can be used to segment
+    contacts, companies, and other CRM objects for marketing and sales
+    operations.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Lists
+  description: Operations for managing CRM lists
+- name: Memberships
+  description: Operations for managing list memberships
+paths:
+  /crm/v3/lists:
+    get:
+      operationId: listLists
+      summary: List all lists
+      description: >-
+        Returns a page of all CRM lists in the portal. Lists can be either
+        static (manually managed membership) or dynamic (filter-based
+        membership). Use the limit and after parameters to paginate results.
+      tags:
+      - Lists
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+          maximum: 500
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: objectTypeId
+        in: query
+        description: The object type ID to filter lists by (e.g., 0-1 for contacts).
+        schema:
+          type: string
+      - name: listType
+        in: query
+        description: Filter by list type - STATIC or DYNAMIC.
+        schema:
+          type: string
+          enum: [STATIC, DYNAMIC]
+      responses:
+        '200':
+          description: Successful response with a list of CRM lists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createList
+      summary: Create a list
+      description: >-
+        Creates a new CRM list. You can create either a static list with manually
+        managed membership or a dynamic list with filter-based membership that
+        updates automatically as records match the criteria.
+      tags:
+      - Lists
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListCreateRequest'
+      responses:
+        '200':
+          description: List created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/lists/{listId}:
+    get:
+      operationId: getList
+      summary: Get a list
+      description: >-
+        Returns details of a specific CRM list by its ID, including membership
+        type, filter definitions for dynamic lists, and metadata.
+      tags:
+      - Lists
+      parameters:
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the list details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteList
+      summary: Delete a list
+      description: >-
+        Permanently deletes a CRM list by its ID. This removes the list
+        definition but does not delete the CRM records that were members of
+        the list.
+      tags:
+      - Lists
+      parameters:
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: List deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/lists/{listId}/memberships:
+    get:
+      operationId: getListMemberships
+      summary: Get list members
+      description: >-
+        Returns the records that are members of a specific CRM list. For
+        static lists, returns manually added members. For dynamic lists,
+        returns records that currently match the list filters.
+      tags:
+      - Memberships
+      parameters:
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+          maximum: 500
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with list members.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseMembership'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/lists/{listId}/memberships/add:
+    put:
+      operationId: addListMembers
+      summary: Add members to a list
+      description: >-
+        Adds records to a static CRM list by their record IDs. This operation
+        is only available for static lists. Records added will remain members
+        until explicitly removed.
+      tags:
+      - Memberships
+      parameters:
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the static list to add members to.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipChangeRequest'
+      responses:
+        '200':
+          description: Members added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipChangeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/lists/{listId}/memberships/remove:
+    put:
+      operationId: removeListMembers
+      summary: Remove members from a list
+      description: >-
+        Removes records from a static CRM list by their record IDs. This
+        operation is only available for static lists. The records themselves
+        will not be deleted, only removed from the list.
+      tags:
+      - Memberships
+      parameters:
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the static list to remove members from.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipChangeRequest'
+      responses:
+        '200':
+          description: Members removed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipChangeResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    List:
+      type: object
+      description: A HubSpot CRM list.
+      properties:
+        listId:
+          type: string
+          description: The unique identifier for the list.
+        name:
+          type: string
+          description: The name of the list.
+        listType:
+          type: string
+          enum: [STATIC, DYNAMIC]
+          description: Whether the list is static (manually managed) or dynamic (filter-based).
+        objectTypeId:
+          type: string
+          description: The object type the list contains (e.g., 0-1 for contacts).
+        processingStatus:
+          type: string
+          description: The current processing status of the list.
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the list was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the list was last updated.
+        filterBranch:
+          type: object
+          description: The filter definition for dynamic lists.
+        memberCount:
+          type: integer
+          description: The current number of members in the list.
+    CollectionResponseList:
+      type: object
+      description: A paginated list of CRM lists.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/List'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    ListCreateRequest:
+      type: object
+      description: Request body for creating a new CRM list.
+      required:
+      - name
+      - objectTypeId
+      - processingType
+      properties:
+        name:
+          type: string
+          description: The name of the list.
+        objectTypeId:
+          type: string
+          description: The object type ID for the list (e.g., 0-1 for contacts).
+        processingType:
+          type: string
+          enum: [MANUAL, DYNAMIC, SNAPSHOT]
+          description: The type of list processing.
+        filterBranch:
+          type: object
+          description: The filter branch definition for dynamic lists.
+    Membership:
+      type: object
+      description: A list membership record.
+      properties:
+        recordId:
+          type: string
+          description: The ID of the CRM record that is a member of the list.
+        addedAt:
+          type: string
+          format: date-time
+          description: The date and time the record was added to the list.
+    CollectionResponseMembership:
+      type: object
+      description: A paginated list of list memberships.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Membership'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    MembershipChangeRequest:
+      type: object
+      description: Request body for adding or removing list members.
+      properties:
+        recordIdsToAdd:
+          type: array
+          items:
+            type: string
+          description: The IDs of records to add to the list.
+        recordIdsToRemove:
+          type: array
+          items:
+            type: string
+          description: The IDs of records to remove from the list.
+    MembershipChangeResponse:
+      type: object
+      description: Response from a list membership change operation.
+      properties:
+        recordIdsAdded:
+          type: array
+          items:
+            type: string
+        recordIdsAlreadyMember:
+          type: array
+          items:
+            type: string
+        recordIdsRemoved:
+          type: array
+          items:
+            type: string
+        recordIdsMissing:
+          type: array
+          items:
+            type: string
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

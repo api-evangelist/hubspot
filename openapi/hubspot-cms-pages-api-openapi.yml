@@ -1,0 +1,522 @@
+openapi: 3.1.0
+info:
+  title: HubSpot CMS Pages API
+  description: >-
+    The CMS Pages API provides endpoints for creating and managing site pages
+    and landing pages hosted on HubSpot. You can create, retrieve, update,
+    publish, and delete both site pages and landing pages programmatically.
+    Pages support draft and live states for content staging workflows.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Site Pages
+  description: Operations for managing site pages
+- name: Landing Pages
+  description: Operations for managing landing pages
+paths:
+  /cms/v3/pages/site-pages:
+    get:
+      operationId: listSitePages
+      summary: List site pages
+      description: >-
+        Returns a list of site pages in the portal. You can filter by various
+        properties and paginate through results. Both draft and published pages
+        are accessible through this endpoint.
+      tags:
+      - Site Pages
+      parameters:
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+      - name: createdAt
+        in: query
+        description: Filter pages created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: updatedAt
+        in: query
+        description: Filter pages updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: archived
+        in: query
+        description: Whether to return archived pages.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with a list of site pages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createSitePage
+      summary: Create a site page
+      description: >-
+        Creates a new site page with the specified content and settings. The
+        new page starts in draft state and must be published to make it
+        publicly accessible.
+      tags:
+      - Site Pages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageCreateRequest'
+      responses:
+        '201':
+          description: Site page created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /cms/v3/pages/site-pages/{objectId}:
+    get:
+      operationId: getSitePage
+      summary: Get a site page
+      description: >-
+        Returns the details of a specific site page by its ID, including
+        content, SEO settings, publish state, and metadata.
+      tags:
+      - Site Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to retrieve.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived pages.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with the site page details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateSitePage
+      summary: Update a site page
+      description: >-
+        Performs a partial update of a site page. Only the properties included
+        in the request body will be updated. Changes are applied to the draft
+        version and must be published.
+      tags:
+      - Site Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageUpdateRequest'
+      responses:
+        '200':
+          description: Site page updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteSitePage
+      summary: Delete a site page
+      description: >-
+        Archives (soft deletes) a site page by its ID. Archived pages are no
+        longer publicly accessible but can be restored using the HubSpot UI.
+      tags:
+      - Site Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Site page deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cms/v3/pages/site-pages/{objectId}/draft/push-live:
+    post:
+      operationId: publishSitePage
+      summary: Publish a site page
+      description: >-
+        Publishes the draft version of a site page, making all pending content
+        changes live and publicly accessible. After publishing, the page becomes
+        visible at its URL.
+      tags:
+      - Site Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to publish.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Site page published successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cms/v3/pages/landing-pages:
+    get:
+      operationId: listLandingPages
+      summary: List landing pages
+      description: >-
+        Returns a list of landing pages in the portal. You can filter by
+        various properties and paginate through results. Both draft and
+        published landing pages are accessible.
+      tags:
+      - Landing Pages
+      parameters:
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+      - name: createdAt
+        in: query
+        description: Filter landing pages created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: updatedAt
+        in: query
+        description: Filter landing pages updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: archived
+        in: query
+        description: Whether to return archived landing pages.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with a list of landing pages.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createLandingPage
+      summary: Create a landing page
+      description: >-
+        Creates a new landing page with the specified content and settings.
+        The new landing page starts in draft state and must be published
+        to make it publicly accessible.
+      tags:
+      - Landing Pages
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PageCreateRequest'
+      responses:
+        '201':
+          description: Landing page created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /cms/v3/pages/landing-pages/{objectId}:
+    get:
+      operationId: getLandingPage
+      summary: Get a landing page
+      description: >-
+        Returns the details of a specific landing page by its ID, including
+        content, form connections, SEO settings, and publish state.
+      tags:
+      - Landing Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the landing page to retrieve.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived landing pages.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with the landing page details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteLandingPage
+      summary: Delete a landing page
+      description: >-
+        Archives (soft deletes) a landing page by its ID. Archived landing
+        pages are no longer publicly accessible but can be restored using
+        the HubSpot UI.
+      tags:
+      - Landing Pages
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the landing page to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Landing page deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    Page:
+      type: object
+      description: A HubSpot CMS page (site page or landing page).
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the page.
+        name:
+          type: string
+          description: The internal name of the page.
+        htmlTitle:
+          type: string
+          description: The HTML title tag content for the page.
+        slug:
+          type: string
+          description: The URL slug for the page.
+        state:
+          type: string
+          description: The current publish state of the page.
+          enum: [DRAFT, PUBLISHED, ARCHIVED]
+        currentState:
+          type: string
+          description: The current display state of the page.
+        contentTypeCategory:
+          type: integer
+          description: The content type category code.
+        publishDate:
+          type: string
+          format: date-time
+          description: The date and time the page was or will be published.
+        metaDescription:
+          type: string
+          description: The meta description for SEO.
+        url:
+          type: string
+          description: The full URL of the published page.
+        domain:
+          type: string
+          description: The domain the page is hosted on.
+        language:
+          type: string
+          description: The language code for the page content.
+        templatePath:
+          type: string
+          description: The path to the template used by the page.
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the page was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the page was last updated.
+        archived:
+          type: boolean
+          description: Whether the page has been archived.
+    CollectionResponsePage:
+      type: object
+      description: A paginated list of CMS pages.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Page'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    PageCreateRequest:
+      type: object
+      description: Request body for creating a CMS page.
+      required:
+      - name
+      - slug
+      properties:
+        name:
+          type: string
+          description: The internal name of the page.
+        htmlTitle:
+          type: string
+          description: The HTML title tag content.
+        slug:
+          type: string
+          description: The URL slug for the page.
+        metaDescription:
+          type: string
+          description: The meta description for SEO.
+        domain:
+          type: string
+          description: The domain to host the page on.
+        language:
+          type: string
+          description: The language code for the page content.
+        templatePath:
+          type: string
+          description: The path to the template to use for the page.
+        layoutSections:
+          type: object
+          description: The layout sections and widget data for the page content.
+          additionalProperties: true
+    PageUpdateRequest:
+      type: object
+      description: Request body for updating a CMS page.
+      properties:
+        name:
+          type: string
+          description: The internal name of the page.
+        htmlTitle:
+          type: string
+          description: The HTML title tag content.
+        slug:
+          type: string
+          description: The URL slug for the page.
+        metaDescription:
+          type: string
+          description: The meta description for SEO.
+        layoutSections:
+          type: object
+          description: The layout sections and widget data for the page content.
+          additionalProperties: true
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

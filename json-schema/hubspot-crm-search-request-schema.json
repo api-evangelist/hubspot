@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.hubspot.com/docs/api/schemas/crm-search-request",
+  "title": "HubSpot CRM Search Request",
+  "description": "Schema for a CRM search request body used with POST /crm/v3/objects/{objectType}/search. Supports complex filtering, sorting, and pagination of CRM object records.",
+  "type": "object",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "description": "An array of filter groups. Records matching ANY filter group will be included in the results (OR logic between groups). Within each filter group, ALL filters must match (AND logic within a group). Maximum 3 filter groups with up to 3 filters each.",
+      "items": {
+        "$ref": "#/$defs/FilterGroup"
+      },
+      "maxItems": 3,
+      "examples": [
+        [
+          {
+            "filters": [
+              {
+                "propertyName": "email",
+                "operator": "CONTAINS_TOKEN",
+                "value": "@example.com"
+              },
+              {
+                "propertyName": "hs_lead_status",
+                "operator": "EQ",
+                "value": "NEW"
+              }
+            ]
+          }
+        ]
+      ]
+    },
+    "sorts": {
+      "type": "array",
+      "description": "An array of sort criteria to order the results. When multiple sort criteria are specified, they are applied in order.",
+      "items": {
+        "$ref": "#/$defs/Sort"
+      },
+      "maxItems": 1,
+      "examples": [
+        [
+          {
+            "propertyName": "createdate",
+            "direction": "DESCENDING"
+          }
+        ]
+      ]
+    },
+    "query": {
+      "type": "string",
+      "description": "A full-text search query string. When provided, returns records where any searchable default text property contains the query term. Can be combined with filterGroups for more specific searches.",
+      "examples": ["John Smith", "acme", "deal123"]
+    },
+    "properties": {
+      "type": "array",
+      "description": "An array of property names to include in the response for each matching record. If not specified, a default set of properties is returned. Use this to request additional properties beyond the defaults.",
+      "items": {
+        "type": "string",
+        "description": "A CRM property name to include in the response."
+      },
+      "examples": [
+        ["firstname", "lastname", "email", "phone", "company"]
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "description": "The maximum number of results to return in a single response. Defaults to 10 if not specified. Maximum value is 200.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 200,
+      "examples": [10, 50, 100, 200]
+    },
+    "after": {
+      "type": "string",
+      "description": "The pagination cursor token from the previous response's paging.next.after field. Used to retrieve the next page of search results.",
+      "examples": ["100"]
+    }
+  },
+  "$defs": {
+    "FilterGroup": {
+      "type": "object",
+      "description": "A group of filter conditions. All filters within the group must match (AND logic). Filter groups themselves are combined with OR logic.",
+      "required": ["filters"],
+      "properties": {
+        "filters": {
+          "type": "array",
+          "description": "An array of filter conditions, all of which must match (AND logic).",
+          "items": {
+            "$ref": "#/$defs/Filter"
+          },
+          "minItems": 1,
+          "maxItems": 3
+        }
+      }
+    },
+    "Filter": {
+      "type": "object",
+      "description": "A single filter condition for a CRM property.",
+      "required": ["propertyName", "operator"],
+      "properties": {
+        "propertyName": {
+          "type": "string",
+          "description": "The internal name of the CRM property to filter on.",
+          "examples": ["email", "firstname", "dealstage", "amount", "createdate"]
+        },
+        "operator": {
+          "type": "string",
+          "description": "The comparison operator to use for the filter.",
+          "enum": [
+            "EQ",
+            "NEQ",
+            "LT",
+            "LTE",
+            "GT",
+            "GTE",
+            "BETWEEN",
+            "IN",
+            "NOT_IN",
+            "HAS_PROPERTY",
+            "NOT_HAS_PROPERTY",
+            "CONTAINS_TOKEN",
+            "NOT_CONTAINS_TOKEN"
+          ],
+          "enumDescriptions": {
+            "EQ": "Equal to - property value exactly matches the specified value.",
+            "NEQ": "Not equal to - property value does not match the specified value.",
+            "LT": "Less than - property value is less than the specified value (numeric/date).",
+            "LTE": "Less than or equal to - property value is less than or equal to the specified value.",
+            "GT": "Greater than - property value is greater than the specified value (numeric/date).",
+            "GTE": "Greater than or equal to - property value is greater than or equal to the specified value.",
+            "BETWEEN": "Between - property value is between value and highValue (inclusive).",
+            "IN": "In - property value is one of the values in the values array.",
+            "NOT_IN": "Not in - property value is not in the values array.",
+            "HAS_PROPERTY": "Has property - the property has any non-null value. No value needed.",
+            "NOT_HAS_PROPERTY": "Not has property - the property is null or empty. No value needed.",
+            "CONTAINS_TOKEN": "Contains token - text property contains the specified token (supports wildcard *).",
+            "NOT_CONTAINS_TOKEN": "Not contains token - text property does not contain the specified token."
+          }
+        },
+        "value": {
+          "type": "string",
+          "description": "The value to compare against. Not required for HAS_PROPERTY and NOT_HAS_PROPERTY operators. For date properties, use Unix timestamp in milliseconds as a string.",
+          "examples": ["john@example.com", "NEW", "10000", "1611608400000"]
+        },
+        "highValue": {
+          "type": "string",
+          "description": "The upper bound value for BETWEEN operator comparisons. Required when using the BETWEEN operator.",
+          "examples": ["50000", "1643144400000"]
+        },
+        "values": {
+          "type": "array",
+          "description": "An array of values for IN and NOT_IN operator comparisons. Use this instead of value when using IN or NOT_IN operators.",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            ["contractsent", "closedwon", "closedlost"],
+            ["HIGH", "MEDIUM"]
+          ]
+        }
+      },
+      "examples": [
+        {
+          "propertyName": "email",
+          "operator": "EQ",
+          "value": "john@example.com"
+        },
+        {
+          "propertyName": "amount",
+          "operator": "GTE",
+          "value": "10000"
+        },
+        {
+          "propertyName": "dealstage",
+          "operator": "IN",
+          "values": ["contractsent", "closedwon"]
+        },
+        {
+          "propertyName": "closedate",
+          "operator": "BETWEEN",
+          "value": "1609459200000",
+          "highValue": "1640995200000"
+        },
+        {
+          "propertyName": "email",
+          "operator": "HAS_PROPERTY"
+        }
+      ]
+    },
+    "Sort": {
+      "type": "object",
+      "description": "A sort criterion for ordering search results.",
+      "required": ["propertyName"],
+      "properties": {
+        "propertyName": {
+          "type": "string",
+          "description": "The name of the CRM property to sort results by.",
+          "examples": ["createdate", "amount", "lastname", "dealname"]
+        },
+        "direction": {
+          "type": "string",
+          "description": "The direction to sort results. ASCENDING sorts from smallest/earliest to largest/latest. DESCENDING sorts from largest/latest to smallest/earliest.",
+          "enum": ["ASCENDING", "DESCENDING"],
+          "default": "ASCENDING"
+        }
+      },
+      "examples": [
+        {
+          "propertyName": "createdate",
+          "direction": "DESCENDING"
+        },
+        {
+          "propertyName": "amount",
+          "direction": "DESCENDING"
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "filterGroups": [
+        {
+          "filters": [
+            {
+              "propertyName": "email",
+              "operator": "CONTAINS_TOKEN",
+              "value": "@example.com"
+            }
+          ]
+        }
+      ],
+      "properties": ["email", "firstname", "lastname", "phone"],
+      "limit": 20,
+      "sorts": [
+        {
+          "propertyName": "createdate",
+          "direction": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "filterGroups": [
+        {
+          "filters": [
+            {
+              "propertyName": "dealstage",
+              "operator": "EQ",
+              "value": "contractsent"
+            },
+            {
+              "propertyName": "amount",
+              "operator": "GT",
+              "value": "10000"
+            }
+          ]
+        },
+        {
+          "filters": [
+            {
+              "propertyName": "dealstage",
+              "operator": "EQ",
+              "value": "closedwon"
+            }
+          ]
+        }
+      ],
+      "sorts": [
+        {
+          "propertyName": "amount",
+          "direction": "DESCENDING"
+        }
+      ],
+      "properties": ["dealname", "amount", "dealstage", "closedate", "hubspot_owner_id"],
+      "limit": 50
+    }
+  ]
+}

@@ -1,0 +1,572 @@
+openapi: 3.1.0
+info:
+  title: HubSpot CMS HubDB API
+  description: >-
+    The HubDB API allows you to create, update, and delete HubDB data tables and
+    their rows. HubDB tables can be used as data sources for dynamic CMS pages
+    and are available in both draft and published versions. Each table has a
+    live version and a draft version that can be edited and published independently.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Tables
+  description: Operations for managing HubDB tables
+- name: Rows
+  description: Operations for managing HubDB table rows
+paths:
+  /cms/v3/hubdb/tables:
+    get:
+      operationId: listHubDBTables
+      summary: List HubDB tables
+      description: >-
+        Returns a list of all HubDB tables in the portal. Each table entry
+        includes metadata such as the table name, label, column definitions,
+        and publish status. Both published and draft tables are accessible
+        through this endpoint.
+      tags:
+      - Tables
+      parameters:
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+      - name: createdAt
+        in: query
+        description: Filter tables created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      - name: updatedAt
+        in: query
+        description: Filter tables updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Successful response with a list of HubDB tables.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseHubDBTable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createHubDBTable
+      summary: Create a HubDB table
+      description: >-
+        Creates a new HubDB table with the specified name, label, and column
+        definitions. The new table starts in draft state and must be published
+        to make it available for CMS page use.
+      tags:
+      - Tables
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBTableCreateRequest'
+      responses:
+        '201':
+          description: Table created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /cms/v3/hubdb/tables/{tableIdOrName}:
+    get:
+      operationId: getHubDBTable
+      summary: Get a HubDB table
+      description: >-
+        Returns the details of a specific HubDB table identified by its ID
+        or name, including column definitions, publish status, and metadata.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the HubDB table details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateHubDBTable
+      summary: Update a HubDB table
+      description: >-
+        Updates an existing HubDB table's metadata, label, or column
+        definitions. Updates are applied to the draft version of the table
+        and must be published to take effect on live pages.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBTableCreateRequest'
+      responses:
+        '200':
+          description: Table updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteHubDBTable
+      summary: Delete a HubDB table
+      description: >-
+        Permanently deletes a HubDB table and all its rows. This action cannot
+        be undone. Deleting a table that is used by CMS pages may break those
+        pages.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Table deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cms/v3/hubdb/tables/{tableIdOrName}/rows:
+    get:
+      operationId: listHubDBTableRows
+      summary: List HubDB table rows
+      description: >-
+        Returns the rows of a specific HubDB table. By default, returns
+        rows from the published version of the table. Use the draft parameter
+        to retrieve rows from the draft version.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: Column to sort results by.
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+      - name: properties
+        in: query
+        description: A comma-separated list of column names to return.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the table rows.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseHubDBRow'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: addHubDBTableRow
+      summary: Add a row to a HubDB table
+      description: >-
+        Adds a new row to a HubDB table. The row data is added to the draft
+        version of the table. Publish the table draft to make the new row
+        visible on live pages.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to add a row to.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBRowCreateRequest'
+      responses:
+        '201':
+          description: Row added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}:
+    get:
+      operationId: getHubDBTableRow
+      summary: Get a HubDB table row
+      description: >-
+        Returns a specific row from a HubDB table by its row ID. Returns
+        the published version of the row by default.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to retrieve.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the row details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateHubDBTableRow
+      summary: Update a HubDB table row
+      description: >-
+        Performs a partial update of a specific HubDB table row. Only the
+        columns included in the request body will be updated. Changes are
+        applied to the draft version and must be published.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBRowCreateRequest'
+      responses:
+        '200':
+          description: Row updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteHubDBTableRow
+      summary: Delete a HubDB table row
+      description: >-
+        Permanently deletes a row from a HubDB table. The deletion is applied
+        to the draft version and must be published to remove the row from live
+        pages.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Row deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /cms/v3/hubdb/tables/{tableIdOrName}/draft/push-live:
+    post:
+      operationId: publishHubDBTableDraft
+      summary: Publish HubDB table draft
+      description: >-
+        Publishes the draft version of a HubDB table, making all pending
+        changes to the table structure and rows live. After publishing,
+        the draft and live versions are synchronized.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to publish.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Table draft published successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    HubDBTable:
+      type: object
+      description: A HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the table.
+        name:
+          type: string
+          description: The machine-readable name of the table.
+        label:
+          type: string
+          description: The human-readable label for the table.
+        columns:
+          type: array
+          description: The column definitions for the table.
+          items:
+            $ref: '#/components/schemas/HubDBColumn'
+        published:
+          type: boolean
+          description: Whether the table has been published.
+        rowCount:
+          type: integer
+          description: The number of rows in the published table.
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the table was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the table was last updated.
+        publishedAt:
+          type: string
+          format: date-time
+          description: The date and time the table was last published.
+    HubDBColumn:
+      type: object
+      description: A column definition in a HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the column.
+        name:
+          type: string
+          description: The machine-readable name of the column.
+        label:
+          type: string
+          description: The human-readable label for the column.
+        type:
+          type: string
+          description: The data type of the column.
+          enum: [TEXT, NUMBER, URL, IMAGE, SELECT, MULTISELECT, BOOLEAN, LOCATION, DATE, DATETIME, CURRENCY, RICHTEXT, FOREIGN_ID]
+        options:
+          type: array
+          description: Available options for SELECT and MULTISELECT columns.
+          items:
+            type: object
+    HubDBTableCreateRequest:
+      type: object
+      description: Request body for creating or updating a HubDB table.
+      required:
+      - name
+      - label
+      properties:
+        name:
+          type: string
+          description: The machine-readable name of the table.
+        label:
+          type: string
+          description: The human-readable label for the table.
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              label:
+                type: string
+              type:
+                type: string
+    HubDBRow:
+      type: object
+      description: A row in a HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the row.
+        values:
+          type: object
+          description: The column values for the row as key-value pairs.
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the row was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the row was last updated.
+    HubDBRowCreateRequest:
+      type: object
+      description: Request body for creating or updating a HubDB table row.
+      properties:
+        values:
+          type: object
+          description: The column values for the row as key-value pairs.
+          additionalProperties: true
+    CollectionResponseHubDBTable:
+      type: object
+      description: A paginated list of HubDB tables.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDBTable'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    CollectionResponseHubDBRow:
+      type: object
+      description: A paginated list of HubDB table rows.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDBRow'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

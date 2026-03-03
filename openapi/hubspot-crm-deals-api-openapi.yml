@@ -1,0 +1,658 @@
+openapi: 3.1.0
+info:
+  title: HubSpot CRM Deals API
+  description: >-
+    A deal stores data about an ongoing transaction or sales opportunity. The
+    deals endpoints allow you to manage deal records and sync data between
+    HubSpot and other systems, supporting the full lifecycle of sales
+    opportunities through pipeline stages.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Deals
+  description: Operations for managing deal records
+- name: Batch
+  description: Batch operations for deals
+- name: Associations
+  description: Operations for managing deal associations
+paths:
+  /crm/v3/objects/deals:
+    get:
+      operationId: listDeals
+      summary: List deals
+      description: >-
+        Returns a page of deal records. Use the limit and after parameters
+        to paginate through deals. You can also specify which properties to
+        return using the properties parameter.
+      tags:
+      - Deals
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived deals.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with a list of deals.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseDeal'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDeal
+      summary: Create a deal
+      description: >-
+        Creates a new deal record with the provided properties. The request
+        body should include a properties object containing the field values
+        for the deal you want to create, including dealname, amount, and
+        pipeline stage.
+      tags:
+      - Deals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '201':
+          description: Deal created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/{dealId}:
+    get:
+      operationId: getDeal
+      summary: Get a deal
+      description: >-
+        Returns a single deal record by its ID. You can specify which
+        properties to return using the properties parameter.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to retrieve.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived deals.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with the deal record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateDeal
+      summary: Update a deal
+      description: >-
+        Performs a partial update of a deal record. Only the properties
+        included in the request body will be updated; other properties will
+        remain unchanged.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '200':
+          description: Deal updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteDeal
+      summary: Archive a deal
+      description: >-
+        Archives (soft deletes) a deal record by its ID. Archived deals
+        can be restored using the HubSpot UI or API. This does not permanently
+        delete the deal from HubSpot.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to archive.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deal archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/deals/batch/read:
+    post:
+      operationId: batchReadDeals
+      summary: Batch read deals
+      description: >-
+        Reads a batch of deal records by their IDs or unique property values.
+        Useful for retrieving multiple deals in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/batch/create:
+    post:
+      operationId: batchCreateDeals
+      summary: Batch create deals
+      description: >-
+        Creates multiple deal records in a single API call. The request
+        body should include an array of deal property objects.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+      responses:
+        '201':
+          description: Deals created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/batch/update:
+    post:
+      operationId: batchUpdateDeals
+      summary: Batch update deals
+      description: >-
+        Updates multiple deal records in a single API call. Each record
+        in the request must include the deal ID and the properties to update.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+      responses:
+        '200':
+          description: Deals updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/batch/archive:
+    post:
+      operationId: batchArchiveDeals
+      summary: Batch archive deals
+      description: >-
+        Archives multiple deal records in a single API call by their IDs.
+        Archived deals can be restored using the HubSpot UI or API.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchArchiveInput'
+      responses:
+        '204':
+          description: Deals archived successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/search:
+    post:
+      operationId: searchDeals
+      summary: Search deals
+      description: >-
+        Searches for deal records using filter groups, sorts, and other
+        query parameters. Supports complex filtering with multiple filter
+        groups and operators for precise record retrieval.
+      tags:
+      - Deals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseDeal'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/deals/{dealId}/associations/{toObjectType}:
+    get:
+      operationId: listDealAssociations
+      summary: List deal associations
+      description: >-
+        Returns all associations of a deal record to objects of a specified
+        type, such as contacts, companies, or tickets.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., contacts, companies).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/deals/{dealId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createDealAssociation
+      summary: Create a deal association
+      description: >-
+        Creates an association between a deal and another CRM object record.
+        The association type specifies the relationship between the objects.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteDealAssociation
+      summary: Delete a deal association
+      description: >-
+        Removes an association between a deal and another CRM object record.
+        This does not delete the deal or the associated object, only the
+        relationship between them.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    Deal:
+      type: object
+      description: A HubSpot deal record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the deal.
+        properties:
+          type: object
+          description: The deal's properties as key-value pairs.
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was last updated.
+        archived:
+          type: boolean
+          description: Whether the deal has been archived.
+        associations:
+          type: object
+          description: The deal's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+    CollectionResponseDeal:
+      type: object
+      description: A paginated list of deal records.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    BatchResponseDeal:
+      type: object
+      description: Results from a batch operation on deals.
+      properties:
+        status:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+        completedAt:
+          type: string
+          format: date-time
+    SimplePublicObjectInput:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    BatchReadInput:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    BatchCreateInput:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput'
+    BatchUpdateInput:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+    BatchArchiveInput:
+      type: object
+      description: Input for a batch archive operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    SearchRequest:
+      type: object
+      description: A search request for CRM objects.
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum: [ASCENDING, DESCENDING]
+        query:
+          type: string
+        properties:
+          type: array
+          items:
+            type: string
+        limit:
+          type: integer
+          maximum: 200
+        after:
+          type: string
+    FilterGroup:
+      type: object
+      description: A group of filters combined with AND logic.
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+    Filter:
+      type: object
+      description: A single filter condition.
+      properties:
+        propertyName:
+          type: string
+        operator:
+          type: string
+          enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+        value:
+          type: string
+    Association:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    CollectionResponseAssociation:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

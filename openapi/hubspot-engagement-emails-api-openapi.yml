@@ -1,0 +1,593 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Engagement Emails API
+  description: >-
+    The emails engagement API allows you to log and manage email activity records
+    on CRM records in HubSpot. You can create email engagement records to track
+    sent emails, associate them with contacts and deals, and retrieve email
+    activity history. Email engagement records follow the standard CRM object
+    pattern at /crm/v3/objects/emails.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Emails
+  description: Operations for managing email engagement records
+- name: Batch
+  description: Batch operations for email engagements
+- name: Associations
+  description: Operations for managing email engagement associations
+paths:
+  /crm/v3/objects/emails:
+    get:
+      operationId: listEmailEngagements
+      summary: List email engagements
+      description: >-
+        Returns a page of email engagement records. Use the limit and after
+        parameters to paginate through email engagements. You can also specify
+        which properties to return using the properties parameter.
+      tags:
+      - Emails
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived email engagements.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with a list of email engagements.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseEmailEngagement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createEmailEngagement
+      summary: Create an email engagement
+      description: >-
+        Creates a new email engagement record with the provided properties.
+        Common email engagement properties include hs_email_subject,
+        hs_email_text, hs_email_html, hs_email_status, hs_email_direction
+        (INCOMING or OUTGOING), and hs_timestamp.
+      tags:
+      - Emails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '201':
+          description: Email engagement created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/emails/{emailId}:
+    get:
+      operationId: getEmailEngagement
+      summary: Get an email engagement
+      description: >-
+        Returns a single email engagement record by its ID. You can specify
+        which properties to return using the properties parameter.
+      tags:
+      - Emails
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to retrieve.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived email engagements.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with the email engagement record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailEngagement'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateEmailEngagement
+      summary: Update an email engagement
+      description: >-
+        Performs a partial update of an email engagement record. Only the
+        properties included in the request body will be updated.
+      tags:
+      - Emails
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '200':
+          description: Email engagement updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEmailEngagement
+      summary: Archive an email engagement
+      description: >-
+        Archives (soft deletes) an email engagement record by its ID.
+        Archived email engagements can be restored using the HubSpot UI or API.
+      tags:
+      - Emails
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to archive.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Email engagement archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/emails/batch/read:
+    post:
+      operationId: batchReadEmailEngagements
+      summary: Batch read email engagements
+      description: >-
+        Reads a batch of email engagement records by their IDs. Useful for
+        retrieving multiple email engagements in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/emails/batch/create:
+    post:
+      operationId: batchCreateEmailEngagements
+      summary: Batch create email engagements
+      description: Creates multiple email engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+      responses:
+        '201':
+          description: Email engagements created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/emails/batch/update:
+    post:
+      operationId: batchUpdateEmailEngagements
+      summary: Batch update email engagements
+      description: Updates multiple email engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+      responses:
+        '200':
+          description: Email engagements updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/emails/search:
+    post:
+      operationId: searchEmailEngagements
+      summary: Search email engagements
+      description: >-
+        Searches for email engagement records using filter groups, sorts, and
+        other query parameters.
+      tags:
+      - Emails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseEmailEngagement'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/emails/{emailId}/associations/{toObjectType}:
+    get:
+      operationId: listEmailEngagementAssociations
+      summary: List email engagement associations
+      description: >-
+        Returns all associations of an email engagement record to objects of
+        a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement.
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/emails/{emailId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createEmailEngagementAssociation
+      summary: Create an email engagement association
+      description: >-
+        Creates an association between an email engagement record and another
+        CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteEmailEngagementAssociation
+      summary: Delete an email engagement association
+      description: >-
+        Removes an association between an email engagement record and another
+        CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    EmailEngagement:
+      type: object
+      description: A HubSpot email engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the email engagement.
+        properties:
+          type: object
+          description: The email engagement's properties as key-value pairs.
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+    CollectionResponseEmailEngagement:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailEngagement'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    BatchResponseEmailEngagement:
+      type: object
+      properties:
+        status:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailEngagement'
+        completedAt:
+          type: string
+          format: date-time
+    SimplePublicObjectInput:
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    BatchReadInput:
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    BatchCreateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput'
+    BatchUpdateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+    SearchRequest:
+      type: object
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum: [ASCENDING, DESCENDING]
+        query:
+          type: string
+        properties:
+          type: array
+          items:
+            type: string
+        limit:
+          type: integer
+          maximum: 200
+        after:
+          type: string
+    FilterGroup:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+    Filter:
+      type: object
+      properties:
+        propertyName:
+          type: string
+        operator:
+          type: string
+          enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+        value:
+          type: string
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

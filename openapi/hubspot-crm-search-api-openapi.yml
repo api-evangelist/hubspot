@@ -1,0 +1,297 @@
+openapi: 3.1.0
+info:
+  title: HubSpot CRM Search API
+  description: >-
+    The CRM Search API allows you to query and filter CRM objects using a
+    flexible search interface. You can search across contacts, companies, deals,
+    tickets, and other object types using filter groups, sorts, and pagination.
+    Each search request targets a specific object type.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Search
+  description: Operations for searching CRM objects
+paths:
+  /crm/v3/objects/{objectType}/search:
+    post:
+      operationId: searchCRMObjects
+      summary: Search CRM objects
+      description: >-
+        Searches for CRM object records of the specified type using filter
+        groups, sort criteria, and other query parameters. Supports complex
+        filtering with multiple filter groups (joined with OR logic) where
+        each group contains filters (joined with AND logic). Returns matching
+        records with the specified properties.
+      tags:
+      - Search
+      parameters:
+      - name: objectType
+        in: path
+        required: true
+        description: >-
+          The type of CRM object to search. Supported values include contacts,
+          companies, deals, tickets, products, line_items, quotes, and
+          custom object type names.
+        schema:
+          type: string
+          example: contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              filterByEmail:
+                summary: Filter contacts by email domain
+                value:
+                  filterGroups:
+                  - filters:
+                    - propertyName: email
+                      operator: CONTAINS_TOKEN
+                      value: '@example.com'
+                  properties:
+                  - email
+                  - firstname
+                  - lastname
+                  limit: 10
+              filterByDealStage:
+                summary: Filter deals by stage and amount
+                value:
+                  filterGroups:
+                  - filters:
+                    - propertyName: dealstage
+                      operator: EQ
+                      value: contractsent
+                    - propertyName: amount
+                      operator: GT
+                      value: '10000'
+                  sorts:
+                  - propertyName: amount
+                    direction: DESCENDING
+                  properties:
+                  - dealname
+                  - amount
+                  - dealstage
+                  - closedate
+                  limit: 20
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    SearchRequest:
+      type: object
+      description: >-
+        A search request for CRM objects. Filter groups are combined with OR
+        logic; filters within a group are combined with AND logic.
+      properties:
+        filterGroups:
+          type: array
+          description: >-
+            An array of filter groups. Records matching any filter group will
+            be included in results (OR logic between groups). Filters within
+            a group are all required (AND logic within groups).
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        sorts:
+          type: array
+          description: An array of sort criteria to order the results.
+          items:
+            $ref: '#/components/schemas/Sort'
+        query:
+          type: string
+          description: >-
+            A full-text search query string. When provided, returns records
+            where any searchable property contains the query term.
+        properties:
+          type: array
+          description: >-
+            An array of property names to include in the response for each
+            record. If not specified, a default set of properties is returned.
+          items:
+            type: string
+        limit:
+          type: integer
+          description: The maximum number of results to return. Maximum value is 200.
+          default: 10
+          maximum: 200
+        after:
+          type: string
+          description: >-
+            The cursor token for pagination. Use the value from the previous
+            response's paging.next.after to get the next page of results.
+    FilterGroup:
+      type: object
+      description: >-
+        A group of filter conditions combined with AND logic. Use multiple
+        filter groups to create OR conditions between groups.
+      properties:
+        filters:
+          type: array
+          description: An array of filters, all of which must match (AND logic).
+          items:
+            $ref: '#/components/schemas/Filter'
+    Filter:
+      type: object
+      description: A single filter condition for a CRM object property.
+      required:
+      - propertyName
+      - operator
+      properties:
+        propertyName:
+          type: string
+          description: The name of the CRM property to filter on.
+        operator:
+          type: string
+          description: The comparison operator for the filter.
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+        value:
+          type: string
+          description: >-
+            The value to compare against. Not required for HAS_PROPERTY and
+            NOT_HAS_PROPERTY operators.
+        highValue:
+          type: string
+          description: >-
+            The upper bound value for BETWEEN operator comparisons.
+        values:
+          type: array
+          items:
+            type: string
+          description: >-
+            An array of values for IN and NOT_IN operator comparisons.
+    Sort:
+      type: object
+      description: A sort criterion for ordering search results.
+      required:
+      - propertyName
+      properties:
+        propertyName:
+          type: string
+          description: The name of the CRM property to sort by.
+        direction:
+          type: string
+          description: The sort direction.
+          enum: [ASCENDING, DESCENDING]
+          default: ASCENDING
+    CRMObject:
+      type: object
+      description: A CRM object record returned from a search.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the CRM record.
+        properties:
+          type: object
+          description: The CRM record's properties as key-value pairs.
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the record was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the record was last updated.
+        archived:
+          type: boolean
+          description: Whether the record has been archived.
+    SearchResponse:
+      type: object
+      description: The response from a CRM search operation.
+      properties:
+        total:
+          type: integer
+          description: The total number of records matching the search criteria.
+        results:
+          type: array
+          description: The matching CRM records for the current page.
+          items:
+            $ref: '#/components/schemas/CRMObject'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      description: Pagination information for the response.
+      properties:
+        next:
+          type: object
+          description: Information for retrieving the next page of results.
+          properties:
+            after:
+              type: string
+              description: The cursor token to use in the after parameter for the next page.
+            link:
+              type: string
+              description: A URL link to the next page of results.
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+              in:
+                type: string
+              code:
+                type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

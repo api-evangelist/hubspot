@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developers.hubspot.com/docs/api/schemas/crm-object",
+  "title": "HubSpot CRM Object",
+  "description": "Schema for a HubSpot CRM object record, applicable to contacts, companies, deals, tickets, and other CRM object types.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the CRM object record assigned by HubSpot."
+    },
+    "properties": {
+      "type": "object",
+      "description": "The CRM object's properties as key-value pairs. Keys are property names and values are the property values as strings.",
+      "additionalProperties": {
+        "type": ["string", "null"],
+        "description": "A property value for the CRM object."
+      },
+      "examples": [
+        {
+          "firstname": "John",
+          "lastname": "Doe",
+          "email": "john.doe@example.com",
+          "phone": "+1-555-555-5555",
+          "company": "Acme Corp"
+        }
+      ]
+    },
+    "propertiesWithHistory": {
+      "type": "object",
+      "description": "A map of property names to their historical values, including the current value and previous values with timestamps.",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/PropertyHistory"
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the CRM object record was created in ISO 8601 format."
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the CRM object record was last updated in ISO 8601 format."
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the CRM object record has been archived (soft deleted). Archived records can be restored.",
+      "default": false
+    },
+    "archivedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the CRM object record was archived, if applicable."
+    },
+    "associations": {
+      "type": "object",
+      "description": "Associations between this CRM object and other CRM objects, keyed by object type.",
+      "additionalProperties": {
+        "$ref": "#/$defs/AssociationCollection"
+      },
+      "examples": [
+        {
+          "companies": {
+            "results": [
+              { "id": "789", "type": "contact_to_company" }
+            ]
+          },
+          "deals": {
+            "results": [
+              { "id": "456", "type": "contact_to_deal" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "required": ["id", "properties", "createdAt", "updatedAt"],
+  "$defs": {
+    "PropertyHistory": {
+      "type": "object",
+      "description": "A historical value entry for a CRM property.",
+      "properties": {
+        "value": {
+          "type": ["string", "null"],
+          "description": "The value of the property at the given timestamp."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time when this property value was set."
+        },
+        "sourceType": {
+          "type": "string",
+          "description": "The source type that set this property value (e.g., CRM_UI, API, IMPORT)."
+        },
+        "sourceId": {
+          "type": ["string", "null"],
+          "description": "The source ID that set this property value."
+        }
+      },
+      "required": ["value", "timestamp"]
+    },
+    "Association": {
+      "type": "object",
+      "description": "An association between two CRM object records.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the associated CRM object record."
+        },
+        "type": {
+          "type": "string",
+          "description": "The association type label describing the relationship."
+        }
+      },
+      "required": ["id", "type"]
+    },
+    "AssociationCollection": {
+      "type": "object",
+      "description": "A collection of associations to a specific object type.",
+      "properties": {
+        "results": {
+          "type": "array",
+          "description": "The list of associated records.",
+          "items": {
+            "$ref": "#/$defs/Association"
+          }
+        },
+        "paging": {
+          "$ref": "#/$defs/Paging"
+        }
+      },
+      "required": ["results"]
+    },
+    "Paging": {
+      "type": "object",
+      "description": "Pagination information for a collection response.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information for fetching the next page of results.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "The cursor token to use in the 'after' parameter to get the next page."
+            },
+            "link": {
+              "type": "string",
+              "format": "uri",
+              "description": "A direct URL link to the next page of results."
+            }
+          },
+          "required": ["after"]
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "1234",
+      "properties": {
+        "firstname": "Jane",
+        "lastname": "Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+1-555-123-4567",
+        "company": "Example Corp",
+        "hs_object_id": "1234"
+      },
+      "createdAt": "2023-01-15T10:30:00Z",
+      "updatedAt": "2024-06-20T14:45:00Z",
+      "archived": false,
+      "associations": {
+        "companies": {
+          "results": [
+            { "id": "5678", "type": "contact_to_company" }
+          ]
+        }
+      }
+    }
+  ]
+}

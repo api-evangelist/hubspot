@@ -1,0 +1,577 @@
+asyncapi: 2.6.0
+info:
+  title: HubSpot Webhooks API
+  version: v3
+  description: >-
+    The HubSpot Webhooks API enables real-time event notifications for changes
+    to CRM objects and conversations in a HubSpot portal. When subscribed events
+    occur, HubSpot delivers HTTP POST requests to a registered target URL
+    containing details about the event. Webhooks support subscription types
+    for contacts, companies, deals, tickets, and conversations.
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+  license:
+    name: HubSpot Developer Terms
+    url: https://legal.hubspot.com/developer-terms
+servers:
+  hubspot-api:
+    url: https://api.hubapi.com
+    protocol: https
+    description: >-
+      HubSpot management API for configuring webhook settings and subscriptions.
+      Webhook events are delivered to the target URL configured in your app
+      settings.
+    security:
+    - oauth2: []
+defaultContentType: application/json
+channels:
+  contact.creation:
+    description: >-
+      Triggered when a new contact record is created in the portal. The event
+      payload includes the ID of the newly created contact and metadata about
+      the creation event.
+    subscribe:
+      operationId: onContactCreation
+      summary: Contact created
+      description: >-
+        Receives a notification when a contact record is created. The objectId
+        field contains the ID of the new contact record.
+      tags:
+      - name: Contacts
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/ContactCreationEvent'
+  contact.deletion:
+    description: >-
+      Triggered when a contact record is deleted (archived) from the portal.
+      The event payload includes the ID of the deleted contact.
+    subscribe:
+      operationId: onContactDeletion
+      summary: Contact deleted
+      description: >-
+        Receives a notification when a contact record is deleted. The objectId
+        field contains the ID of the deleted contact record.
+      tags:
+      - name: Contacts
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/ContactDeletionEvent'
+  contact.propertyChange:
+    description: >-
+      Triggered when a property value changes on a contact record. The event
+      payload includes the property name, new value, and the contact's ID.
+    subscribe:
+      operationId: onContactPropertyChange
+      summary: Contact property changed
+      description: >-
+        Receives a notification when a contact property is updated. The
+        propertyName field identifies which property changed and propertyValue
+        contains the new value.
+      tags:
+      - name: Contacts
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/ContactPropertyChangeEvent'
+  company.creation:
+    description: >-
+      Triggered when a new company record is created in the portal.
+    subscribe:
+      operationId: onCompanyCreation
+      summary: Company created
+      description: >-
+        Receives a notification when a company record is created.
+      tags:
+      - name: Companies
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/CompanyCreationEvent'
+  company.deletion:
+    description: >-
+      Triggered when a company record is deleted (archived) from the portal.
+    subscribe:
+      operationId: onCompanyDeletion
+      summary: Company deleted
+      description: >-
+        Receives a notification when a company record is deleted.
+      tags:
+      - name: Companies
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/CompanyDeletionEvent'
+  company.propertyChange:
+    description: >-
+      Triggered when a property value changes on a company record.
+    subscribe:
+      operationId: onCompanyPropertyChange
+      summary: Company property changed
+      description: >-
+        Receives a notification when a company property is updated.
+      tags:
+      - name: Companies
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/CompanyPropertyChangeEvent'
+  deal.creation:
+    description: >-
+      Triggered when a new deal record is created in the portal.
+    subscribe:
+      operationId: onDealCreation
+      summary: Deal created
+      description: >-
+        Receives a notification when a deal record is created.
+      tags:
+      - name: Deals
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/DealCreationEvent'
+  deal.deletion:
+    description: >-
+      Triggered when a deal record is deleted (archived) from the portal.
+    subscribe:
+      operationId: onDealDeletion
+      summary: Deal deleted
+      description: >-
+        Receives a notification when a deal record is deleted.
+      tags:
+      - name: Deals
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/DealDeletionEvent'
+  deal.propertyChange:
+    description: >-
+      Triggered when a property value changes on a deal record.
+    subscribe:
+      operationId: onDealPropertyChange
+      summary: Deal property changed
+      description: >-
+        Receives a notification when a deal property is updated.
+      tags:
+      - name: Deals
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/DealPropertyChangeEvent'
+  ticket.creation:
+    description: >-
+      Triggered when a new ticket record is created in the portal.
+    subscribe:
+      operationId: onTicketCreation
+      summary: Ticket created
+      description: >-
+        Receives a notification when a ticket record is created.
+      tags:
+      - name: Tickets
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/TicketCreationEvent'
+  ticket.deletion:
+    description: >-
+      Triggered when a ticket record is deleted (archived) from the portal.
+    subscribe:
+      operationId: onTicketDeletion
+      summary: Ticket deleted
+      description: >-
+        Receives a notification when a ticket record is deleted.
+      tags:
+      - name: Tickets
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/TicketDeletionEvent'
+  ticket.propertyChange:
+    description: >-
+      Triggered when a property value changes on a ticket record.
+    subscribe:
+      operationId: onTicketPropertyChange
+      summary: Ticket property changed
+      description: >-
+        Receives a notification when a ticket property is updated.
+      tags:
+      - name: Tickets
+      - name: CRM Events
+      message:
+        $ref: '#/components/messages/TicketPropertyChangeEvent'
+  conversation.creation:
+    description: >-
+      Triggered when a new conversation thread is created in the HubSpot
+      conversations inbox.
+    subscribe:
+      operationId: onConversationCreation
+      summary: Conversation created
+      description: >-
+        Receives a notification when a new conversation is created.
+      tags:
+      - name: Conversations
+      message:
+        $ref: '#/components/messages/ConversationCreationEvent'
+  conversation.deletion:
+    description: >-
+      Triggered when a conversation thread is deleted from the portal.
+    subscribe:
+      operationId: onConversationDeletion
+      summary: Conversation deleted
+      description: >-
+        Receives a notification when a conversation is deleted.
+      tags:
+      - name: Conversations
+      message:
+        $ref: '#/components/messages/ConversationDeletionEvent'
+  conversation.propertyChange:
+    description: >-
+      Triggered when a property changes on a conversation thread.
+    subscribe:
+      operationId: onConversationPropertyChange
+      summary: Conversation property changed
+      description: >-
+        Receives a notification when a conversation property is updated.
+      tags:
+      - name: Conversations
+      message:
+        $ref: '#/components/messages/ConversationPropertyChangeEvent'
+  conversation.newMessage:
+    description: >-
+      Triggered when a new message is added to an existing conversation thread.
+    subscribe:
+      operationId: onConversationNewMessage
+      summary: New conversation message
+      description: >-
+        Receives a notification when a new message arrives in a conversation.
+      tags:
+      - name: Conversations
+      message:
+        $ref: '#/components/messages/ConversationNewMessageEvent'
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 Bearer token for managing webhook subscriptions.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.contacts.read: Read contact records
+            crm.objects.companies.read: Read company records
+            crm.objects.deals.read: Read deal records
+            crm.objects.tickets.read: Read ticket records
+            conversations.read: Read conversation data
+  messages:
+    ContactCreationEvent:
+      name: ContactCreationEvent
+      title: Contact Creation Event
+      summary: A contact record was created.
+      description: >-
+        Payload delivered when a new contact record is created in the HubSpot
+        portal. The objectId identifies the newly created contact.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMCreationEvent'
+      examples:
+      - name: ContactCreated
+        payload:
+          objectId: 123456
+          eventId: 1234567890
+          subscriptionId: 111111
+          portalId: 99999
+          occurredAt: 1611608400000
+          subscriptionType: contact.creation
+          attemptNumber: 0
+          appId: 55555
+          changeSource: CRM
+          changeFlag: CREATED
+    ContactDeletionEvent:
+      name: ContactDeletionEvent
+      title: Contact Deletion Event
+      summary: A contact record was deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMDeletionEvent'
+    ContactPropertyChangeEvent:
+      name: ContactPropertyChangeEvent
+      title: Contact Property Change Event
+      summary: A contact property value was changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMPropertyChangeEvent'
+      examples:
+      - name: EmailChanged
+        payload:
+          objectId: 123456
+          eventId: 1234567891
+          subscriptionId: 111112
+          portalId: 99999
+          occurredAt: 1611608401000
+          subscriptionType: contact.propertyChange
+          attemptNumber: 0
+          appId: 55555
+          changeSource: CRM
+          changeFlag: PROPERTY_CHANGED
+          propertyName: email
+          propertyValue: newemail@example.com
+    CompanyCreationEvent:
+      name: CompanyCreationEvent
+      title: Company Creation Event
+      summary: A company record was created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMCreationEvent'
+    CompanyDeletionEvent:
+      name: CompanyDeletionEvent
+      title: Company Deletion Event
+      summary: A company record was deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMDeletionEvent'
+    CompanyPropertyChangeEvent:
+      name: CompanyPropertyChangeEvent
+      title: Company Property Change Event
+      summary: A company property value was changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMPropertyChangeEvent'
+    DealCreationEvent:
+      name: DealCreationEvent
+      title: Deal Creation Event
+      summary: A deal record was created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMCreationEvent'
+    DealDeletionEvent:
+      name: DealDeletionEvent
+      title: Deal Deletion Event
+      summary: A deal record was deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMDeletionEvent'
+    DealPropertyChangeEvent:
+      name: DealPropertyChangeEvent
+      title: Deal Property Change Event
+      summary: A deal property value was changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMPropertyChangeEvent'
+    TicketCreationEvent:
+      name: TicketCreationEvent
+      title: Ticket Creation Event
+      summary: A ticket record was created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMCreationEvent'
+    TicketDeletionEvent:
+      name: TicketDeletionEvent
+      title: Ticket Deletion Event
+      summary: A ticket record was deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMDeletionEvent'
+    TicketPropertyChangeEvent:
+      name: TicketPropertyChangeEvent
+      title: Ticket Property Change Event
+      summary: A ticket property value was changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMPropertyChangeEvent'
+    ConversationCreationEvent:
+      name: ConversationCreationEvent
+      title: Conversation Creation Event
+      summary: A conversation was created.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMCreationEvent'
+    ConversationDeletionEvent:
+      name: ConversationDeletionEvent
+      title: Conversation Deletion Event
+      summary: A conversation was deleted.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMDeletionEvent'
+    ConversationPropertyChangeEvent:
+      name: ConversationPropertyChangeEvent
+      title: Conversation Property Change Event
+      summary: A conversation property was changed.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/CRMPropertyChangeEvent'
+    ConversationNewMessageEvent:
+      name: ConversationNewMessageEvent
+      title: Conversation New Message Event
+      summary: A new message was added to a conversation.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/ConversationMessageEvent'
+  schemas:
+    WebhookEventBase:
+      type: object
+      description: >-
+        Base properties shared by all HubSpot webhook event payloads. Each
+        webhook notification is delivered as an HTTP POST to your registered
+        target URL with this payload structure.
+      required:
+      - objectId
+      - eventId
+      - subscriptionId
+      - portalId
+      - occurredAt
+      - subscriptionType
+      - attemptNumber
+      - appId
+      properties:
+        objectId:
+          type: integer
+          description: The ID of the CRM object that triggered the event.
+          example: 123456
+        eventId:
+          type: integer
+          description: >-
+            A unique identifier for this specific webhook event delivery.
+            Can be used for deduplication.
+          example: 1234567890
+        subscriptionId:
+          type: integer
+          description: The ID of the webhook subscription that triggered this notification.
+          example: 111111
+        portalId:
+          type: integer
+          description: The HubSpot portal ID (account ID) that triggered the event.
+          example: 99999
+        occurredAt:
+          type: integer
+          description: The Unix timestamp in milliseconds when the event occurred.
+          example: 1611608400000
+        subscriptionType:
+          type: string
+          description: The type of event subscription that triggered this notification.
+          example: contact.creation
+        attemptNumber:
+          type: integer
+          description: >-
+            The delivery attempt number for this event. Starts at 0 and
+            increments on retry attempts after failed deliveries.
+          example: 0
+        appId:
+          type: integer
+          description: The ID of the app that has the webhook subscription.
+          example: 55555
+        changeSource:
+          type: string
+          description: >-
+            The source of the change that triggered the event (e.g., CRM,
+            IMPORT, API, INTEGRATION, FORM, ANALYTICS, MIGRATION).
+          example: CRM
+    CRMCreationEvent:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEventBase'
+      - type: object
+        description: Payload for CRM object creation events.
+        properties:
+          changeFlag:
+            type: string
+            description: The type of change that occurred.
+            enum: [CREATED]
+            example: CREATED
+    CRMDeletionEvent:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEventBase'
+      - type: object
+        description: Payload for CRM object deletion events.
+        properties:
+          changeFlag:
+            type: string
+            description: The type of change that occurred.
+            enum: [DELETED]
+            example: DELETED
+    CRMPropertyChangeEvent:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEventBase'
+      - type: object
+        description: >-
+          Payload for CRM object property change events. Includes the property
+          name and new value that triggered the notification.
+        properties:
+          changeFlag:
+            type: string
+            description: The type of change that occurred.
+            enum: [PROPERTY_CHANGED]
+            example: PROPERTY_CHANGED
+          propertyName:
+            type: string
+            description: The name of the CRM property that changed.
+            example: email
+          propertyValue:
+            type: string
+            description: The new value of the changed property.
+            example: newemail@example.com
+    ConversationMessageEvent:
+      allOf:
+      - $ref: '#/components/schemas/WebhookEventBase'
+      - type: object
+        description: Payload for conversation new message events.
+        properties:
+          changeFlag:
+            type: string
+            description: The type of change that occurred.
+            enum: [NEW_MESSAGE]
+            example: NEW_MESSAGE
+    WebhookSettings:
+      type: object
+      description: Settings for an app's webhook configuration.
+      properties:
+        targetUrl:
+          type: string
+          description: The URL where webhook events will be delivered.
+          example: https://example.com/webhooks/hubspot
+        throttling:
+          type: object
+          description: Throttling configuration for webhook delivery.
+          properties:
+            period:
+              type: string
+              description: The throttling period.
+              enum: [SECONDLY, MINUTELY]
+            maxConcurrentRequests:
+              type: integer
+              description: The maximum number of concurrent webhook requests.
+    WebhookSubscription:
+      type: object
+      description: A webhook event subscription configuration.
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the subscription.
+        subscriptionDetails:
+          type: object
+          description: Details about the subscription type and object type.
+          properties:
+            subscriptionType:
+              type: string
+              description: The type of event to subscribe to.
+              enum:
+              - contact.creation
+              - contact.deletion
+              - contact.propertyChange
+              - company.creation
+              - company.deletion
+              - company.propertyChange
+              - deal.creation
+              - deal.deletion
+              - deal.propertyChange
+              - ticket.creation
+              - ticket.deletion
+              - ticket.propertyChange
+              - conversation.creation
+              - conversation.deletion
+              - conversation.propertyChange
+              - conversation.newMessage
+            propertyName:
+              type: string
+              description: >-
+                For propertyChange subscriptions, the specific property name
+                to subscribe to. Omit to subscribe to all property changes.
+        active:
+          type: boolean
+          description: Whether the subscription is active.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

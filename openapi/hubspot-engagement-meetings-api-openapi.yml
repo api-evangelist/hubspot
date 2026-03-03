@@ -1,0 +1,591 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Engagement Meetings API
+  description: >-
+    The meetings endpoints allow you to log and manage meeting engagement records
+    in HubSpot CRM. You can create meeting records, associate them with contacts
+    and companies, and retrieve meeting details and outcomes. Meeting records
+    follow the standard CRM object pattern at /crm/v3/objects/meetings.
+  version: v3
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com/
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot API
+security:
+- oauth2: []
+tags:
+- name: Meetings
+  description: Operations for managing meeting engagement records
+- name: Batch
+  description: Batch operations for meetings
+- name: Associations
+  description: Operations for managing meeting associations
+paths:
+  /crm/v3/objects/meetings:
+    get:
+      operationId: listMeetings
+      summary: List meetings
+      description: >-
+        Returns a page of meeting engagement records. Use the limit and after
+        parameters to paginate through meetings. You can also specify which
+        properties to return using the properties parameter.
+      tags:
+      - Meetings
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived meetings.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with a list of meetings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseMeeting'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createMeeting
+      summary: Create a meeting
+      description: >-
+        Creates a new meeting engagement record with the provided properties.
+        Common meeting properties include hs_meeting_title, hs_meeting_body,
+        hs_meeting_start_time, hs_meeting_end_time, and hs_meeting_outcome.
+      tags:
+      - Meetings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '201':
+          description: Meeting created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/meetings/{meetingId}:
+    get:
+      operationId: getMeeting
+      summary: Get a meeting
+      description: >-
+        Returns a single meeting engagement record by its ID. You can specify
+        which properties to return using the properties parameter.
+      tags:
+      - Meetings
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to retrieve.
+        schema:
+          type: string
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return archived meetings.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Successful response with the meeting record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateMeeting
+      summary: Update a meeting
+      description: >-
+        Performs a partial update of a meeting engagement record. Only the
+        properties included in the request body will be updated.
+      tags:
+      - Meetings
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to update.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+      responses:
+        '200':
+          description: Meeting updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteMeeting
+      summary: Archive a meeting
+      description: >-
+        Archives (soft deletes) a meeting engagement record by its ID.
+        Archived meetings can be restored using the HubSpot UI or API.
+      tags:
+      - Meetings
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to archive.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Meeting archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/meetings/batch/read:
+    post:
+      operationId: batchReadMeetings
+      summary: Batch read meetings
+      description: >-
+        Reads a batch of meeting records by their IDs. Useful for retrieving
+        multiple meetings in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/meetings/batch/create:
+    post:
+      operationId: batchCreateMeetings
+      summary: Batch create meetings
+      description: >-
+        Creates multiple meeting engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+      responses:
+        '201':
+          description: Meetings created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/meetings/batch/update:
+    post:
+      operationId: batchUpdateMeetings
+      summary: Batch update meetings
+      description: >-
+        Updates multiple meeting engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+      responses:
+        '200':
+          description: Meetings updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/meetings/search:
+    post:
+      operationId: searchMeetings
+      summary: Search meetings
+      description: >-
+        Searches for meeting engagement records using filter groups, sorts,
+        and other query parameters.
+      tags:
+      - Meetings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseMeeting'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}:
+    get:
+      operationId: listMeetingAssociations
+      summary: List meeting associations
+      description: >-
+        Returns all associations of a meeting record to objects of a specified
+        type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting.
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createMeetingAssociation
+      summary: Create a meeting association
+      description: >-
+        Creates an association between a meeting record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteMeetingAssociation
+      summary: Delete a meeting association
+      description: >-
+        Removes an association between a meeting record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    oauth2:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 Bearer token (access token from OAuth flow)
+  schemas:
+    Meeting:
+      type: object
+      description: A HubSpot meeting engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the meeting.
+        properties:
+          type: object
+          description: The meeting's properties as key-value pairs.
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        archived:
+          type: boolean
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+    CollectionResponseMeeting:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meeting'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    BatchResponseMeeting:
+      type: object
+      properties:
+        status:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meeting'
+        completedAt:
+          type: string
+          format: date-time
+    SimplePublicObjectInput:
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+    BatchReadInput:
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    BatchCreateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput'
+    BatchUpdateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+    SearchRequest:
+      type: object
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum: [ASCENDING, DESCENDING]
+        query:
+          type: string
+        properties:
+          type: array
+          items:
+            type: string
+        limit:
+          type: integer
+          maximum: 200
+        after:
+          type: string
+    FilterGroup:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+    Filter:
+      type: object
+      properties:
+        propertyName:
+          type: string
+        operator:
+          type: string
+          enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+        value:
+          type: string
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+        category:
+          type: string
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
