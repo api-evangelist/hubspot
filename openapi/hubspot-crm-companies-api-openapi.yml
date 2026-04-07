@@ -11,52 +11,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Companies
-  description: Operations for managing company records
-- name: Batch
-  description: Batch operations for companies
-- name: Associations
-  description: Operations for managing company associations
+  - name: Companies
+    description: Operations for managing company records
+  - name: Batch
+    description: Batch operations for companies
+  - name: Associations
+    description: Operations for managing company associations
 paths:
   /crm/v3/objects/companies:
     get:
       operationId: listCompanies
-      summary: List companies
+      summary: HubSpot List companies
       description: >-
         Returns a page of company records. Use the limit and after parameters
         to paginate through companies. You can also specify which properties
         to return using the properties parameter.
       tags:
-      - Companies
+        - Companies
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived companies.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived companies.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of companies.
@@ -68,13 +68,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createCompany
-      summary: Create a company
+      summary: HubSpot Create a company
       description: >-
         Creates a new company record with the provided properties. The request
         body should include a properties object containing the field values
         for the company you want to create.
       tags:
-      - Companies
+        - Companies
       requestBody:
         required: true
         content:
@@ -95,30 +95,30 @@ paths:
   /crm/v3/objects/companies/{companyId}:
     get:
       operationId: getCompany
-      summary: Get a company
+      summary: HubSpot Get a company
       description: >-
         Returns a single company record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-      - Companies
+        - Companies
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived companies.
-        schema:
-          type: boolean
-          default: false
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived companies.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the company record.
@@ -132,20 +132,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateCompany
-      summary: Update a company
+      summary: HubSpot Update a company
       description: >-
         Performs a partial update of a company record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-      - Companies
+        - Companies
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company to update.
-        schema:
-          type: string
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -167,20 +167,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteCompany
-      summary: Archive a company
+      summary: HubSpot Archive a company
       description: >-
         Archives (soft deletes) a company record by its ID. Archived companies
         can be restored using the HubSpot UI or API. This does not permanently
         delete the company from HubSpot.
       tags:
-      - Companies
+        - Companies
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company to archive.
-        schema:
-          type: string
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Company archived successfully.
@@ -191,13 +191,13 @@ paths:
   /crm/v3/objects/companies/batch/read:
     post:
       operationId: batchReadCompanies
-      summary: Batch read companies
+      summary: HubSpot Batch read companies
       description: >-
         Reads a batch of company records by their IDs or unique property values.
         Useful for retrieving multiple companies in a single API call instead
         of making individual requests.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -218,12 +218,12 @@ paths:
   /crm/v3/objects/companies/batch/create:
     post:
       operationId: batchCreateCompanies
-      summary: Batch create companies
+      summary: HubSpot Batch create companies
       description: >-
         Creates multiple company records in a single API call. The request
         body should include an array of company property objects.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -244,12 +244,12 @@ paths:
   /crm/v3/objects/companies/batch/update:
     post:
       operationId: batchUpdateCompanies
-      summary: Batch update companies
+      summary: HubSpot Batch update companies
       description: >-
         Updates multiple company records in a single API call. Each record
         in the request must include the company ID and the properties to update.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -270,12 +270,12 @@ paths:
   /crm/v3/objects/companies/batch/archive:
     post:
       operationId: batchArchiveCompanies
-      summary: Batch archive companies
+      summary: HubSpot Batch archive companies
       description: >-
         Archives multiple company records in a single API call by their IDs.
         Archived companies can be restored using the HubSpot UI or API.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -292,13 +292,13 @@ paths:
   /crm/v3/objects/companies/search:
     post:
       operationId: searchCompanies
-      summary: Search companies
+      summary: HubSpot Search companies
       description: >-
         Searches for company records using filter groups, sorts, and other
         query parameters. Supports complex filtering with multiple filter
         groups and operators for precise record retrieval.
       tags:
-      - Companies
+        - Companies
       requestBody:
         required: true
         content:
@@ -319,25 +319,25 @@ paths:
   /crm/v3/objects/companies/{companyId}/associations/{toObjectType}:
     get:
       operationId: listCompanyAssociations
-      summary: List company associations
+      summary: HubSpot List company associations
       description: >-
         Returns all associations of a company record to objects of a specified
         type, such as contacts, deals, or tickets.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object (e.g., contacts, deals, tickets).
-        schema:
-          type: string
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object (e.g., contacts, deals, tickets).
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.
@@ -352,37 +352,37 @@ paths:
   /crm/v3/objects/companies/{companyId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createCompanyAssociation
-      summary: Create a company association
+      summary: HubSpot Create a company association
       description: >-
         Creates an association between a company and another CRM object record.
         The association type specifies the relationship between the objects.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the object to associate with.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the object to associate with.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to create.
-        schema:
-          type: string
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the object to associate with.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the object to associate with.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to create.
+          schema:
+            type: string
       responses:
         '200':
           description: Association created successfully.
@@ -396,38 +396,38 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteCompanyAssociation
-      summary: Delete a company association
+      summary: HubSpot Delete a company association
       description: >-
         Removes an association between a company and another CRM object record.
         This does not delete the company or the associated object, only the
         relationship between them.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: companyId
-        in: path
-        required: true
-        description: The ID of the company.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the associated object.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the associated object.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to delete.
-        schema:
-          type: string
+        - name: companyId
+          in: path
+          required: true
+          description: The ID of the company.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the associated object.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the associated object.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to delete.
+          schema:
+            type: string
       responses:
         '204':
           description: Association deleted successfully.

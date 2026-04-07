@@ -11,52 +11,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Meetings
-  description: Operations for managing meeting engagement records
-- name: Batch
-  description: Batch operations for meetings
-- name: Associations
-  description: Operations for managing meeting associations
+  - name: Meetings
+    description: Operations for managing meeting engagement records
+  - name: Batch
+    description: Batch operations for meetings
+  - name: Associations
+    description: Operations for managing meeting associations
 paths:
   /crm/v3/objects/meetings:
     get:
       operationId: listMeetings
-      summary: List meetings
+      summary: HubSpot List meetings
       description: >-
         Returns a page of meeting engagement records. Use the limit and after
         parameters to paginate through meetings. You can also specify which
         properties to return using the properties parameter.
       tags:
-      - Meetings
+        - Meetings
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived meetings.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived meetings.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of meetings.
@@ -68,13 +68,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createMeeting
-      summary: Create a meeting
+      summary: HubSpot Create a meeting
       description: >-
         Creates a new meeting engagement record with the provided properties.
         Common meeting properties include hs_meeting_title, hs_meeting_body,
         hs_meeting_start_time, hs_meeting_end_time, and hs_meeting_outcome.
       tags:
-      - Meetings
+        - Meetings
       requestBody:
         required: true
         content:
@@ -95,30 +95,30 @@ paths:
   /crm/v3/objects/meetings/{meetingId}:
     get:
       operationId: getMeeting
-      summary: Get a meeting
+      summary: HubSpot Get a meeting
       description: >-
         Returns a single meeting engagement record by its ID. You can specify
         which properties to return using the properties parameter.
       tags:
-      - Meetings
+        - Meetings
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        description: The ID of the meeting to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived meetings.
-        schema:
-          type: boolean
-          default: false
+        - name: meetingId
+          in: path
+          required: true
+          description: The ID of the meeting to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived meetings.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the meeting record.
@@ -132,19 +132,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateMeeting
-      summary: Update a meeting
+      summary: HubSpot Update a meeting
       description: >-
         Performs a partial update of a meeting engagement record. Only the
         properties included in the request body will be updated.
       tags:
-      - Meetings
+        - Meetings
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        description: The ID of the meeting to update.
-        schema:
-          type: string
+        - name: meetingId
+          in: path
+          required: true
+          description: The ID of the meeting to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -166,19 +166,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteMeeting
-      summary: Archive a meeting
+      summary: HubSpot Archive a meeting
       description: >-
         Archives (soft deletes) a meeting engagement record by its ID.
         Archived meetings can be restored using the HubSpot UI or API.
       tags:
-      - Meetings
+        - Meetings
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        description: The ID of the meeting to archive.
-        schema:
-          type: string
+        - name: meetingId
+          in: path
+          required: true
+          description: The ID of the meeting to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Meeting archived successfully.
@@ -189,12 +189,12 @@ paths:
   /crm/v3/objects/meetings/batch/read:
     post:
       operationId: batchReadMeetings
-      summary: Batch read meetings
+      summary: HubSpot Batch read meetings
       description: >-
         Reads a batch of meeting records by their IDs. Useful for retrieving
         multiple meetings in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -215,11 +215,11 @@ paths:
   /crm/v3/objects/meetings/batch/create:
     post:
       operationId: batchCreateMeetings
-      summary: Batch create meetings
+      summary: HubSpot Batch create meetings
       description: >-
         Creates multiple meeting engagement records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -240,11 +240,11 @@ paths:
   /crm/v3/objects/meetings/batch/update:
     post:
       operationId: batchUpdateMeetings
-      summary: Batch update meetings
+      summary: HubSpot Batch update meetings
       description: >-
         Updates multiple meeting engagement records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -265,12 +265,12 @@ paths:
   /crm/v3/objects/meetings/search:
     post:
       operationId: searchMeetings
-      summary: Search meetings
+      summary: HubSpot Search meetings
       description: >-
         Searches for meeting engagement records using filter groups, sorts,
         and other query parameters.
       tags:
-      - Meetings
+        - Meetings
       requestBody:
         required: true
         content:
@@ -291,25 +291,25 @@ paths:
   /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}:
     get:
       operationId: listMeetingAssociations
-      summary: List meeting associations
+      summary: HubSpot List meeting associations
       description: >-
         Returns all associations of a meeting record to objects of a specified
         type, such as contacts, companies, or deals.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        description: The ID of the meeting.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object.
-        schema:
-          type: string
+        - name: meetingId
+          in: path
+          required: true
+          description: The ID of the meeting.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object.
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.
@@ -324,32 +324,32 @@ paths:
   /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createMeetingAssociation
-      summary: Create a meeting association
+      summary: HubSpot Create a meeting association
       description: >-
         Creates an association between a meeting record and another CRM object.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: meetingId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Association created successfully.
@@ -363,32 +363,32 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteMeetingAssociation
-      summary: Delete a meeting association
+      summary: HubSpot Delete a meeting association
       description: >-
         Removes an association between a meeting record and another CRM object.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: meetingId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: meetingId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '204':
           description: Association deleted successfully.

@@ -12,52 +12,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Emails
-  description: Operations for managing email engagement records
-- name: Batch
-  description: Batch operations for email engagements
-- name: Associations
-  description: Operations for managing email engagement associations
+  - name: Emails
+    description: Operations for managing email engagement records
+  - name: Batch
+    description: Batch operations for email engagements
+  - name: Associations
+    description: Operations for managing email engagement associations
 paths:
   /crm/v3/objects/emails:
     get:
       operationId: listEmailEngagements
-      summary: List email engagements
+      summary: HubSpot List email engagements
       description: >-
         Returns a page of email engagement records. Use the limit and after
         parameters to paginate through email engagements. You can also specify
         which properties to return using the properties parameter.
       tags:
-      - Emails
+        - Emails
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived email engagements.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived email engagements.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of email engagements.
@@ -69,14 +69,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createEmailEngagement
-      summary: Create an email engagement
+      summary: HubSpot Create an email engagement
       description: >-
         Creates a new email engagement record with the provided properties.
         Common email engagement properties include hs_email_subject,
         hs_email_text, hs_email_html, hs_email_status, hs_email_direction
         (INCOMING or OUTGOING), and hs_timestamp.
       tags:
-      - Emails
+        - Emails
       requestBody:
         required: true
         content:
@@ -97,30 +97,30 @@ paths:
   /crm/v3/objects/emails/{emailId}:
     get:
       operationId: getEmailEngagement
-      summary: Get an email engagement
+      summary: HubSpot Get an email engagement
       description: >-
         Returns a single email engagement record by its ID. You can specify
         which properties to return using the properties parameter.
       tags:
-      - Emails
+        - Emails
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        description: The ID of the email engagement to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived email engagements.
-        schema:
-          type: boolean
-          default: false
+        - name: emailId
+          in: path
+          required: true
+          description: The ID of the email engagement to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived email engagements.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the email engagement record.
@@ -134,19 +134,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateEmailEngagement
-      summary: Update an email engagement
+      summary: HubSpot Update an email engagement
       description: >-
         Performs a partial update of an email engagement record. Only the
         properties included in the request body will be updated.
       tags:
-      - Emails
+        - Emails
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        description: The ID of the email engagement to update.
-        schema:
-          type: string
+        - name: emailId
+          in: path
+          required: true
+          description: The ID of the email engagement to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -168,19 +168,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEmailEngagement
-      summary: Archive an email engagement
+      summary: HubSpot Archive an email engagement
       description: >-
         Archives (soft deletes) an email engagement record by its ID.
         Archived email engagements can be restored using the HubSpot UI or API.
       tags:
-      - Emails
+        - Emails
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        description: The ID of the email engagement to archive.
-        schema:
-          type: string
+        - name: emailId
+          in: path
+          required: true
+          description: The ID of the email engagement to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Email engagement archived successfully.
@@ -191,12 +191,12 @@ paths:
   /crm/v3/objects/emails/batch/read:
     post:
       operationId: batchReadEmailEngagements
-      summary: Batch read email engagements
+      summary: HubSpot Batch read email engagements
       description: >-
         Reads a batch of email engagement records by their IDs. Useful for
         retrieving multiple email engagements in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -217,10 +217,10 @@ paths:
   /crm/v3/objects/emails/batch/create:
     post:
       operationId: batchCreateEmailEngagements
-      summary: Batch create email engagements
+      summary: HubSpot Batch create email engagements
       description: Creates multiple email engagement records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -241,10 +241,10 @@ paths:
   /crm/v3/objects/emails/batch/update:
     post:
       operationId: batchUpdateEmailEngagements
-      summary: Batch update email engagements
+      summary: HubSpot Batch update email engagements
       description: Updates multiple email engagement records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -265,12 +265,12 @@ paths:
   /crm/v3/objects/emails/search:
     post:
       operationId: searchEmailEngagements
-      summary: Search email engagements
+      summary: HubSpot Search email engagements
       description: >-
         Searches for email engagement records using filter groups, sorts, and
         other query parameters.
       tags:
-      - Emails
+        - Emails
       requestBody:
         required: true
         content:
@@ -291,25 +291,25 @@ paths:
   /crm/v3/objects/emails/{emailId}/associations/{toObjectType}:
     get:
       operationId: listEmailEngagementAssociations
-      summary: List email engagement associations
+      summary: HubSpot List email engagement associations
       description: >-
         Returns all associations of an email engagement record to objects of
         a specified type, such as contacts, companies, or deals.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        description: The ID of the email engagement.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object.
-        schema:
-          type: string
+        - name: emailId
+          in: path
+          required: true
+          description: The ID of the email engagement.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object.
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.
@@ -324,33 +324,33 @@ paths:
   /crm/v3/objects/emails/{emailId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createEmailEngagementAssociation
-      summary: Create an email engagement association
+      summary: HubSpot Create an email engagement association
       description: >-
         Creates an association between an email engagement record and another
         CRM object.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: emailId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: Association created successfully.
@@ -364,33 +364,33 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteEmailEngagementAssociation
-      summary: Delete an email engagement association
+      summary: HubSpot Delete an email engagement association
       description: >-
         Removes an association between an email engagement record and another
         CRM object.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: emailId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        schema:
-          type: string
+        - name: emailId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '204':
           description: Association deleted successfully.

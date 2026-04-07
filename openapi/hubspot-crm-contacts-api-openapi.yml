@@ -11,52 +11,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Contacts
-  description: Operations for managing contact records
-- name: Batch
-  description: Batch operations for contacts
-- name: Associations
-  description: Operations for managing contact associations
+  - name: Contacts
+    description: Operations for managing contact records
+  - name: Batch
+    description: Batch operations for contacts
+  - name: Associations
+    description: Operations for managing contact associations
 paths:
   /crm/v3/objects/contacts:
     get:
       operationId: listContacts
-      summary: List contacts
+      summary: HubSpot List contacts
       description: >-
         Returns a page of contact records. Use the limit and after parameters
         to paginate through contacts. You can also specify which properties to
         return using the properties parameter.
       tags:
-      - Contacts
+        - Contacts
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived contacts.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived contacts.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of contacts.
@@ -68,13 +68,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createContact
-      summary: Create a contact
+      summary: HubSpot Create a contact
       description: >-
         Creates a new contact record with the provided properties. The request
         body should include a properties object containing the field values
         for the contact you want to create.
       tags:
-      - Contacts
+        - Contacts
       requestBody:
         required: true
         content:
@@ -95,30 +95,30 @@ paths:
   /crm/v3/objects/contacts/{contactId}:
     get:
       operationId: getContact
-      summary: Get a contact
+      summary: HubSpot Get a contact
       description: >-
         Returns a single contact record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-      - Contacts
+        - Contacts
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived contacts.
-        schema:
-          type: boolean
-          default: false
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived contacts.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the contact record.
@@ -132,20 +132,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateContact
-      summary: Update a contact
+      summary: HubSpot Update a contact
       description: >-
         Performs a partial update of a contact record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-      - Contacts
+        - Contacts
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact to update.
-        schema:
-          type: string
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -167,20 +167,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteContact
-      summary: Archive a contact
+      summary: HubSpot Archive a contact
       description: >-
         Archives (soft deletes) a contact record by its ID. Archived contacts
         can be restored using the HubSpot UI or API. This does not permanently
         delete the contact from HubSpot.
       tags:
-      - Contacts
+        - Contacts
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact to archive.
-        schema:
-          type: string
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Contact archived successfully.
@@ -191,13 +191,13 @@ paths:
   /crm/v3/objects/contacts/batch/read:
     post:
       operationId: batchReadContacts
-      summary: Batch read contacts
+      summary: HubSpot Batch read contacts
       description: >-
         Reads a batch of contact records by their IDs or unique property values.
         Useful for retrieving multiple contacts in a single API call instead
         of making individual requests.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -218,13 +218,13 @@ paths:
   /crm/v3/objects/contacts/batch/create:
     post:
       operationId: batchCreateContacts
-      summary: Batch create contacts
+      summary: HubSpot Batch create contacts
       description: >-
         Creates multiple contact records in a single API call. The request
         body should include an array of contact property objects. Returns
         the created contact records.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -245,12 +245,12 @@ paths:
   /crm/v3/objects/contacts/batch/update:
     post:
       operationId: batchUpdateContacts
-      summary: Batch update contacts
+      summary: HubSpot Batch update contacts
       description: >-
         Updates multiple contact records in a single API call. Each record
         in the request must include the contact ID and the properties to update.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -271,12 +271,12 @@ paths:
   /crm/v3/objects/contacts/batch/archive:
     post:
       operationId: batchArchiveContacts
-      summary: Batch archive contacts
+      summary: HubSpot Batch archive contacts
       description: >-
         Archives multiple contact records in a single API call by their IDs.
         Archived contacts can be restored using the HubSpot UI or API.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -293,13 +293,13 @@ paths:
   /crm/v3/objects/contacts/search:
     post:
       operationId: searchContacts
-      summary: Search contacts
+      summary: HubSpot Search contacts
       description: >-
         Searches for contact records using filter groups, sorts, and other
         query parameters. Supports complex filtering with multiple filter
         groups and operators for precise record retrieval.
       tags:
-      - Contacts
+        - Contacts
       requestBody:
         required: true
         content:
@@ -320,25 +320,25 @@ paths:
   /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}:
     get:
       operationId: listContactAssociations
-      summary: List contact associations
+      summary: HubSpot List contact associations
       description: >-
         Returns all associations of a contact record to objects of a specified
         type, such as companies, deals, or tickets.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object (e.g., companies, deals, tickets).
-        schema:
-          type: string
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object (e.g., companies, deals, tickets).
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.
@@ -353,37 +353,37 @@ paths:
   /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createContactAssociation
-      summary: Create a contact association
+      summary: HubSpot Create a contact association
       description: >-
         Creates an association between a contact and another CRM object record.
         The association type specifies the relationship between the objects.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the object to associate with.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the object to associate with.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to create.
-        schema:
-          type: string
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the object to associate with.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the object to associate with.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to create.
+          schema:
+            type: string
       responses:
         '200':
           description: Association created successfully.
@@ -397,38 +397,38 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteContactAssociation
-      summary: Delete a contact association
+      summary: HubSpot Delete a contact association
       description: >-
         Removes an association between a contact and another CRM object record.
         This does not delete the contact or the associated object, only the
         relationship between them.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: contactId
-        in: path
-        required: true
-        description: The ID of the contact.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the associated object.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the associated object.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to delete.
-        schema:
-          type: string
+        - name: contactId
+          in: path
+          required: true
+          description: The ID of the contact.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the associated object.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the associated object.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to delete.
+          schema:
+            type: string
       responses:
         '204':
           description: Association deleted successfully.

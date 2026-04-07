@@ -11,61 +11,61 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Site Pages
-  description: Operations for managing site pages
-- name: Landing Pages
-  description: Operations for managing landing pages
+  - name: Site Pages
+    description: Operations for managing site pages
+  - name: Landing Pages
+    description: Operations for managing landing pages
 paths:
   /cms/v3/pages/site-pages:
     get:
       operationId: listSitePages
-      summary: List site pages
+      summary: HubSpot List site pages
       description: >-
         Returns a list of site pages in the portal. You can filter by various
         properties and paginate through results. Both draft and published pages
         are accessible through this endpoint.
       tags:
-      - Site Pages
+        - Site Pages
       parameters:
-      - name: sort
-        in: query
-        description: Field to sort results by.
-        schema:
-          type: string
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 20
-      - name: createdAt
-        in: query
-        description: Filter pages created at this timestamp.
-        schema:
-          type: string
-          format: date-time
-      - name: updatedAt
-        in: query
-        description: Filter pages updated at this timestamp.
-        schema:
-          type: string
-          format: date-time
-      - name: archived
-        in: query
-        description: Whether to return archived pages.
-        schema:
-          type: boolean
-          default: false
+        - name: sort
+          in: query
+          description: Field to sort results by.
+          schema:
+            type: string
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 20
+        - name: createdAt
+          in: query
+          description: Filter pages created at this timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: updatedAt
+          in: query
+          description: Filter pages updated at this timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: archived
+          in: query
+          description: Whether to return archived pages.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of site pages.
@@ -77,13 +77,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createSitePage
-      summary: Create a site page
+      summary: HubSpot Create a site page
       description: >-
         Creates a new site page with the specified content and settings. The
         new page starts in draft state and must be published to make it
         publicly accessible.
       tags:
-      - Site Pages
+        - Site Pages
       requestBody:
         required: true
         content:
@@ -104,25 +104,25 @@ paths:
   /cms/v3/pages/site-pages/{objectId}:
     get:
       operationId: getSitePage
-      summary: Get a site page
+      summary: HubSpot Get a site page
       description: >-
         Returns the details of a specific site page by its ID, including
         content, SEO settings, publish state, and metadata.
       tags:
-      - Site Pages
+        - Site Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the site page to retrieve.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived pages.
-        schema:
-          type: boolean
-          default: false
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the site page to retrieve.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived pages.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the site page details.
@@ -136,20 +136,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateSitePage
-      summary: Update a site page
+      summary: HubSpot Update a site page
       description: >-
         Performs a partial update of a site page. Only the properties included
         in the request body will be updated. Changes are applied to the draft
         version and must be published.
       tags:
-      - Site Pages
+        - Site Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the site page to update.
-        schema:
-          type: string
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the site page to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -171,19 +171,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteSitePage
-      summary: Delete a site page
+      summary: HubSpot Delete a site page
       description: >-
         Archives (soft deletes) a site page by its ID. Archived pages are no
         longer publicly accessible but can be restored using the HubSpot UI.
       tags:
-      - Site Pages
+        - Site Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the site page to delete.
-        schema:
-          type: string
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the site page to delete.
+          schema:
+            type: string
       responses:
         '204':
           description: Site page deleted successfully.
@@ -194,20 +194,20 @@ paths:
   /cms/v3/pages/site-pages/{objectId}/draft/push-live:
     post:
       operationId: publishSitePage
-      summary: Publish a site page
+      summary: HubSpot Publish a site page
       description: >-
         Publishes the draft version of a site page, making all pending content
         changes live and publicly accessible. After publishing, the page becomes
         visible at its URL.
       tags:
-      - Site Pages
+        - Site Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the site page to publish.
-        schema:
-          type: string
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the site page to publish.
+          schema:
+            type: string
       responses:
         '200':
           description: Site page published successfully.
@@ -222,48 +222,48 @@ paths:
   /cms/v3/pages/landing-pages:
     get:
       operationId: listLandingPages
-      summary: List landing pages
+      summary: HubSpot List landing pages
       description: >-
         Returns a list of landing pages in the portal. You can filter by
         various properties and paginate through results. Both draft and
         published landing pages are accessible.
       tags:
-      - Landing Pages
+        - Landing Pages
       parameters:
-      - name: sort
-        in: query
-        description: Field to sort results by.
-        schema:
-          type: string
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 20
-      - name: createdAt
-        in: query
-        description: Filter landing pages created at this timestamp.
-        schema:
-          type: string
-          format: date-time
-      - name: updatedAt
-        in: query
-        description: Filter landing pages updated at this timestamp.
-        schema:
-          type: string
-          format: date-time
-      - name: archived
-        in: query
-        description: Whether to return archived landing pages.
-        schema:
-          type: boolean
-          default: false
+        - name: sort
+          in: query
+          description: Field to sort results by.
+          schema:
+            type: string
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 20
+        - name: createdAt
+          in: query
+          description: Filter landing pages created at this timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: updatedAt
+          in: query
+          description: Filter landing pages updated at this timestamp.
+          schema:
+            type: string
+            format: date-time
+        - name: archived
+          in: query
+          description: Whether to return archived landing pages.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of landing pages.
@@ -275,13 +275,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createLandingPage
-      summary: Create a landing page
+      summary: HubSpot Create a landing page
       description: >-
         Creates a new landing page with the specified content and settings.
         The new landing page starts in draft state and must be published
         to make it publicly accessible.
       tags:
-      - Landing Pages
+        - Landing Pages
       requestBody:
         required: true
         content:
@@ -302,25 +302,25 @@ paths:
   /cms/v3/pages/landing-pages/{objectId}:
     get:
       operationId: getLandingPage
-      summary: Get a landing page
+      summary: HubSpot Get a landing page
       description: >-
         Returns the details of a specific landing page by its ID, including
         content, form connections, SEO settings, and publish state.
       tags:
-      - Landing Pages
+        - Landing Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the landing page to retrieve.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived landing pages.
-        schema:
-          type: boolean
-          default: false
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the landing page to retrieve.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived landing pages.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the landing page details.
@@ -334,20 +334,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteLandingPage
-      summary: Delete a landing page
+      summary: HubSpot Delete a landing page
       description: >-
         Archives (soft deletes) a landing page by its ID. Archived landing
         pages are no longer publicly accessible but can be restored using
         the HubSpot UI.
       tags:
-      - Landing Pages
+        - Landing Pages
       parameters:
-      - name: objectId
-        in: path
-        required: true
-        description: The ID of the landing page to delete.
-        schema:
-          type: string
+        - name: objectId
+          in: path
+          required: true
+          description: The ID of the landing page to delete.
+          schema:
+            type: string
       responses:
         '204':
           description: Landing page deleted successfully.
@@ -432,8 +432,8 @@ components:
       type: object
       description: Request body for creating a CMS page.
       required:
-      - name
-      - slug
+        - name
+        - slug
       properties:
         name:
           type: string

@@ -12,52 +12,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Subscriptions
-  description: Operations for managing subscription records
-- name: Batch
-  description: Batch operations for subscriptions
-- name: Associations
-  description: Operations for managing subscription associations
+  - name: Subscriptions
+    description: Operations for managing subscription records
+  - name: Batch
+    description: Batch operations for subscriptions
+  - name: Associations
+    description: Operations for managing subscription associations
 paths:
   /crm/v3/objects/subscriptions:
     get:
       operationId: listSubscriptions
-      summary: List subscriptions
+      summary: HubSpot List subscriptions
       description: >-
         Returns a page of commerce subscription records. Use the limit and after
         parameters to paginate through subscriptions. You can also specify which
         properties to return using the properties parameter.
       tags:
-      - Subscriptions
+        - Subscriptions
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived subscriptions.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived subscriptions.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of subscriptions.
@@ -69,12 +69,12 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createSubscription
-      summary: Create a subscription
+      summary: HubSpot Create a subscription
       description: >-
         Creates a new subscription record with the provided properties. Subscription
         records track recurring revenue relationships with customers.
       tags:
-      - Subscriptions
+        - Subscriptions
       requestBody:
         required: true
         content:
@@ -95,30 +95,30 @@ paths:
   /crm/v3/objects/subscriptions/{subscriptionId}:
     get:
       operationId: getSubscription
-      summary: Get a subscription
+      summary: HubSpot Get a subscription
       description: >-
         Returns a single subscription record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-      - Subscriptions
+        - Subscriptions
       parameters:
-      - name: subscriptionId
-        in: path
-        required: true
-        description: The ID of the subscription to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived subscriptions.
-        schema:
-          type: boolean
-          default: false
+        - name: subscriptionId
+          in: path
+          required: true
+          description: The ID of the subscription to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived subscriptions.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the subscription record.
@@ -132,20 +132,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateSubscription
-      summary: Update a subscription
+      summary: HubSpot Update a subscription
       description: >-
         Performs a partial update of a subscription record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-      - Subscriptions
+        - Subscriptions
       parameters:
-      - name: subscriptionId
-        in: path
-        required: true
-        description: The ID of the subscription to update.
-        schema:
-          type: string
+        - name: subscriptionId
+          in: path
+          required: true
+          description: The ID of the subscription to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -167,19 +167,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteSubscription
-      summary: Archive a subscription
+      summary: HubSpot Archive a subscription
       description: >-
         Archives (soft deletes) a subscription record by its ID. Archived
         subscriptions can be restored using the HubSpot UI or API.
       tags:
-      - Subscriptions
+        - Subscriptions
       parameters:
-      - name: subscriptionId
-        in: path
-        required: true
-        description: The ID of the subscription to archive.
-        schema:
-          type: string
+        - name: subscriptionId
+          in: path
+          required: true
+          description: The ID of the subscription to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Subscription archived successfully.
@@ -190,12 +190,12 @@ paths:
   /crm/v3/objects/subscriptions/batch/read:
     post:
       operationId: batchReadSubscriptions
-      summary: Batch read subscriptions
+      summary: HubSpot Batch read subscriptions
       description: >-
         Reads a batch of subscription records by their IDs. Useful for
         retrieving multiple subscriptions in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -216,11 +216,11 @@ paths:
   /crm/v3/objects/subscriptions/batch/create:
     post:
       operationId: batchCreateSubscriptions
-      summary: Batch create subscriptions
+      summary: HubSpot Batch create subscriptions
       description: >-
         Creates multiple subscription records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -241,11 +241,11 @@ paths:
   /crm/v3/objects/subscriptions/batch/update:
     post:
       operationId: batchUpdateSubscriptions
-      summary: Batch update subscriptions
+      summary: HubSpot Batch update subscriptions
       description: >-
         Updates multiple subscription records in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -266,12 +266,12 @@ paths:
   /crm/v3/objects/subscriptions/search:
     post:
       operationId: searchSubscriptions
-      summary: Search subscriptions
+      summary: HubSpot Search subscriptions
       description: >-
         Searches for subscription records using filter groups, sorts, and other
         query parameters.
       tags:
-      - Subscriptions
+        - Subscriptions
       requestBody:
         required: true
         content:
@@ -292,25 +292,25 @@ paths:
   /crm/v3/objects/subscriptions/{subscriptionId}/associations/{toObjectType}:
     get:
       operationId: listSubscriptionAssociations
-      summary: List subscription associations
+      summary: HubSpot List subscription associations
       description: >-
         Returns all associations of a subscription record to objects of a
         specified type, such as contacts, companies, or deals.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: subscriptionId
-        in: path
-        required: true
-        description: The ID of the subscription.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object.
-        schema:
-          type: string
+        - name: subscriptionId
+          in: path
+          required: true
+          description: The ID of the subscription.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object.
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.

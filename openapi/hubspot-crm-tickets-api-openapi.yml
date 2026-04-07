@@ -11,52 +11,52 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Tickets
-  description: Operations for managing ticket records
-- name: Batch
-  description: Batch operations for tickets
-- name: Associations
-  description: Operations for managing ticket associations
+  - name: Tickets
+    description: Operations for managing ticket records
+  - name: Batch
+    description: Batch operations for tickets
+  - name: Associations
+    description: Operations for managing ticket associations
 paths:
   /crm/v3/objects/tickets:
     get:
       operationId: listTickets
-      summary: List tickets
+      summary: HubSpot List tickets
       description: >-
         Returns a page of ticket records. Use the limit and after parameters
         to paginate through tickets. You can also specify which properties to
         return using the properties parameter.
       tags:
-      - Tickets
+        - Tickets
       parameters:
-      - name: limit
-        in: query
-        description: The maximum number of results to return per page.
-        schema:
-          type: integer
-          default: 10
-          maximum: 100
-      - name: after
-        in: query
-        description: The cursor for pagination to get the next page of results.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived tickets.
-        schema:
-          type: boolean
-          default: false
+        - name: limit
+          in: query
+          description: The maximum number of results to return per page.
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: after
+          in: query
+          description: The cursor for pagination to get the next page of results.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived tickets.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with a list of tickets.
@@ -68,13 +68,13 @@ paths:
           $ref: '#/components/responses/Unauthorized'
     post:
       operationId: createTicket
-      summary: Create a ticket
+      summary: HubSpot Create a ticket
       description: >-
         Creates a new ticket record with the provided properties. The request
         body should include a properties object containing field values such as
         subject, content, hs_ticket_priority, and hs_pipeline_stage.
       tags:
-      - Tickets
+        - Tickets
       requestBody:
         required: true
         content:
@@ -95,30 +95,30 @@ paths:
   /crm/v3/objects/tickets/{ticketId}:
     get:
       operationId: getTicket
-      summary: Get a ticket
+      summary: HubSpot Get a ticket
       description: >-
         Returns a single ticket record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-      - Tickets
+        - Tickets
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket to retrieve.
-        schema:
-          type: string
-      - name: properties
-        in: query
-        description: A comma-separated list of property names to return.
-        schema:
-          type: string
-      - name: archived
-        in: query
-        description: Whether to return archived tickets.
-        schema:
-          type: boolean
-          default: false
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket to retrieve.
+          schema:
+            type: string
+        - name: properties
+          in: query
+          description: A comma-separated list of property names to return.
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return archived tickets.
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: Successful response with the ticket record.
@@ -132,20 +132,20 @@ paths:
           $ref: '#/components/responses/NotFound'
     patch:
       operationId: updateTicket
-      summary: Update a ticket
+      summary: HubSpot Update a ticket
       description: >-
         Performs a partial update of a ticket record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-      - Tickets
+        - Tickets
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket to update.
-        schema:
-          type: string
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket to update.
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -167,19 +167,19 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteTicket
-      summary: Archive a ticket
+      summary: HubSpot Archive a ticket
       description: >-
         Archives (soft deletes) a ticket record by its ID. Archived tickets
         can be restored using the HubSpot UI or API.
       tags:
-      - Tickets
+        - Tickets
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket to archive.
-        schema:
-          type: string
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket to archive.
+          schema:
+            type: string
       responses:
         '204':
           description: Ticket archived successfully.
@@ -190,12 +190,12 @@ paths:
   /crm/v3/objects/tickets/batch/read:
     post:
       operationId: batchReadTickets
-      summary: Batch read tickets
+      summary: HubSpot Batch read tickets
       description: >-
         Reads a batch of ticket records by their IDs or unique property values.
         Useful for retrieving multiple tickets in a single API call.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -216,12 +216,12 @@ paths:
   /crm/v3/objects/tickets/batch/create:
     post:
       operationId: batchCreateTickets
-      summary: Batch create tickets
+      summary: HubSpot Batch create tickets
       description: >-
         Creates multiple ticket records in a single API call. The request
         body should include an array of ticket property objects.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -242,12 +242,12 @@ paths:
   /crm/v3/objects/tickets/batch/update:
     post:
       operationId: batchUpdateTickets
-      summary: Batch update tickets
+      summary: HubSpot Batch update tickets
       description: >-
         Updates multiple ticket records in a single API call. Each record
         in the request must include the ticket ID and the properties to update.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -268,12 +268,12 @@ paths:
   /crm/v3/objects/tickets/batch/archive:
     post:
       operationId: batchArchiveTickets
-      summary: Batch archive tickets
+      summary: HubSpot Batch archive tickets
       description: >-
         Archives multiple ticket records in a single API call by their IDs.
         Archived tickets can be restored using the HubSpot UI or API.
       tags:
-      - Batch
+        - Batch
       requestBody:
         required: true
         content:
@@ -290,13 +290,13 @@ paths:
   /crm/v3/objects/tickets/search:
     post:
       operationId: searchTickets
-      summary: Search tickets
+      summary: HubSpot Search tickets
       description: >-
         Searches for ticket records using filter groups, sorts, and other
         query parameters. Supports complex filtering with multiple filter
         groups and operators for precise record retrieval.
       tags:
-      - Tickets
+        - Tickets
       requestBody:
         required: true
         content:
@@ -317,25 +317,25 @@ paths:
   /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}:
     get:
       operationId: listTicketAssociations
-      summary: List ticket associations
+      summary: HubSpot List ticket associations
       description: >-
         Returns all associations of a ticket record to objects of a specified
         type, such as contacts, companies, or deals.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of associated object (e.g., contacts, companies, deals).
-        schema:
-          type: string
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of associated object (e.g., contacts, companies, deals).
+          schema:
+            type: string
       responses:
         '200':
           description: List of associations returned successfully.
@@ -350,37 +350,37 @@ paths:
   /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createTicketAssociation
-      summary: Create a ticket association
+      summary: HubSpot Create a ticket association
       description: >-
         Creates an association between a ticket and another CRM object record.
         The association type specifies the relationship between the objects.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the object to associate with.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the object to associate with.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to create.
-        schema:
-          type: string
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the object to associate with.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the object to associate with.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to create.
+          schema:
+            type: string
       responses:
         '200':
           description: Association created successfully.
@@ -394,38 +394,38 @@ paths:
           $ref: '#/components/responses/NotFound'
     delete:
       operationId: deleteTicketAssociation
-      summary: Delete a ticket association
+      summary: HubSpot Delete a ticket association
       description: >-
         Removes an association between a ticket and another CRM object record.
         This does not delete the ticket or the associated object, only the
         relationship between them.
       tags:
-      - Associations
+        - Associations
       parameters:
-      - name: ticketId
-        in: path
-        required: true
-        description: The ID of the ticket.
-        schema:
-          type: string
-      - name: toObjectType
-        in: path
-        required: true
-        description: The type of the associated object.
-        schema:
-          type: string
-      - name: toObjectId
-        in: path
-        required: true
-        description: The ID of the associated object.
-        schema:
-          type: string
-      - name: associationType
-        in: path
-        required: true
-        description: The type of association to delete.
-        schema:
-          type: string
+        - name: ticketId
+          in: path
+          required: true
+          description: The ID of the ticket.
+          schema:
+            type: string
+        - name: toObjectType
+          in: path
+          required: true
+          description: The type of the associated object.
+          schema:
+            type: string
+        - name: toObjectId
+          in: path
+          required: true
+          description: The ID of the associated object.
+          schema:
+            type: string
+        - name: associationType
+          in: path
+          required: true
+          description: The type of association to delete.
+          schema:
+            type: string
       responses:
         '204':
           description: Association deleted successfully.

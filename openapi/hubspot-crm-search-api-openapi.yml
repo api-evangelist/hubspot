@@ -11,18 +11,18 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-- url: https://api.hubapi.com
-  description: HubSpot API
+  - url: https://api.hubapi.com
+    description: HubSpot API
 security:
-- oauth2: []
+  - oauth2: []
 tags:
-- name: Search
-  description: Operations for searching CRM objects
+  - name: Search
+    description: Operations for searching CRM objects
 paths:
   /crm/v3/objects/{objectType}/search:
     post:
       operationId: searchCRMObjects
-      summary: Search CRM objects
+      summary: HubSpot Search CRM objects
       description: >-
         Searches for CRM object records of the specified type using filter
         groups, sort criteria, and other query parameters. Supports complex
@@ -30,18 +30,18 @@ paths:
         each group contains filters (joined with AND logic). Returns matching
         records with the specified properties.
       tags:
-      - Search
+        - Search
       parameters:
-      - name: objectType
-        in: path
-        required: true
-        description: >-
-          The type of CRM object to search. Supported values include contacts,
-          companies, deals, tickets, products, line_items, quotes, and
-          custom object type names.
-        schema:
-          type: string
-          example: contacts
+        - name: objectType
+          in: path
+          required: true
+          description: >-
+            The type of CRM object to search. Supported values include contacts,
+            companies, deals, tickets, products, line_items, quotes, and
+            custom object type names.
+          schema:
+            type: string
+            example: contacts
       requestBody:
         required: true
         content:
@@ -53,34 +53,34 @@ paths:
                 summary: Filter contacts by email domain
                 value:
                   filterGroups:
-                  - filters:
-                    - propertyName: email
-                      operator: CONTAINS_TOKEN
-                      value: '@example.com'
+                    - filters:
+                        - propertyName: email
+                          operator: CONTAINS_TOKEN
+                          value: '@example.com'
                   properties:
-                  - email
-                  - firstname
-                  - lastname
+                    - email
+                    - firstname
+                    - lastname
                   limit: 10
               filterByDealStage:
                 summary: Filter deals by stage and amount
                 value:
                   filterGroups:
-                  - filters:
-                    - propertyName: dealstage
-                      operator: EQ
-                      value: contractsent
-                    - propertyName: amount
-                      operator: GT
-                      value: '10000'
+                    - filters:
+                        - propertyName: dealstage
+                          operator: EQ
+                          value: contractsent
+                        - propertyName: amount
+                          operator: GT
+                          value: '10000'
                   sorts:
-                  - propertyName: amount
-                    direction: DESCENDING
+                    - propertyName: amount
+                      direction: DESCENDING
                   properties:
-                  - dealname
-                  - amount
-                  - dealstage
-                  - closedate
+                    - dealname
+                    - amount
+                    - dealstage
+                    - closedate
                   limit: 20
       responses:
         '200':
@@ -156,8 +156,8 @@ components:
       type: object
       description: A single filter condition for a CRM object property.
       required:
-      - propertyName
-      - operator
+        - propertyName
+        - operator
       properties:
         propertyName:
           type: string
@@ -166,19 +166,19 @@ components:
           type: string
           description: The comparison operator for the filter.
           enum:
-          - EQ
-          - NEQ
-          - LT
-          - LTE
-          - GT
-          - GTE
-          - BETWEEN
-          - IN
-          - NOT_IN
-          - HAS_PROPERTY
-          - NOT_HAS_PROPERTY
-          - CONTAINS_TOKEN
-          - NOT_CONTAINS_TOKEN
+            - EQ
+            - NEQ
+            - LT
+            - LTE
+            - GT
+            - GTE
+            - BETWEEN
+            - IN
+            - NOT_IN
+            - HAS_PROPERTY
+            - NOT_HAS_PROPERTY
+            - CONTAINS_TOKEN
+            - NOT_CONTAINS_TOKEN
         value:
           type: string
           description: >-
@@ -198,7 +198,7 @@ components:
       type: object
       description: A sort criterion for ordering search results.
       required:
-      - propertyName
+        - propertyName
       properties:
         propertyName:
           type: string
