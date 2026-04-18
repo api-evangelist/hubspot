@@ -1,0 +1,170 @@
+{
+  "type": "object",
+  "description": "Represents a message within a conversation thread.",
+  "name": "Message",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the message"
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of message",
+      "enum": [
+        "MESSAGE",
+        "COMMENT",
+        "WELCOME_MESSAGE"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "Plain text content of the message"
+    },
+    "richText": {
+      "type": "string",
+      "description": "Rich text (HTML) content of the message"
+    },
+    "direction": {
+      "type": "string",
+      "description": "Direction of the message (incoming or outgoing)",
+      "enum": [
+        "INCOMING",
+        "OUTGOING"
+      ]
+    },
+    "channelId": {
+      "type": "string",
+      "description": "ID of the communication channel"
+    },
+    "channelAccountId": {
+      "type": "string",
+      "description": "ID of the channel account"
+    },
+    "senders": {
+      "type": "array",
+      "description": "List of message senders",
+      "items": {
+        "type": "object",
+        "description": "Represents a participant in a conversation (visitor, agent, or bot).",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the actor"
+          },
+          "actorId": {
+            "type": "string",
+            "description": "Actor ID reference"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the actor"
+          },
+          "email": {
+            "type": "email",
+            "description": "Email address of the actor"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of actor (e.g., VISITOR, AGENT, BOT)"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "recipients": {
+      "type": "array",
+      "description": "List of message recipients",
+      "items": {
+        "type": "object",
+        "description": "Represents a participant in a conversation (visitor, agent, or bot).",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the actor"
+          },
+          "actorId": {
+            "type": "string",
+            "description": "Actor ID reference"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the actor"
+          },
+          "email": {
+            "type": "email",
+            "description": "Email address of the actor"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of actor (e.g., VISITOR, AGENT, BOT)"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "status": {
+      "type": "object",
+      "description": "Delivery status information for a message",
+      "properties": {
+        "statusType": {
+          "type": "string",
+          "description": "Current delivery status type",
+          "enum": [
+            "SENT",
+            "DELIVERED",
+            "READ",
+            "FAILED"
+          ]
+        }
+      }
+    },
+    "createdAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when the message was created"
+    },
+    "truncationStatus": {
+      "type": "string",
+      "description": "Whether the message was truncated"
+    },
+    "attachments": {
+      "type": "array",
+      "description": "Message attachments",
+      "items": {
+        "type": "object",
+        "description": "Represents a file attachment on a message.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the attachment"
+          },
+          "type": {
+            "type": "string",
+            "description": "MIME type of the attachment"
+          },
+          "url": {
+            "type": "uri",
+            "description": "URL to access the attachment"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Original filename"
+          },
+          "size": {
+            "type": "integer",
+            "description": "File size in bytes"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "createdAt"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

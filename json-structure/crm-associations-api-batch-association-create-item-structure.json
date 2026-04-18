@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-associations-api-batch-association-create-item-structure.json",
+  "name": "BatchAssociationCreateItem",
+  "description": "Single item in a batch association create request",
+  "type": "object",
+  "properties": {
+    "from": {
+      "type": "object",
+      "description": "Reference to a CRM object by ID",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the object",
+          "example": "500123"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "to": {
+      "type": "object",
+      "description": "Reference to a CRM object by ID",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the object",
+          "example": "500123"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Input for specifying an association type",
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ],
+            "example": "HUBSPOT_DEFINED"
+          },
+          "associationTypeId": {
+            "type": "int32",
+            "example": 500123
+          }
+        },
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ]
+      },
+      "example": [
+        {
+          "associationCategory": "HUBSPOT_DEFINED",
+          "associationTypeId": 500123
+        }
+      ]
+    }
+  },
+  "required": [
+    "from",
+    "to",
+    "types"
+  ]
+}

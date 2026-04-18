@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/conversations-api-actor-collection-schema.json",
+  "title": "ActorCollection",
+  "description": "Paginated collection of actors",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Represents a participant in a conversation (visitor, agent, or bot).",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the actor",
+            "example": "actor_101"
+          },
+          "actorId": {
+            "type": "string",
+            "description": "Actor ID reference",
+            "example": "actor_101"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the actor",
+            "example": "John Customer"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address of the actor",
+            "example": "john@example.com"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of actor (e.g., VISITOR, AGENT, BOT)",
+            "example": "VISITOR"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "description": "Array of actor records",
+      "example": [
+        {
+          "id": "actor_101",
+          "actorId": "actor_101",
+          "name": "John Customer",
+          "email": "john@example.com",
+          "type": "VISITOR"
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor information for retrieving the next page.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "NTI1Cg%3D%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page",
+              "example": "/conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

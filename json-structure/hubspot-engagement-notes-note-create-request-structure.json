@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "description": "Request body for creating a note",
+  "name": "NoteCreateRequest",
+  "properties": {
+    "properties": {
+      "type": "object",
+      "description": "The note properties to set"
+    },
+    "associations": {
+      "type": "array",
+      "description": "Associations to create with other objects",
+      "items": {
+        "type": "object",
+        "description": "Association to create with another object",
+        "properties": {
+          "to": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the object to associate with"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "types": {
+            "type": "array",
+            "description": "The association types",
+            "items": {
+              "type": "object",
+              "description": "Type of association",
+              "properties": {
+                "associationCategory": {
+                  "type": "string",
+                  "description": "The category of association",
+                  "enum": [
+                    "HUBSPOT_DEFINED",
+                    "USER_DEFINED",
+                    "INTEGRATOR_DEFINED"
+                  ]
+                },
+                "associationTypeId": {
+                  "type": "integer",
+                  "description": "The association type ID"
+                }
+              },
+              "required": [
+                "associationCategory",
+                "associationTypeId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "to",
+          "types"
+        ]
+      }
+    }
+  },
+  "required": [
+    "properties"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

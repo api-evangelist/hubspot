@@ -1,0 +1,78 @@
+{
+  "type": "object",
+  "description": "A group of filters (AND logic within group)",
+  "properties": {
+    "filters": {
+      "type": "array",
+      "description": "The filters in this group",
+      "example": [
+        {
+          "propertyName": "hubspot_owner_id",
+          "operator": "EQ",
+          "value": "12345",
+          "values": [
+            {}
+          ],
+          "highValue": "example-value"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A single search filter",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to filter on",
+            "example": "hubspot_owner_id"
+          },
+          "operator": {
+            "type": "string",
+            "description": "The filter operator",
+            "example": "EQ",
+            "enum": [
+              "EQ",
+              "NEQ",
+              "LT",
+              "LTE",
+              "GT",
+              "GTE",
+              "BETWEEN",
+              "IN",
+              "NOT_IN",
+              "HAS_PROPERTY",
+              "NOT_HAS_PROPERTY",
+              "CONTAINS_TOKEN",
+              "NOT_CONTAINS_TOKEN"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to filter by",
+            "example": "12345"
+          },
+          "values": {
+            "type": "array",
+            "description": "Values for IN/NOT_IN operators",
+            "example": [
+              "example-value"
+            ],
+            "items": {
+              "type": "string"
+            }
+          },
+          "highValue": {
+            "type": "string",
+            "description": "High value for BETWEEN operator",
+            "example": "example-value"
+          }
+        },
+        "required": [
+          "propertyName",
+          "operator"
+        ]
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FilterGroup"
+}

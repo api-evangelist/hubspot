@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "description": "Request body for batch updating commerce payments",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payments to update",
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "idProperty": "500123"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A single input item for batch update",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the payment to update",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties to update",
+            "example": {
+              "key": "value"
+            }
+          },
+          "idProperty": {
+            "type": "string",
+            "description": "The property to use as the identifier",
+            "example": "500123"
+          }
+        },
+        "required": [
+          "id",
+          "properties"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchUpdateRequest"
+}

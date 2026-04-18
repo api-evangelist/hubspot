@@ -1,0 +1,68 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Marketing Automation
+  description: Marketing automation workflow combining email campaigns and analytics events.
+  tags:
+  - HubSpot
+  - Marketing
+  - Email
+  - Analytics
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: marketing-emal-api
+    location: ./shared/marketing-emal-api.yaml
+  - import: analytics-events-api
+    location: ./shared/analytics-events-api.yaml
+  exposes:
+  - type: mcp
+    port: 9092
+    namespace: marketing-automation-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot Marketing Automation.
+    tools:
+    - name: listsmtptokens
+      description: HubSpot List All SMTP Tokens
+      hints:
+        readOnly: true
+      call: marketing-emal-api.listsmtptokens
+    - name: createsmtptoken
+      description: HubSpot Create an SMTP Token
+      hints:
+        readOnly: false
+      call: marketing-emal-api.createsmtptoken
+    - name: getsmtptokenbyid
+      description: HubSpot Get an SMTP Token by ID
+      hints:
+        readOnly: true
+      call: marketing-emal-api.getsmtptokenbyid
+    - name: deletesmtptoken
+      description: HubSpot Delete an SMTP Token
+      hints:
+        destructive: true
+      call: marketing-emal-api.deletesmtptoken
+    - name: resetsmtptokenpassword
+      description: HubSpot Reset SMTP Token Password
+      hints:
+        readOnly: false
+      call: marketing-emal-api.resetsmtptokenpassword
+    - name: sendtransactionalemail
+      description: HubSpot Send a Transactional Email
+      hints:
+        readOnly: false
+      call: marketing-emal-api.sendtransactionalemail
+    - name: geteventinstances
+      description: HubSpot Retrieve Event Instances
+      hints:
+        readOnly: true
+      call: analytics-events-api.geteventinstances
+    - name: geteventtypes
+      description: HubSpot Retrieve Available Event Types
+      hints:
+        readOnly: true
+      call: analytics-events-api.geteventtypes

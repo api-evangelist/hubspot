@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-feature-flags-api-batch-portal-flag-state-response-with-errors-structure.json",
+  "name": "BatchPortalFlagStateResponseWithErrors",
+  "description": "Response for batch operations that had some failures",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The overall status of the batch operation",
+      "enum": [
+        "COMPLETE",
+        "PENDING"
+      ],
+      "example": "COMPLETE"
+    },
+    "results": {
+      "type": "array",
+      "description": "List of portal flag states that were successfully affected",
+      "items": {
+        "type": "object",
+        "description": "Represents the flag state override for a specific portal (account)",
+        "required": [
+          "appId",
+          "flagName",
+          "portalId",
+          "flagState"
+        ],
+        "properties": {
+          "appId": {
+            "type": "int64",
+            "description": "The unique identifier for the HubSpot application",
+            "example": 12345678
+          },
+          "flagName": {
+            "type": "string",
+            "description": "The name of the feature flag",
+            "example": "new-dashboard-feature"
+          },
+          "portalId": {
+            "type": "int64",
+            "description": "The unique identifier for the HubSpot portal (account)",
+            "example": 98765432
+          },
+          "flagState": {
+            "$ref": "#/components/schemas/FlagState"
+          }
+        }
+      },
+      "example": [
+        {
+          "appId": 12345678,
+          "flagName": "new-dashboard-feature",
+          "portalId": 98765432,
+          "flagState": {}
+        }
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors that occurred during the batch operation",
+      "items": {
+        "type": "object",
+        "description": "Represents an error that occurred for a specific item in a batch operation",
+        "required": [
+          "status",
+          "category",
+          "message"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Error status code",
+            "example": "error"
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category",
+            "example": "VALIDATION_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "Invalid portal ID"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the error",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "status": "error",
+          "category": "VALIDATION_ERROR",
+          "message": "Invalid portal ID",
+          "context": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "Timestamp when the batch operation started",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "Timestamp when the batch operation completed",
+      "example": "2025-03-15T14:30:00Z"
+    }
+  },
+  "required": [
+    "status",
+    "results"
+  ]
+}

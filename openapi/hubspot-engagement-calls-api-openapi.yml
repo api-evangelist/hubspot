@@ -21,23 +21,23 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: Basic Operations
-    description: Create, read, update, and delete individual call records
-  - name: Batch Operations
-    description: Perform bulk operations on multiple call records
-  - name: GDPR Compliance
-    description: GDPR-compliant data management operations
-  - name: Search
-    description: Search and filter call records
+- name: Basic Operations
+  description: Create, read, update, and delete individual call records
+- name: Batch Operations
+  description: Perform bulk operations on multiple call records
+- name: GDPR Compliance
+  description: GDPR-compliant data management operations
+- name: Search
+  description: Search and filter call records
 paths:
   /crm/v3/objects/calls:
     get:
       tags:
-        - Basic Operations
-      summary: HubSpot List all calls
+      - Basic Operations
+      summary: Hubspot List All Calls
       description: |
         Returns a paginated list of all call engagements in the CRM.
         Use query parameters to filter by properties, limit results, and paginate through records.
@@ -47,12 +47,18 @@ paths:
         dispatcherRules: |
           return "ListCallsSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/LimitParam'
-        - $ref: '#/components/parameters/AfterParam'
-        - $ref: '#/components/parameters/PropertiesParam'
-        - $ref: '#/components/parameters/PropertiesWithHistoryParam'
-        - $ref: '#/components/parameters/AssociationsParam'
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/LimitParam'
+        example: example-value
+      - $ref: '#/components/parameters/AfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesWithHistoryParam'
+        example: example-value
+      - $ref: '#/components/parameters/AssociationsParam'
+        example: example-value
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the list of calls
@@ -73,14 +79,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
     post:
       tags:
-        - Basic Operations
-      summary: HubSpot Create a call
+      - Basic Operations
+      summary: Hubspot Create a Call
       description: |
         Creates a new call engagement in the CRM.
         You can specify call properties and optionally associate the call with other CRM objects.
@@ -118,15 +124,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/calls/{callId}:
     get:
       tags:
-        - Basic Operations
-      summary: HubSpot Get a call by ID
+      - Basic Operations
+      summary: Hubspot Get a Call by Id
       description: |
         Retrieves a single call engagement by its unique identifier.
         Optionally include specific properties, property history, and associations.
@@ -136,11 +142,16 @@ paths:
         dispatcherRules: |
           return "GetCallSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/CallIdParam'
-        - $ref: '#/components/parameters/PropertiesParam'
-        - $ref: '#/components/parameters/PropertiesWithHistoryParam'
-        - $ref: '#/components/parameters/AssociationsParam'
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/CallIdParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesWithHistoryParam'
+        example: example-value
+      - $ref: '#/components/parameters/AssociationsParam'
+        example: example-value
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the call
@@ -161,14 +172,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
     patch:
       tags:
-        - Basic Operations
-      summary: HubSpot Update a call
+      - Basic Operations
+      summary: Hubspot Update a Call
       description: |
         Updates an existing call engagement with new property values.
         Only the properties specified in the request body will be updated.
@@ -178,7 +189,8 @@ paths:
         dispatcherRules: |
           return "UpdateCallSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/CallIdParam'
+      - $ref: '#/components/parameters/CallIdParam'
+        example: example-value
       requestBody:
         required: true
         content:
@@ -208,14 +220,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
     delete:
       tags:
-        - Basic Operations
-      summary: HubSpot Archive a call
+      - Basic Operations
+      summary: Hubspot Archive a Call
       description: |
         Archives (soft deletes) a call engagement by moving it to the recycling bin.
         Archived calls can be restored within 90 days.
@@ -225,7 +237,8 @@ paths:
         dispatcherRules: |
           return "ArchiveCallSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/CallIdParam'
+      - $ref: '#/components/parameters/CallIdParam'
+        example: example-value
       responses:
         '204':
           description: Successfully archived the call (no content returned)
@@ -239,15 +252,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/calls/batch/create:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Create a batch of calls
+      - Batch Operations
+      summary: Hubspot Create a Batch of Calls
       description: |
         Creates multiple call engagements in a single request.
         Each call can have its own properties and associations.
@@ -282,6 +295,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchCallsResponse'
+              examples:
+                Batchcreatecalls207Example:
+                  summary: Default batchCreateCalls 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: &id001
+                    - id: "512"
+                      properties: &id004
+                        hs_call_title: "Discovery Call"
+                        hs_call_body: "Discussed product requirements"
+                        hs_call_duration: "1800000"
+                        hs_call_direction: "OUTBOUND"
+                        hs_call_disposition: "connected"
+                        hs_call_status: "COMPLETED"
+                        hs_timestamp: "2024-01-15T10:30:00.000Z"
+                      propertiesWithHistory: &id005
+                        key: value
+                      createdAt: "2024-01-15T10:30:00.000Z"
+                      updatedAt: "2024-01-15T11:00:00.000Z"
+                      archived: false
+                      archivedAt: '2025-03-15T14:30:00Z'
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: &id002
+                    - status: "error"
+                      category: "VALIDATION_ERROR"
+                      message: "Property value is invalid"
+                      context:
+                        key: value
+                      errors:
+                      - {}
+                    links: &id003
+                      key: value
         default:
           description: An error occurred
           content:
@@ -292,15 +340,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/calls/batch/read:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Read a batch of calls
+      - Batch Operations
+      summary: Hubspot Read a Batch of Calls
       description: |
         Retrieves multiple call engagements by their IDs or a unique property value.
         Maximum of 100 calls per batch request.
@@ -310,7 +358,8 @@ paths:
         dispatcherRules: |
           return "BatchReadCallsSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       requestBody:
         required: true
         content:
@@ -336,6 +385,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchCallsResponse'
+              examples:
+                Batchreadcalls207Example:
+                  summary: Default batchReadCalls 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: *id001
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: *id002
+                    links: *id003
         default:
           description: An error occurred
           content:
@@ -346,15 +407,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
   /crm/v3/objects/calls/batch/update:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Update a batch of calls
+      - Batch Operations
+      summary: Hubspot Update a Batch of Calls
       description: |
         Updates multiple call engagements in a single request.
         Each call update must include the call ID and the properties to update.
@@ -389,6 +450,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchCallsResponse'
+              examples:
+                Batchupdatecalls207Example:
+                  summary: Default batchUpdateCalls 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: *id001
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: *id002
+                    links: *id003
         default:
           description: An error occurred
           content:
@@ -399,15 +472,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/calls/batch/archive:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Archive a batch of calls
+      - Batch Operations
+      summary: Hubspot Archive a Batch of Calls
       description: |
         Archives (soft deletes) multiple call engagements in a single request.
         Maximum of 100 calls per batch request.
@@ -438,15 +511,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/calls/search:
     post:
       tags:
-        - Search
-      summary: HubSpot Search calls
+      - Search
+      summary: Hubspot Search Calls
       description: |
         Searches for call engagements using filters, property values, and full-text search.
         Supports complex filter groups with AND/OR logic.
@@ -484,15 +557,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
   /crm/v3/objects/calls/gdpr-delete:
     post:
       tags:
-        - GDPR Compliance
-      summary: HubSpot Permanently delete a call for GDPR compliance
+      - GDPR Compliance
+      summary: Hubspot Permanently Delete a Call for Gdpr Compliance
       description: |
         Permanently deletes a call engagement for GDPR compliance.
         This action cannot be undone. Use this endpoint when you need to comply with a data subject's right to erasure request.
@@ -523,21 +596,21 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
 components:
   schemas:
     Call:
       type: object
       description: Represents a call engagement in the CRM
       required:
-        - id
-        - properties
-        - createdAt
-        - updatedAt
-        - archived
+      - id
+      - properties
+      - createdAt
+      - updatedAt
+      - archived
       properties:
         id:
           type: string
@@ -548,14 +621,7 @@ components:
           description: The call properties
           additionalProperties:
             type: string
-          example:
-            hs_call_title: "Discovery Call"
-            hs_call_body: "Discussed product requirements"
-            hs_call_duration: "1800000"
-            hs_call_direction: "OUTBOUND"
-            hs_call_disposition: "connected"
-            hs_call_status: "COMPLETED"
-            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          example: *id004
         propertiesWithHistory:
           type: object
           description: Properties with their change history
@@ -563,6 +629,7 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PropertyHistory'
+          example: *id005
         createdAt:
           type: string
           format: date-time
@@ -581,6 +648,7 @@ components:
           type: string
           format: date-time
           description: When the call was archived (if archived)
+          example: '2025-03-15T14:30:00Z'
     PropertyHistory:
       type: object
       description: Historical value of a property
@@ -614,21 +682,29 @@ components:
       type: object
       description: A paginated collection of calls
       required:
-        - results
+      - results
       properties:
         results:
           type: array
           description: The list of calls
           items:
             $ref: '#/components/schemas/Call'
+          example:
+          - id: "512"
+            properties: *id004
+            propertiesWithHistory: *id005
+            createdAt: "2024-01-15T10:30:00.000Z"
+            updatedAt: "2024-01-15T11:00:00.000Z"
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
     CallSearchResponse:
       type: object
       description: Search results for calls
       required:
-        - total
-        - results
+      - total
+      - results
       properties:
         total:
           type: integer
@@ -639,24 +715,32 @@ components:
           description: The matching calls
           items:
             $ref: '#/components/schemas/Call'
+          example:
+          - id: "512"
+            properties: *id004
+            propertiesWithHistory: *id005
+            createdAt: "2024-01-15T10:30:00.000Z"
+            updatedAt: "2024-01-15T11:00:00.000Z"
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
     BatchCallsResponse:
       type: object
       description: Response for batch call operations
       required:
-        - status
-        - results
-        - startedAt
-        - completedAt
+      - status
+      - results
+      - startedAt
+      - completedAt
       properties:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: The status of the batch operation
           example: "COMPLETE"
         results:
@@ -664,10 +748,12 @@ components:
           description: The results of the batch operation
           items:
             $ref: '#/components/schemas/Call'
+          example: *id001
         requestedAt:
           type: string
           format: date-time
           description: When the batch was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
@@ -683,10 +769,12 @@ components:
           description: Any errors that occurred during batch processing
           items:
             $ref: '#/components/schemas/BatchError'
+          example: *id002
         links:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchError:
       type: object
       description: Error information for a batch operation item
@@ -709,22 +797,31 @@ components:
             type: array
             items:
               type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     CallCreateRequest:
       type: object
       description: Request body for creating a call
       required:
-        - properties
+      - properties
       properties:
         properties:
           type: object
           description: The call properties to set
           additionalProperties:
             type: string
-          example:
+          example: &id006
             hs_call_title: "Discovery Call"
             hs_call_body: "Discussed product requirements"
             hs_call_duration: "1800000"
@@ -735,11 +832,16 @@ components:
           description: Associations to create with other objects
           items:
             $ref: '#/components/schemas/AssociationInput'
+          example: &id007
+          - to:
+              id: {}
+            types:
+            - {}
     CallUpdateRequest:
       type: object
       description: Request body for updating a call
       required:
-        - properties
+      - properties
       properties:
         properties:
           type: object
@@ -753,7 +855,7 @@ components:
       type: object
       description: Request body for batch creating calls
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -761,11 +863,14 @@ components:
           items:
             $ref: '#/components/schemas/CallCreateRequest'
           maxItems: 100
+          example:
+          - properties: *id006
+            associations: *id007
     BatchReadCallsRequest:
       type: object
       description: Request body for batch reading calls
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -773,24 +878,31 @@ components:
           items:
             $ref: '#/components/schemas/BatchReadInput'
           maxItems: 100
+          example:
+          - id: "512"
         properties:
           type: array
           description: Properties to return
           items:
             type: string
+          example:
+          - example-value
         propertiesWithHistory:
           type: array
           description: Properties to return with history
           items:
             type: string
+          example:
+          - example-value
         idProperty:
           type: string
           description: The property to use as the identifier
+          example: '500123'
     BatchReadInput:
       type: object
       description: Input for reading a single item in a batch
       required:
-        - id
+      - id
       properties:
         id:
           type: string
@@ -800,7 +912,7 @@ components:
       type: object
       description: Request body for batch updating calls
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -808,12 +920,16 @@ components:
           items:
             $ref: '#/components/schemas/BatchUpdateInput'
           maxItems: 100
+          example:
+          - id: "512"
+            properties:
+              key: value
     BatchUpdateInput:
       type: object
       description: Input for updating a single item in a batch
       required:
-        - id
-        - properties
+      - id
+      - properties
       properties:
         id:
           type: string
@@ -824,11 +940,13 @@ components:
           description: The properties to update
           additionalProperties:
             type: string
+          example:
+            key: value
     BatchArchiveCallsRequest:
       type: object
       description: Request body for batch archiving calls
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -836,6 +954,8 @@ components:
           items:
             $ref: '#/components/schemas/BatchReadInput'
           maxItems: 100
+          example:
+          - id: "512"
     CallSearchRequest:
       type: object
       description: Request body for searching calls
@@ -845,11 +965,17 @@ components:
           description: Filter groups for the search (OR logic between groups)
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
         sorts:
           type: array
           description: Sort order for results
           items:
             $ref: '#/components/schemas/SortOption'
+          example:
+          - propertyName: "hs_timestamp"
+            direction: DESCENDING
         query:
           type: string
           description: Full-text search query
@@ -859,14 +985,18 @@ components:
           description: Properties to return
           items:
             type: string
+          example:
+          - example-value
         limit:
           type: integer
           description: Maximum results to return
           default: 10
           maximum: 100
+          example: 10
         after:
           type: string
           description: Pagination cursor
+          example: example-value
     FilterGroup:
       type: object
       description: A group of filters (AND logic within group)
@@ -876,12 +1006,19 @@ components:
           description: The filters in this group
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: "hs_call_direction"
+            operator: "EQ"
+            value: "OUTBOUND"
+            values:
+            - {}
+            highValue: example-value
     Filter:
       type: object
       description: A single search filter
       required:
-        - propertyName
-        - operator
+      - propertyName
+      - operator
       properties:
         propertyName:
           type: string
@@ -891,19 +1028,19 @@ components:
           type: string
           description: The filter operator
           enum:
-            - EQ
-            - NEQ
-            - LT
-            - LTE
-            - GT
-            - GTE
-            - BETWEEN
-            - IN
-            - NOT_IN
-            - HAS_PROPERTY
-            - NOT_HAS_PROPERTY
-            - CONTAINS_TOKEN
-            - NOT_CONTAINS_TOKEN
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
           example: "EQ"
         value:
           type: string
@@ -914,14 +1051,17 @@ components:
           description: Values for IN/NOT_IN operators
           items:
             type: string
+          example:
+          - example-value
         highValue:
           type: string
           description: High value for BETWEEN operator
+          example: example-value
     SortOption:
       type: object
       description: Sort option for search results
       required:
-        - propertyName
+      - propertyName
       properties:
         propertyName:
           type: string
@@ -930,44 +1070,50 @@ components:
         direction:
           type: string
           enum:
-            - ASCENDING
-            - DESCENDING
+          - ASCENDING
+          - DESCENDING
           description: Sort direction
           default: DESCENDING
+          example: DESCENDING
     AssociationInput:
       type: object
       description: Association to create with another object
       required:
-        - to
-        - types
+      - to
+      - types
       properties:
         to:
           type: object
           required:
-            - id
+          - id
           properties:
             id:
               type: string
               description: The ID of the object to associate with
               example: "101"
+          example:
+            id: "101"
         types:
           type: array
           description: The association types
           items:
             $ref: '#/components/schemas/AssociationType'
+          example:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 194
     AssociationType:
       type: object
       description: Type of association
       required:
-        - associationCategory
-        - associationTypeId
+      - associationCategory
+      - associationTypeId
       properties:
         associationCategory:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
           description: The category of association
           example: "HUBSPOT_DEFINED"
         associationTypeId:
@@ -978,7 +1124,7 @@ components:
       type: object
       description: Request body for GDPR deletion
       required:
-        - objectId
+      - objectId
       properties:
         objectId:
           type: string
@@ -987,6 +1133,7 @@ components:
         idProperty:
           type: string
           description: The property used as the identifier
+          example: '500123'
     Paging:
       type: object
       description: Pagination information
@@ -997,7 +1144,7 @@ components:
       type: object
       description: Information about the next page
       required:
-        - after
+      - after
       properties:
         after:
           type: string
@@ -1006,13 +1153,14 @@ components:
         link:
           type: string
           description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
     Error:
       type: object
       description: Error response
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -1030,44 +1178,62 @@ components:
         subCategory:
           type: string
           description: More specific error category
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     ErrorDetail:
       type: object
       description: Detailed error information
       required:
-        - message
+      - message
       properties:
         message:
           type: string
           description: Error message
+          example: This is an example description.
         code:
           type: string
           description: Error code
+          example: example-value
         in:
           type: string
           description: Field where error occurred
+          example: example-value
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
   parameters:
     CallIdParam:
       name: callId
@@ -1139,30 +1305,30 @@ components:
       summary: Successful response listing calls
       value:
         results:
-          - id: "512"
-            properties:
-              hs_call_title: "Discovery Call"
-              hs_call_body: "Discussed product requirements"
-              hs_call_duration: "1800000"
-              hs_call_direction: "OUTBOUND"
-              hs_call_disposition: "connected"
-              hs_call_status: "COMPLETED"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
-          - id: "513"
-            properties:
-              hs_call_title: "Follow-up Call"
-              hs_call_body: "Confirmed next steps"
-              hs_call_duration: "900000"
-              hs_call_direction: "OUTBOUND"
-              hs_call_disposition: "connected"
-              hs_call_status: "COMPLETED"
-              hs_timestamp: "2024-01-16T14:00:00.000Z"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-16T14:30:00.000Z"
-            archived: false
+        - id: "512"
+          properties:
+            hs_call_title: "Discovery Call"
+            hs_call_body: "Discussed product requirements"
+            hs_call_duration: "1800000"
+            hs_call_direction: "OUTBOUND"
+            hs_call_disposition: "connected"
+            hs_call_status: "COMPLETED"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
+        - id: "513"
+          properties:
+            hs_call_title: "Follow-up Call"
+            hs_call_body: "Confirmed next steps"
+            hs_call_duration: "900000"
+            hs_call_direction: "OUTBOUND"
+            hs_call_disposition: "connected"
+            hs_call_status: "COMPLETED"
+            hs_timestamp: "2024-01-16T14:00:00.000Z"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-16T14:30:00.000Z"
+          archived: false
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -1191,11 +1357,11 @@ components:
           hs_call_direction: "OUTBOUND"
           hs_timestamp: "2024-01-15T10:30:00.000Z"
         associations:
-          - to:
-              id: "101"
-            types:
-              - associationCategory: "HUBSPOT_DEFINED"
-                associationTypeId: 194
+        - to:
+            id: "101"
+          types:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 194
     CreateCallSuccessResponse:
       summary: Successful response after creating a call
       value:
@@ -1233,133 +1399,133 @@ components:
       summary: Request to batch create calls
       value:
         inputs:
-          - properties:
-              hs_call_title: "Call 1"
-              hs_call_direction: "OUTBOUND"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-          - properties:
-              hs_call_title: "Call 2"
-              hs_call_direction: "INBOUND"
-              hs_timestamp: "2024-01-15T11:30:00.000Z"
+        - properties:
+            hs_call_title: "Call 1"
+            hs_call_direction: "OUTBOUND"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+        - properties:
+            hs_call_title: "Call 2"
+            hs_call_direction: "INBOUND"
+            hs_timestamp: "2024-01-15T11:30:00.000Z"
     BatchCreateCallsSuccessResponse:
       summary: Successful response after batch creating calls
       value:
         status: "COMPLETE"
         results:
-          - id: "512"
-            properties:
-              hs_call_title: "Call 1"
-              hs_call_direction: "OUTBOUND"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T10:30:00.000Z"
-            archived: false
-          - id: "513"
-            properties:
-              hs_call_title: "Call 2"
-              hs_call_direction: "INBOUND"
-              hs_timestamp: "2024-01-15T11:30:00.000Z"
-            createdAt: "2024-01-15T11:30:00.000Z"
-            updatedAt: "2024-01-15T11:30:00.000Z"
-            archived: false
+        - id: "512"
+          properties:
+            hs_call_title: "Call 1"
+            hs_call_direction: "OUTBOUND"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T10:30:00.000Z"
+          archived: false
+        - id: "513"
+          properties:
+            hs_call_title: "Call 2"
+            hs_call_direction: "INBOUND"
+            hs_timestamp: "2024-01-15T11:30:00.000Z"
+          createdAt: "2024-01-15T11:30:00.000Z"
+          updatedAt: "2024-01-15T11:30:00.000Z"
+          archived: false
         startedAt: "2024-01-15T10:30:00.000Z"
         completedAt: "2024-01-15T10:30:05.000Z"
     BatchReadCallsRequest:
       summary: Request to batch read calls
       value:
         inputs:
-          - id: "512"
-          - id: "513"
+        - id: "512"
+        - id: "513"
         properties:
-          - "hs_call_title"
-          - "hs_call_direction"
+        - "hs_call_title"
+        - "hs_call_direction"
     BatchReadCallsSuccessResponse:
       summary: Successful response after batch reading calls
       value:
         status: "COMPLETE"
         results:
-          - id: "512"
-            properties:
-              hs_call_title: "Discovery Call"
-              hs_call_direction: "OUTBOUND"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
-          - id: "513"
-            properties:
-              hs_call_title: "Follow-up Call"
-              hs_call_direction: "INBOUND"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-16T14:30:00.000Z"
-            archived: false
+        - id: "512"
+          properties:
+            hs_call_title: "Discovery Call"
+            hs_call_direction: "OUTBOUND"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
+        - id: "513"
+          properties:
+            hs_call_title: "Follow-up Call"
+            hs_call_direction: "INBOUND"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-16T14:30:00.000Z"
+          archived: false
         startedAt: "2024-01-15T10:30:00.000Z"
         completedAt: "2024-01-15T10:30:01.000Z"
     BatchUpdateCallsRequest:
       summary: Request to batch update calls
       value:
         inputs:
-          - id: "512"
-            properties:
-              hs_call_title: "Updated Call 1"
-          - id: "513"
-            properties:
-              hs_call_title: "Updated Call 2"
+        - id: "512"
+          properties:
+            hs_call_title: "Updated Call 1"
+        - id: "513"
+          properties:
+            hs_call_title: "Updated Call 2"
     BatchUpdateCallsSuccessResponse:
       summary: Successful response after batch updating calls
       value:
         status: "COMPLETE"
         results:
-          - id: "512"
-            properties:
-              hs_call_title: "Updated Call 1"
-              hs_call_direction: "OUTBOUND"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T12:00:00.000Z"
-            archived: false
-          - id: "513"
-            properties:
-              hs_call_title: "Updated Call 2"
-              hs_call_direction: "INBOUND"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-15T12:00:00.000Z"
-            archived: false
+        - id: "512"
+          properties:
+            hs_call_title: "Updated Call 1"
+            hs_call_direction: "OUTBOUND"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T12:00:00.000Z"
+          archived: false
+        - id: "513"
+          properties:
+            hs_call_title: "Updated Call 2"
+            hs_call_direction: "INBOUND"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-15T12:00:00.000Z"
+          archived: false
         startedAt: "2024-01-15T12:00:00.000Z"
         completedAt: "2024-01-15T12:00:02.000Z"
     BatchArchiveCallsRequest:
       summary: Request to batch archive calls
       value:
         inputs:
-          - id: "512"
-          - id: "513"
+        - id: "512"
+        - id: "513"
     SearchCallsRequest:
       summary: Request to search calls
       value:
         filterGroups:
-          - filters:
-              - propertyName: "hs_call_direction"
-                operator: "EQ"
-                value: "OUTBOUND"
+        - filters:
+          - propertyName: "hs_call_direction"
+            operator: "EQ"
+            value: "OUTBOUND"
         sorts:
-          - propertyName: "hs_timestamp"
-            direction: "DESCENDING"
+        - propertyName: "hs_timestamp"
+          direction: "DESCENDING"
         properties:
-          - "hs_call_title"
-          - "hs_call_direction"
-          - "hs_timestamp"
+        - "hs_call_title"
+        - "hs_call_direction"
+        - "hs_timestamp"
         limit: 10
     SearchCallsSuccessResponse:
       summary: Successful response for call search
       value:
         total: 25
         results:
-          - id: "512"
-            properties:
-              hs_call_title: "Discovery Call"
-              hs_call_direction: "OUTBOUND"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
+        - id: "512"
+          properties:
+            hs_call_title: "Discovery Call"
+            hs_call_direction: "OUTBOUND"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
         paging:
           next:
             after: "NTI1Cg%3D%3D"

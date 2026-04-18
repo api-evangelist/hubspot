@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-output-field-schema.json",
+  "title": "OutputField",
+  "description": "An output field returned by the action",
+  "type": "object",
+  "properties": {
+    "typeDefinition": {
+      "type": "object",
+      "description": "Definition of a field's type and configuration",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The programmatic name of the field",
+          "example": "Example Record"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "STRING",
+            "NUMBER",
+            "BOOL",
+            "DATE",
+            "DATETIME",
+            "ENUMERATION",
+            "PHONE_NUMBER",
+            "CURRENCY"
+          ],
+          "description": "The data type of the field",
+          "example": "STRING"
+        },
+        "fieldType": {
+          "type": "string",
+          "enum": [
+            "TEXT",
+            "TEXTAREA",
+            "NUMBER",
+            "SELECT",
+            "BOOLEANCHECKBOX",
+            "DATE",
+            "FILE"
+          ],
+          "description": "The UI field type for input",
+          "example": "TEXT"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the field",
+          "example": "Example Record"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the field",
+          "example": "This is an example description."
+        },
+        "options": {
+          "type": "array",
+          "description": "Options for enumeration fields",
+          "items": {
+            "$ref": "#/components/schemas/FieldOption"
+          },
+          "example": [
+            {
+              "label": "Example Record",
+              "value": "example-value",
+              "displayOrder": 100
+            }
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "typeDefinition"
+  ]
+}

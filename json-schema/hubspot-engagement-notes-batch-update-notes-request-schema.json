@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "description": "Request body for batch updating notes",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "Array of note updates",
+      "example": [
+        {
+          "id": "1024",
+          "properties": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Input for updating a single item in a batch",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The note identifier",
+            "example": "1024"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties to update",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "properties"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchUpdateNotesRequest"
+}

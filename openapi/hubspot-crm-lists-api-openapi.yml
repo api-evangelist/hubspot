@@ -11,50 +11,54 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Lists
-    description: Operations for managing CRM lists
-  - name: Memberships
-    description: Operations for managing list memberships
+- name: Lists
+  description: Operations for managing CRM lists
+- name: Memberships
+  description: Operations for managing list memberships
 paths:
   /crm/v3/lists:
     get:
       operationId: listLists
-      summary: HubSpot List all lists
+      summary: Hubspot List All Lists
       description: >-
         Returns a page of all CRM lists in the portal. Lists can be either
         static (manually managed membership) or dynamic (filter-based
         membership). Use the limit and after parameters to paginate results.
       tags:
-        - Lists
+      - Lists
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 20
-            maximum: 500
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: objectTypeId
-          in: query
-          description: The object type ID to filter lists by (e.g., 0-1 for contacts).
-          schema:
-            type: string
-        - name: listType
-          in: query
-          description: Filter by list type - STATIC or DYNAMIC.
-          schema:
-            type: string
-            enum: [STATIC, DYNAMIC]
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+          maximum: 500
+        example: 20
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: objectTypeId
+        in: query
+        description: The object type ID to filter lists by (e.g., 0-1 for contacts).
+        schema:
+          type: string
+        example: '500123'
+      - name: listType
+        in: query
+        description: Filter by list type - STATIC or DYNAMIC.
+        schema:
+          type: string
+          enum: [STATIC, DYNAMIC]
+        example: STATIC
       responses:
         '200':
           description: Successful response with a list of CRM lists.
@@ -62,23 +66,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseList'
+              examples:
+                Listlists200Example:
+                  summary: Default listLists 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id008
+                    - listId: '500123'
+                      name: Example Record
+                      listType: STATIC
+                      objectTypeId: '500123'
+                      processingStatus: active
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      filterBranch: &id001 {}
+                      memberCount: 10
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createList
-      summary: HubSpot Create a list
+      summary: Hubspot Create a List
       description: >-
         Creates a new CRM list. You can create either a static list with manually
         managed membership or a dynamic list with filter-based membership that
         updates automatically as records match the criteria.
       tags:
-        - Lists
+      - Lists
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ListCreateRequest'
+            examples:
+              CreatelistRequestExample:
+                summary: Default createList request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  objectTypeId: '500123'
+                  processingType: MANUAL
+                  filterBranch: &id009 {}
       responses:
         '200':
           description: List created successfully.
@@ -86,26 +119,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/List'
+              examples:
+                Createlist200Example:
+                  summary: Default createList 200 response
+                  x-microcks-default: true
+                  value:
+                    listId: '500123'
+                    name: Example Record
+                    listType: STATIC
+                    objectTypeId: '500123'
+                    processingStatus: active
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    filterBranch: *id001
+                    memberCount: 10
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/lists/{listId}:
     get:
       operationId: getList
-      summary: HubSpot Get a list
+      summary: Hubspot Get a List
       description: >-
         Returns details of a specific CRM list by its ID, including membership
         type, filter definitions for dynamic lists, and metadata.
       tags:
-        - Lists
+      - Lists
       parameters:
-        - name: listId
-          in: path
-          required: true
-          description: The ID of the list to retrieve.
-          schema:
-            type: string
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list to retrieve.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '200':
           description: Successful response with the list details.
@@ -113,26 +164,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/List'
+              examples:
+                Getlist200Example:
+                  summary: Default getList 200 response
+                  x-microcks-default: true
+                  value:
+                    listId: '500123'
+                    name: Example Record
+                    listType: STATIC
+                    objectTypeId: '500123'
+                    processingStatus: active
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    filterBranch: *id001
+                    memberCount: 10
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteList
-      summary: HubSpot Delete a list
+      summary: Hubspot Delete a List
       description: >-
         Permanently deletes a CRM list by its ID. This removes the list
         definition but does not delete the CRM records that were members of
         the list.
       tags:
-        - Lists
+      - Lists
       parameters:
-        - name: listId
-          in: path
-          required: true
-          description: The ID of the list to delete.
-          schema:
-            type: string
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list to delete.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: List deleted successfully.
@@ -140,35 +209,41 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/lists/{listId}/memberships:
     get:
       operationId: getListMemberships
-      summary: HubSpot Get list members
+      summary: Hubspot Get List Members
       description: >-
         Returns the records that are members of a specific CRM list. For
         static lists, returns manually added members. For dynamic lists,
         returns records that currently match the list filters.
       tags:
-        - Memberships
+      - Memberships
       parameters:
-        - name: listId
-          in: path
-          required: true
-          description: The ID of the list.
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 20
-            maximum: 500
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the list.
+        schema:
+          type: string
+        example: '500123'
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+          maximum: 500
+        example: 20
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
       responses:
         '200':
           description: Successful response with list members.
@@ -176,33 +251,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseMembership'
+              examples:
+                Getlistmemberships200Example:
+                  summary: Default getListMemberships 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id010
+                    - recordId: '500123'
+                      addedAt: '2025-03-15T14:30:00Z'
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/lists/{listId}/memberships/add:
     put:
       operationId: addListMembers
-      summary: HubSpot Add members to a list
+      summary: Hubspot Add Members to a List
       description: >-
         Adds records to a static CRM list by their record IDs. This operation
         is only available for static lists. Records added will remain members
         until explicitly removed.
       tags:
-        - Memberships
+      - Memberships
       parameters:
-        - name: listId
-          in: path
-          required: true
-          description: The ID of the static list to add members to.
-          schema:
-            type: string
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the static list to add members to.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MembershipChangeRequest'
+            examples:
+              AddlistmembersRequestExample:
+                summary: Default addListMembers request
+                x-microcks-default: true
+                value:
+                  recordIdsToAdd: &id002
+                  - '500123'
+                  recordIdsToRemove: &id003
+                  - '500123'
       responses:
         '200':
           description: Members added successfully.
@@ -210,35 +308,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MembershipChangeResponse'
+              examples:
+                Addlistmembers200Example:
+                  summary: Default addListMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    recordIdsAdded: &id004
+                    - '500123'
+                    recordIdsAlreadyMember: &id005
+                    - '500123'
+                    recordIdsRemoved: &id006
+                    - '500123'
+                    recordIdsMissing: &id007
+                    - '500123'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/lists/{listId}/memberships/remove:
     put:
       operationId: removeListMembers
-      summary: HubSpot Remove members from a list
+      summary: Hubspot Remove Members From a List
       description: >-
         Removes records from a static CRM list by their record IDs. This
         operation is only available for static lists. The records themselves
         will not be deleted, only removed from the list.
       tags:
-        - Memberships
+      - Memberships
       parameters:
-        - name: listId
-          in: path
-          required: true
-          description: The ID of the static list to remove members from.
-          schema:
-            type: string
+      - name: listId
+        in: path
+        required: true
+        description: The ID of the static list to remove members from.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/MembershipChangeRequest'
+            examples:
+              RemovelistmembersRequestExample:
+                summary: Default removeListMembers request
+                x-microcks-default: true
+                value:
+                  recordIdsToAdd: *id002
+                  recordIdsToRemove: *id003
       responses:
         '200':
           description: Members removed successfully.
@@ -246,12 +368,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MembershipChangeResponse'
+              examples:
+                Removelistmembers200Example:
+                  summary: Default removeListMembers 200 response
+                  x-microcks-default: true
+                  value:
+                    recordIdsAdded: *id004
+                    recordIdsAlreadyMember: *id005
+                    recordIdsRemoved: *id006
+                    recordIdsMissing: *id007
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -266,33 +400,42 @@ components:
         listId:
           type: string
           description: The unique identifier for the list.
+          example: '500123'
         name:
           type: string
           description: The name of the list.
+          example: Example Record
         listType:
           type: string
           enum: [STATIC, DYNAMIC]
           description: Whether the list is static (manually managed) or dynamic (filter-based).
+          example: STATIC
         objectTypeId:
           type: string
           description: The object type the list contains (e.g., 0-1 for contacts).
+          example: '500123'
         processingStatus:
           type: string
           description: The current processing status of the list.
+          example: active
         createdAt:
           type: string
           format: date-time
           description: The date and time the list was created.
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
           description: The date and time the list was last updated.
+          example: '2025-03-15T14:30:00Z'
         filterBranch:
           type: object
           description: The filter definition for dynamic lists.
+          example: *id001
         memberCount:
           type: integer
           description: The current number of members in the list.
+          example: 10
     CollectionResponseList:
       type: object
       description: A paginated list of CRM lists.
@@ -301,29 +444,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/List'
+          example: *id008
         paging:
           $ref: '#/components/schemas/Paging'
     ListCreateRequest:
       type: object
       description: Request body for creating a new CRM list.
       required:
-        - name
-        - objectTypeId
-        - processingType
+      - name
+      - objectTypeId
+      - processingType
       properties:
         name:
           type: string
           description: The name of the list.
+          example: Example Record
         objectTypeId:
           type: string
           description: The object type ID for the list (e.g., 0-1 for contacts).
+          example: '500123'
         processingType:
           type: string
           enum: [MANUAL, DYNAMIC, SNAPSHOT]
           description: The type of list processing.
+          example: MANUAL
         filterBranch:
           type: object
           description: The filter branch definition for dynamic lists.
+          example: *id009
     Membership:
       type: object
       description: A list membership record.
@@ -331,10 +479,12 @@ components:
         recordId:
           type: string
           description: The ID of the CRM record that is a member of the list.
+          example: '500123'
         addedAt:
           type: string
           format: date-time
           description: The date and time the record was added to the list.
+          example: '2025-03-15T14:30:00Z'
     CollectionResponseMembership:
       type: object
       description: A paginated list of list memberships.
@@ -343,6 +493,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Membership'
+          example: *id010
         paging:
           $ref: '#/components/schemas/Paging'
     MembershipChangeRequest:
@@ -354,11 +505,13 @@ components:
           items:
             type: string
           description: The IDs of records to add to the list.
+          example: *id002
         recordIdsToRemove:
           type: array
           items:
             type: string
           description: The IDs of records to remove from the list.
+          example: *id003
     MembershipChangeResponse:
       type: object
       description: Response from a list membership change operation.
@@ -367,18 +520,22 @@ components:
           type: array
           items:
             type: string
+          example: *id004
         recordIdsAlreadyMember:
           type: array
           items:
             type: string
+          example: *id005
         recordIdsRemoved:
           type: array
           items:
             type: string
+          example: *id006
         recordIdsMissing:
           type: array
           items:
             type: string
+          example: *id007
     Paging:
       type: object
       description: Pagination information.
@@ -388,18 +545,24 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       description: An error response.
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

@@ -1,0 +1,202 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Engagement Calls API
+  description: "The HubSpot CRM Engagement Calls API enables you to manage call engagements within your HubSpot CRM.\n\nUse this API to:\n- Create, read, update, and delete call records\n- Perform batch
+    operations on mul"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-calls-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot CRM Engagement Calls API enables you to manage call engagements within your HubSpot CRM.\n\nUse this API to:\n- Create, read, update, and delete call records\n- Perform batch
+      operations on mul"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: calls
+      path: /calls
+      description: calls operations
+      operations:
+      - name: listcalls
+        method: GET
+        description: HubSpot List All Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcall
+        method: POST
+        description: HubSpot Create a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcallbyid
+        method: GET
+        description: HubSpot Get a Call by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecall
+        method: PATCH
+        description: HubSpot Update a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archivecall
+        method: DELETE
+        description: HubSpot Archive a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecalls
+        method: POST
+        description: HubSpot Create a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcalls
+        method: POST
+        description: HubSpot Read a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecalls
+        method: POST
+        description: HubSpot Update a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecalls
+        method: POST
+        description: HubSpot Archive a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcalls
+        method: POST
+        description: HubSpot Search Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: gdpr-delete
+      path: /gdpr-delete
+      description: gdpr-delete operations
+      operations:
+      - name: gdprdeletecall
+        method: POST
+        description: HubSpot Permanently Delete a Call for GDPR Compliance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9118
+    namespace: engagement-calls-api-mcp
+    transport: http
+    tools:
+    - name: listcalls
+      description: HubSpot List All Calls
+      hints:
+        readOnly: true
+      call: engagement-calls-api.listcalls
+    - name: createcall
+      description: HubSpot Create a Call
+      hints:
+        readOnly: false
+      call: engagement-calls-api.createcall
+    - name: getcallbyid
+      description: HubSpot Get a Call by ID
+      hints:
+        readOnly: true
+      call: engagement-calls-api.getcallbyid
+    - name: updatecall
+      description: HubSpot Update a Call
+      hints:
+        readOnly: false
+      call: engagement-calls-api.updatecall
+    - name: archivecall
+      description: HubSpot Archive a Call
+      hints:
+        destructive: true
+      call: engagement-calls-api.archivecall
+    - name: batchcreatecalls
+      description: HubSpot Create a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchcreatecalls
+    - name: batchreadcalls
+      description: HubSpot Read a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchreadcalls
+    - name: batchupdatecalls
+      description: HubSpot Update a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchupdatecalls
+    - name: batcharchivecalls
+      description: HubSpot Archive a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batcharchivecalls
+    - name: searchcalls
+      description: HubSpot Search Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.searchcalls
+    - name: gdprdeletecall
+      description: HubSpot Permanently Delete a Call for GDPR Compliance
+      hints:
+        readOnly: false
+      call: engagement-calls-api.gdprdeletecall

@@ -1,0 +1,202 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-action-definition-schema.json",
+  "title": "ActionDefinition",
+  "description": "A custom workflow action definition",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the action definition",
+      "example": "500123"
+    },
+    "revisionId": {
+      "type": "string",
+      "description": "The current revision identifier",
+      "example": "500123"
+    },
+    "actionUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL that HubSpot will call when the action executes",
+      "example": "https://app.hubspot.com/contacts/12345"
+    },
+    "labels": {
+      "type": "object",
+      "description": "Human-readable labels for the action",
+      "required": [
+        "actionName"
+      ],
+      "properties": {
+        "actionName": {
+          "type": "string",
+          "description": "The display name of the action",
+          "example": "Example Record"
+        },
+        "actionDescription": {
+          "type": "string",
+          "description": "A description of what the action does",
+          "example": "This is an example description."
+        },
+        "appDisplayName": {
+          "type": "string",
+          "description": "The name of the app providing this action",
+          "example": "Example Record"
+        },
+        "actionCardContent": {
+          "type": "string",
+          "description": "Content to display on the action card in the workflow editor",
+          "example": "example-value"
+        }
+      }
+    },
+    "inputFields": {
+      "type": "array",
+      "description": "Input fields that users can configure for the action",
+      "items": {
+        "type": "object",
+        "description": "An input field for the action",
+        "required": [
+          "typeDefinition",
+          "supportedValueTypes"
+        ],
+        "properties": {
+          "typeDefinition": {
+            "$ref": "#/components/schemas/FieldTypeDefinition"
+          },
+          "supportedValueTypes": {
+            "type": "array",
+            "description": "The types of values that can be provided for this field",
+            "items": {
+              "type": "string",
+              "enum": [
+                "STATIC_VALUE",
+                "OBJECT_PROPERTY",
+                "OUTPUT_FROM_PREVIOUS_ACTION"
+              ]
+            },
+            "example": [
+              "STATIC_VALUE"
+            ]
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Whether this field is required",
+            "example": true
+          }
+        }
+      },
+      "example": [
+        {
+          "typeDefinition": {},
+          "supportedValueTypes": [
+            {}
+          ],
+          "isRequired": true
+        }
+      ]
+    },
+    "outputFields": {
+      "type": "array",
+      "description": "Output fields that the action returns",
+      "items": {
+        "type": "object",
+        "description": "An output field returned by the action",
+        "required": [
+          "typeDefinition"
+        ],
+        "properties": {
+          "typeDefinition": {
+            "$ref": "#/components/schemas/FieldTypeDefinition"
+          }
+        }
+      },
+      "example": [
+        {
+          "typeDefinition": {}
+        }
+      ]
+    },
+    "objectTypes": {
+      "type": "array",
+      "description": "CRM object types this action can operate on",
+      "items": {
+        "type": "string",
+        "enum": [
+          "CONTACT",
+          "COMPANY",
+          "DEAL",
+          "TICKET",
+          "QUOTE"
+        ]
+      },
+      "example": [
+        "CONTACT"
+      ]
+    },
+    "objectRequestOptions": {
+      "type": "object",
+      "description": "Options for requesting CRM object data",
+      "properties": {
+        "properties": {
+          "type": "array",
+          "description": "CRM properties to include in the action execution request",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "example-value"
+          ]
+        }
+      }
+    },
+    "published": {
+      "type": "boolean",
+      "description": "Whether the action is published and available for use",
+      "example": true
+    },
+    "functions": {
+      "type": "array",
+      "description": "Functions associated with this action",
+      "items": {
+        "type": "object",
+        "description": "A reference to a function associated with an action",
+        "required": [
+          "functionType",
+          "id"
+        ],
+        "properties": {
+          "functionType": {
+            "type": "string",
+            "enum": [
+              "PRE_ACTION_EXECUTION",
+              "PRE_FETCH_OPTIONS",
+              "POST_FETCH_OPTIONS",
+              "POST_ACTION_EXECUTION"
+            ],
+            "description": "The type of function",
+            "example": "PRE_ACTION_EXECUTION"
+          },
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the function",
+            "example": "500123"
+          }
+        }
+      },
+      "example": [
+        {
+          "functionType": "PRE_ACTION_EXECUTION",
+          "id": "500123"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "revisionId",
+    "actionUrl",
+    "labels",
+    "objectTypes"
+  ]
+}

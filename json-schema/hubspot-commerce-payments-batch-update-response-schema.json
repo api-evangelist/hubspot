@@ -1,0 +1,243 @@
+{
+  "type": "object",
+  "description": "Response from a batch update operation",
+  "properties": {
+    "status": {
+      "type": "string",
+      "example": "PENDING",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "archived": true,
+          "archivedAt": "2025-03-15T14:30:00Z",
+          "associations": {
+            "key": "value"
+          },
+          "propertiesWithHistory": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A commerce payment object representing a payment transaction",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the commerce payment",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties of the commerce payment",
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the commerce payment was created",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "When the commerce payment was last updated",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the commerce payment is archived",
+            "example": true
+          },
+          "archivedAt": {
+            "type": "string",
+            "description": "When the commerce payment was archived",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "associations": {
+            "type": "object",
+            "description": "Associated objects",
+            "example": {
+              "key": "value"
+            }
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their value history",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "numErrors": {
+      "type": "integer",
+      "example": 100
+    },
+    "errors": {
+      "type": "array",
+      "example": [
+        {
+          "status": "active",
+          "id": "500123",
+          "category": "standard",
+          "message": "This is an example description.",
+          "errors": [
+            {}
+          ],
+          "context": {
+            "key": "value"
+          },
+          "links": {
+            "key": "value"
+          },
+          "subCategory": "standard"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "An error from a batch operation",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "active"
+          },
+          "id": {
+            "type": "string",
+            "example": "500123"
+          },
+          "category": {
+            "type": "string",
+            "example": "standard"
+          },
+          "message": {
+            "type": "string",
+            "example": "This is an example description."
+          },
+          "errors": {
+            "type": "array",
+            "example": [
+              {
+                "message": "This is an example description.",
+                "code": "example-value",
+                "in": "example-value",
+                "subCategory": "standard",
+                "context": {
+                  "key": "value"
+                }
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Detailed error information",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "The error message",
+                  "example": "This is an example description."
+                },
+                "code": {
+                  "type": "string",
+                  "description": "An error code",
+                  "example": "example-value"
+                },
+                "in": {
+                  "type": "string",
+                  "description": "The location of the error",
+                  "example": "example-value"
+                },
+                "subCategory": {
+                  "type": "string",
+                  "description": "A specific error subcategory",
+                  "example": "standard"
+                },
+                "context": {
+                  "type": "object",
+                  "example": {
+                    "key": "value"
+                  }
+                }
+              },
+              "required": [
+                "message"
+              ]
+            }
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          },
+          "links": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          },
+          "subCategory": {
+            "type": "string",
+            "example": "standard"
+          }
+        },
+        "required": [
+          "category",
+          "message"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchUpdateResponse"
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/conversations-api-send-message-request-schema.json",
+  "title": "SendMessageRequest",
+  "description": "Request payload for sending a message to a thread.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "MESSAGE",
+        "COMMENT"
+      ],
+      "description": "Type of message to send",
+      "example": "MESSAGE"
+    },
+    "text": {
+      "type": "string",
+      "description": "Plain text content of the message",
+      "example": "Thank you for reaching out. How can I help you today?"
+    },
+    "richText": {
+      "type": "string",
+      "description": "Rich text (HTML) content",
+      "example": "<p>Thank you for reaching out. How can I help you today?</p>"
+    },
+    "senderActorId": {
+      "type": "string",
+      "description": "Actor ID of the sender",
+      "example": "actor_agent_123"
+    },
+    "channelId": {
+      "type": "string",
+      "description": "Channel to send on",
+      "example": "channel_789"
+    },
+    "channelAccountId": {
+      "type": "string",
+      "description": "Channel account to use",
+      "example": "account_123"
+    },
+    "recipients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Recipient information for a message.",
+        "properties": {
+          "actorId": {
+            "type": "string",
+            "description": "Actor ID of the recipient",
+            "example": "actor_101"
+          }
+        }
+      },
+      "description": "Message recipients",
+      "example": [
+        {
+          "actorId": "actor_101"
+        }
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "text",
+    "senderActorId"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "description": "Paginated collection of event instances",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of event instances",
+      "example": [
+        {
+          "id": "500123",
+          "eventType": "standard",
+          "objectId": "500123",
+          "objectType": "standard",
+          "occurredAt": "2025-03-15T14:30:00Z",
+          "properties": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Represents a single event instance that occurred in the system",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the event instance",
+            "example": "500123"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "The type of event that occurred",
+            "example": "standard"
+          },
+          "objectId": {
+            "type": "string",
+            "description": "The ID of the CRM object associated with this event",
+            "example": "500123"
+          },
+          "objectType": {
+            "type": "string",
+            "description": "The type of CRM object (e.g., contact, company, deal)",
+            "example": "standard"
+          },
+          "occurredAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp when the event occurred",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "properties": {
+            "type": "object",
+            "description": "Additional properties associated with the event",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "eventType",
+          "occurredAt"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for navigating result sets",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor for retrieving the next page of results",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "example-value"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page of results",
+              "example": "https://app.hubspot.com/contacts/12345"
+            }
+          }
+        },
+        "prev": {
+          "type": "object",
+          "description": "Pagination cursor for retrieving the previous page of results",
+          "properties": {
+            "before": {
+              "type": "string",
+              "description": "Cursor token for the previous page",
+              "example": "example-value"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the previous page of results",
+              "example": "https://app.hubspot.com/contacts/12345"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EventInstanceCollection"
+}

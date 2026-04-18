@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-calls-api-call-structure.json",
+  "name": "Call",
+  "description": "Represents a call engagement in the CRM",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the call",
+      "example": "512"
+    },
+    "properties": {
+      "type": "object",
+      "description": "The call properties",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "hs_call_title": "Discovery Call",
+        "hs_call_body": "Discussed product requirements",
+        "hs_call_duration": "1800000",
+        "hs_call_direction": "OUTBOUND",
+        "hs_call_disposition": "connected",
+        "hs_call_status": "COMPLETED",
+        "hs_timestamp": "2024-01-15T10:30:00.000Z"
+      }
+    },
+    "propertiesWithHistory": {
+      "type": "object",
+      "description": "Properties with their change history",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Historical value of a property",
+          "properties": {
+            "value": {
+              "type": "string",
+              "description": "The historical value",
+              "example": "Discovery Call"
+            },
+            "timestamp": {
+              "type": "datetime",
+              "description": "When the value was set",
+              "example": "2024-01-15T10:30:00.000Z"
+            },
+            "sourceType": {
+              "type": "string",
+              "description": "The source type that set this value",
+              "example": "CRM_UI"
+            },
+            "sourceId": {
+              "type": "string",
+              "description": "The source identifier",
+              "example": "userId:12345"
+            },
+            "sourceLabel": {
+              "type": "string",
+              "description": "Human-readable source label",
+              "example": "John Doe"
+            },
+            "updatedByUserId": {
+              "type": "int32",
+              "description": "The user ID who made the change",
+              "example": 12345
+            }
+          }
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "createdAt": {
+      "type": "datetime",
+      "description": "When the call was created",
+      "example": "2024-01-15T10:30:00.000Z"
+    },
+    "updatedAt": {
+      "type": "datetime",
+      "description": "When the call was last updated",
+      "example": "2024-01-15T11:00:00.000Z"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the call is archived",
+      "example": false
+    },
+    "archivedAt": {
+      "type": "datetime",
+      "description": "When the call was archived (if archived)",
+      "example": "2025-03-15T14:30:00Z"
+    }
+  },
+  "required": [
+    "id",
+    "properties",
+    "createdAt",
+    "updatedAt",
+    "archived"
+  ]
+}

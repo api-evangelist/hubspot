@@ -1,0 +1,94 @@
+{
+  "type": "object",
+  "description": "A paginated collection of SMTP tokens",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "The list of SMTP tokens",
+      "example": [
+        {
+          "id": "smtp-token-abc123",
+          "campaignName": "Password Reset Emails",
+          "emailCampaignId": "campaign-xyz789",
+          "createContact": true,
+          "createdAt": "2024-01-15T10:30:00.000Z",
+          "createdBy": "user@example.com"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Represents an SMTP API token for transactional email sending",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the SMTP token",
+            "example": "smtp-token-abc123"
+          },
+          "campaignName": {
+            "type": "string",
+            "description": "The name of the email campaign associated with this token",
+            "example": "Password Reset Emails"
+          },
+          "emailCampaignId": {
+            "type": "string",
+            "description": "The ID of the associated email campaign",
+            "example": "campaign-xyz789"
+          },
+          "createContact": {
+            "type": "boolean",
+            "description": "Whether sending an email creates a contact if one doesn't exist",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "When the token was created",
+            "format": "date-time",
+            "example": "2024-01-15T10:30:00.000Z"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user or application that created the token",
+            "example": "user@example.com"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "createdBy",
+          "campaignName",
+          "createContact"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information about the next page",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page",
+              "example": "c210cC10b2tlbi1hYmMxMjM%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page",
+              "example": "https://app.hubspot.com/contacts/12345"
+            }
+          },
+          "required": [
+            "after"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SmtpTokenCollectionResponse"
+}

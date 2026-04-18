@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "description": "Standard error response structure.",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Unique tracking identifier for support requests",
+      "format": "uuid",
+      "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message",
+      "example": "Invalid input parameters"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "Error subcategory",
+      "example": "INVALID_PARAMETER"
+    },
+    "context": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "example": [
+        {
+          "message": "Invalid thread ID format",
+          "code": "INVALID_FORMAT",
+          "subCategory": "PARAMETER_ERROR",
+          "in": "path",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error.",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "Invalid thread ID format"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "INVALID_FORMAT"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "PARAMETER_ERROR"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location where error occurred",
+            "example": "path"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

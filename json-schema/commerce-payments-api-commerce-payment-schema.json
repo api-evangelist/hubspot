@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/commerce-payments-api-commerce-payment-schema.json",
+  "title": "CommercePayment",
+  "description": "A commerce payment object representing a payment transaction",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the commerce payment",
+      "example": "500123"
+    },
+    "properties": {
+      "type": "object",
+      "description": "The properties of the commerce payment",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the commerce payment was created",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the commerce payment was last updated",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the commerce payment is archived",
+      "example": true
+    },
+    "archivedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the commerce payment was archived",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "associations": {
+      "type": "object",
+      "description": "Associated objects",
+      "additionalProperties": {
+        "type": "object",
+        "description": "Association results for an object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            },
+            "example": [
+              {
+                "id": "500123",
+                "type": "standard"
+              }
+            ]
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "propertiesWithHistory": {
+      "type": "object",
+      "description": "Properties with their value history",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "A historical property value",
+          "required": [
+            "value",
+            "timestamp",
+            "sourceType"
+          ],
+          "properties": {
+            "value": {
+              "type": "string",
+              "description": "The property value",
+              "example": "example-value"
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time",
+              "description": "When this value was set",
+              "example": "2025-03-15T14:30:00Z"
+            },
+            "sourceType": {
+              "type": "string",
+              "description": "The source that set this value",
+              "example": "standard"
+            },
+            "sourceId": {
+              "type": "string",
+              "description": "The identifier of the source",
+              "example": "500123"
+            },
+            "sourceLabel": {
+              "type": "string",
+              "description": "A human-readable label for the source",
+              "example": "Example Record"
+            },
+            "updatedByUserId": {
+              "type": "integer",
+              "description": "The user ID that made the change",
+              "example": 1718153645993
+            }
+          }
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "properties",
+    "createdAt",
+    "updatedAt"
+  ]
+}

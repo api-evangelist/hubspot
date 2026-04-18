@@ -1,0 +1,65 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Analytics Events API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by
+    event types, and"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: analytics-events-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by
+      event types, and"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: events
+      path: /events
+      description: events operations
+      operations:
+      - name: geteventinstances
+        method: GET
+        description: HubSpot Retrieve Event Instances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: event-types
+      path: /event-types
+      description: event-types operations
+      operations:
+      - name: geteventtypes
+        method: GET
+        description: HubSpot Retrieve Available Event Types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9100
+    namespace: analytics-events-api-mcp
+    transport: http
+    tools:
+    - name: geteventinstances
+      description: HubSpot Retrieve Event Instances
+      hints:
+        readOnly: true
+      call: analytics-events-api.geteventinstances
+    - name: geteventtypes
+      description: HubSpot Retrieve Available Event Types
+      hints:
+        readOnly: true
+      call: analytics-events-api.geteventtypes

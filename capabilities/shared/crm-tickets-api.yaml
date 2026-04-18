@@ -1,0 +1,232 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Tickets API
+  description: Tickets represent customer requests for help and are tracked through support pipelines until resolved. The tickets endpoints allow you to create, manage, and retrieve customer support 
+    ticket records a
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: crm-tickets-api
+    baseUri: https://api.hubapi.com
+    description: Tickets represent customer requests for help and are tracked through support pipelines until resolved. The tickets endpoints allow you to create, manage, and retrieve customer support
+      ticket records a
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tickets
+      path: /tickets
+      description: tickets operations
+      operations:
+      - name: listtickets
+        method: GET
+        description: HubSpot List Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createticket
+        method: POST
+        description: HubSpot Create a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getticket
+        method: GET
+        description: HubSpot Get a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateticket
+        method: PATCH
+        description: HubSpot Update a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteticket
+        method: DELETE
+        description: HubSpot Archive a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadtickets
+        method: POST
+        description: HubSpot Batch Read Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatetickets
+        method: POST
+        description: HubSpot Batch Create Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatetickets
+        method: POST
+        description: HubSpot Batch Update Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivetickets
+        method: POST
+        description: HubSpot Batch Archive Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchtickets
+        method: POST
+        description: HubSpot Search Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listticketassociations
+        method: GET
+        description: HubSpot List Ticket Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createticketassociation
+        method: PUT
+        description: HubSpot Create a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteticketassociation
+        method: DELETE
+        description: HubSpot Delete a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9115
+    namespace: crm-tickets-api-mcp
+    transport: http
+    tools:
+    - name: listtickets
+      description: HubSpot List Tickets
+      hints:
+        readOnly: true
+      call: crm-tickets-api.listtickets
+    - name: createticket
+      description: HubSpot Create a Ticket
+      hints:
+        readOnly: false
+      call: crm-tickets-api.createticket
+    - name: getticket
+      description: HubSpot Get a Ticket
+      hints:
+        readOnly: true
+      call: crm-tickets-api.getticket
+    - name: updateticket
+      description: HubSpot Update a Ticket
+      hints:
+        readOnly: false
+      call: crm-tickets-api.updateticket
+    - name: deleteticket
+      description: HubSpot Archive a Ticket
+      hints:
+        destructive: true
+      call: crm-tickets-api.deleteticket
+    - name: batchreadtickets
+      description: HubSpot Batch Read Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchreadtickets
+    - name: batchcreatetickets
+      description: HubSpot Batch Create Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchcreatetickets
+    - name: batchupdatetickets
+      description: HubSpot Batch Update Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchupdatetickets
+    - name: batcharchivetickets
+      description: HubSpot Batch Archive Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batcharchivetickets
+    - name: searchtickets
+      description: HubSpot Search Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.searchtickets
+    - name: listticketassociations
+      description: HubSpot List Ticket Associations
+      hints:
+        readOnly: true
+      call: crm-tickets-api.listticketassociations
+    - name: createticketassociation
+      description: HubSpot Create a Ticket Association
+      hints:
+        readOnly: false
+      call: crm-tickets-api.createticketassociation
+    - name: deleteticketassociation
+      description: HubSpot Delete a Ticket Association
+      hints:
+        destructive: true
+      call: crm-tickets-api.deleteticketassociation

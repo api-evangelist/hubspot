@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "description": "Represents an error response from the API",
+  "name": "Error",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The error category"
+    },
+    "correlationId": {
+      "type": "uuid",
+      "description": "Unique identifier for the request, useful for debugging"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "More specific error classification"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error"
+    },
+    "links": {
+      "type": "object",
+      "description": "Helpful links related to the error"
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of detailed error information",
+      "items": {
+        "type": "object",
+        "description": "Detailed error information for specific validation failures",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Specific error message"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error sub-category"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location of the error (e.g., path, body, query)"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context for the error"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

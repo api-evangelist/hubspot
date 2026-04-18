@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "description": "Result of file validation",
+  "name": "ValidationResult",
+  "properties": {
+    "valid": {
+      "type": "boolean",
+      "description": "Whether the file passed validation"
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of validation errors (if any)",
+      "items": {
+        "type": "object",
+        "description": "A validation error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error description"
+          },
+          "line": {
+            "type": "integer",
+            "description": "Line number where the error occurred"
+          },
+          "column": {
+            "type": "integer",
+            "description": "Column number where the error occurred"
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category"
+          }
+        },
+        "required": [
+          "message",
+          "line"
+        ]
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "description": "List of validation warnings (if any)",
+      "items": {
+        "type": "object",
+        "description": "A validation warning",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Warning description"
+          },
+          "line": {
+            "type": "integer",
+            "description": "Line number where the warning occurred"
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "Suggested fix"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "valid"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

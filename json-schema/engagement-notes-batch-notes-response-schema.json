@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/engagement-notes-batch-notes-response-schema.json",
+  "title": "BatchNotesResponse",
+  "description": "Response for batch note operations",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ],
+      "description": "The status of the batch operation",
+      "example": "COMPLETE"
+    },
+    "results": {
+      "type": "array",
+      "description": "The results of the batch operation",
+      "items": {
+        "type": "object",
+        "description": "Represents a note engagement in the CRM",
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt",
+          "archived"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the note",
+            "example": "1024"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The note properties",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "hs_note_body": "Met with client to discuss Q1 goals. They are interested in expanding their subscription.",
+              "hs_timestamp": "2024-01-15T10:30:00.000Z",
+              "hubspot_owner_id": "12345"
+            }
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their change history",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PropertyHistory"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the note was created",
+            "example": "2024-01-15T10:30:00.000Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the note was last updated",
+            "example": "2024-01-15T11:00:00.000Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the note is archived",
+            "example": false
+          },
+          "archivedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the note was archived (if archived)",
+            "example": "2025-03-15T14:30:00Z"
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "1024",
+          "properties": {
+            "hs_note_body": "Met with client to discuss Q1 goals. They are interested in expanding their subscription.",
+            "hs_timestamp": "2024-01-15T10:30:00.000Z",
+            "hubspot_owner_id": "12345"
+          },
+          "propertiesWithHistory": {
+            "key": "value"
+          },
+          "createdAt": "2024-01-15T10:30:00.000Z",
+          "updatedAt": "2024-01-15T11:00:00.000Z",
+          "archived": false,
+          "archivedAt": "2025-03-15T14:30:00Z"
+        }
+      ]
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the batch was requested",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the batch processing started",
+      "example": "2024-01-15T10:30:00.000Z"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the batch processing completed",
+      "example": "2024-01-15T10:30:05.000Z"
+    },
+    "errors": {
+      "type": "array",
+      "description": "Any errors that occurred during batch processing",
+      "items": {
+        "type": "object",
+        "description": "Error information for a batch operation item",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The error status",
+            "example": "error"
+          },
+          "category": {
+            "type": "string",
+            "description": "The error category",
+            "example": "VALIDATION_ERROR"
+          },
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "Property value is invalid"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetail"
+            },
+            "example": [
+              {
+                "message": "This is an example description.",
+                "code": "example-value",
+                "in": "example-value",
+                "subCategory": "standard",
+                "context": {
+                  "key": "value"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "status": "error",
+          "category": "VALIDATION_ERROR",
+          "message": "Property value is invalid",
+          "context": {
+            "key": "value"
+          },
+          "errors": [
+            {}
+          ]
+        }
+      ]
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ]
+}

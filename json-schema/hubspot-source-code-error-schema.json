@@ -1,0 +1,111 @@
+{
+  "type": "object",
+  "description": "Standard error response",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Unique identifier for error tracking",
+      "format": "uuid",
+      "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message",
+      "example": "Invalid input (details will vary based on the error)"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "Specific error subcategory",
+      "example": "standard"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional error context",
+      "example": {
+        "missingScopes": [
+          "scope1",
+          "scope2"
+        ],
+        "invalidPropertyName": [
+          "propertyValue"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Links to relevant documentation",
+      "example": {
+        "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "Detailed error information",
+      "example": [
+        {
+          "message": "Required property 'path' is missing",
+          "code": "MISSING_REQUIRED_PROPERTY",
+          "subCategory": "standard",
+          "in": "body",
+          "context": {
+            "missingScopes": [
+              "scope1",
+              "scope2"
+            ]
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "Required property 'path' is missing"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "MISSING_REQUIRED_PROPERTY"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "standard"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location of the error",
+            "example": "body"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context",
+            "example": {
+              "missingScopes": [
+                "scope1",
+                "scope2"
+              ]
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-action-definition-revision-collection-schema.json",
+  "title": "ActionDefinitionRevisionCollection",
+  "description": "A paginated collection of action definition revisions",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "List of revisions",
+      "items": {
+        "type": "object",
+        "description": "A revision of an action definition",
+        "required": [
+          "revisionId",
+          "definition",
+          "createdAt"
+        ],
+        "properties": {
+          "revisionId": {
+            "type": "string",
+            "description": "The unique identifier of the revision",
+            "example": "500123"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/ActionDefinition"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the revision was created",
+            "example": "2025-03-15T14:30:00Z"
+          }
+        }
+      },
+      "example": [
+        {
+          "revisionId": "500123",
+          "definition": {},
+          "createdAt": "2025-03-15T14:30:00Z"
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            }
+          },
+          "example": {
+            "after": "example-value"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

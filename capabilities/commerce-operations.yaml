@@ -1,0 +1,128 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Commerce Operations
+  description: Commerce workflow for managing payments and subscriptions.
+  tags:
+  - HubSpot
+  - Commerce
+  - Payments
+  - Subscriptions
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: commerce-payments-api
+    location: ./shared/commerce-payments-api.yaml
+  - import: commerce-subscriptions-api
+    location: ./shared/commerce-subscriptions-api.yaml
+  exposes:
+  - type: mcp
+    port: 9094
+    namespace: commerce-operations-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot Commerce Operations.
+    tools:
+    - name: batchreadcommercepayments
+      description: HubSpot Read a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchreadcommercepayments
+    - name: batcharchivecommercepayments
+      description: HubSpot Archive a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batcharchivecommercepayments
+    - name: batchcreatecommercepayments
+      description: HubSpot Create a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchcreatecommercepayments
+    - name: batchupdatecommercepayments
+      description: HubSpot Update a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchupdatecommercepayments
+    - name: listcommercepayments
+      description: HubSpot List Commerce Payments
+      hints:
+        readOnly: true
+      call: commerce-payments-api.listcommercepayments
+    - name: createcommercepayment
+      description: HubSpot Create a Commerce Payment
+      hints:
+        readOnly: false
+      call: commerce-payments-api.createcommercepayment
+    - name: getcommercepaymentbyid
+      description: HubSpot Retrieve a Commerce Payment
+      hints:
+        readOnly: true
+      call: commerce-payments-api.getcommercepaymentbyid
+    - name: updatecommercepaymentbyid
+      description: HubSpot Update a Commerce Payment
+      hints:
+        readOnly: false
+      call: commerce-payments-api.updatecommercepaymentbyid
+    - name: archivecommercepaymentbyid
+      description: HubSpot Archive a Commerce Payment
+      hints:
+        destructive: true
+      call: commerce-payments-api.archivecommercepaymentbyid
+    - name: searchcommercepayments
+      description: HubSpot Search Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.searchcommercepayments
+    - name: listsubscriptions
+      description: HubSpot List Subscriptions
+      hints:
+        readOnly: true
+      call: commerce-subscriptions-api.listsubscriptions
+    - name: createsubscription
+      description: HubSpot Create a Subscription
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.createsubscription
+    - name: getsubscription
+      description: HubSpot Get a Subscription
+      hints:
+        readOnly: true
+      call: commerce-subscriptions-api.getsubscription
+    - name: updatesubscription
+      description: HubSpot Update a Subscription
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.updatesubscription
+    - name: deletesubscription
+      description: HubSpot Archive a Subscription
+      hints:
+        destructive: true
+      call: commerce-subscriptions-api.deletesubscription
+    - name: batchreadsubscriptions
+      description: HubSpot Batch Read Subscriptions
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.batchreadsubscriptions
+    - name: batchcreatesubscriptions
+      description: HubSpot Batch Create Subscriptions
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.batchcreatesubscriptions
+    - name: batchupdatesubscriptions
+      description: HubSpot Batch Update Subscriptions
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.batchupdatesubscriptions
+    - name: searchsubscriptions
+      description: HubSpot Search Subscriptions
+      hints:
+        readOnly: false
+      call: commerce-subscriptions-api.searchsubscriptions
+    - name: listsubscriptionassociations
+      description: HubSpot List Subscription Associations
+      hints:
+        readOnly: true
+      call: commerce-subscriptions-api.listsubscriptionassociations

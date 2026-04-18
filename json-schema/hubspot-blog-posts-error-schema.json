@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "description": "Standard error response",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "Error category",
+      "example": "standard"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Unique tracking identifier",
+      "format": "uuid",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "message": {
+      "type": "string",
+      "description": "Error message",
+      "example": "This is an example description."
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "Error subcategory",
+      "example": "standard"
+    },
+    "context": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "subCategory": "standard",
+          "in": "example-value",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "standard"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location of error",
+            "example": "example-value"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

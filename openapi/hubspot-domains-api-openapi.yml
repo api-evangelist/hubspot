@@ -19,17 +19,17 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: Domain Management
-    description: Operations for managing and retrieving domain information
+- name: Domain Management
+  description: Operations for managing and retrieving domain information
 paths:
   /cms/v3/domains/:
     get:
       tags:
-        - Domain Management
-      summary: HubSpot List all domains
+      - Domain Management
+      summary: Hubspot List All Domains
       description: |
         Returns all existing domains that have been created and connected to the HubSpot account.
         Results can be filtered by creation or update date and paginated using cursor-based pagination.
@@ -39,16 +39,26 @@ paths:
         dispatcherRules: |
           return "ListDomainsSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/CreatedAtParam'
-        - $ref: '#/components/parameters/CreatedAfterParam'
-        - $ref: '#/components/parameters/CreatedBeforeParam'
-        - $ref: '#/components/parameters/UpdatedAtParam'
-        - $ref: '#/components/parameters/UpdatedAfterParam'
-        - $ref: '#/components/parameters/UpdatedBeforeParam'
-        - $ref: '#/components/parameters/SortParam'
-        - $ref: '#/components/parameters/AfterParam'
-        - $ref: '#/components/parameters/LimitParam'
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/CreatedAtParam'
+        example: example-value
+      - $ref: '#/components/parameters/CreatedAfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/CreatedBeforeParam'
+        example: example-value
+      - $ref: '#/components/parameters/UpdatedAtParam'
+        example: example-value
+      - $ref: '#/components/parameters/UpdatedAfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/UpdatedBeforeParam'
+        example: example-value
+      - $ref: '#/components/parameters/SortParam'
+        example: example-value
+      - $ref: '#/components/parameters/AfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/LimitParam'
+        example: example-value
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the list of domains
@@ -69,19 +79,19 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - cms.domains.read
-        - OAuth2:
-            - cms.domains.write
-        - PrivateApp:
-            - cms.domains.read
-        - PrivateApp:
-            - cms.domains.write
+      - OAuth2:
+        - cms.domains.read
+      - OAuth2:
+        - cms.domains.write
+      - PrivateApp:
+        - cms.domains.read
+      - PrivateApp:
+        - cms.domains.write
   /cms/v3/domains/{domainId}:
     get:
       tags:
-        - Domain Management
-      summary: HubSpot Get a domain by ID
+      - Domain Management
+      summary: Hubspot Get a Domain by Id
       description: |
         Returns detailed information about a single domain identified by its unique ID.
         The response includes configuration status, SSL settings, and usage information.
@@ -91,7 +101,8 @@ paths:
         dispatcherRules: |
           return "GetDomainSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/DomainIdParam'
+      - $ref: '#/components/parameters/DomainIdParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the domain
@@ -112,28 +123,28 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - cms.domains.read
-        - OAuth2:
-            - cms.domains.write
-        - PrivateApp:
-            - cms.domains.read
-        - PrivateApp:
-            - cms.domains.write
+      - OAuth2:
+        - cms.domains.read
+      - OAuth2:
+        - cms.domains.write
+      - PrivateApp:
+        - cms.domains.read
+      - PrivateApp:
+        - cms.domains.write
 components:
   schemas:
     Domain:
       type: object
       description: Represents a domain connected to a HubSpot CMS site
       required:
-        - id
-        - domain
-        - isResolving
-        - isUsedForBlogPost
-        - isUsedForSitePage
-        - isUsedForLandingPage
-        - isUsedForEmail
-        - isUsedForKnowledge
+      - id
+      - domain
+      - isResolving
+      - isUsedForBlogPost
+      - isUsedForSitePage
+      - isUsedForLandingPage
+      - isUsedForEmail
+      - isUsedForKnowledge
       properties:
         id:
           type: string
@@ -220,12 +231,13 @@ components:
         secondaryToDomain:
           type: string
           description: The primary domain this domain is secondary to
+          example: example.hubspot.com
     DomainCollectionResponse:
       type: object
       description: A paginated collection of domains
       required:
-        - total
-        - results
+      - total
+      - results
       properties:
         total:
           type: integer
@@ -237,6 +249,28 @@ components:
           description: The list of domains
           items:
             $ref: '#/components/schemas/Domain'
+          example:
+          - id: "3210329704"
+            domain: "99558489.hubspot.com"
+            createdAt: "2017-07-11T13:00:52.928Z"
+            updatedAt: "2019-10-08T16:54:57.165Z"
+            isResolving: true
+            isManuallyMarkedAsResolving: false
+            isSslEnabled: true
+            isSslOnly: false
+            isPrimaryBlogPost: true
+            isPrimarySitePage: false
+            isPrimaryLandingPage: false
+            isPrimaryEmail: false
+            isPrimaryKnowledge: false
+            isUsedForBlogPost: true
+            isUsedForSitePage: false
+            isUsedForLandingPage: false
+            isUsedForEmail: false
+            isUsedForKnowledge: false
+            expectedCname: "99558489.group39.sites.hubspot.net"
+            redirectTo: ""
+            secondaryToDomain: example.hubspot.com
         paging:
           $ref: '#/components/schemas/ForwardPaging'
     ForwardPaging:
@@ -249,7 +283,7 @@ components:
       type: object
       description: Information about the next page of results
       required:
-        - after
+      - after
       properties:
         after:
           type: string
@@ -263,9 +297,9 @@ components:
       type: object
       description: Represents an error response from the API
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -283,6 +317,7 @@ components:
         subCategory:
           type: string
           description: A more specific category for the error
+          example: standard
         context:
           type: object
           description: Additional context about the error
@@ -292,8 +327,8 @@ components:
               type: string
           example:
             missingScopes:
-              - "scope1"
-              - "scope2"
+            - "scope1"
+            - "scope2"
         links:
           type: object
           description: Links to documentation or remediation steps
@@ -306,24 +341,35 @@ components:
           description: A list of specific error details
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     ErrorDetail:
       type: object
       description: Detailed information about a specific error
       required:
-        - message
+      - message
       properties:
         message:
           type: string
           description: A human-readable message describing the specific error
+          example: This is an example description.
         code:
           type: string
           description: An error code for this specific error
+          example: example-value
         in:
           type: string
           description: The field or parameter where the error occurred
+          example: example-value
         subCategory:
           type: string
           description: A specific subcategory for this error
+          example: standard
         context:
           type: object
           description: Additional context for this error
@@ -331,6 +377,8 @@ components:
             type: array
             items:
               type: string
+          example:
+            key: value
   parameters:
     DomainIdParam:
       name: domainId
@@ -429,46 +477,46 @@ components:
       value:
         total: 2
         results:
-          - id: "1234"
-            domain: "234.hs-sites.com"
-            createdAt: "2017-07-24T17:24:09.141Z"
-            updatedAt: "2017-07-25T18:20:00.000Z"
-            isResolving: true
-            isManuallyMarkedAsResolving: false
-            isSslEnabled: true
-            isSslOnly: false
-            isPrimaryBlogPost: true
-            isPrimarySitePage: false
-            isPrimaryLandingPage: false
-            isPrimaryEmail: false
-            isPrimaryKnowledge: false
-            isUsedForBlogPost: true
-            isUsedForSitePage: false
-            isUsedForLandingPage: false
-            isUsedForEmail: false
-            isUsedForKnowledge: false
-            expectedCname: "234.group34.sites.hubspot.net"
-            redirectTo: ""
-          - id: "4321"
-            domain: "test.demo.com"
-            createdAt: "2017-07-11T13:00:52.928Z"
-            updatedAt: "2019-10-08T16:54:57.165Z"
-            isResolving: true
-            isManuallyMarkedAsResolving: false
-            isSslEnabled: true
-            isSslOnly: false
-            isPrimaryBlogPost: true
-            isPrimarySitePage: false
-            isPrimaryLandingPage: false
-            isPrimaryEmail: false
-            isPrimaryKnowledge: false
-            isUsedForBlogPost: true
-            isUsedForSitePage: false
-            isUsedForLandingPage: false
-            isUsedForEmail: false
-            isUsedForKnowledge: false
-            expectedCname: "234.group34.sites.hubspot.net"
-            redirectTo: ""
+        - id: "1234"
+          domain: "234.hs-sites.com"
+          createdAt: "2017-07-24T17:24:09.141Z"
+          updatedAt: "2017-07-25T18:20:00.000Z"
+          isResolving: true
+          isManuallyMarkedAsResolving: false
+          isSslEnabled: true
+          isSslOnly: false
+          isPrimaryBlogPost: true
+          isPrimarySitePage: false
+          isPrimaryLandingPage: false
+          isPrimaryEmail: false
+          isPrimaryKnowledge: false
+          isUsedForBlogPost: true
+          isUsedForSitePage: false
+          isUsedForLandingPage: false
+          isUsedForEmail: false
+          isUsedForKnowledge: false
+          expectedCname: "234.group34.sites.hubspot.net"
+          redirectTo: ""
+        - id: "4321"
+          domain: "test.demo.com"
+          createdAt: "2017-07-11T13:00:52.928Z"
+          updatedAt: "2019-10-08T16:54:57.165Z"
+          isResolving: true
+          isManuallyMarkedAsResolving: false
+          isSslEnabled: true
+          isSslOnly: false
+          isPrimaryBlogPost: true
+          isPrimarySitePage: false
+          isPrimaryLandingPage: false
+          isPrimaryEmail: false
+          isPrimaryKnowledge: false
+          isUsedForBlogPost: true
+          isUsedForSitePage: false
+          isUsedForLandingPage: false
+          isUsedForEmail: false
+          isUsedForKnowledge: false
+          expectedCname: "234.group34.sites.hubspot.net"
+          redirectTo: ""
     GetDomainSuccessResponse:
       summary: Successful response for a single domain
       value:

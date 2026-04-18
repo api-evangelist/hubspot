@@ -1,0 +1,140 @@
+{
+  "type": "object",
+  "description": "Response for batch note operations",
+  "name": "BatchNotesResponse",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The status of the batch operation",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "description": "The results of the batch operation",
+      "items": {
+        "type": "object",
+        "description": "Represents a note engagement in the CRM",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the note"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The note properties"
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their change history"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "When the note was created"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "When the note was last updated"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the note is archived"
+          },
+          "archivedAt": {
+            "type": "datetime",
+            "description": "When the note was archived (if archived)"
+          }
+        },
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt",
+          "archived"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "datetime",
+      "description": "When the batch was requested"
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "When the batch processing started"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "When the batch processing completed"
+    },
+    "errors": {
+      "type": "array",
+      "description": "Any errors that occurred during batch processing",
+      "items": {
+        "type": "object",
+        "description": "Error information for a batch operation item",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "The error status"
+          },
+          "category": {
+            "type": "string",
+            "description": "The error category"
+          },
+          "message": {
+            "type": "string",
+            "description": "The error message"
+          },
+          "context": {
+            "type": "object"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Detailed error information",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "Error message"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "Error code"
+                },
+                "in": {
+                  "type": "string",
+                  "description": "Field where error occurred"
+                },
+                "subCategory": {
+                  "type": "string",
+                  "description": "Error subcategory"
+                },
+                "context": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

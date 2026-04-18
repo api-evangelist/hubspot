@@ -1,0 +1,236 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Blog Authors API
+  description: "The HubSpot Blog Authors API enables you to manage author information for your \nblog posts. Create, update, retrieve, and delete blog author profiles, manage \nmulti-language author groups,
+    and perform"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: authors-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Blog Authors API enables you to manage author information for your \nblog posts. Create, update, retrieve, and delete blog author profiles, manage \nmulti-language author groups,
+      and perform"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: authors
+      path: /authors
+      description: authors operations
+      operations:
+      - name: listblogauthors
+        method: GET
+        description: HubSpot List All Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createblogauthor
+        method: POST
+        description: HubSpot Create a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getblogauthorbyid
+        method: GET
+        description: HubSpot Retrieve a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateblogauthor
+        method: PATCH
+        description: HubSpot Update a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archiveblogauthor
+        method: DELETE
+        description: HubSpot Archive a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadblogauthors
+        method: POST
+        description: HubSpot Read Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateblogauthors
+        method: POST
+        description: HubSpot Create Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdateblogauthors
+        method: POST
+        description: HubSpot Update Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchiveblogauthors
+        method: POST
+        description: HubSpot Archive Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: detach-from-lang-group
+      path: /detach-from-lang-group
+      description: detach-from-lang-group operations
+      operations:
+      - name: detachblogauthorfromlanguagegroup
+        method: POST
+        description: HubSpot Detach Author from Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: set-new-lang-primary
+      path: /set-new-lang-primary
+      description: set-new-lang-primary operations
+      operations:
+      - name: setnewblogauthorlanguageprimary
+        method: PUT
+        description: HubSpot Set New Primary Language
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: attach-to-lang-group
+      path: /attach-to-lang-group
+      description: attach-to-lang-group operations
+      operations:
+      - name: attachblogauthortolanguagegroup
+        method: POST
+        description: HubSpot Attach Author to Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create-language-variation
+      path: /create-language-variation
+      description: create-language-variation operations
+      operations:
+      - name: createblogauthorlanguagevariation
+        method: POST
+        description: HubSpot Create Language Variation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9101
+    namespace: authors-api-mcp
+    transport: http
+    tools:
+    - name: listblogauthors
+      description: HubSpot List All Blog Authors
+      hints:
+        readOnly: true
+      call: authors-api.listblogauthors
+    - name: createblogauthor
+      description: HubSpot Create a Blog Author
+      hints:
+        readOnly: false
+      call: authors-api.createblogauthor
+    - name: getblogauthorbyid
+      description: HubSpot Retrieve a Blog Author
+      hints:
+        readOnly: true
+      call: authors-api.getblogauthorbyid
+    - name: updateblogauthor
+      description: HubSpot Update a Blog Author
+      hints:
+        readOnly: false
+      call: authors-api.updateblogauthor
+    - name: archiveblogauthor
+      description: HubSpot Archive a Blog Author
+      hints:
+        destructive: true
+      call: authors-api.archiveblogauthor
+    - name: batchreadblogauthors
+      description: HubSpot Read Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchreadblogauthors
+    - name: batchcreateblogauthors
+      description: HubSpot Create Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchcreateblogauthors
+    - name: batchupdateblogauthors
+      description: HubSpot Update Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchupdateblogauthors
+    - name: batcharchiveblogauthors
+      description: HubSpot Archive Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batcharchiveblogauthors
+    - name: detachblogauthorfromlanguagegroup
+      description: HubSpot Detach Author from Language Group
+      hints:
+        readOnly: false
+      call: authors-api.detachblogauthorfromlanguagegroup
+    - name: setnewblogauthorlanguageprimary
+      description: HubSpot Set New Primary Language
+      hints:
+        readOnly: false
+      call: authors-api.setnewblogauthorlanguageprimary
+    - name: attachblogauthortolanguagegroup
+      description: HubSpot Attach Author to Language Group
+      hints:
+        readOnly: false
+      call: authors-api.attachblogauthortolanguagegroup
+    - name: createblogauthorlanguagevariation
+      description: HubSpot Create Language Variation
+      hints:
+        readOnly: false
+      call: authors-api.createblogauthorlanguagevariation

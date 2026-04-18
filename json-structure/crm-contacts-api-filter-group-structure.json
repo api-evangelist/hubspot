@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-contacts-api-filter-group-structure.json",
+  "name": "FilterGroup",
+  "description": "A group of filters combined with AND logic.",
+  "type": "object",
+  "properties": {
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A single filter condition.",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The name of the property to filter on.",
+            "example": "Example Record"
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "EQ",
+              "NEQ",
+              "LT",
+              "LTE",
+              "GT",
+              "GTE",
+              "BETWEEN",
+              "IN",
+              "NOT_IN",
+              "HAS_PROPERTY",
+              "NOT_HAS_PROPERTY",
+              "CONTAINS_TOKEN",
+              "NOT_CONTAINS_TOKEN"
+            ],
+            "description": "The filter operator.",
+            "example": "EQ"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to compare against.",
+            "example": "example-value"
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "Example Record",
+          "operator": "EQ",
+          "value": "example-value"
+        }
+      ]
+    }
+  }
+}

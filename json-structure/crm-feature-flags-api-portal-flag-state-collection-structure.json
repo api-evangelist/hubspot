@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-feature-flags-api-portal-flag-state-collection-structure.json",
+  "name": "PortalFlagStateCollection",
+  "description": "A paginated collection of portal flag states",
+  "type": "object",
+  "properties": {
+    "portalFlagStates": {
+      "type": "array",
+      "description": "List of portal flag states",
+      "items": {
+        "type": "object",
+        "description": "Represents the flag state override for a specific portal (account)",
+        "required": [
+          "appId",
+          "flagName",
+          "portalId",
+          "flagState"
+        ],
+        "properties": {
+          "appId": {
+            "type": "int64",
+            "description": "The unique identifier for the HubSpot application",
+            "example": 12345678
+          },
+          "flagName": {
+            "type": "string",
+            "description": "The name of the feature flag",
+            "example": "new-dashboard-feature"
+          },
+          "portalId": {
+            "type": "int64",
+            "description": "The unique identifier for the HubSpot portal (account)",
+            "example": 98765432
+          },
+          "flagState": {
+            "$ref": "#/components/schemas/FlagState"
+          }
+        }
+      },
+      "example": [
+        {
+          "appId": 12345678,
+          "flagName": "new-dashboard-feature",
+          "portalId": 98765432,
+          "flagState": {}
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information for fetching the next page of results",
+          "required": [
+            "after"
+          ],
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page",
+              "example": "NTI1Cg%3D%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "Direct link to the next page",
+              "example": "https://api.hubapi.com/feature-flags/v3/12345678/flags/new-dashboard-feature/portals?after=NTI1Cg%3D%3D"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "portalFlagStates"
+  ]
+}

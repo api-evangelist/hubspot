@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-payments-api-batch-update-request-structure.json",
+  "name": "BatchUpdateRequest",
+  "description": "Request body for batch updating commerce payments",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payments to update",
+      "items": {
+        "type": "object",
+        "description": "A single input item for batch update",
+        "required": [
+          "id",
+          "properties"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the payment to update",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties to update",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "idProperty": {
+            "type": "string",
+            "description": "The property to use as the identifier",
+            "example": "500123"
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "idProperty": "500123"
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

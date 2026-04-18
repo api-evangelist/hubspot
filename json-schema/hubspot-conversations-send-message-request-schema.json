@@ -1,0 +1,67 @@
+{
+  "type": "object",
+  "description": "Request payload for sending a message to a thread.",
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Type of message to send",
+      "example": "MESSAGE",
+      "enum": [
+        "MESSAGE",
+        "COMMENT"
+      ]
+    },
+    "text": {
+      "type": "string",
+      "description": "Plain text content of the message",
+      "example": "Thank you for reaching out. How can I help you today?"
+    },
+    "richText": {
+      "type": "string",
+      "description": "Rich text (HTML) content",
+      "example": "<p>Thank you for reaching out. How can I help you today?</p>"
+    },
+    "senderActorId": {
+      "type": "string",
+      "description": "Actor ID of the sender",
+      "example": "actor_agent_123"
+    },
+    "channelId": {
+      "type": "string",
+      "description": "Channel to send on",
+      "example": "channel_789"
+    },
+    "channelAccountId": {
+      "type": "string",
+      "description": "Channel account to use",
+      "example": "account_123"
+    },
+    "recipients": {
+      "type": "array",
+      "description": "Message recipients",
+      "example": [
+        {
+          "actorId": "actor_101"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Recipient information for a message.",
+        "properties": {
+          "actorId": {
+            "type": "string",
+            "description": "Actor ID of the recipient",
+            "example": "actor_101"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "type",
+    "text",
+    "senderActorId"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SendMessageRequest"
+}

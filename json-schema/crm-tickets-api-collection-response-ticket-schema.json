@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-tickets-api-collection-response-ticket-schema.json",
+  "title": "CollectionResponseTicket",
+  "description": "A paginated list of ticket records.",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A HubSpot ticket record.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the ticket.",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The ticket's properties as key-value pairs.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the ticket was created.",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the ticket was last updated.",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the ticket has been archived.",
+            "example": true
+          },
+          "associations": {
+            "type": "object",
+            "description": "The ticket's associations with other CRM objects.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CollectionResponseAssociation"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "archived": true,
+          "associations": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "after": "example-value"
+          }
+        }
+      }
+    }
+  }
+}

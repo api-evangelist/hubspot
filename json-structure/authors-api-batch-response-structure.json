@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/authors-api-batch-response-structure.json",
+  "name": "BatchResponse",
+  "description": "Response from batch operations",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ],
+      "description": "Current status of the batch operation",
+      "example": "PENDING"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Represents a blog author profile with biographical and social information",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the blog author",
+            "example": "500123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full display name of the author",
+            "example": "Example Record"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly identifier for the author",
+            "example": "example-value"
+          },
+          "email": {
+            "type": "string",
+            "description": "Author's email address",
+            "example": "jsmith@example.com"
+          },
+          "bio": {
+            "type": "string",
+            "description": "Author biography or description",
+            "example": "example-value"
+          },
+          "website": {
+            "type": "uri",
+            "description": "Author's personal website URL",
+            "example": "https://app.hubspot.com/contacts/12345"
+          },
+          "twitter": {
+            "type": "string",
+            "description": "Author's Twitter/X handle",
+            "example": "example-value"
+          },
+          "facebook": {
+            "type": "string",
+            "description": "Author's Facebook profile URL",
+            "example": "example-value"
+          },
+          "linkedin": {
+            "type": "string",
+            "description": "Author's LinkedIn profile URL",
+            "example": "https://app.hubspot.com/contacts/12345"
+          },
+          "avatar": {
+            "type": "uri",
+            "description": "URL to the author's avatar image",
+            "example": "https://app.hubspot.com/contacts/12345"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code for the author profile (e.g., en, es, fr)",
+            "example": "en"
+          },
+          "translatedFromId": {
+            "type": "string",
+            "description": "ID of the original author this was translated from",
+            "example": "500123"
+          },
+          "created": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was created",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updated": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was last updated",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "deletedAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was archived",
+            "example": "2025-03-15T14:30:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created",
+          "updated"
+        ]
+      },
+      "description": "Successfully processed authors",
+      "example": [
+        {
+          "id": "500123",
+          "name": "Example Record",
+          "slug": "example-value",
+          "email": "jsmith@example.com",
+          "bio": "example-value",
+          "website": "https://app.hubspot.com/contacts/12345",
+          "twitter": "example-value",
+          "facebook": "example-value",
+          "linkedin": "https://app.hubspot.com/contacts/12345",
+          "avatar": "https://app.hubspot.com/contacts/12345",
+          "language": "en",
+          "translatedFromId": "500123",
+          "created": "2025-03-15T14:30:00Z",
+          "updated": "2025-03-15T14:30:00Z",
+          "deletedAt": "2025-03-15T14:30:00Z"
+        }
+      ]
+    },
+    "requestedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when the batch was requested",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when processing started",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when processing completed",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Related links for the batch operation",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-action-function-collection-schema.json",
+  "title": "ActionFunctionCollection",
+  "description": "A collection of action functions",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "List of action functions",
+      "items": {
+        "type": "object",
+        "description": "A serverless function associated with an action",
+        "required": [
+          "id",
+          "functionType",
+          "functionSource"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the function",
+            "example": "500123"
+          },
+          "functionType": {
+            "type": "string",
+            "enum": [
+              "PRE_ACTION_EXECUTION",
+              "PRE_FETCH_OPTIONS",
+              "POST_FETCH_OPTIONS",
+              "POST_ACTION_EXECUTION"
+            ],
+            "description": "The type of function",
+            "example": "PRE_ACTION_EXECUTION"
+          },
+          "functionSource": {
+            "type": "string",
+            "description": "The JavaScript source code of the function",
+            "example": "example-value"
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "functionType": "PRE_ACTION_EXECUTION",
+          "functionSource": "example-value"
+        }
+      ]
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

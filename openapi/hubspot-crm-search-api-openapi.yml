@@ -11,18 +11,18 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Search
-    description: Operations for searching CRM objects
+- name: Search
+  description: Operations for searching CRM objects
 paths:
   /crm/v3/objects/{objectType}/search:
     post:
       operationId: searchCRMObjects
-      summary: HubSpot Search CRM objects
+      summary: Hubspot Search Crm Objects
       description: >-
         Searches for CRM object records of the specified type using filter
         groups, sort criteria, and other query parameters. Supports complex
@@ -30,18 +30,19 @@ paths:
         each group contains filters (joined with AND logic). Returns matching
         records with the specified properties.
       tags:
-        - Search
+      - Search
       parameters:
-        - name: objectType
-          in: path
-          required: true
-          description: >-
-            The type of CRM object to search. Supported values include contacts,
-            companies, deals, tickets, products, line_items, quotes, and
-            custom object type names.
-          schema:
-            type: string
-            example: contacts
+      - name: objectType
+        in: path
+        required: true
+        description: >-
+          The type of CRM object to search. Supported values include contacts,
+          companies, deals, tickets, products, line_items, quotes, and
+          custom object type names.
+        schema:
+          type: string
+          example: contacts
+        example: contacts
       requestBody:
         required: true
         content:
@@ -53,34 +54,34 @@ paths:
                 summary: Filter contacts by email domain
                 value:
                   filterGroups:
-                    - filters:
-                        - propertyName: email
-                          operator: CONTAINS_TOKEN
-                          value: '@example.com'
+                  - filters:
+                    - propertyName: email
+                      operator: CONTAINS_TOKEN
+                      value: '@example.com'
                   properties:
-                    - email
-                    - firstname
-                    - lastname
+                  - email
+                  - firstname
+                  - lastname
                   limit: 10
               filterByDealStage:
                 summary: Filter deals by stage and amount
                 value:
                   filterGroups:
-                    - filters:
-                        - propertyName: dealstage
-                          operator: EQ
-                          value: contractsent
-                        - propertyName: amount
-                          operator: GT
-                          value: '10000'
-                  sorts:
+                  - filters:
+                    - propertyName: dealstage
+                      operator: EQ
+                      value: contractsent
                     - propertyName: amount
-                      direction: DESCENDING
+                      operator: GT
+                      value: '10000'
+                  sorts:
+                  - propertyName: amount
+                    direction: DESCENDING
                   properties:
-                    - dealname
-                    - amount
-                    - dealstage
-                    - closedate
+                  - dealname
+                  - amount
+                  - dealstage
+                  - closedate
                   limit: 20
       responses:
         '200':
@@ -89,10 +90,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
+              examples:
+                Searchcrmobjects200Example:
+                  summary: Default searchCRMObjects 200 response
+                  x-microcks-default: true
+                  value:
+                    total: 10
+                    results: &id002
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -114,16 +133,23 @@ components:
             a group are all required (AND logic within groups).
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
         sorts:
           type: array
           description: An array of sort criteria to order the results.
           items:
             $ref: '#/components/schemas/Sort'
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
         query:
           type: string
           description: >-
             A full-text search query string. When provided, returns records
             where any searchable property contains the query term.
+          example: example-value
         properties:
           type: array
           description: >-
@@ -131,16 +157,20 @@ components:
             record. If not specified, a default set of properties is returned.
           items:
             type: string
+          example:
+          - example-value
         limit:
           type: integer
           description: The maximum number of results to return. Maximum value is 200.
           default: 10
           maximum: 200
+          example: 10
         after:
           type: string
           description: >-
             The cursor token for pagination. Use the value from the previous
             response's paging.next.after to get the next page of results.
+          example: example-value
     FilterGroup:
       type: object
       description: >-
@@ -152,62 +182,77 @@ components:
           description: An array of filters, all of which must match (AND logic).
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+            highValue: example-value
+            values:
+            - {}
     Filter:
       type: object
       description: A single filter condition for a CRM object property.
       required:
-        - propertyName
-        - operator
+      - propertyName
+      - operator
       properties:
         propertyName:
           type: string
           description: The name of the CRM property to filter on.
+          example: Example Record
         operator:
           type: string
           description: The comparison operator for the filter.
           enum:
-            - EQ
-            - NEQ
-            - LT
-            - LTE
-            - GT
-            - GTE
-            - BETWEEN
-            - IN
-            - NOT_IN
-            - HAS_PROPERTY
-            - NOT_HAS_PROPERTY
-            - CONTAINS_TOKEN
-            - NOT_CONTAINS_TOKEN
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
         value:
           type: string
           description: >-
             The value to compare against. Not required for HAS_PROPERTY and
             NOT_HAS_PROPERTY operators.
+          example: example-value
         highValue:
           type: string
           description: >-
             The upper bound value for BETWEEN operator comparisons.
+          example: example-value
         values:
           type: array
           items:
             type: string
           description: >-
             An array of values for IN and NOT_IN operator comparisons.
+          example:
+          - example-value
     Sort:
       type: object
       description: A sort criterion for ordering search results.
       required:
-        - propertyName
+      - propertyName
       properties:
         propertyName:
           type: string
           description: The name of the CRM property to sort by.
+          example: Example Record
         direction:
           type: string
           description: The sort direction.
           enum: [ASCENDING, DESCENDING]
           default: ASCENDING
+          example: ASCENDING
     CRMObject:
       type: object
       description: A CRM object record returned from a search.
@@ -215,22 +260,27 @@ components:
         id:
           type: string
           description: The unique identifier for the CRM record.
+          example: '500123'
         properties:
           type: object
           description: The CRM record's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
           description: The date and time the record was created.
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
           description: The date and time the record was last updated.
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
           description: Whether the record has been archived.
+          example: true
     SearchResponse:
       type: object
       description: The response from a CRM search operation.
@@ -238,11 +288,13 @@ components:
         total:
           type: integer
           description: The total number of records matching the search criteria.
+          example: 10
         results:
           type: array
           description: The matching CRM records for the current page.
           items:
             $ref: '#/components/schemas/CRMObject'
+          example: *id002
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -259,18 +311,25 @@ components:
             link:
               type: string
               description: A URL link to the next page of results.
+          example:
+            after: example-value
+            link: https://app.hubspot.com/contacts/12345
     Error:
       type: object
       description: An error response.
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
         errors:
           type: array
           items:
@@ -282,6 +341,10 @@ components:
                 type: string
               code:
                 type: string
+          example:
+          - message: This is an example description.
+            in: example-value
+            code: example-value
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

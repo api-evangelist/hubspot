@@ -1,0 +1,79 @@
+{
+  "type": "object",
+  "description": "A paginated collection of calls",
+  "name": "CallCollectionResponse",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "The list of calls",
+      "items": {
+        "type": "object",
+        "description": "Represents a call engagement in the CRM",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the call"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The call properties"
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their change history"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "When the call was created"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "When the call was last updated"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the call is archived"
+          },
+          "archivedAt": {
+            "type": "datetime",
+            "description": "When the call was archived (if archived)"
+          }
+        },
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt",
+          "archived"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information about the next page",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page"
+            }
+          },
+          "required": [
+            "after"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

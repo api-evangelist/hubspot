@@ -1,0 +1,315 @@
+{
+  "type": "object",
+  "description": "Input for creating a new action definition",
+  "properties": {
+    "actionUrl": {
+      "type": "string",
+      "description": "The URL that HubSpot will call when the action executes",
+      "format": "uri",
+      "example": "https://app.hubspot.com/contacts/12345"
+    },
+    "labels": {
+      "type": "object",
+      "description": "Human-readable labels for the action",
+      "properties": {
+        "actionName": {
+          "type": "string",
+          "description": "The display name of the action",
+          "example": "Example Record"
+        },
+        "actionDescription": {
+          "type": "string",
+          "description": "A description of what the action does",
+          "example": "This is an example description."
+        },
+        "appDisplayName": {
+          "type": "string",
+          "description": "The name of the app providing this action",
+          "example": "Example Record"
+        },
+        "actionCardContent": {
+          "type": "string",
+          "description": "Content to display on the action card in the workflow editor",
+          "example": "example-value"
+        }
+      },
+      "required": [
+        "actionName"
+      ]
+    },
+    "inputFields": {
+      "type": "array",
+      "description": "Input fields for the action",
+      "example": [
+        {
+          "typeDefinition": {},
+          "supportedValueTypes": [
+            {}
+          ],
+          "isRequired": true
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "An input field for the action",
+        "properties": {
+          "typeDefinition": {
+            "type": "object",
+            "description": "Definition of a field's type and configuration",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The programmatic name of the field",
+                "example": "Example Record"
+              },
+              "type": {
+                "type": "string",
+                "description": "The data type of the field",
+                "example": "STRING",
+                "enum": [
+                  "STRING",
+                  "NUMBER",
+                  "BOOL",
+                  "DATE",
+                  "DATETIME",
+                  "ENUMERATION",
+                  "PHONE_NUMBER",
+                  "CURRENCY"
+                ]
+              },
+              "fieldType": {
+                "type": "string",
+                "description": "The UI field type for input",
+                "example": "TEXT",
+                "enum": [
+                  "TEXT",
+                  "TEXTAREA",
+                  "NUMBER",
+                  "SELECT",
+                  "BOOLEANCHECKBOX",
+                  "DATE",
+                  "FILE"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "description": "Human-readable label for the field",
+                "example": "Example Record"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the field",
+                "example": "This is an example description."
+              },
+              "options": {
+                "type": "array",
+                "description": "Options for enumeration fields",
+                "example": [
+                  {
+                    "label": "Example Record",
+                    "value": "example-value",
+                    "displayOrder": 100
+                  }
+                ],
+                "items": {
+                  "type": "object",
+                  "description": "An option for an enumeration field",
+                  "properties": {
+                    "label": {
+                      "type": "object"
+                    },
+                    "value": {
+                      "type": "object"
+                    },
+                    "displayOrder": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          },
+          "supportedValueTypes": {
+            "type": "array",
+            "description": "The types of values that can be provided for this field",
+            "example": [
+              "STATIC_VALUE"
+            ],
+            "items": {
+              "type": "string",
+              "enum": [
+                "STATIC_VALUE",
+                "OBJECT_PROPERTY",
+                "OUTPUT_FROM_PREVIOUS_ACTION"
+              ]
+            }
+          },
+          "isRequired": {
+            "type": "boolean",
+            "description": "Whether this field is required",
+            "example": true
+          }
+        },
+        "required": [
+          "typeDefinition",
+          "supportedValueTypes"
+        ]
+      }
+    },
+    "outputFields": {
+      "type": "array",
+      "description": "Output fields for the action",
+      "example": [
+        {
+          "typeDefinition": {}
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "An output field returned by the action",
+        "properties": {
+          "typeDefinition": {
+            "type": "object",
+            "description": "Definition of a field's type and configuration",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The programmatic name of the field",
+                "example": "Example Record"
+              },
+              "type": {
+                "type": "string",
+                "description": "The data type of the field",
+                "example": "STRING",
+                "enum": [
+                  "STRING",
+                  "NUMBER",
+                  "BOOL",
+                  "DATE",
+                  "DATETIME",
+                  "ENUMERATION",
+                  "PHONE_NUMBER",
+                  "CURRENCY"
+                ]
+              },
+              "fieldType": {
+                "type": "string",
+                "description": "The UI field type for input",
+                "example": "TEXT",
+                "enum": [
+                  "TEXT",
+                  "TEXTAREA",
+                  "NUMBER",
+                  "SELECT",
+                  "BOOLEANCHECKBOX",
+                  "DATE",
+                  "FILE"
+                ]
+              },
+              "label": {
+                "type": "string",
+                "description": "Human-readable label for the field",
+                "example": "Example Record"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of the field",
+                "example": "This is an example description."
+              },
+              "options": {
+                "type": "array",
+                "description": "Options for enumeration fields",
+                "example": [
+                  {
+                    "label": "Example Record",
+                    "value": "example-value",
+                    "displayOrder": 100
+                  }
+                ],
+                "items": {
+                  "type": "object",
+                  "description": "An option for an enumeration field",
+                  "properties": {
+                    "label": {
+                      "type": "object"
+                    },
+                    "value": {
+                      "type": "object"
+                    },
+                    "displayOrder": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "value"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "name",
+              "type"
+            ]
+          }
+        },
+        "required": [
+          "typeDefinition"
+        ]
+      }
+    },
+    "objectTypes": {
+      "type": "array",
+      "description": "CRM object types this action can operate on",
+      "example": [
+        "CONTACT"
+      ],
+      "items": {
+        "type": "string",
+        "enum": [
+          "CONTACT",
+          "COMPANY",
+          "DEAL",
+          "TICKET",
+          "QUOTE"
+        ]
+      }
+    },
+    "objectRequestOptions": {
+      "type": "object",
+      "description": "Options for requesting CRM object data",
+      "properties": {
+        "properties": {
+          "type": "array",
+          "description": "CRM properties to include in the action execution request",
+          "example": [
+            "example-value"
+          ],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "published": {
+      "type": "boolean",
+      "description": "Whether to publish the action immediately",
+      "example": true
+    }
+  },
+  "required": [
+    "actionUrl",
+    "labels",
+    "objectTypes"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ActionDefinitionInput"
+}

@@ -1,0 +1,70 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot Customer Service"
+  description: "Unified workflow for service agents to manage support tickets, conversations, threads, messages, and CRM associations. Combines ticket management with conversation channels for complete customer service operations."
+  tags:
+    - HubSpot
+    - Service
+    - Support
+    - Tickets
+    - Conversations
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - import: crm-tickets
+      location: ./shared/crm-tickets.yaml
+    - import: conversations
+      location: ./shared/conversations-api.yaml
+    - import: crm-contacts
+      location: ./shared/crm-contacts.yaml
+    - import: crm-associations
+      location: ./shared/crm-associations.yaml
+
+  exposes:
+    - type: rest
+      port: 8082
+      namespace: customer-service-api
+      description: "Unified REST API for customer service ticket management, conversations, and contact resolution."
+      resources:
+        - path: /v1/tickets
+          name: tickets
+          description: "Support tickets"
+          operations:
+            - { method: GET, name: list-tickets, description: "List tickets", call: "crm-tickets.list-tickets", outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: POST, name: create-ticket, description: "Create ticket", call: "crm-tickets.create-ticket", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/tickets/{ticketId}
+          name: ticket-by-id
+          description: "Individual ticket"
+          operations:
+            - { method: GET, name: get-ticket, description: "Get ticket", call: "crm-tickets.get-ticket", with: { ticketId: "rest.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: PATCH, name: update-ticket, description: "Update ticket", call: "crm-tickets.update-ticket", with: { ticketId: "rest.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/contacts/{contactId}
+          name: contact-by-id
+          description: "Contact lookup"
+          operations:
+            - { method: GET, name: get-contact, description: "Get contact", call: "crm-contacts.get-contact", with: { contactId: "rest.contactId" }, outputParameters: [{ type: object, mapping: "$." }] }
+
+    - type: mcp
+      port: 9092
+      namespace: customer-service-mcp
+      transport: http
+      description: "MCP server for AI-assisted customer service, ticket resolution, and conversation management."
+      tools:
+        - { name: list-tickets, description: "List all support tickets", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.list-tickets", with: { limit: "tools.limit", after: "tools.after", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-ticket, description: "Get a support ticket by ID", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.get-ticket", with: { ticketId: "tools.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-ticket, description: "Create a new support ticket", hints: { readOnly: false }, call: "crm-tickets.create-ticket", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: update-ticket, description: "Update a support ticket", hints: { readOnly: false, idempotent: true }, call: "crm-tickets.update-ticket", with: { ticketId: "tools.ticketId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: archive-ticket, description: "Archive a support ticket", hints: { readOnly: false, destructive: true, idempotent: true }, call: "crm-tickets.archive-ticket", with: { ticketId: "tools.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-tickets, description: "Search tickets with filters", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.search-tickets", with: { filterGroups: "tools.filterGroups", query: "tools.query", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-contact, description: "Look up a contact for ticket context", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.get-contact", with: { contactId: "tools.contactId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-contacts, description: "Search contacts to find the customer", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.search-contacts", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-associations, description: "List associations for a CRM object", hints: { readOnly: true, idempotent: true }, call: "crm-associations.list-associations", with: { fromObjectType: "tools.fromObjectType", fromObjectId: "tools.fromObjectId", toObjectType: "tools.toObjectType" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-association, description: "Associate a ticket with a contact or company", hints: { readOnly: false, idempotent: true }, call: "crm-associations.create-association", with: { fromObjectType: "tools.fromObjectType", fromObjectId: "tools.fromObjectId", toObjectType: "tools.toObjectType", to: "tools.to", types: "tools.types" }, outputParameters: [{ type: object, mapping: "$." }] }

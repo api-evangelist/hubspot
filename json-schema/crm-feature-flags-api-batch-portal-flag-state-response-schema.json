@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-feature-flags-api-batch-portal-flag-state-response-schema.json",
+  "title": "BatchPortalFlagStateResponse",
+  "description": "Response for successful batch portal flag state operations",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The overall status of the batch operation",
+      "enum": [
+        "COMPLETE",
+        "PENDING"
+      ],
+      "example": "COMPLETE"
+    },
+    "results": {
+      "type": "array",
+      "description": "List of portal flag states that were successfully affected",
+      "items": {
+        "type": "object",
+        "description": "Represents the flag state override for a specific portal (account)",
+        "required": [
+          "appId",
+          "flagName",
+          "portalId",
+          "flagState"
+        ],
+        "properties": {
+          "appId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier for the HubSpot application",
+            "example": 12345678
+          },
+          "flagName": {
+            "type": "string",
+            "description": "The name of the feature flag",
+            "example": "new-dashboard-feature"
+          },
+          "portalId": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The unique identifier for the HubSpot portal (account)",
+            "example": 98765432
+          },
+          "flagState": {
+            "$ref": "#/components/schemas/FlagState"
+          }
+        }
+      },
+      "example": [
+        {
+          "appId": 12345678,
+          "flagName": "new-dashboard-feature",
+          "portalId": 98765432,
+          "flagState": {}
+        }
+      ]
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the batch operation started",
+      "example": "2024-01-15T10:30:00Z"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the batch operation completed",
+      "example": "2024-01-15T10:30:01Z"
+    }
+  },
+  "required": [
+    "status",
+    "results"
+  ]
+}

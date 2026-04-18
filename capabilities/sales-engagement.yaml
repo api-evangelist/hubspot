@@ -1,0 +1,324 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Sales Engagement
+  description: Sales activity tracking workflow for calls, emails, meetings, tasks, and notes.
+  tags:
+  - HubSpot
+  - Sales
+  - Engagements
+  - Activities
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: engagement-calls-api
+    location: ./shared/engagement-calls-api.yaml
+  - import: engagement-emails-api
+    location: ./shared/engagement-emails-api.yaml
+  - import: engagement-meetings-api
+    location: ./shared/engagement-meetings-api.yaml
+  - import: engagement-tasks-api
+    location: ./shared/engagement-tasks-api.yaml
+  - import: engagement-notes
+    location: ./shared/engagement-notes.yaml
+  exposes:
+  - type: mcp
+    port: 9093
+    namespace: sales-engagement-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot Sales Engagement.
+    tools:
+    - name: listcalls
+      description: HubSpot List All Calls
+      hints:
+        readOnly: true
+      call: engagement-calls-api.listcalls
+    - name: createcall
+      description: HubSpot Create a Call
+      hints:
+        readOnly: false
+      call: engagement-calls-api.createcall
+    - name: getcallbyid
+      description: HubSpot Get a Call by ID
+      hints:
+        readOnly: true
+      call: engagement-calls-api.getcallbyid
+    - name: updatecall
+      description: HubSpot Update a Call
+      hints:
+        readOnly: false
+      call: engagement-calls-api.updatecall
+    - name: archivecall
+      description: HubSpot Archive a Call
+      hints:
+        destructive: true
+      call: engagement-calls-api.archivecall
+    - name: batchcreatecalls
+      description: HubSpot Create a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchcreatecalls
+    - name: batchreadcalls
+      description: HubSpot Read a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchreadcalls
+    - name: batchupdatecalls
+      description: HubSpot Update a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batchupdatecalls
+    - name: batcharchivecalls
+      description: HubSpot Archive a Batch of Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.batcharchivecalls
+    - name: searchcalls
+      description: HubSpot Search Calls
+      hints:
+        readOnly: false
+      call: engagement-calls-api.searchcalls
+    - name: gdprdeletecall
+      description: HubSpot Permanently Delete a Call for GDPR Compliance
+      hints:
+        readOnly: false
+      call: engagement-calls-api.gdprdeletecall
+    - name: listemailengagements
+      description: HubSpot List Email Engagements
+      hints:
+        readOnly: true
+      call: engagement-emails-api.listemailengagements
+    - name: createemailengagement
+      description: HubSpot Create an Email Engagement
+      hints:
+        readOnly: false
+      call: engagement-emails-api.createemailengagement
+    - name: getemailengagement
+      description: HubSpot Get an Email Engagement
+      hints:
+        readOnly: true
+      call: engagement-emails-api.getemailengagement
+    - name: updateemailengagement
+      description: HubSpot Update an Email Engagement
+      hints:
+        readOnly: false
+      call: engagement-emails-api.updateemailengagement
+    - name: deleteemailengagement
+      description: HubSpot Archive an Email Engagement
+      hints:
+        destructive: true
+      call: engagement-emails-api.deleteemailengagement
+    - name: batchreademailengagements
+      description: HubSpot Batch Read Email Engagements
+      hints:
+        readOnly: false
+      call: engagement-emails-api.batchreademailengagements
+    - name: batchcreateemailengagements
+      description: HubSpot Batch Create Email Engagements
+      hints:
+        readOnly: false
+      call: engagement-emails-api.batchcreateemailengagements
+    - name: batchupdateemailengagements
+      description: HubSpot Batch Update Email Engagements
+      hints:
+        readOnly: false
+      call: engagement-emails-api.batchupdateemailengagements
+    - name: searchemailengagements
+      description: HubSpot Search Email Engagements
+      hints:
+        readOnly: false
+      call: engagement-emails-api.searchemailengagements
+    - name: listemailengagementassociations
+      description: HubSpot List Email Engagement Associations
+      hints:
+        readOnly: true
+      call: engagement-emails-api.listemailengagementassociations
+    - name: createemailengagementassociation
+      description: HubSpot Create an Email Engagement Association
+      hints:
+        readOnly: false
+      call: engagement-emails-api.createemailengagementassociation
+    - name: deleteemailengagementassociation
+      description: HubSpot Delete an Email Engagement Association
+      hints:
+        destructive: true
+      call: engagement-emails-api.deleteemailengagementassociation
+    - name: listmeetings
+      description: HubSpot List Meetings
+      hints:
+        readOnly: true
+      call: engagement-meetings-api.listmeetings
+    - name: createmeeting
+      description: HubSpot Create a Meeting
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.createmeeting
+    - name: getmeeting
+      description: HubSpot Get a Meeting
+      hints:
+        readOnly: true
+      call: engagement-meetings-api.getmeeting
+    - name: updatemeeting
+      description: HubSpot Update a Meeting
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.updatemeeting
+    - name: deletemeeting
+      description: HubSpot Archive a Meeting
+      hints:
+        destructive: true
+      call: engagement-meetings-api.deletemeeting
+    - name: batchreadmeetings
+      description: HubSpot Batch Read Meetings
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.batchreadmeetings
+    - name: batchcreatemeetings
+      description: HubSpot Batch Create Meetings
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.batchcreatemeetings
+    - name: batchupdatemeetings
+      description: HubSpot Batch Update Meetings
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.batchupdatemeetings
+    - name: searchmeetings
+      description: HubSpot Search Meetings
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.searchmeetings
+    - name: listmeetingassociations
+      description: HubSpot List Meeting Associations
+      hints:
+        readOnly: true
+      call: engagement-meetings-api.listmeetingassociations
+    - name: createmeetingassociation
+      description: HubSpot Create a Meeting Association
+      hints:
+        readOnly: false
+      call: engagement-meetings-api.createmeetingassociation
+    - name: deletemeetingassociation
+      description: HubSpot Delete a Meeting Association
+      hints:
+        destructive: true
+      call: engagement-meetings-api.deletemeetingassociation
+    - name: listtasks
+      description: HubSpot List Tasks
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.listtasks
+    - name: createtask
+      description: HubSpot Create a Task
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.createtask
+    - name: gettask
+      description: HubSpot Get a Task
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.gettask
+    - name: updatetask
+      description: HubSpot Update a Task
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.updatetask
+    - name: deletetask
+      description: HubSpot Archive a Task
+      hints:
+        destructive: true
+      call: engagement-tasks-api.deletetask
+    - name: batchreadtasks
+      description: HubSpot Batch Read Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchreadtasks
+    - name: batchcreatetasks
+      description: HubSpot Batch Create Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchcreatetasks
+    - name: batchupdatetasks
+      description: HubSpot Batch Update Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchupdatetasks
+    - name: searchtasks
+      description: HubSpot Search Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.searchtasks
+    - name: listtaskassociations
+      description: HubSpot List Task Associations
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.listtaskassociations
+    - name: createtaskassociation
+      description: HubSpot Create a Task Association
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.createtaskassociation
+    - name: deletetaskassociation
+      description: HubSpot Delete a Task Association
+      hints:
+        destructive: true
+      call: engagement-tasks-api.deletetaskassociation
+    - name: listnotes
+      description: HubSpot List All Notes
+      hints:
+        readOnly: true
+      call: engagement-notes.listnotes
+    - name: createnote
+      description: HubSpot Create a Note
+      hints:
+        readOnly: false
+      call: engagement-notes.createnote
+    - name: getnotebyid
+      description: HubSpot Get a Note by ID
+      hints:
+        readOnly: true
+      call: engagement-notes.getnotebyid
+    - name: updatenote
+      description: HubSpot Update a Note
+      hints:
+        readOnly: false
+      call: engagement-notes.updatenote
+    - name: archivenote
+      description: HubSpot Archive a Note
+      hints:
+        destructive: true
+      call: engagement-notes.archivenote
+    - name: batchcreatenotes
+      description: HubSpot Create a Batch of Notes
+      hints:
+        readOnly: false
+      call: engagement-notes.batchcreatenotes
+    - name: batchreadnotes
+      description: HubSpot Read a Batch of Notes
+      hints:
+        readOnly: false
+      call: engagement-notes.batchreadnotes
+    - name: batchupdatenotes
+      description: HubSpot Update a Batch of Notes
+      hints:
+        readOnly: false
+      call: engagement-notes.batchupdatenotes
+    - name: batcharchivenotes
+      description: HubSpot Archive a Batch of Notes
+      hints:
+        readOnly: false
+      call: engagement-notes.batcharchivenotes
+    - name: searchnotes
+      description: HubSpot Search Notes
+      hints:
+        readOnly: false
+      call: engagement-notes.searchnotes
+    - name: gdprdeletenote
+      description: HubSpot Permanently Delete a Note for GDPR Compliance
+      hints:
+        readOnly: false
+      call: engagement-notes.gdprdeletenote

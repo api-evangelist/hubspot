@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "description": "Collection of association definitions",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of association definitions",
+      "example": [
+        {
+          "id": "500123",
+          "fromObjectTypeId": "500123",
+          "toObjectTypeId": "500123",
+          "name": "Example Record",
+          "label": "Example Record",
+          "inverseLabel": "Example Record",
+          "category": "HUBSPOT_DEFINED"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Definition of an association type between two object types",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the association definition",
+            "example": "500123"
+          },
+          "fromObjectTypeId": {
+            "type": "string",
+            "description": "Source object type ID",
+            "example": "500123"
+          },
+          "toObjectTypeId": {
+            "type": "string",
+            "description": "Target object type ID",
+            "example": "500123"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the association type",
+            "example": "Example Record"
+          },
+          "label": {
+            "type": "string",
+            "description": "Display label for the association",
+            "example": "Example Record"
+          },
+          "inverseLabel": {
+            "type": "string",
+            "description": "Label for the inverse association",
+            "example": "Example Record"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the association definition",
+            "example": "HUBSPOT_DEFINED",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "fromObjectTypeId",
+          "toObjectTypeId"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor for next page",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "example-value"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page",
+              "example": "https://app.hubspot.com/contacts/12345"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AssociationDefinitionCollection"
+}

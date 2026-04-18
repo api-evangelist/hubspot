@@ -1,0 +1,98 @@
+{
+  "type": "object",
+  "description": "A paginated list of CRM lists.",
+  "properties": {
+    "results": {
+      "type": "array",
+      "example": [
+        {
+          "listId": "500123",
+          "name": "Example Record",
+          "listType": "STATIC",
+          "objectTypeId": "500123",
+          "processingStatus": "active",
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "filterBranch": {},
+          "memberCount": 10
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A HubSpot CRM list.",
+        "properties": {
+          "listId": {
+            "type": "string",
+            "description": "The unique identifier for the list.",
+            "example": "500123"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the list.",
+            "example": "Example Record"
+          },
+          "listType": {
+            "type": "string",
+            "description": "Whether the list is static (manually managed) or dynamic (filter-based).",
+            "example": "STATIC",
+            "enum": [
+              "STATIC",
+              "DYNAMIC"
+            ]
+          },
+          "objectTypeId": {
+            "type": "string",
+            "description": "The object type the list contains (e.g., 0-1 for contacts).",
+            "example": "500123"
+          },
+          "processingStatus": {
+            "type": "string",
+            "description": "The current processing status of the list.",
+            "example": "active"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The date and time the list was created.",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The date and time the list was last updated.",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "filterBranch": {
+            "type": "object",
+            "description": "The filter definition for dynamic lists.",
+            "example": {}
+          },
+          "memberCount": {
+            "type": "integer",
+            "description": "The current number of members in the list.",
+            "example": 10
+          }
+        }
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "example": {
+            "after": "example-value"
+          },
+          "properties": {
+            "after": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CollectionResponseList"
+}

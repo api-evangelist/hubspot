@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "description": "Request body for completing multiple callbacks",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of callbacks to complete",
+      "example": [
+        {
+          "callbackId": "500123",
+          "outputFields": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A single callback completion input",
+        "properties": {
+          "callbackId": {
+            "type": "string",
+            "description": "The unique identifier of the callback",
+            "example": "500123"
+          },
+          "outputFields": {
+            "type": "object",
+            "description": "The output values to return",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "callbackId",
+          "outputFields"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchCallbackCompletionRequest"
+}

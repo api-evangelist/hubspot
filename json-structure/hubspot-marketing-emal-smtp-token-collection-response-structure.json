@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "description": "A paginated collection of SMTP tokens",
+  "name": "SmtpTokenCollectionResponse",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "The list of SMTP tokens",
+      "items": {
+        "type": "object",
+        "description": "Represents an SMTP API token for transactional email sending",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the SMTP token"
+          },
+          "campaignName": {
+            "type": "string",
+            "description": "The name of the email campaign associated with this token"
+          },
+          "emailCampaignId": {
+            "type": "string",
+            "description": "The ID of the associated email campaign"
+          },
+          "createContact": {
+            "type": "boolean",
+            "description": "Whether sending an email creates a contact if one doesn't exist"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "When the token was created"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user or application that created the token"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "createdBy",
+          "campaignName",
+          "createContact"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information about the next page",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page"
+            }
+          },
+          "required": [
+            "after"
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

@@ -21,23 +21,23 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: Basic Operations
-    description: Create, read, update, and delete individual note records
-  - name: Batch Operations
-    description: Perform bulk operations on multiple note records
-  - name: GDPR Compliance
-    description: GDPR-compliant data management operations
-  - name: Search
-    description: Search and filter note records
+- name: Basic Operations
+  description: Create, read, update, and delete individual note records
+- name: Batch Operations
+  description: Perform bulk operations on multiple note records
+- name: GDPR Compliance
+  description: GDPR-compliant data management operations
+- name: Search
+  description: Search and filter note records
 paths:
   /crm/v3/objects/notes:
     get:
       tags:
-        - Basic Operations
-      summary: HubSpot List all notes
+      - Basic Operations
+      summary: Hubspot List All Notes
       description: |
         Returns a paginated list of all note engagements in the CRM.
         Use query parameters to filter by properties, limit results, and paginate through records.
@@ -47,12 +47,18 @@ paths:
         dispatcherRules: |
           return "ListNotesSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/LimitParam'
-        - $ref: '#/components/parameters/AfterParam'
-        - $ref: '#/components/parameters/PropertiesParam'
-        - $ref: '#/components/parameters/PropertiesWithHistoryParam'
-        - $ref: '#/components/parameters/AssociationsParam'
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/LimitParam'
+        example: example-value
+      - $ref: '#/components/parameters/AfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesWithHistoryParam'
+        example: example-value
+      - $ref: '#/components/parameters/AssociationsParam'
+        example: example-value
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the list of notes
@@ -73,14 +79,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
     post:
       tags:
-        - Basic Operations
-      summary: HubSpot Create a note
+      - Basic Operations
+      summary: Hubspot Create a Note
       description: |
         Creates a new note engagement in the CRM.
         You can specify note properties and optionally associate the note with other CRM objects.
@@ -118,15 +124,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/notes/{noteId}:
     get:
       tags:
-        - Basic Operations
-      summary: HubSpot Get a note by ID
+      - Basic Operations
+      summary: Hubspot Get a Note by Id
       description: |
         Retrieves a single note engagement by its unique identifier.
         Optionally include specific properties, property history, and associations.
@@ -136,11 +142,16 @@ paths:
         dispatcherRules: |
           return "GetNoteSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/NoteIdParam'
-        - $ref: '#/components/parameters/PropertiesParam'
-        - $ref: '#/components/parameters/PropertiesWithHistoryParam'
-        - $ref: '#/components/parameters/AssociationsParam'
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/NoteIdParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesParam'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesWithHistoryParam'
+        example: example-value
+      - $ref: '#/components/parameters/AssociationsParam'
+        example: example-value
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the note
@@ -161,14 +172,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
     patch:
       tags:
-        - Basic Operations
-      summary: HubSpot Update a note
+      - Basic Operations
+      summary: Hubspot Update a Note
       description: |
         Updates an existing note engagement with new property values.
         Only the properties specified in the request body will be updated.
@@ -178,7 +189,8 @@ paths:
         dispatcherRules: |
           return "UpdateNoteSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/NoteIdParam'
+      - $ref: '#/components/parameters/NoteIdParam'
+        example: example-value
       requestBody:
         required: true
         content:
@@ -208,14 +220,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
     delete:
       tags:
-        - Basic Operations
-      summary: HubSpot Archive a note
+      - Basic Operations
+      summary: Hubspot Archive a Note
       description: |
         Archives (soft deletes) a note engagement by moving it to the recycling bin.
         Archived notes can be restored within 90 days.
@@ -225,7 +237,8 @@ paths:
         dispatcherRules: |
           return "ArchiveNoteSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/NoteIdParam'
+      - $ref: '#/components/parameters/NoteIdParam'
+        example: example-value
       responses:
         '204':
           description: Successfully archived the note (no content returned)
@@ -239,15 +252,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/notes/batch/create:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Create a batch of notes
+      - Batch Operations
+      summary: Hubspot Create a Batch of Notes
       description: |
         Creates multiple note engagements in a single request.
         Each note can have its own properties and associations.
@@ -282,6 +295,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchNotesResponse'
+              examples:
+                Batchcreatenotes207Example:
+                  summary: Default batchCreateNotes 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: &id001
+                    - id: "1024"
+                      properties: &id004
+                        hs_note_body: "Met with client to discuss Q1 goals. They are interested in expanding their subscription."
+                        hs_timestamp: "2024-01-15T10:30:00.000Z"
+                        hubspot_owner_id: "12345"
+                      propertiesWithHistory: &id005
+                        key: value
+                      createdAt: "2024-01-15T10:30:00.000Z"
+                      updatedAt: "2024-01-15T11:00:00.000Z"
+                      archived: false
+                      archivedAt: '2025-03-15T14:30:00Z'
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: &id002
+                    - status: "error"
+                      category: "VALIDATION_ERROR"
+                      message: "Property value is invalid"
+                      context:
+                        key: value
+                      errors:
+                      - {}
+                    links: &id003
+                      key: value
         default:
           description: An error occurred
           content:
@@ -292,15 +336,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/notes/batch/read:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Read a batch of notes
+      - Batch Operations
+      summary: Hubspot Read a Batch of Notes
       description: |
         Retrieves multiple note engagements by their IDs or a unique property value.
         Maximum of 100 notes per batch request.
@@ -310,7 +354,8 @@ paths:
         dispatcherRules: |
           return "BatchReadNotesSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/ArchivedParam'
+      - $ref: '#/components/parameters/ArchivedParam'
+        example: example-value
       requestBody:
         required: true
         content:
@@ -336,6 +381,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchNotesResponse'
+              examples:
+                Batchreadnotes207Example:
+                  summary: Default batchReadNotes 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: *id001
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: *id002
+                    links: *id003
         default:
           description: An error occurred
           content:
@@ -346,15 +403,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
   /crm/v3/objects/notes/batch/update:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Update a batch of notes
+      - Batch Operations
+      summary: Hubspot Update a Batch of Notes
       description: |
         Updates multiple note engagements in a single request.
         Each note update must include the note ID and the properties to update.
@@ -389,6 +446,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchNotesResponse'
+              examples:
+                Batchupdatenotes207Example:
+                  summary: Default batchUpdateNotes 207 response
+                  x-microcks-default: true
+                  value:
+                    status: "COMPLETE"
+                    results: *id001
+                    requestedAt: '2025-03-15T14:30:00Z'
+                    startedAt: "2024-01-15T10:30:00.000Z"
+                    completedAt: "2024-01-15T10:30:05.000Z"
+                    errors: *id002
+                    links: *id003
         default:
           description: An error occurred
           content:
@@ -399,15 +468,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/notes/batch/archive:
     post:
       tags:
-        - Batch Operations
-      summary: HubSpot Archive a batch of notes
+      - Batch Operations
+      summary: Hubspot Archive a Batch of Notes
       description: |
         Archives (soft deletes) multiple note engagements in a single request.
         Maximum of 100 notes per batch request.
@@ -438,15 +507,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
   /crm/v3/objects/notes/search:
     post:
       tags:
-        - Search
-      summary: HubSpot Search notes
+      - Search
+      summary: Hubspot Search Notes
       description: |
         Searches for note engagements using filters, property values, and full-text search.
         Supports complex filter groups with AND/OR logic.
@@ -484,15 +553,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateApp:
-            - crm.objects.contacts.read
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
   /crm/v3/objects/notes/gdpr-delete:
     post:
       tags:
-        - GDPR Compliance
-      summary: HubSpot Permanently delete a note for GDPR compliance
+      - GDPR Compliance
+      summary: Hubspot Permanently Delete a Note for Gdpr Compliance
       description: |
         Permanently deletes a note engagement for GDPR compliance.
         This action cannot be undone. Use this endpoint when you need to comply with a data subject's right to erasure request.
@@ -523,21 +592,21 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateApp:
-            - crm.objects.contacts.write
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateApp:
+        - crm.objects.contacts.write
 components:
   schemas:
     Note:
       type: object
       description: Represents a note engagement in the CRM
       required:
-        - id
-        - properties
-        - createdAt
-        - updatedAt
-        - archived
+      - id
+      - properties
+      - createdAt
+      - updatedAt
+      - archived
       properties:
         id:
           type: string
@@ -548,10 +617,7 @@ components:
           description: The note properties
           additionalProperties:
             type: string
-          example:
-            hs_note_body: "Met with client to discuss Q1 goals. They are interested in expanding their subscription."
-            hs_timestamp: "2024-01-15T10:30:00.000Z"
-            hubspot_owner_id: "12345"
+          example: *id004
         propertiesWithHistory:
           type: object
           description: Properties with their change history
@@ -559,6 +625,7 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/PropertyHistory'
+          example: *id005
         createdAt:
           type: string
           format: date-time
@@ -577,6 +644,7 @@ components:
           type: string
           format: date-time
           description: When the note was archived (if archived)
+          example: '2025-03-15T14:30:00Z'
     PropertyHistory:
       type: object
       description: Historical value of a property
@@ -610,21 +678,29 @@ components:
       type: object
       description: A paginated collection of notes
       required:
-        - results
+      - results
       properties:
         results:
           type: array
           description: The list of notes
           items:
             $ref: '#/components/schemas/Note'
+          example:
+          - id: "1024"
+            properties: *id004
+            propertiesWithHistory: *id005
+            createdAt: "2024-01-15T10:30:00.000Z"
+            updatedAt: "2024-01-15T11:00:00.000Z"
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
     NoteSearchResponse:
       type: object
       description: Search results for notes
       required:
-        - total
-        - results
+      - total
+      - results
       properties:
         total:
           type: integer
@@ -635,24 +711,32 @@ components:
           description: The matching notes
           items:
             $ref: '#/components/schemas/Note'
+          example:
+          - id: "1024"
+            properties: *id004
+            propertiesWithHistory: *id005
+            createdAt: "2024-01-15T10:30:00.000Z"
+            updatedAt: "2024-01-15T11:00:00.000Z"
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
     BatchNotesResponse:
       type: object
       description: Response for batch note operations
       required:
-        - status
-        - results
-        - startedAt
-        - completedAt
+      - status
+      - results
+      - startedAt
+      - completedAt
       properties:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: The status of the batch operation
           example: "COMPLETE"
         results:
@@ -660,10 +744,12 @@ components:
           description: The results of the batch operation
           items:
             $ref: '#/components/schemas/Note'
+          example: *id001
         requestedAt:
           type: string
           format: date-time
           description: When the batch was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
@@ -679,10 +765,12 @@ components:
           description: Any errors that occurred during batch processing
           items:
             $ref: '#/components/schemas/BatchError'
+          example: *id002
         links:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchError:
       type: object
       description: Error information for a batch operation item
@@ -705,22 +793,31 @@ components:
             type: array
             items:
               type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     NoteCreateRequest:
       type: object
       description: Request body for creating a note
       required:
-        - properties
+      - properties
       properties:
         properties:
           type: object
           description: The note properties to set
           additionalProperties:
             type: string
-          example:
+          example: &id006
             hs_note_body: "Met with client to discuss Q1 goals. They are interested in expanding their subscription."
             hs_timestamp: "2024-01-15T10:30:00.000Z"
             hubspot_owner_id: "12345"
@@ -729,11 +826,16 @@ components:
           description: Associations to create with other objects
           items:
             $ref: '#/components/schemas/AssociationInput'
+          example: &id007
+          - to:
+              id: {}
+            types:
+            - {}
     NoteUpdateRequest:
       type: object
       description: Request body for updating a note
       required:
-        - properties
+      - properties
       properties:
         properties:
           type: object
@@ -746,7 +848,7 @@ components:
       type: object
       description: Request body for batch creating notes
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -754,11 +856,14 @@ components:
           items:
             $ref: '#/components/schemas/NoteCreateRequest'
           maxItems: 100
+          example:
+          - properties: *id006
+            associations: *id007
     BatchReadNotesRequest:
       type: object
       description: Request body for batch reading notes
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -766,24 +871,31 @@ components:
           items:
             $ref: '#/components/schemas/BatchReadInput'
           maxItems: 100
+          example:
+          - id: "1024"
         properties:
           type: array
           description: Properties to return
           items:
             type: string
+          example:
+          - example-value
         propertiesWithHistory:
           type: array
           description: Properties to return with history
           items:
             type: string
+          example:
+          - example-value
         idProperty:
           type: string
           description: The property to use as the identifier
+          example: '500123'
     BatchReadInput:
       type: object
       description: Input for reading a single item in a batch
       required:
-        - id
+      - id
       properties:
         id:
           type: string
@@ -793,7 +905,7 @@ components:
       type: object
       description: Request body for batch updating notes
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -801,12 +913,16 @@ components:
           items:
             $ref: '#/components/schemas/BatchUpdateInput'
           maxItems: 100
+          example:
+          - id: "1024"
+            properties:
+              key: value
     BatchUpdateInput:
       type: object
       description: Input for updating a single item in a batch
       required:
-        - id
-        - properties
+      - id
+      - properties
       properties:
         id:
           type: string
@@ -817,11 +933,13 @@ components:
           description: The properties to update
           additionalProperties:
             type: string
+          example:
+            key: value
     BatchArchiveNotesRequest:
       type: object
       description: Request body for batch archiving notes
       required:
-        - inputs
+      - inputs
       properties:
         inputs:
           type: array
@@ -829,6 +947,8 @@ components:
           items:
             $ref: '#/components/schemas/BatchReadInput'
           maxItems: 100
+          example:
+          - id: "1024"
     NoteSearchRequest:
       type: object
       description: Request body for searching notes
@@ -838,11 +958,17 @@ components:
           description: Filter groups for the search (OR logic between groups)
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
         sorts:
           type: array
           description: Sort order for results
           items:
             $ref: '#/components/schemas/SortOption'
+          example:
+          - propertyName: "hs_timestamp"
+            direction: DESCENDING
         query:
           type: string
           description: Full-text search query
@@ -852,14 +978,18 @@ components:
           description: Properties to return
           items:
             type: string
+          example:
+          - example-value
         limit:
           type: integer
           description: Maximum results to return
           default: 10
           maximum: 100
+          example: 10
         after:
           type: string
           description: Pagination cursor
+          example: example-value
     FilterGroup:
       type: object
       description: A group of filters (AND logic within group)
@@ -869,12 +999,19 @@ components:
           description: The filters in this group
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: "hubspot_owner_id"
+            operator: "EQ"
+            value: "12345"
+            values:
+            - {}
+            highValue: example-value
     Filter:
       type: object
       description: A single search filter
       required:
-        - propertyName
-        - operator
+      - propertyName
+      - operator
       properties:
         propertyName:
           type: string
@@ -884,19 +1021,19 @@ components:
           type: string
           description: The filter operator
           enum:
-            - EQ
-            - NEQ
-            - LT
-            - LTE
-            - GT
-            - GTE
-            - BETWEEN
-            - IN
-            - NOT_IN
-            - HAS_PROPERTY
-            - NOT_HAS_PROPERTY
-            - CONTAINS_TOKEN
-            - NOT_CONTAINS_TOKEN
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
           example: "EQ"
         value:
           type: string
@@ -907,14 +1044,17 @@ components:
           description: Values for IN/NOT_IN operators
           items:
             type: string
+          example:
+          - example-value
         highValue:
           type: string
           description: High value for BETWEEN operator
+          example: example-value
     SortOption:
       type: object
       description: Sort option for search results
       required:
-        - propertyName
+      - propertyName
       properties:
         propertyName:
           type: string
@@ -923,44 +1063,50 @@ components:
         direction:
           type: string
           enum:
-            - ASCENDING
-            - DESCENDING
+          - ASCENDING
+          - DESCENDING
           description: Sort direction
           default: DESCENDING
+          example: DESCENDING
     AssociationInput:
       type: object
       description: Association to create with another object
       required:
-        - to
-        - types
+      - to
+      - types
       properties:
         to:
           type: object
           required:
-            - id
+          - id
           properties:
             id:
               type: string
               description: The ID of the object to associate with
               example: "101"
+          example:
+            id: "101"
         types:
           type: array
           description: The association types
           items:
             $ref: '#/components/schemas/AssociationType'
+          example:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 202
     AssociationType:
       type: object
       description: Type of association
       required:
-        - associationCategory
-        - associationTypeId
+      - associationCategory
+      - associationTypeId
       properties:
         associationCategory:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
           description: The category of association
           example: "HUBSPOT_DEFINED"
         associationTypeId:
@@ -971,7 +1117,7 @@ components:
       type: object
       description: Request body for GDPR deletion
       required:
-        - objectId
+      - objectId
       properties:
         objectId:
           type: string
@@ -980,6 +1126,7 @@ components:
         idProperty:
           type: string
           description: The property used as the identifier
+          example: '500123'
     Paging:
       type: object
       description: Pagination information
@@ -990,7 +1137,7 @@ components:
       type: object
       description: Information about the next page
       required:
-        - after
+      - after
       properties:
         after:
           type: string
@@ -999,13 +1146,14 @@ components:
         link:
           type: string
           description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
     Error:
       type: object
       description: Error response
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -1023,44 +1171,62 @@ components:
         subCategory:
           type: string
           description: More specific error category
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     ErrorDetail:
       type: object
       description: Detailed error information
       required:
-        - message
+      - message
       properties:
         message:
           type: string
           description: Error message
+          example: This is an example description.
         code:
           type: string
           description: Error code
+          example: example-value
         in:
           type: string
           description: Field where error occurred
+          example: example-value
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
   parameters:
     NoteIdParam:
       name: noteId
@@ -1132,22 +1298,22 @@ components:
       summary: Successful response listing notes
       value:
         results:
-          - id: "1024"
-            properties:
-              hs_note_body: "Met with client to discuss Q1 goals. They are interested in expanding their subscription."
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-              hubspot_owner_id: "12345"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
-          - id: "1025"
-            properties:
-              hs_note_body: "Follow-up call scheduled for next week."
-              hs_timestamp: "2024-01-16T14:00:00.000Z"
-              hubspot_owner_id: "12345"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-16T14:30:00.000Z"
-            archived: false
+        - id: "1024"
+          properties:
+            hs_note_body: "Met with client to discuss Q1 goals. They are interested in expanding their subscription."
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+            hubspot_owner_id: "12345"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
+        - id: "1025"
+          properties:
+            hs_note_body: "Follow-up call scheduled for next week."
+            hs_timestamp: "2024-01-16T14:00:00.000Z"
+            hubspot_owner_id: "12345"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-16T14:30:00.000Z"
+          archived: false
         paging:
           next:
             after: "MTAyNg%3D%3D"
@@ -1170,11 +1336,11 @@ components:
           hs_timestamp: "2024-01-15T10:30:00.000Z"
           hubspot_owner_id: "12345"
         associations:
-          - to:
-              id: "101"
-            types:
-              - associationCategory: "HUBSPOT_DEFINED"
-                associationTypeId: 202
+        - to:
+            id: "101"
+          types:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 202
     CreateNoteSuccessResponse:
       summary: Successful response after creating a note
       value:
@@ -1206,127 +1372,127 @@ components:
       summary: Request to batch create notes
       value:
         inputs:
-          - properties:
-              hs_note_body: "Note 1 - Initial contact made"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-          - properties:
-              hs_note_body: "Note 2 - Follow-up scheduled"
-              hs_timestamp: "2024-01-15T11:30:00.000Z"
+        - properties:
+            hs_note_body: "Note 1 - Initial contact made"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+        - properties:
+            hs_note_body: "Note 2 - Follow-up scheduled"
+            hs_timestamp: "2024-01-15T11:30:00.000Z"
     BatchCreateNotesSuccessResponse:
       summary: Successful response after batch creating notes
       value:
         status: "COMPLETE"
         results:
-          - id: "1024"
-            properties:
-              hs_note_body: "Note 1 - Initial contact made"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T10:30:00.000Z"
-            archived: false
-          - id: "1025"
-            properties:
-              hs_note_body: "Note 2 - Follow-up scheduled"
-              hs_timestamp: "2024-01-15T11:30:00.000Z"
-            createdAt: "2024-01-15T11:30:00.000Z"
-            updatedAt: "2024-01-15T11:30:00.000Z"
-            archived: false
+        - id: "1024"
+          properties:
+            hs_note_body: "Note 1 - Initial contact made"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T10:30:00.000Z"
+          archived: false
+        - id: "1025"
+          properties:
+            hs_note_body: "Note 2 - Follow-up scheduled"
+            hs_timestamp: "2024-01-15T11:30:00.000Z"
+          createdAt: "2024-01-15T11:30:00.000Z"
+          updatedAt: "2024-01-15T11:30:00.000Z"
+          archived: false
         startedAt: "2024-01-15T10:30:00.000Z"
         completedAt: "2024-01-15T10:30:05.000Z"
     BatchReadNotesRequest:
       summary: Request to batch read notes
       value:
         inputs:
-          - id: "1024"
-          - id: "1025"
+        - id: "1024"
+        - id: "1025"
         properties:
-          - "hs_note_body"
-          - "hs_timestamp"
+        - "hs_note_body"
+        - "hs_timestamp"
     BatchReadNotesSuccessResponse:
       summary: Successful response after batch reading notes
       value:
         status: "COMPLETE"
         results:
-          - id: "1024"
-            properties:
-              hs_note_body: "Met with client to discuss Q1 goals."
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
-          - id: "1025"
-            properties:
-              hs_note_body: "Follow-up call scheduled."
-              hs_timestamp: "2024-01-16T14:00:00.000Z"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-16T14:30:00.000Z"
-            archived: false
+        - id: "1024"
+          properties:
+            hs_note_body: "Met with client to discuss Q1 goals."
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
+        - id: "1025"
+          properties:
+            hs_note_body: "Follow-up call scheduled."
+            hs_timestamp: "2024-01-16T14:00:00.000Z"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-16T14:30:00.000Z"
+          archived: false
         startedAt: "2024-01-15T10:30:00.000Z"
         completedAt: "2024-01-15T10:30:01.000Z"
     BatchUpdateNotesRequest:
       summary: Request to batch update notes
       value:
         inputs:
-          - id: "1024"
-            properties:
-              hs_note_body: "Updated Note 1"
-          - id: "1025"
-            properties:
-              hs_note_body: "Updated Note 2"
+        - id: "1024"
+          properties:
+            hs_note_body: "Updated Note 1"
+        - id: "1025"
+          properties:
+            hs_note_body: "Updated Note 2"
     BatchUpdateNotesSuccessResponse:
       summary: Successful response after batch updating notes
       value:
         status: "COMPLETE"
         results:
-          - id: "1024"
-            properties:
-              hs_note_body: "Updated Note 1"
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T12:00:00.000Z"
-            archived: false
-          - id: "1025"
-            properties:
-              hs_note_body: "Updated Note 2"
-              hs_timestamp: "2024-01-16T14:00:00.000Z"
-            createdAt: "2024-01-16T14:00:00.000Z"
-            updatedAt: "2024-01-15T12:00:00.000Z"
-            archived: false
+        - id: "1024"
+          properties:
+            hs_note_body: "Updated Note 1"
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T12:00:00.000Z"
+          archived: false
+        - id: "1025"
+          properties:
+            hs_note_body: "Updated Note 2"
+            hs_timestamp: "2024-01-16T14:00:00.000Z"
+          createdAt: "2024-01-16T14:00:00.000Z"
+          updatedAt: "2024-01-15T12:00:00.000Z"
+          archived: false
         startedAt: "2024-01-15T12:00:00.000Z"
         completedAt: "2024-01-15T12:00:02.000Z"
     BatchArchiveNotesRequest:
       summary: Request to batch archive notes
       value:
         inputs:
-          - id: "1024"
-          - id: "1025"
+        - id: "1024"
+        - id: "1025"
     SearchNotesRequest:
       summary: Request to search notes
       value:
         filterGroups:
-          - filters:
-              - propertyName: "hubspot_owner_id"
-                operator: "EQ"
-                value: "12345"
+        - filters:
+          - propertyName: "hubspot_owner_id"
+            operator: "EQ"
+            value: "12345"
         sorts:
-          - propertyName: "hs_timestamp"
-            direction: "DESCENDING"
+        - propertyName: "hs_timestamp"
+          direction: "DESCENDING"
         properties:
-          - "hs_note_body"
-          - "hs_timestamp"
+        - "hs_note_body"
+        - "hs_timestamp"
         limit: 10
     SearchNotesSuccessResponse:
       summary: Successful response for note search
       value:
         total: 42
         results:
-          - id: "1024"
-            properties:
-              hs_note_body: "Met with client to discuss Q1 goals."
-              hs_timestamp: "2024-01-15T10:30:00.000Z"
-            createdAt: "2024-01-15T10:30:00.000Z"
-            updatedAt: "2024-01-15T11:00:00.000Z"
-            archived: false
+        - id: "1024"
+          properties:
+            hs_note_body: "Met with client to discuss Q1 goals."
+            hs_timestamp: "2024-01-15T10:30:00.000Z"
+          createdAt: "2024-01-15T10:30:00.000Z"
+          updatedAt: "2024-01-15T11:00:00.000Z"
+          archived: false
         paging:
           next:
             after: "MTAyNA%3D%3D"

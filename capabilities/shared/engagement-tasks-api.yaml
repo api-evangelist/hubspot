@@ -1,0 +1,215 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Engagement Tasks API
+  description: 'The tasks endpoints allow you to create and manage task engagement records in HubSpot CRM. Tasks represent to-do items that can be assigned to users and associated with contacts, companies,
+    and deals '
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-tasks-api
+    baseUri: https://api.hubapi.com
+    description: 'The tasks endpoints allow you to create and manage task engagement records in HubSpot CRM. Tasks represent to-do items that can be assigned to users and associated with contacts, companies,
+      and deals '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tasks
+      path: /tasks
+      description: tasks operations
+      operations:
+      - name: listtasks
+        method: GET
+        description: HubSpot List Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createtask
+        method: POST
+        description: HubSpot Create a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: gettask
+        method: GET
+        description: HubSpot Get a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatetask
+        method: PATCH
+        description: HubSpot Update a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletetask
+        method: DELETE
+        description: HubSpot Archive a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadtasks
+        method: POST
+        description: HubSpot Batch Read Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatetasks
+        method: POST
+        description: HubSpot Batch Create Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatetasks
+        method: POST
+        description: HubSpot Batch Update Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchtasks
+        method: POST
+        description: HubSpot Search Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listtaskassociations
+        method: GET
+        description: HubSpot List Task Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createtaskassociation
+        method: PUT
+        description: HubSpot Create a Task Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletetaskassociation
+        method: DELETE
+        description: HubSpot Delete a Task Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9122
+    namespace: engagement-tasks-api-mcp
+    transport: http
+    tools:
+    - name: listtasks
+      description: HubSpot List Tasks
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.listtasks
+    - name: createtask
+      description: HubSpot Create a Task
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.createtask
+    - name: gettask
+      description: HubSpot Get a Task
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.gettask
+    - name: updatetask
+      description: HubSpot Update a Task
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.updatetask
+    - name: deletetask
+      description: HubSpot Archive a Task
+      hints:
+        destructive: true
+      call: engagement-tasks-api.deletetask
+    - name: batchreadtasks
+      description: HubSpot Batch Read Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchreadtasks
+    - name: batchcreatetasks
+      description: HubSpot Batch Create Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchcreatetasks
+    - name: batchupdatetasks
+      description: HubSpot Batch Update Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.batchupdatetasks
+    - name: searchtasks
+      description: HubSpot Search Tasks
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.searchtasks
+    - name: listtaskassociations
+      description: HubSpot List Task Associations
+      hints:
+        readOnly: true
+      call: engagement-tasks-api.listtaskassociations
+    - name: createtaskassociation
+      description: HubSpot Create a Task Association
+      hints:
+        readOnly: false
+      call: engagement-tasks-api.createtaskassociation
+    - name: deletetaskassociation
+      description: HubSpot Delete a Task Association
+      hints:
+        destructive: true
+      call: engagement-tasks-api.deletetaskassociation

@@ -1,0 +1,98 @@
+{
+  "type": "object",
+  "description": "An error response",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The error category",
+      "example": "standard"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "A unique identifier for this error instance",
+      "format": "uuid",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "message": {
+      "type": "string",
+      "description": "A human-readable error message",
+      "example": "This is an example description."
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "A more specific error category",
+      "example": "standard"
+    },
+    "errors": {
+      "type": "array",
+      "description": "Detailed error information",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "An error code",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "The location of the error",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "A specific error subcategory",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Related links",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

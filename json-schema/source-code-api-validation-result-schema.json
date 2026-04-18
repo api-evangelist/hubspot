@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/source-code-api-validation-result-schema.json",
+  "title": "ValidationResult",
+  "description": "Result of file validation",
+  "type": "object",
+  "properties": {
+    "valid": {
+      "type": "boolean",
+      "description": "Whether the file passed validation",
+      "example": true
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of validation errors (if any)",
+      "items": {
+        "type": "object",
+        "description": "A validation error",
+        "required": [
+          "message",
+          "line"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error description",
+            "example": "Syntax error: unexpected end of template"
+          },
+          "line": {
+            "type": "integer",
+            "description": "Line number where the error occurred",
+            "example": 42
+          },
+          "column": {
+            "type": "integer",
+            "description": "Column number where the error occurred",
+            "example": 15
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category",
+            "example": "HUBL_SYNTAX"
+          }
+        }
+      },
+      "example": [
+        {
+          "message": "Syntax error: unexpected end of template",
+          "line": 42,
+          "column": 15,
+          "category": "HUBL_SYNTAX"
+        }
+      ]
+    },
+    "warnings": {
+      "type": "array",
+      "description": "List of validation warnings (if any)",
+      "items": {
+        "type": "object",
+        "description": "A validation warning",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Warning description",
+            "example": "Deprecated function 'blog_recent_posts' used"
+          },
+          "line": {
+            "type": "integer",
+            "description": "Line number where the warning occurred",
+            "example": 28
+          },
+          "suggestion": {
+            "type": "string",
+            "description": "Suggested fix",
+            "example": "Use 'blog_posts' function instead"
+          }
+        }
+      },
+      "example": [
+        {
+          "message": "Deprecated function 'blog_recent_posts' used",
+          "line": 28,
+          "suggestion": "Use 'blog_posts' function instead"
+        }
+      ]
+    }
+  },
+  "required": [
+    "valid"
+  ]
+}

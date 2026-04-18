@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-notes-batch-update-notes-request-structure.json",
+  "name": "BatchUpdateNotesRequest",
+  "description": "Request body for batch updating notes",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "Array of note updates",
+      "items": {
+        "type": "object",
+        "description": "Input for updating a single item in a batch",
+        "required": [
+          "id",
+          "properties"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The note identifier",
+            "example": "1024"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties to update",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "maxItems": 100,
+      "example": [
+        {
+          "id": "1024",
+          "properties": {
+            "key": "value"
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

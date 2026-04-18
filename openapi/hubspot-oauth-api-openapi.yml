@@ -10,21 +10,21 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: Access Tokens
-    description: Operations for retrieving and validating OAuth access token metadata
-  - name: Refresh Tokens
-    description: Operations for managing OAuth refresh tokens
-  - name: Token Management
-    description: Operations for creating, refreshing, and managing OAuth tokens
+- name: Access Tokens
+  description: Operations for retrieving and validating OAuth access token metadata
+- name: Refresh Tokens
+  description: Operations for managing OAuth refresh tokens
+- name: Token Management
+  description: Operations for creating, refreshing, and managing OAuth tokens
 paths:
   /oauth/v1/access-tokens/{token}:
     get:
       tags:
-        - Access Tokens
-      summary: HubSpot Retrieve access token metadata
+      - Access Tokens
+      summary: Hubspot Retrieve Access Token Metadata
       description: |
         Retrieves metadata for a specific OAuth access token, including associated scopes,
         expiration time, and the user and hub information linked to the token.
@@ -35,8 +35,10 @@ paths:
           def result = "AccessTokenMetadataSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/AcceptHeader'
-        - $ref: '#/components/parameters/AccessTokenPath'
+      - $ref: '#/components/parameters/AcceptHeader'
+        example: example-value
+      - $ref: '#/components/parameters/AccessTokenPath'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved access token metadata
@@ -73,8 +75,8 @@ paths:
   /oauth/v1/refresh-tokens/{token}:
     get:
       tags:
-        - Refresh Tokens
-      summary: HubSpot Retrieve refresh token metadata
+      - Refresh Tokens
+      summary: Hubspot Retrieve Refresh Token Metadata
       description: |
         Retrieves metadata for a specific OAuth refresh token, including the associated
         client, user, and hub information.
@@ -85,8 +87,10 @@ paths:
           def result = "RefreshTokenMetadataSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/AcceptHeader'
-        - $ref: '#/components/parameters/RefreshTokenPath'
+      - $ref: '#/components/parameters/AcceptHeader'
+        example: example-value
+      - $ref: '#/components/parameters/RefreshTokenPath'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved refresh token metadata
@@ -122,8 +126,8 @@ paths:
                   $ref: '#/components/examples/InternalServerErrorExample'
     delete:
       tags:
-        - Refresh Tokens
-      summary: HubSpot Revoke a refresh token
+      - Refresh Tokens
+      summary: Hubspot Revoke a Refresh Token
       description: |
         Revokes a specific OAuth refresh token, invalidating it and any associated access tokens.
         Use this endpoint when a user logs out or when you need to terminate a session.
@@ -134,7 +138,8 @@ paths:
           def result = "RefreshTokenRevokedSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/RefreshTokenPath'
+      - $ref: '#/components/parameters/RefreshTokenPath'
+        example: example-value
       responses:
         '204':
           description: Refresh token successfully revoked
@@ -159,8 +164,8 @@ paths:
   /oauth/v1/token:
     post:
       tags:
-        - Token Management
-      summary: HubSpot Create or refresh an access token
+      - Token Management
+      summary: Hubspot Create or Refresh an Access Token
       description: |
         Exchanges an authorization code for an access token or refreshes an existing access token
         using a refresh token. This endpoint supports multiple grant types including authorization_code
@@ -172,8 +177,10 @@ paths:
           def result = "TokenResponseSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/ContentTypeFormHeader'
-        - $ref: '#/components/parameters/AcceptHeader'
+      - $ref: '#/components/parameters/ContentTypeFormHeader'
+        example: example-value
+      - $ref: '#/components/parameters/AcceptHeader'
+        example: example-value
       requestBody:
         required: true
         content:
@@ -266,12 +273,12 @@ components:
       type: object
       description: Metadata associated with an OAuth access token
       required:
-        - token
-        - app_id
-        - hub_id
-        - scopes
-        - token_type
-        - expires_in
+      - token
+      - app_id
+      - hub_id
+      - scopes
+      - token_type
+      - expires_in
       properties:
         token:
           type: string
@@ -303,8 +310,8 @@ components:
           items:
             type: string
           example:
-            - contacts
-            - content
+          - contacts
+          - content
         token_type:
           type: string
           description: The type of token (always 'access')
@@ -317,10 +324,10 @@ components:
       type: object
       description: Metadata associated with an OAuth refresh token
       required:
-        - token
-        - client_id
-        - hub_id
-        - scopes
+      - token
+      - client_id
+      - hub_id
+      - scopes
       properties:
         token:
           type: string
@@ -348,22 +355,22 @@ components:
           items:
             type: string
           example:
-            - contacts
-            - content
+          - contacts
+          - content
     TokenRequest:
       type: object
       description: Request body for token creation or refresh
       required:
-        - grant_type
-        - client_id
-        - client_secret
+      - grant_type
+      - client_id
+      - client_secret
       properties:
         grant_type:
           type: string
           description: The type of grant being requested
           enum:
-            - authorization_code
-            - refresh_token
+          - authorization_code
+          - refresh_token
           example: refresh_token
         client_id:
           type: string
@@ -389,10 +396,10 @@ components:
       type: object
       description: Response containing the new access token and related information
       required:
-        - access_token
-        - token_type
-        - expires_in
-        - refresh_token
+      - access_token
+      - token_type
+      - expires_in
+      - refresh_token
       properties:
         access_token:
           type: string
@@ -418,9 +425,9 @@ components:
       type: object
       description: Standard error response object
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -448,7 +455,7 @@ components:
               type: string
           example:
             invalidToken:
-              - The provided token is invalid or expired
+            - The provided token is invalid or expired
         links:
           type: object
           description: Links to relevant documentation
@@ -461,11 +468,19 @@ components:
           description: List of specific errors
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Invalid parameter value
+            code: INVALID_PARAMETER
+            subCategory: MISSING_REQUIRED_FIELD
+            in: body
+            context: &id001
+              missingFields:
+              - client_secret
     ErrorDetail:
       type: object
       description: Detailed information about a specific error
       required:
-        - message
+      - message
       properties:
         message:
           type: string
@@ -490,9 +505,7 @@ components:
             type: array
             items:
               type: string
-          example:
-            missingFields:
-              - client_secret
+          example: *id001
   examples:
     AccessTokenMetadataSuccessExample:
       summary: Successful access token metadata retrieval
@@ -505,8 +518,8 @@ components:
         user: user@example.com
         hub_domain: demo.hubspot.com
         scopes:
-          - contacts
-          - content
+        - contacts
+        - content
         token_type: access
         expires_in: 1800
     RefreshTokenMetadataSuccessExample:
@@ -519,8 +532,8 @@ components:
         user_id: 123456
         user: user@example.com
         scopes:
-          - contacts
-          - content
+        - contacts
+        - content
     TokenResponseSuccessExample:
       summary: Successful token response
       description: Example response when successfully creating or refreshing an access token
@@ -563,9 +576,9 @@ components:
         message: Missing required parameter
         subCategory: MISSING_PARAMETER
         errors:
-          - message: The 'client_secret' parameter is required
-            code: MISSING_REQUIRED_FIELD
-            in: body
+        - message: The 'client_secret' parameter is required
+          code: MISSING_REQUIRED_FIELD
+          in: body
     InternalServerErrorExample:
       summary: Internal server error response
       description: Example error response for server errors

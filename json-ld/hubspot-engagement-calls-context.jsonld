@@ -1,0 +1,354 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "Call": {
+      "@id": "ns:Call",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "properties": "ns:properties",
+        "propertiesWithHistory": "ns:propertiesWithHistory",
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        },
+        "updatedAt": {
+          "@id": "ns:updatedAt",
+          "@type": "xsd:string"
+        },
+        "archived": {
+          "@id": "ns:archived",
+          "@type": "xsd:boolean"
+        },
+        "archivedAt": {
+          "@id": "ns:archivedAt",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "PropertyHistory": {
+      "@id": "ns:PropertyHistory",
+      "@context": {
+        "value": {
+          "@id": "ns:value",
+          "@type": "xsd:string"
+        },
+        "timestamp": {
+          "@id": "ns:timestamp",
+          "@type": "xsd:string"
+        },
+        "sourceType": {
+          "@id": "ns:sourceType",
+          "@type": "xsd:string"
+        },
+        "sourceId": {
+          "@id": "ns:sourceId",
+          "@type": "xsd:string"
+        },
+        "sourceLabel": {
+          "@id": "ns:sourceLabel",
+          "@type": "xsd:string"
+        },
+        "updatedByUserId": {
+          "@id": "ns:updatedByUserId",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "CallCollectionResponse": {
+      "@id": "ns:CallCollectionResponse",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "CallSearchResponse": {
+      "@id": "ns:CallSearchResponse",
+      "@context": {
+        "total": {
+          "@id": "ns:total",
+          "@type": "xsd:integer"
+        },
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchCallsResponse": {
+      "@id": "ns:BatchCallsResponse",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "results": "ns:results",
+        "requestedAt": {
+          "@id": "ns:requestedAt",
+          "@type": "xsd:string"
+        },
+        "startedAt": {
+          "@id": "ns:startedAt",
+          "@type": "xsd:string"
+        },
+        "completedAt": {
+          "@id": "ns:completedAt",
+          "@type": "xsd:string"
+        },
+        "errors": "ns:errors",
+        "links": "ns:links"
+      }
+    },
+    "BatchError": {
+      "@id": "ns:BatchError",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "category": {
+          "@id": "ns:category",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context",
+        "errors": "ns:errors"
+      }
+    },
+    "CallCreateRequest": {
+      "@id": "ns:CallCreateRequest",
+      "@context": {
+        "properties": "ns:properties",
+        "associations": "ns:associations"
+      }
+    },
+    "CallUpdateRequest": {
+      "@id": "ns:CallUpdateRequest",
+      "@context": {
+        "properties": "ns:properties"
+      }
+    },
+    "BatchCreateCallsRequest": {
+      "@id": "ns:BatchCreateCallsRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "BatchReadCallsRequest": {
+      "@id": "ns:BatchReadCallsRequest",
+      "@context": {
+        "inputs": "ns:inputs",
+        "properties": "ns:properties",
+        "propertiesWithHistory": "ns:propertiesWithHistory",
+        "idProperty": {
+          "@id": "ns:idProperty",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchReadInput": {
+      "@id": "ns:BatchReadInput",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchUpdateCallsRequest": {
+      "@id": "ns:BatchUpdateCallsRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "BatchUpdateInput": {
+      "@id": "ns:BatchUpdateInput",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "properties": "ns:properties"
+      }
+    },
+    "BatchArchiveCallsRequest": {
+      "@id": "ns:BatchArchiveCallsRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "CallSearchRequest": {
+      "@id": "ns:CallSearchRequest",
+      "@context": {
+        "filterGroups": "ns:filterGroups",
+        "sorts": "ns:sorts",
+        "query": {
+          "@id": "ns:query",
+          "@type": "xsd:string"
+        },
+        "properties": "ns:properties",
+        "limit": {
+          "@id": "ns:limit",
+          "@type": "xsd:integer"
+        },
+        "after": {
+          "@id": "ns:after",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "FilterGroup": {
+      "@id": "ns:FilterGroup",
+      "@context": {
+        "filters": "ns:filters"
+      }
+    },
+    "Filter": {
+      "@id": "ns:Filter",
+      "@context": {
+        "propertyName": {
+          "@id": "ns:propertyName",
+          "@type": "xsd:string"
+        },
+        "operator": {
+          "@id": "ns:operator",
+          "@type": "xsd:string"
+        },
+        "value": {
+          "@id": "ns:value",
+          "@type": "xsd:string"
+        },
+        "values": "ns:values",
+        "highValue": {
+          "@id": "ns:highValue",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "SortOption": {
+      "@id": "ns:SortOption",
+      "@context": {
+        "propertyName": {
+          "@id": "ns:propertyName",
+          "@type": "xsd:string"
+        },
+        "direction": {
+          "@id": "ns:direction",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "AssociationInput": {
+      "@id": "ns:AssociationInput",
+      "@context": {
+        "to": "ns:to",
+        "types": "ns:types"
+      }
+    },
+    "AssociationType": {
+      "@id": "ns:AssociationType",
+      "@context": {
+        "associationCategory": {
+          "@id": "ns:associationCategory",
+          "@type": "xsd:string"
+        },
+        "associationTypeId": {
+          "@id": "ns:associationTypeId",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "GdprDeleteRequest": {
+      "@id": "ns:GdprDeleteRequest",
+      "@context": {
+        "objectId": {
+          "@id": "ns:objectId",
+          "@type": "xsd:string"
+        },
+        "idProperty": {
+          "@id": "ns:idProperty",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Paging": {
+      "@id": "ns:Paging",
+      "@context": {
+        "next": {
+          "@id": "ns:next",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "NextPage": {
+      "@id": "ns:NextPage",
+      "@context": {
+        "after": {
+          "@id": "ns:after",
+          "@type": "xsd:string"
+        },
+        "link": {
+          "@id": "ns:link",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Error": {
+      "@id": "ns:Error",
+      "@context": {
+        "category": {
+          "@id": "ns:category",
+          "@type": "xsd:string"
+        },
+        "correlationId": {
+          "@id": "ns:correlationId",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context",
+        "links": "ns:links",
+        "errors": "ns:errors"
+      }
+    },
+    "ErrorDetail": {
+      "@id": "ns:ErrorDetail",
+      "@context": {
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "code": {
+          "@id": "ns:code",
+          "@type": "xsd:string"
+        },
+        "in": {
+          "@id": "ns:in",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context"
+      }
+    }
+  }
+}

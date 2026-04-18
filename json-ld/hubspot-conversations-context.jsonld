@@ -1,0 +1,403 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "Inbox": {
+      "@id": "ns:Inbox",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "ns:name",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        },
+        "updatedAt": {
+          "@id": "ns:updatedAt",
+          "@type": "xsd:string"
+        },
+        "archived": {
+          "@id": "ns:archived",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+    "InboxCollection": {
+      "@id": "ns:InboxCollection",
+      "@context": {
+        "results": "ns:results",
+        "total": {
+          "@id": "ns:total",
+          "@type": "xsd:integer"
+        },
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Thread": {
+      "@id": "ns:Thread",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "inboxId": {
+          "@id": "ns:inboxId",
+          "@type": "xsd:string"
+        },
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "spam": {
+          "@id": "ns:spam",
+          "@type": "xsd:boolean"
+        },
+        "associatedContactId": {
+          "@id": "ns:associatedContactId",
+          "@type": "xsd:string"
+        },
+        "assignedTo": {
+          "@id": "ns:assignedTo",
+          "@type": "xsd:string"
+        },
+        "originalChannelId": {
+          "@id": "ns:originalChannelId",
+          "@type": "xsd:string"
+        },
+        "originalChannelAccountId": {
+          "@id": "ns:originalChannelAccountId",
+          "@type": "xsd:string"
+        },
+        "latestMessageTimestamp": {
+          "@id": "ns:latestMessageTimestamp",
+          "@type": "xsd:string"
+        },
+        "latestMessageSentTimestamp": {
+          "@id": "ns:latestMessageSentTimestamp",
+          "@type": "xsd:string"
+        },
+        "latestMessageReceivedTimestamp": {
+          "@id": "ns:latestMessageReceivedTimestamp",
+          "@type": "xsd:string"
+        },
+        "closedAt": {
+          "@id": "ns:closedAt",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        },
+        "archived": {
+          "@id": "ns:archived",
+          "@type": "xsd:boolean"
+        }
+      }
+    },
+    "ThreadCollection": {
+      "@id": "ns:ThreadCollection",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Message": {
+      "@id": "ns:Message",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        },
+        "text": {
+          "@id": "ns:text",
+          "@type": "xsd:string"
+        },
+        "richText": {
+          "@id": "ns:richText",
+          "@type": "xsd:string"
+        },
+        "direction": {
+          "@id": "ns:direction",
+          "@type": "xsd:string"
+        },
+        "channelId": {
+          "@id": "ns:channelId",
+          "@type": "xsd:string"
+        },
+        "channelAccountId": {
+          "@id": "ns:channelAccountId",
+          "@type": "xsd:string"
+        },
+        "senders": "ns:senders",
+        "recipients": "ns:recipients",
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        },
+        "truncationStatus": {
+          "@id": "ns:truncationStatus",
+          "@type": "xsd:string"
+        },
+        "attachments": "ns:attachments"
+      }
+    },
+    "MessageStatus": {
+      "@id": "ns:MessageStatus",
+      "@context": {
+        "statusType": {
+          "@id": "ns:statusType",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "MessageCollection": {
+      "@id": "ns:MessageCollection",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Actor": {
+      "@id": "ns:Actor",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "actorId": {
+          "@id": "ns:actorId",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "ns:name",
+          "@type": "xsd:string"
+        },
+        "email": {
+          "@id": "ns:email",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "ActorCollection": {
+      "@id": "ns:ActorCollection",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Attachment": {
+      "@id": "ns:Attachment",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        },
+        "url": {
+          "@id": "ns:url",
+          "@type": "xsd:string"
+        },
+        "filename": {
+          "@id": "ns:filename",
+          "@type": "xsd:string"
+        },
+        "size": {
+          "@id": "ns:size",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "Channel": {
+      "@id": "ns:Channel",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "name": {
+          "@id": "ns:name",
+          "@type": "xsd:string"
+        },
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        },
+        "accountId": {
+          "@id": "ns:accountId",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "ChannelCollection": {
+      "@id": "ns:ChannelCollection",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "SendMessageRequest": {
+      "@id": "ns:SendMessageRequest",
+      "@context": {
+        "type": {
+          "@id": "ns:type",
+          "@type": "xsd:string"
+        },
+        "text": {
+          "@id": "ns:text",
+          "@type": "xsd:string"
+        },
+        "richText": {
+          "@id": "ns:richText",
+          "@type": "xsd:string"
+        },
+        "senderActorId": {
+          "@id": "ns:senderActorId",
+          "@type": "xsd:string"
+        },
+        "channelId": {
+          "@id": "ns:channelId",
+          "@type": "xsd:string"
+        },
+        "channelAccountId": {
+          "@id": "ns:channelAccountId",
+          "@type": "xsd:string"
+        },
+        "recipients": "ns:recipients"
+      }
+    },
+    "MessageRecipient": {
+      "@id": "ns:MessageRecipient",
+      "@context": {
+        "actorId": {
+          "@id": "ns:actorId",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "UpdateThreadRequest": {
+      "@id": "ns:UpdateThreadRequest",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "assignedTo": {
+          "@id": "ns:assignedTo",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Paging": {
+      "@id": "ns:Paging",
+      "@context": {
+        "next": {
+          "@id": "ns:next",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "PagingNext": {
+      "@id": "ns:PagingNext",
+      "@context": {
+        "after": {
+          "@id": "ns:after",
+          "@type": "xsd:string"
+        },
+        "link": {
+          "@id": "ns:link",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "ErrorDetail": {
+      "@id": "ns:ErrorDetail",
+      "@context": {
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "code": {
+          "@id": "ns:code",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "in": {
+          "@id": "ns:in",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context"
+      }
+    },
+    "Error": {
+      "@id": "ns:Error",
+      "@context": {
+        "category": {
+          "@id": "ns:category",
+          "@type": "xsd:string"
+        },
+        "correlationId": {
+          "@id": "ns:correlationId",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context",
+        "links": "ns:links",
+        "errors": "ns:errors"
+      }
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/commerce-payments-api-batch-error-schema.json",
+  "title": "BatchError",
+  "description": "An error from a batch operation",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "example": "active"
+    },
+    "id": {
+      "type": "string",
+      "example": "500123"
+    },
+    "category": {
+      "type": "string",
+      "example": "standard"
+    },
+    "message": {
+      "type": "string",
+      "example": "This is an example description."
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "An error code",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "The location of the error",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "A specific error subcategory",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "subCategory": {
+      "type": "string",
+      "example": "standard"
+    }
+  },
+  "required": [
+    "category",
+    "message"
+  ]
+}

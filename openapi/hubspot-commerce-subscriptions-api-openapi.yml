@@ -12,52 +12,56 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Associations
-    description: Operations for managing subscription associations
-  - name: Batch
-    description: Batch operations for subscriptions
-  - name: Subscriptions
-    description: Operations for managing subscription records
+- name: Associations
+  description: Operations for managing subscription associations
+- name: Batch
+  description: Batch operations for subscriptions
+- name: Subscriptions
+  description: Operations for managing subscription records
 paths:
   /crm/v3/objects/subscriptions:
     get:
       operationId: listSubscriptions
-      summary: HubSpot List subscriptions
+      summary: Hubspot List Subscriptions
       description: >-
         Returns a page of commerce subscription records. Use the limit and after
         parameters to paginate through subscriptions. You can also specify which
         properties to return using the properties parameter.
       tags:
-        - Subscriptions
+      - Subscriptions
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 10
-            maximum: 100
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived subscriptions.
-          schema:
-            type: boolean
-            default: false
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived subscriptions.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of subscriptions.
@@ -65,22 +69,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseSubscription'
+              examples:
+                Listsubscriptions200Example:
+                  summary: Default listSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id005
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: &id002
+                        key: value
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createSubscription
-      summary: HubSpot Create a subscription
+      summary: Hubspot Create a Subscription
       description: >-
         Creates a new subscription record with the provided properties. Subscription
         records track recurring revenue relationships with customers.
       tags:
-        - Subscriptions
+      - Subscriptions
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatesubscriptionRequestExample:
+                summary: Default createSubscription request
+                x-microcks-default: true
+                value:
+                  properties: &id003
+                    key: value
       responses:
         '201':
           description: Subscription created successfully.
@@ -88,37 +118,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Subscription'
+              examples:
+                Createsubscription201Example:
+                  summary: Default createSubscription 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/{subscriptionId}:
     get:
       operationId: getSubscription
-      summary: HubSpot Get a subscription
+      summary: Hubspot Get a Subscription
       description: >-
         Returns a single subscription record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-        - Subscriptions
+      - Subscriptions
       parameters:
-        - name: subscriptionId
-          in: path
-          required: true
-          description: The ID of the subscription to retrieve.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived subscriptions.
-          schema:
-            type: boolean
-            default: false
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived subscriptions.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the subscription record.
@@ -126,32 +173,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Subscription'
+              examples:
+                Getsubscription200Example:
+                  summary: Default getSubscription 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateSubscription
-      summary: HubSpot Update a subscription
+      summary: Hubspot Update a Subscription
       description: >-
         Performs a partial update of a subscription record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-        - Subscriptions
+      - Subscriptions
       parameters:
-        - name: subscriptionId
-          in: path
-          required: true
-          description: The ID of the subscription to update.
-          schema:
-            type: string
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to update.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatesubscriptionRequestExample:
+                summary: Default updateSubscription request
+                x-microcks-default: true
+                value:
+                  properties: *id003
       responses:
         '200':
           description: Subscription updated successfully.
@@ -159,27 +227,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Subscription'
+              examples:
+                Updatesubscription200Example:
+                  summary: Default updateSubscription 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteSubscription
-      summary: HubSpot Archive a subscription
+      summary: Hubspot Archive a Subscription
       description: >-
         Archives (soft deletes) a subscription record by its ID. Archived
         subscriptions can be restored using the HubSpot UI or API.
       tags:
-        - Subscriptions
+      - Subscriptions
       parameters:
-        - name: subscriptionId
-          in: path
-          required: true
-          description: The ID of the subscription to archive.
-          schema:
-            type: string
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to archive.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Subscription archived successfully.
@@ -187,21 +270,33 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/batch/read:
     post:
       operationId: batchReadSubscriptions
-      summary: HubSpot Batch read subscriptions
+      summary: Hubspot Batch Read Subscriptions
       description: >-
         Reads a batch of subscription records by their IDs. Useful for
         retrieving multiple subscriptions in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadsubscriptionsRequestExample:
+                summary: Default batchReadSubscriptions request
+                x-microcks-default: true
+                value:
+                  properties: &id006
+                  - example-value
+                  inputs: &id007
+                  - id: '500123'
       responses:
         '200':
           description: Batch read completed successfully.
@@ -209,24 +304,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchreadsubscriptions200Example:
+                  summary: Default batchReadSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: &id004
+                    - id: '500123'
+                      properties: *id001
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: *id002
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/batch/create:
     post:
       operationId: batchCreateSubscriptions
-      summary: HubSpot Batch create subscriptions
+      summary: Hubspot Batch Create Subscriptions
       description: >-
         Creates multiple subscription records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatesubscriptionsRequestExample:
+                summary: Default batchCreateSubscriptions request
+                x-microcks-default: true
+                value:
+                  inputs: &id008
+                  - properties: *id003
       responses:
         '201':
           description: Subscriptions created successfully.
@@ -234,24 +353,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchcreatesubscriptions201Example:
+                  summary: Default batchCreateSubscriptions 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/batch/update:
     post:
       operationId: batchUpdateSubscriptions
-      summary: HubSpot Batch update subscriptions
+      summary: Hubspot Batch Update Subscriptions
       description: >-
         Updates multiple subscription records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatesubscriptionsRequestExample:
+                summary: Default batchUpdateSubscriptions request
+                x-microcks-default: true
+                value:
+                  inputs: &id009
+                  - id: '500123'
+                    properties:
+                      key: value
       responses:
         '200':
           description: Subscriptions updated successfully.
@@ -259,25 +398,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchupdatesubscriptions200Example:
+                  summary: Default batchUpdateSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/search:
     post:
       operationId: searchSubscriptions
-      summary: HubSpot Search subscriptions
+      summary: Hubspot Search Subscriptions
       description: >-
         Searches for subscription records using filter groups, sorts, and other
         query parameters.
       tags:
-        - Subscriptions
+      - Subscriptions
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchsubscriptionsRequestExample:
+                summary: Default searchSubscriptions request
+                x-microcks-default: true
+                value:
+                  filterGroups: &id010
+                  - filters:
+                    - {}
+                  sorts: &id011
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties: &id012
+                  - example-value
+                  limit: 100
+                  after: example-value
       responses:
         '200':
           description: Search results returned successfully.
@@ -285,32 +451,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseSubscription'
+              examples:
+                Searchsubscriptions200Example:
+                  summary: Default searchSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id005
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/subscriptions/{subscriptionId}/associations/{toObjectType}:
     get:
       operationId: listSubscriptionAssociations
-      summary: HubSpot List subscription associations
+      summary: Hubspot List Subscription Associations
       description: >-
         Returns all associations of a subscription record to objects of a
         specified type, such as contacts, companies, or deals.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: subscriptionId
-          in: path
-          required: true
-          description: The ID of the subscription.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of associated object.
-          schema:
-            type: string
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: List of associations returned successfully.
@@ -318,10 +497,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listsubscriptionassociations200Example:
+                  summary: Default listSubscriptionAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id013
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -336,23 +528,29 @@ components:
         id:
           type: string
           description: The unique identifier for the subscription.
+          example: '500123'
         properties:
           type: object
           description: The subscription's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
+          example: true
         associations:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/CollectionResponseAssociation'
+          example: *id002
     CollectionResponseSubscription:
       type: object
       properties:
@@ -360,6 +558,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Subscription'
+          example: *id005
         paging:
           $ref: '#/components/schemas/Paging'
     BatchResponseSubscription:
@@ -367,13 +566,16 @@ components:
       properties:
         status:
           type: string
+          example: active
         results:
           type: array
           items:
             $ref: '#/components/schemas/Subscription'
+          example: *id004
         completedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
     SimplePublicObjectInput:
       type: object
       properties:
@@ -381,6 +583,7 @@ components:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchReadInput:
       type: object
       properties:
@@ -388,6 +591,7 @@ components:
           type: array
           items:
             type: string
+          example: *id006
         inputs:
           type: array
           items:
@@ -395,6 +599,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id007
     BatchCreateInput:
       type: object
       properties:
@@ -402,6 +607,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
+          example: *id008
     BatchUpdateInput:
       type: object
       properties:
@@ -416,6 +622,7 @@ components:
                 type: object
                 additionalProperties:
                   type: string
+          example: *id009
     SearchRequest:
       type: object
       properties:
@@ -423,6 +630,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example: *id010
         sorts:
           type: array
           items:
@@ -433,17 +641,22 @@ components:
               direction:
                 type: string
                 enum: [ASCENDING, DESCENDING]
+          example: *id011
         query:
           type: string
+          example: example-value
         properties:
           type: array
           items:
             type: string
+          example: *id012
         limit:
           type: integer
           maximum: 200
+          example: 100
         after:
           type: string
+          example: example-value
     FilterGroup:
       type: object
       properties:
@@ -451,23 +664,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
     Filter:
       type: object
       properties:
         propertyName:
           type: string
+          example: Example Record
         operator:
           type: string
           enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+          example: EQ
         value:
           type: string
+          example: example-value
     Association:
       type: object
       properties:
         id:
           type: string
+          example: '500123'
         type:
           type: string
+          example: standard
     CollectionResponseAssociation:
       type: object
       properties:
@@ -475,6 +697,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Association'
+          example: *id013
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -485,17 +708,23 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

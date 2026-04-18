@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "description": "Response for batch operations that had some failures",
+  "name": "BatchPortalFlagStateResponseWithErrors",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The overall status of the batch operation",
+      "enum": [
+        "COMPLETE",
+        "PENDING"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "description": "List of portal flag states that were successfully affected",
+      "items": {
+        "type": "object",
+        "description": "Represents the flag state override for a specific portal (account)",
+        "properties": {
+          "appId": {
+            "type": "integer",
+            "description": "The unique identifier for the HubSpot application"
+          },
+          "flagName": {
+            "type": "string",
+            "description": "The name of the feature flag"
+          },
+          "portalId": {
+            "type": "integer",
+            "description": "The unique identifier for the HubSpot portal (account)"
+          },
+          "flagState": {
+            "type": "string",
+            "description": "The state of a feature flag",
+            "enum": [
+              "ON",
+              "OFF",
+              "ABSENT"
+            ]
+          }
+        },
+        "required": [
+          "appId",
+          "flagName",
+          "portalId",
+          "flagState"
+        ]
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors that occurred during the batch operation",
+      "items": {
+        "type": "object",
+        "description": "Represents an error that occurred for a specific item in a batch operation",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Error status code"
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the error"
+          }
+        },
+        "required": [
+          "status",
+          "category",
+          "message"
+        ]
+      }
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "Timestamp when the batch operation started"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "Timestamp when the batch operation completed"
+    }
+  },
+  "required": [
+    "status",
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

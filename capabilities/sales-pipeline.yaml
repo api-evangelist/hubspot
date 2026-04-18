@@ -1,0 +1,121 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot Sales Pipeline"
+  description: "Unified workflow for sales reps to manage contacts, companies, deals, engagement activities (calls, emails, meetings, notes, tasks), lists, and CRM search. Combines core CRM and engagement APIs for end-to-end sales operations."
+  tags:
+    - HubSpot
+    - Sales
+    - CRM
+    - Pipeline
+    - Engagements
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - import: crm-contacts
+      location: ./shared/crm-contacts.yaml
+    - import: crm-companies
+      location: ./shared/crm-companies.yaml
+    - import: crm-deals
+      location: ./shared/crm-deals.yaml
+    - import: crm-lists
+      location: ./shared/crm-lists.yaml
+    - import: crm-search
+      location: ./shared/crm-search.yaml
+    - import: engagement-calls
+      location: ./shared/engagement-calls.yaml
+    - import: engagement-emails
+      location: ./shared/engagement-emails.yaml
+    - import: engagement-meetings
+      location: ./shared/engagement-meetings.yaml
+    - import: engagement-notes
+      location: ./shared/engagement-notes.yaml
+    - import: engagement-tasks
+      location: ./shared/engagement-tasks.yaml
+
+  exposes:
+    - type: rest
+      port: 8081
+      namespace: sales-pipeline-api
+      description: "Unified REST API for sales pipeline management, contact outreach, and deal tracking."
+      resources:
+        - path: /v1/contacts
+          name: contacts
+          description: "Contact management"
+          operations:
+            - { method: GET, name: list-contacts, description: "List contacts", call: "crm-contacts.list-contacts", outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: POST, name: create-contact, description: "Create contact", call: "crm-contacts.create-contact", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/contacts/{contactId}
+          name: contact-by-id
+          description: "Individual contact"
+          operations:
+            - { method: GET, name: get-contact, description: "Get contact", call: "crm-contacts.get-contact", with: { contactId: "rest.contactId" }, outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: PATCH, name: update-contact, description: "Update contact", call: "crm-contacts.update-contact", with: { contactId: "rest.contactId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/companies
+          name: companies
+          description: "Company management"
+          operations:
+            - { method: GET, name: list-companies, description: "List companies", call: "crm-companies.list-companies", outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: POST, name: create-company, description: "Create company", call: "crm-companies.create-company", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/deals
+          name: deals
+          description: "Deal management"
+          operations:
+            - { method: GET, name: list-deals, description: "List deals", call: "crm-deals.list-deals", outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: POST, name: create-deal, description: "Create deal", call: "crm-deals.create-deal", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/deals/{dealId}
+          name: deal-by-id
+          description: "Individual deal"
+          operations:
+            - { method: GET, name: get-deal, description: "Get deal", call: "crm-deals.get-deal", with: { dealId: "rest.dealId" }, outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: PATCH, name: update-deal, description: "Update deal", call: "crm-deals.update-deal", with: { dealId: "rest.dealId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/calls
+          name: calls
+          description: "Call engagements"
+          operations:
+            - { method: GET, name: list-calls, description: "List calls", call: "engagement-calls.list-calls", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/tasks
+          name: tasks
+          description: "Task engagements"
+          operations:
+            - { method: GET, name: list-tasks, description: "List tasks", call: "engagement-tasks.list-tasks", outputParameters: [{ type: object, mapping: "$." }] }
+
+    - type: mcp
+      port: 9091
+      namespace: sales-pipeline-mcp
+      transport: http
+      description: "MCP server for AI-assisted sales pipeline management, contact outreach, and deal tracking."
+      tools:
+        - { name: list-contacts, description: "List all CRM contacts", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.list-contacts", with: { limit: "tools.limit", after: "tools.after", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-contact, description: "Get a contact by ID", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.get-contact", with: { contactId: "tools.contactId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-contact, description: "Create a new contact", hints: { readOnly: false }, call: "crm-contacts.create-contact", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: update-contact, description: "Update a contact", hints: { readOnly: false, idempotent: true }, call: "crm-contacts.update-contact", with: { contactId: "tools.contactId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-contacts, description: "Search contacts with filters", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.search-contacts", with: { filterGroups: "tools.filterGroups", query: "tools.query", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-companies, description: "List all companies", hints: { readOnly: true, idempotent: true }, call: "crm-companies.list-companies", with: { limit: "tools.limit", after: "tools.after" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-company, description: "Get a company by ID", hints: { readOnly: true, idempotent: true }, call: "crm-companies.get-company", with: { companyId: "tools.companyId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-company, description: "Create a new company", hints: { readOnly: false }, call: "crm-companies.create-company", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-companies, description: "Search companies with filters", hints: { readOnly: true, idempotent: true }, call: "crm-companies.search-companies", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-deals, description: "List all deals", hints: { readOnly: true, idempotent: true }, call: "crm-deals.list-deals", with: { limit: "tools.limit", after: "tools.after", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-deal, description: "Get a deal by ID", hints: { readOnly: true, idempotent: true }, call: "crm-deals.get-deal", with: { dealId: "tools.dealId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-deal, description: "Create a new deal", hints: { readOnly: false }, call: "crm-deals.create-deal", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: update-deal, description: "Update a deal", hints: { readOnly: false, idempotent: true }, call: "crm-deals.update-deal", with: { dealId: "tools.dealId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-deals, description: "Search deals with filters", hints: { readOnly: true, idempotent: true }, call: "crm-deals.search-deals", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-calls, description: "List call engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-calls.list-calls", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-call, description: "Log a call engagement", hints: { readOnly: false }, call: "engagement-calls.create-call", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-email-engagements, description: "List email engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-emails.list-email-engagements", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-email-engagement, description: "Log an email engagement", hints: { readOnly: false }, call: "engagement-emails.create-email-engagement", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-meetings, description: "List meeting engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-meetings.list-meetings", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-meeting, description: "Log a meeting engagement", hints: { readOnly: false }, call: "engagement-meetings.create-meeting", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-notes, description: "List note engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-notes.list-notes", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-note, description: "Create a note engagement", hints: { readOnly: false }, call: "engagement-notes.create-note", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-tasks, description: "List task engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-tasks.list-tasks", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-task, description: "Create a task engagement", hints: { readOnly: false }, call: "engagement-tasks.create-task", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-crm-lists, description: "List CRM lists for segmentation", hints: { readOnly: true, idempotent: true }, call: "crm-lists.list-lists", with: { limit: "tools.limit" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-crm-objects, description: "Search any CRM object type", hints: { readOnly: true, idempotent: true }, call: "crm-search.search-objects", with: { objectType: "tools.objectType", filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }

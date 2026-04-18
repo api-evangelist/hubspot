@@ -1,0 +1,78 @@
+{
+  "type": "object",
+  "description": "Error information for a batch operation item",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The error status",
+      "example": "error"
+    },
+    "category": {
+      "type": "string",
+      "description": "The error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "message": {
+      "type": "string",
+      "description": "The error message",
+      "example": "Property value is invalid"
+    },
+    "context": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "Field where error occurred",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchError"
+}

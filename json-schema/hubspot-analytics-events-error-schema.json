@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "description": "Standard error response returned when an API request fails",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "High-level error category",
+      "example": "standard"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Unique identifier for tracking and debugging the error",
+      "format": "uuid",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message",
+      "example": "This is an example description."
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "Specific error subcategory for detailed classification",
+      "example": "standard"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Relevant links for error resolution and documentation",
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of specific errors encountered",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "subCategory": "standard",
+          "in": "example-value",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Specific error subcategory",
+            "example": "standard"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location where the error occurred (e.g., query, path, body)",
+            "example": "example-value"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the specific error",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

@@ -1,0 +1,75 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot Commerce Admin"
+  description: "Unified workflow for admins to manage commerce payments, subscriptions, HubDB data tables, CMS pages, and domains. Combines commerce operations with CMS data management for platform administration."
+  tags:
+    - HubSpot
+    - Commerce
+    - Admin
+    - CMS
+    - HubDB
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - import: commerce-payments
+      location: ./shared/commerce-payments.yaml
+    - import: commerce-subscriptions
+      location: ./shared/commerce-subscriptions.yaml
+    - import: cms-hubdb
+      location: ./shared/cms-hubdb-api.yaml
+    - import: cms-pages
+      location: ./shared/cms-pages-api.yaml
+    - import: domains
+      location: ./shared/domains-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8084
+      namespace: commerce-admin-api
+      description: "Unified REST API for commerce operations, data table management, and CMS administration."
+      resources:
+        - path: /v1/payments
+          name: payments
+          description: "Commerce payments"
+          operations:
+            - { method: GET, name: list-payments, description: "List payments", call: "commerce-payments.list-payments", outputParameters: [{ type: object, mapping: "$." }] }
+            - { method: POST, name: create-payment, description: "Create payment", call: "commerce-payments.create-payment", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/payments/{commercePaymentId}
+          name: payment-by-id
+          description: "Individual payment"
+          operations:
+            - { method: GET, name: get-payment, description: "Get payment", call: "commerce-payments.get-payment", with: { commercePaymentId: "rest.commercePaymentId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/subscriptions
+          name: subscriptions
+          description: "Commerce subscriptions"
+          operations:
+            - { method: GET, name: list-subscriptions, description: "List subscriptions", call: "commerce-subscriptions.list-subscriptions", outputParameters: [{ type: object, mapping: "$." }] }
+        - path: /v1/subscriptions/{subscriptionId}
+          name: subscription-by-id
+          description: "Individual subscription"
+          operations:
+            - { method: GET, name: get-subscription, description: "Get subscription", call: "commerce-subscriptions.get-subscription", with: { subscriptionId: "rest.subscriptionId" }, outputParameters: [{ type: object, mapping: "$." }] }
+
+    - type: mcp
+      port: 9094
+      namespace: commerce-admin-mcp
+      transport: http
+      description: "MCP server for AI-assisted commerce administration, payment tracking, and data management."
+      tools:
+        - { name: list-payments, description: "List all commerce payments", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.list-payments", with: { limit: "tools.limit", after: "tools.after" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-payment, description: "Get a payment by ID", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.get-payment", with: { commercePaymentId: "tools.commercePaymentId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-payment, description: "Create a commerce payment", hints: { readOnly: false }, call: "commerce-payments.create-payment", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: update-payment, description: "Update a commerce payment", hints: { readOnly: false, idempotent: true }, call: "commerce-payments.update-payment", with: { commercePaymentId: "tools.commercePaymentId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-payments, description: "Search commerce payments", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.search-payments", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: list-subscriptions, description: "List all commerce subscriptions", hints: { readOnly: true, idempotent: true }, call: "commerce-subscriptions.list-subscriptions", with: { limit: "tools.limit", after: "tools.after" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-subscription, description: "Get a subscription by ID", hints: { readOnly: true, idempotent: true }, call: "commerce-subscriptions.get-subscription", with: { subscriptionId: "tools.subscriptionId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-subscription, description: "Create a commerce subscription", hints: { readOnly: false }, call: "commerce-subscriptions.create-subscription", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-subscriptions, description: "Search commerce subscriptions", hints: { readOnly: true, idempotent: true }, call: "commerce-subscriptions.search-subscriptions", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }

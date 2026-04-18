@@ -1,0 +1,116 @@
+{
+  "type": "object",
+  "description": "Response from batch operations",
+  "name": "BatchResponse",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Current status of the batch operation",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "description": "Successfully processed authors",
+      "items": {
+        "type": "object",
+        "description": "Represents a blog author profile with biographical and social information",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the blog author"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full display name of the author"
+          },
+          "slug": {
+            "type": "string",
+            "description": "URL-friendly identifier for the author"
+          },
+          "email": {
+            "type": "email",
+            "description": "Author's email address"
+          },
+          "bio": {
+            "type": "string",
+            "description": "Author biography or description"
+          },
+          "website": {
+            "type": "uri",
+            "description": "Author's personal website URL"
+          },
+          "twitter": {
+            "type": "string",
+            "description": "Author's Twitter/X handle"
+          },
+          "facebook": {
+            "type": "string",
+            "description": "Author's Facebook profile URL"
+          },
+          "linkedin": {
+            "type": "string",
+            "description": "Author's LinkedIn profile URL"
+          },
+          "avatar": {
+            "type": "uri",
+            "description": "URL to the author's avatar image"
+          },
+          "language": {
+            "type": "string",
+            "description": "Language code for the author profile (e.g., en, es, fr)"
+          },
+          "translatedFromId": {
+            "type": "string",
+            "description": "ID of the original author this was translated from"
+          },
+          "created": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was created"
+          },
+          "updated": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was last updated"
+          },
+          "deletedAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the author was archived"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created",
+          "updated"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when the batch was requested"
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when processing started"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "ISO 8601 timestamp when processing completed"
+    },
+    "links": {
+      "type": "object",
+      "description": "Related links for the batch operation"
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

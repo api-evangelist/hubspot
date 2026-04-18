@@ -1,0 +1,66 @@
+{
+  "type": "object",
+  "description": "Request body for sending a transactional email",
+  "name": "TransactionalEmailRequest",
+  "properties": {
+    "emailId": {
+      "type": "integer",
+      "description": "The ID of the transactional email template to use"
+    },
+    "message": {
+      "type": "object",
+      "description": "The email message configuration",
+      "properties": {
+        "to": {
+          "type": "email",
+          "description": "The recipient's email address"
+        },
+        "from": {
+          "type": "email",
+          "description": "Override the from address (must be verified)"
+        },
+        "sendId": {
+          "type": "string",
+          "description": "A unique ID to prevent duplicate sends"
+        },
+        "replyTo": {
+          "type": "array",
+          "description": "Reply-to email addresses",
+          "items": {
+            "type": "email"
+          }
+        },
+        "cc": {
+          "type": "array",
+          "description": "CC email addresses",
+          "items": {
+            "type": "email"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "description": "BCC email addresses",
+          "items": {
+            "type": "email"
+          }
+        }
+      },
+      "required": [
+        "to"
+      ]
+    },
+    "contactProperties": {
+      "type": "object",
+      "description": "Properties to set on the contact (if createContact is enabled)"
+    },
+    "customProperties": {
+      "type": "object",
+      "description": "Custom template variables for personalization"
+    }
+  },
+  "required": [
+    "emailId",
+    "message"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

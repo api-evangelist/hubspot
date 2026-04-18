@@ -1,0 +1,95 @@
+{
+  "type": "object",
+  "description": "Standard error in batch operations",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Error status",
+      "example": "active"
+    },
+    "id": {
+      "type": "string",
+      "description": "ID of the failed item",
+      "example": "500123"
+    },
+    "category": {
+      "type": "string",
+      "description": "Error category",
+      "example": "standard"
+    },
+    "message": {
+      "type": "string",
+      "description": "Error message",
+      "example": "This is an example description."
+    },
+    "errors": {
+      "type": "array",
+      "description": "Detailed errors",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "subCategory": "standard",
+          "in": "example-value",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "standard"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location of error",
+            "example": "example-value"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "context": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "category",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StandardError"
+}

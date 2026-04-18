@@ -1,0 +1,102 @@
+{
+  "type": "object",
+  "description": "Represents an error response from the API",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "A unique identifier for the request, useful for debugging",
+      "format": "uuid",
+      "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+    },
+    "message": {
+      "type": "string",
+      "description": "A human-readable message describing the error",
+      "example": "Invalid input (details will vary based on the error)"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "A more specific category for the error",
+      "example": "standard"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error",
+      "example": {
+        "missingScopes": [
+          "scope1",
+          "scope2"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Links to documentation or remediation steps",
+      "example": {
+        "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "A list of specific error details",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A human-readable message describing the specific error",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "An error code for this specific error",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "The field or parameter where the error occurred",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "A specific subcategory for this error",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context for this error",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

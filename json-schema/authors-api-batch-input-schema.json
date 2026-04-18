@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/authors-api-batch-input-schema.json",
+  "title": "BatchInput",
+  "description": "Input for batch update operations",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Single item in a batch update operation",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of the author to update",
+            "example": "500123"
+          },
+          "properties": {
+            "$ref": "#/components/schemas/BlogAuthorInput"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "description": "Array of items to process",
+      "example": [
+        {
+          "id": "500123",
+          "properties": {}
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

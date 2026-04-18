@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "description": "Request body for sending a transactional email",
+  "properties": {
+    "emailId": {
+      "type": "integer",
+      "description": "The ID of the transactional email template to use",
+      "example": 12345678
+    },
+    "message": {
+      "type": "object",
+      "description": "The email message configuration",
+      "properties": {
+        "to": {
+          "type": "string",
+          "description": "The recipient's email address",
+          "format": "email",
+          "example": "recipient@example.com"
+        },
+        "from": {
+          "type": "string",
+          "description": "Override the from address (must be verified)",
+          "format": "email",
+          "example": "noreply@yourcompany.com"
+        },
+        "sendId": {
+          "type": "string",
+          "description": "A unique ID to prevent duplicate sends",
+          "example": "unique-send-id-123"
+        },
+        "replyTo": {
+          "type": "array",
+          "description": "Reply-to email addresses",
+          "example": [
+            "support@yourcompany.com"
+          ],
+          "items": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "cc": {
+          "type": "array",
+          "description": "CC email addresses",
+          "example": [
+            "jsmith@example.com"
+          ],
+          "items": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "bcc": {
+          "type": "array",
+          "description": "BCC email addresses",
+          "example": [
+            "jsmith@example.com"
+          ],
+          "items": {
+            "type": "string",
+            "format": "email"
+          }
+        }
+      },
+      "required": [
+        "to"
+      ]
+    },
+    "contactProperties": {
+      "type": "object",
+      "description": "Properties to set on the contact (if createContact is enabled)",
+      "example": {
+        "firstname": "John",
+        "lastname": "Doe",
+        "company": "Acme Corp"
+      }
+    },
+    "customProperties": {
+      "type": "object",
+      "description": "Custom template variables for personalization",
+      "example": {
+        "order_number": "ORD-12345",
+        "order_total": "$99.99"
+      }
+    }
+  },
+  "required": [
+    "emailId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TransactionalEmailRequest"
+}

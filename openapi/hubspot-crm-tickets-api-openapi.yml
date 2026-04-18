@@ -11,52 +11,56 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Associations
-    description: Operations for managing ticket associations
-  - name: Batch
-    description: Batch operations for tickets
-  - name: Tickets
-    description: Operations for managing ticket records
+- name: Associations
+  description: Operations for managing ticket associations
+- name: Batch
+  description: Batch operations for tickets
+- name: Tickets
+  description: Operations for managing ticket records
 paths:
   /crm/v3/objects/tickets:
     get:
       operationId: listTickets
-      summary: HubSpot List tickets
+      summary: Hubspot List Tickets
       description: >-
         Returns a page of ticket records. Use the limit and after parameters
         to paginate through tickets. You can also specify which properties to
         return using the properties parameter.
       tags:
-        - Tickets
+      - Tickets
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 10
-            maximum: 100
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived tickets.
-          schema:
-            type: boolean
-            default: false
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived tickets.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of tickets.
@@ -64,23 +68,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseTicket'
+              examples:
+                Listtickets200Example:
+                  summary: Default listTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id005
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: &id002
+                        key: value
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createTicket
-      summary: HubSpot Create a ticket
+      summary: Hubspot Create a Ticket
       description: >-
         Creates a new ticket record with the provided properties. The request
         body should include a properties object containing field values such as
         subject, content, hs_ticket_priority, and hs_pipeline_stage.
       tags:
-        - Tickets
+      - Tickets
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreateticketRequestExample:
+                summary: Default createTicket request
+                x-microcks-default: true
+                value:
+                  properties: &id003
+                    key: value
       responses:
         '201':
           description: Ticket created successfully.
@@ -88,37 +118,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticket'
+              examples:
+                Createticket201Example:
+                  summary: Default createTicket 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/{ticketId}:
     get:
       operationId: getTicket
-      summary: HubSpot Get a ticket
+      summary: Hubspot Get a Ticket
       description: >-
         Returns a single ticket record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-        - Tickets
+      - Tickets
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket to retrieve.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived tickets.
-          schema:
-            type: boolean
-            default: false
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived tickets.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the ticket record.
@@ -126,32 +173,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticket'
+              examples:
+                Getticket200Example:
+                  summary: Default getTicket 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateTicket
-      summary: HubSpot Update a ticket
+      summary: Hubspot Update a Ticket
       description: >-
         Performs a partial update of a ticket record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-        - Tickets
+      - Tickets
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket to update.
-          schema:
-            type: string
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket to update.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdateticketRequestExample:
+                summary: Default updateTicket request
+                x-microcks-default: true
+                value:
+                  properties: *id003
       responses:
         '200':
           description: Ticket updated successfully.
@@ -159,27 +227,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Ticket'
+              examples:
+                Updateticket200Example:
+                  summary: Default updateTicket 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteTicket
-      summary: HubSpot Archive a ticket
+      summary: Hubspot Archive a Ticket
       description: >-
         Archives (soft deletes) a ticket record by its ID. Archived tickets
         can be restored using the HubSpot UI or API.
       tags:
-        - Tickets
+      - Tickets
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket to archive.
-          schema:
-            type: string
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket to archive.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Ticket archived successfully.
@@ -187,21 +270,33 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/batch/read:
     post:
       operationId: batchReadTickets
-      summary: HubSpot Batch read tickets
+      summary: Hubspot Batch Read Tickets
       description: >-
         Reads a batch of ticket records by their IDs or unique property values.
         Useful for retrieving multiple tickets in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadticketsRequestExample:
+                summary: Default batchReadTickets request
+                x-microcks-default: true
+                value:
+                  properties: &id006
+                  - example-value
+                  inputs: &id007
+                  - id: '500123'
       responses:
         '200':
           description: Batch read completed successfully.
@@ -209,25 +304,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchreadtickets200Example:
+                  summary: Default batchReadTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: &id004
+                    - id: '500123'
+                      properties: *id001
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: *id002
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/batch/create:
     post:
       operationId: batchCreateTickets
-      summary: HubSpot Batch create tickets
+      summary: Hubspot Batch Create Tickets
       description: >-
         Creates multiple ticket records in a single API call. The request
         body should include an array of ticket property objects.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreateticketsRequestExample:
+                summary: Default batchCreateTickets request
+                x-microcks-default: true
+                value:
+                  inputs: &id008
+                  - properties: *id003
       responses:
         '201':
           description: Tickets created successfully.
@@ -235,25 +354,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchcreatetickets201Example:
+                  summary: Default batchCreateTickets 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/batch/update:
     post:
       operationId: batchUpdateTickets
-      summary: HubSpot Batch update tickets
+      summary: Hubspot Batch Update Tickets
       description: >-
         Updates multiple ticket records in a single API call. Each record
         in the request must include the ticket ID and the properties to update.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdateticketsRequestExample:
+                summary: Default batchUpdateTickets request
+                x-microcks-default: true
+                value:
+                  inputs: &id009
+                  - id: '500123'
+                    properties:
+                      key: value
       responses:
         '200':
           description: Tickets updated successfully.
@@ -261,25 +400,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchupdatetickets200Example:
+                  summary: Default batchUpdateTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/batch/archive:
     post:
       operationId: batchArchiveTickets
-      summary: HubSpot Batch archive tickets
+      summary: Hubspot Batch Archive Tickets
       description: >-
         Archives multiple ticket records in a single API call by their IDs.
         Archived tickets can be restored using the HubSpot UI or API.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchiveticketsRequestExample:
+                summary: Default batchArchiveTickets request
+                x-microcks-default: true
+                value:
+                  inputs: &id010
+                  - id: '500123'
       responses:
         '204':
           description: Tickets archived successfully.
@@ -287,22 +444,41 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/search:
     post:
       operationId: searchTickets
-      summary: HubSpot Search tickets
+      summary: Hubspot Search Tickets
       description: >-
         Searches for ticket records using filter groups, sorts, and other
         query parameters. Supports complex filtering with multiple filter
         groups and operators for precise record retrieval.
       tags:
-        - Tickets
+      - Tickets
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchticketsRequestExample:
+                summary: Default searchTickets request
+                x-microcks-default: true
+                value:
+                  filterGroups: &id011
+                  - filters:
+                    - {}
+                  sorts: &id012
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties: &id013
+                  - example-value
+                  limit: 100
+                  after: example-value
       responses:
         '200':
           description: Search results returned successfully.
@@ -310,32 +486,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseTicket'
+              examples:
+                Searchtickets200Example:
+                  summary: Default searchTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id005
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}:
     get:
       operationId: listTicketAssociations
-      summary: HubSpot List ticket associations
+      summary: Hubspot List Ticket Associations
       description: >-
         Returns all associations of a ticket record to objects of a specified
         type, such as contacts, companies, or deals.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of associated object (e.g., contacts, companies, deals).
-          schema:
-            type: string
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., contacts, companies, deals).
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: List of associations returned successfully.
@@ -343,44 +532,61 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listticketassociations200Example:
+                  summary: Default listTicketAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id014
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createTicketAssociation
-      summary: HubSpot Create a ticket association
+      summary: Hubspot Create a Ticket Association
       description: >-
         Creates an association between a ticket and another CRM object record.
         The association type specifies the relationship between the objects.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of the object to associate with.
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          description: The ID of the object to associate with.
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          description: The type of association to create.
-          schema:
-            type: string
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: Association created successfully.
@@ -388,44 +594,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Association'
+              examples:
+                Createticketassociation200Example:
+                  summary: Default createTicketAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteTicketAssociation
-      summary: HubSpot Delete a ticket association
+      summary: Hubspot Delete a Ticket Association
       description: >-
         Removes an association between a ticket and another CRM object record.
         This does not delete the ticket or the associated object, only the
         relationship between them.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: ticketId
-          in: path
-          required: true
-          description: The ID of the ticket.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of the associated object.
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          description: The ID of the associated object.
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          description: The type of association to delete.
-          schema:
-            type: string
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
       responses:
         '204':
           description: Association deleted successfully.
@@ -433,6 +653,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -447,27 +670,33 @@ components:
         id:
           type: string
           description: The unique identifier for the ticket.
+          example: '500123'
         properties:
           type: object
           description: The ticket's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
           description: The date and time the ticket was created.
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
           description: The date and time the ticket was last updated.
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
           description: Whether the ticket has been archived.
+          example: true
         associations:
           type: object
           description: The ticket's associations with other CRM objects.
           additionalProperties:
             $ref: '#/components/schemas/CollectionResponseAssociation'
+          example: *id002
     CollectionResponseTicket:
       type: object
       description: A paginated list of ticket records.
@@ -476,6 +705,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Ticket'
+          example: *id005
         paging:
           $ref: '#/components/schemas/Paging'
     BatchResponseTicket:
@@ -484,13 +714,16 @@ components:
       properties:
         status:
           type: string
+          example: active
         results:
           type: array
           items:
             $ref: '#/components/schemas/Ticket'
+          example: *id004
         completedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
     SimplePublicObjectInput:
       type: object
       description: Input for creating or updating a CRM object.
@@ -499,6 +732,7 @@ components:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchReadInput:
       type: object
       description: Input for a batch read operation.
@@ -507,6 +741,7 @@ components:
           type: array
           items:
             type: string
+          example: *id006
         inputs:
           type: array
           items:
@@ -514,6 +749,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id007
     BatchCreateInput:
       type: object
       description: Input for a batch create operation.
@@ -522,6 +758,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
+          example: *id008
     BatchUpdateInput:
       type: object
       description: Input for a batch update operation.
@@ -537,6 +774,7 @@ components:
                 type: object
                 additionalProperties:
                   type: string
+          example: *id009
     BatchArchiveInput:
       type: object
       description: Input for a batch archive operation.
@@ -548,6 +786,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id010
     SearchRequest:
       type: object
       description: A search request for CRM objects.
@@ -556,6 +795,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example: *id011
         sorts:
           type: array
           items:
@@ -566,17 +806,22 @@ components:
               direction:
                 type: string
                 enum: [ASCENDING, DESCENDING]
+          example: *id012
         query:
           type: string
+          example: example-value
         properties:
           type: array
           items:
             type: string
+          example: *id013
         limit:
           type: integer
           maximum: 200
+          example: 100
         after:
           type: string
+          example: example-value
     FilterGroup:
       type: object
       description: A group of filters combined with AND logic.
@@ -585,25 +830,34 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
     Filter:
       type: object
       description: A single filter condition.
       properties:
         propertyName:
           type: string
+          example: Example Record
         operator:
           type: string
           enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+          example: EQ
         value:
           type: string
+          example: example-value
     Association:
       type: object
       description: An association between two CRM objects.
       properties:
         id:
           type: string
+          example: '500123'
         type:
           type: string
+          example: standard
     CollectionResponseAssociation:
       type: object
       description: A list of associations.
@@ -612,6 +866,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Association'
+          example: *id014
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -623,18 +878,24 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       description: An error response.
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

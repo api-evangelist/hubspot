@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "description": "Input for creating a new commerce payment",
+  "properties": {
+    "properties": {
+      "type": "object",
+      "description": "The properties to set on the commerce payment",
+      "example": {
+        "key": "value"
+      }
+    },
+    "associations": {
+      "type": "array",
+      "description": "Associations to create with other objects",
+      "example": [
+        {
+          "to": {
+            "id": {}
+          },
+          "types": [
+            {}
+          ]
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Input for creating an association",
+        "properties": {
+          "to": {
+            "type": "object",
+            "example": {
+              "id": "500123"
+            },
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the object to associate with"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "types": {
+            "type": "array",
+            "description": "The association types",
+            "example": [
+              {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 500123
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "An association type definition",
+              "properties": {
+                "associationCategory": {
+                  "type": "string",
+                  "description": "The category of the association",
+                  "example": "HUBSPOT_DEFINED",
+                  "enum": [
+                    "HUBSPOT_DEFINED",
+                    "USER_DEFINED",
+                    "INTEGRATOR_DEFINED"
+                  ]
+                },
+                "associationTypeId": {
+                  "type": "integer",
+                  "description": "The numeric ID of the association type",
+                  "example": 500123
+                }
+              },
+              "required": [
+                "associationCategory",
+                "associationTypeId"
+              ]
+            }
+          }
+        },
+        "required": [
+          "to",
+          "types"
+        ]
+      }
+    }
+  },
+  "required": [
+    "properties"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CommercePaymentInput"
+}

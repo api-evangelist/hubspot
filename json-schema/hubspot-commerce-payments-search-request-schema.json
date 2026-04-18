@@ -1,0 +1,156 @@
+{
+  "type": "object",
+  "description": "Request body for searching commerce payments",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Search query string",
+      "example": "example-value"
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum number of results",
+      "example": 10
+    },
+    "after": {
+      "type": "string",
+      "description": "Pagination cursor",
+      "example": "example-value"
+    },
+    "sorts": {
+      "type": "array",
+      "description": "Sort order for results",
+      "example": [
+        {
+          "propertyName": "Example Record",
+          "direction": "ASCENDING"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A sort option for ordering results",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to sort by",
+            "example": "Example Record"
+          },
+          "direction": {
+            "type": "string",
+            "description": "The sort direction",
+            "example": "ASCENDING",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ]
+          }
+        },
+        "required": [
+          "propertyName",
+          "direction"
+        ]
+      }
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return",
+      "example": [
+        "example-value"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "filterGroups": {
+      "type": "array",
+      "description": "Filter groups for the search",
+      "example": [
+        {
+          "filters": [
+            {}
+          ]
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "A group of filters combined with AND logic",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "example": [
+              {
+                "propertyName": "Example Record",
+                "operator": "EQ",
+                "value": "example-value",
+                "values": [
+                  {}
+                ],
+                "highValue": "example-value"
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "A single filter criterion",
+              "properties": {
+                "propertyName": {
+                  "type": "string",
+                  "description": "The property to filter on",
+                  "example": "Example Record"
+                },
+                "operator": {
+                  "type": "string",
+                  "description": "The comparison operator",
+                  "example": "EQ",
+                  "enum": [
+                    "EQ",
+                    "NEQ",
+                    "LT",
+                    "LTE",
+                    "GT",
+                    "GTE",
+                    "BETWEEN",
+                    "IN",
+                    "NOT_IN",
+                    "HAS_PROPERTY",
+                    "NOT_HAS_PROPERTY",
+                    "CONTAINS_TOKEN",
+                    "NOT_CONTAINS_TOKEN"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "description": "The value to compare against",
+                  "example": "example-value"
+                },
+                "values": {
+                  "type": "array",
+                  "description": "Values for IN/NOT_IN operators",
+                  "example": [
+                    "example-value"
+                  ],
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "highValue": {
+                  "type": "string",
+                  "description": "Upper bound for BETWEEN operator",
+                  "example": "example-value"
+                }
+              },
+              "required": [
+                "propertyName",
+                "operator"
+              ]
+            }
+          }
+        },
+        "required": [
+          "filters"
+        ]
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SearchRequest"
+}

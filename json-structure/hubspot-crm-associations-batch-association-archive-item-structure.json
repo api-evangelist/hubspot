@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "description": "Single item in a batch association archive request",
+  "name": "BatchAssociationArchiveItem",
+  "properties": {
+    "from": {
+      "type": "object",
+      "description": "Reference to a CRM object by ID",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the object"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "to": {
+      "type": "object",
+      "description": "Reference to a CRM object by ID",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID of the object"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Input for specifying an association type",
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ]
+          },
+          "associationTypeId": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ]
+      }
+    }
+  },
+  "required": [
+    "from",
+    "to"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

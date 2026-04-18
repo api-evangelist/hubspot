@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-batch-callback-response-schema.json",
+  "title": "BatchCallbackResponse",
+  "description": "Response from a batch callback completion operation",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "COMPLETE",
+        "PARTIAL"
+      ],
+      "description": "Overall status of the batch operation",
+      "example": "COMPLETE"
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors for failed callbacks",
+      "items": {
+        "type": "object",
+        "description": "Error information for a failed callback",
+        "required": [
+          "callbackId",
+          "message",
+          "category"
+        ],
+        "properties": {
+          "callbackId": {
+            "type": "string",
+            "description": "The callback that failed",
+            "example": "500123"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category",
+            "example": "standard"
+          }
+        }
+      },
+      "example": [
+        {
+          "callbackId": "500123",
+          "message": "This is an example description.",
+          "category": "standard"
+        }
+      ]
+    }
+  }
+}

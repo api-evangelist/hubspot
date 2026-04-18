@@ -25,23 +25,23 @@ info:
     cms: STARTER
 
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 
 tags:
-  - name: Batch Operations
-    description: Perform bulk operations on multiple blog posts simultaneously
-  - name: Blog Posts
-    description: Create, read, update, and delete individual blog posts
-  - name: Drafts and Revisions
-    description: Manage blog post drafts and revision history
-  - name: Multi-Language Management
-    description: Manage multi-language blog post groups and variations
-  - name: Post Cloning
-    description: Clone and duplicate existing blog posts
+- name: Batch Operations
+  description: Perform bulk operations on multiple blog posts simultaneously
+- name: Blog Posts
+  description: Create, read, update, and delete individual blog posts
+- name: Drafts and Revisions
+  description: Manage blog post drafts and revision history
+- name: Multi-Language Management
+  description: Manage multi-language blog post groups and variations
+- name: Post Cloning
+  description: Clone and duplicate existing blog posts
 
-  - name: Publishing and Scheduling
-    description: Schedule publication and manage post visibility
+- name: Publishing and Scheduling
+  description: Schedule publication and manage post visibility
 components:
   securitySchemes:
     OAuth2:
@@ -65,121 +65,154 @@ components:
         id:
           type: string
           description: Unique identifier for the blog post
+          example: '500123'
         name:
           type: string
           description: Internal name of the blog post
+          example: Example Record
         slug:
           type: string
           description: URL slug for the blog post
+          example: example-value
         htmlTitle:
           type: string
           description: HTML title tag content
+          example: Example Record
         postBody:
           type: string
           description: HTML content of the blog post body
+          example: This is an example description.
         postSummary:
           type: string
           description: Summary or excerpt of the blog post
+          example: example-value
         blogAuthorId:
           type: string
           description: ID of the associated blog author
+          example: '500123'
         authorName:
           type: string
           description: Display name of the author
+          example: Example Record
         contentGroupId:
           type: string
           description: ID of the blog this post belongs to
+          example: '500123'
         campaign:
           type: string
           description: Campaign GUID associated with the post
+          example: example-value
         categoryId:
           type: integer
           description: Category ID for the post
+          example: 500123
         state:
           type: string
           enum:
-            - DRAFT
-            - DRAFT_AB
-            - AUTOMATED
-            - PUBLISHED
-            - SCHEDULED
-            - AUTOMATED_DRAFT
+          - DRAFT
+          - DRAFT_AB
+          - AUTOMATED
+          - PUBLISHED
+          - SCHEDULED
+          - AUTOMATED_DRAFT
           description: Current state of the blog post
+          example: DRAFT
         currentState:
           type: string
           description: Current state description
+          example: active
         publishDate:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the post was/will be published
+          example: '2025-03-15T14:30:00Z'
         created:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the post was created
+          example: '2025-03-15T14:30:00Z'
         updated:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the post was last updated
+          example: '2025-03-15T14:30:00Z'
         archivedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the post was archived
+          example: '2025-03-15T14:30:00Z'
         currentlyPublished:
           type: boolean
           description: Whether the post is currently published
+          example: true
         domain:
           type: string
           description: Domain where the post is published
+          example: example.hubspot.com
         featuredImage:
           type: string
           description: URL of the featured image
+          example: example-value
         featuredImageAltText:
           type: string
           description: Alt text for the featured image
+          example: example-value
         metaDescription:
           type: string
           description: Meta description for SEO
+          example: This is an example description.
         headHtml:
           type: string
           description: Custom HTML for the head section
+          example: example-value
         footerHtml:
           type: string
           description: Custom HTML for the footer section
+          example: example-value
         language:
           type: string
           description: Language code of the blog post
+          example: en
         translatedFromId:
           type: string
           description: ID of the original post this was translated from
+          example: '500123'
         tagIds:
           type: array
           items:
             type: integer
           description: Array of tag IDs associated with the post
+          example: &id001
+          - 500123
         useFeaturedImage:
           type: boolean
           description: Whether to display the featured image
+          example: true
         url:
           type: string
           format: uri
           description: Full URL of the published post
+          example: https://app.hubspot.com/contacts/12345
         abStatus:
           type: string
           enum:
-            - master
-            - variant
+          - master
+          - variant
           description: A/B test status
+          example: master
         abTestId:
           type: string
           description: A/B test ID if part of a test
+          example: '500123'
         folderId:
           type: string
           description: ID of the folder containing the post
+          example: '500123'
       required:
-        - id
-        - name
-        - created
-        - updated
+      - id
+      - name
+      - created
+      - updated
 
     BlogPostInput:
       type: object
@@ -188,54 +221,70 @@ components:
         name:
           type: string
           description: Internal name of the blog post
+          example: Example Record
         slug:
           type: string
           description: URL slug for the blog post
+          example: example-value
         htmlTitle:
           type: string
           description: HTML title tag content
+          example: Example Record
         postBody:
           type: string
           description: HTML content of the blog post body
+          example: This is an example description.
         postSummary:
           type: string
           description: Summary or excerpt of the blog post
+          example: example-value
         blogAuthorId:
           type: string
           description: ID of the associated blog author
+          example: '500123'
         contentGroupId:
           type: string
           description: ID of the blog this post belongs to
+          example: '500123'
         campaign:
           type: string
           description: Campaign GUID
+          example: example-value
         publishDate:
           type: string
           format: date-time
           description: Scheduled publish date
+          example: '2025-03-15T14:30:00Z'
         featuredImage:
           type: string
           description: URL of the featured image
+          example: example-value
         featuredImageAltText:
           type: string
           description: Alt text for the featured image
+          example: example-value
         metaDescription:
           type: string
           description: Meta description for SEO
+          example: This is an example description.
         tagIds:
           type: array
           items:
             type: integer
           description: Tag IDs to associate
+          example:
+          - 500123
         useFeaturedImage:
           type: boolean
           description: Whether to display the featured image
+          example: true
         language:
           type: string
           description: Language code
+          example: en
       required:
-        - name
-        - contentGroupId
+      - name
+      - contentGroupId
 
     BlogPostCollection:
       type: object
@@ -244,16 +293,50 @@ components:
         total:
           type: integer
           description: Total number of posts matching the query
+          example: 10
         results:
           type: array
           items:
             $ref: '#/components/schemas/BlogPost'
           description: Array of blog posts
+          example:
+          - id: '500123'
+            name: Example Record
+            slug: example-value
+            htmlTitle: Example Record
+            postBody: This is an example description.
+            postSummary: example-value
+            blogAuthorId: '500123'
+            authorName: Example Record
+            contentGroupId: '500123'
+            campaign: example-value
+            categoryId: 500123
+            state: DRAFT
+            currentState: active
+            publishDate: '2025-03-15T14:30:00Z'
+            created: '2025-03-15T14:30:00Z'
+            updated: '2025-03-15T14:30:00Z'
+            archivedAt: '2025-03-15T14:30:00Z'
+            currentlyPublished: true
+            domain: example.hubspot.com
+            featuredImage: example-value
+            featuredImageAltText: example-value
+            metaDescription: This is an example description.
+            headHtml: example-value
+            footerHtml: example-value
+            language: en
+            translatedFromId: '500123'
+            tagIds: *id001
+            useFeaturedImage: true
+            url: https://app.hubspot.com/contacts/12345
+            abStatus: master
+            abTestId: '500123'
+            folderId: '500123'
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - total
-        - results
+      - total
+      - results
 
     ScheduleRequest:
       type: object
@@ -262,13 +345,15 @@ components:
         id:
           type: string
           description: ID of the blog post to schedule
+          example: '500123'
         publishDate:
           type: string
           format: date-time
           description: ISO 8601 date and time to publish
+          example: '2025-03-15T14:30:00Z'
       required:
-        - id
-        - publishDate
+      - id
+      - publishDate
 
     CloneRequest:
       type: object
@@ -277,8 +362,9 @@ components:
         id:
           type: string
           description: ID of the blog post to clone
+          example: '500123'
       required:
-        - id
+      - id
 
     PushLiveRequest:
       type: object
@@ -287,8 +373,9 @@ components:
         id:
           type: string
           description: ID of the blog post
+          example: '500123'
       required:
-        - id
+      - id
 
     ResetDraftRequest:
       type: object
@@ -297,8 +384,9 @@ components:
         id:
           type: string
           description: ID of the blog post
+          example: '500123'
       required:
-        - id
+      - id
 
     RestorePreviousVersionRequest:
       type: object
@@ -307,12 +395,14 @@ components:
         id:
           type: string
           description: ID of the blog post
+          example: '500123'
         revisionId:
           type: string
           description: ID of the revision to restore
+          example: '500123'
       required:
-        - id
-        - revisionId
+      - id
+      - revisionId
 
     VersionHistory:
       type: object
@@ -321,6 +411,7 @@ components:
         id:
           type: string
           description: Version ID
+          example: '500123'
         object:
           $ref: '#/components/schemas/BlogPost'
         user:
@@ -333,11 +424,16 @@ components:
             fullName:
               type: string
           description: User who made the change
+          example:
+            id: '500123'
+            email: jsmith@example.com
+            fullName: Example Record
         timestamp:
           type: string
           format: date-time
           description: ISO 8601 timestamp of the version
 
+          example: '2025-03-15T14:30:00Z'
     BatchInputItem:
       type: object
       description: Single item in a batch archive operation
@@ -345,8 +441,9 @@ components:
         id:
           type: string
           description: ID of the post to process
+          example: '500123'
       required:
-        - id
+      - id
 
     BatchInput:
       type: object
@@ -357,8 +454,10 @@ components:
           items:
             $ref: '#/components/schemas/BatchInputItem'
           description: Array of items to process
+          example:
+          - id: '500123'
       required:
-        - inputs
+      - inputs
 
     BatchResponse:
       type: object
@@ -367,52 +466,91 @@ components:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: Current status of the batch operation
+          example: PENDING
         results:
           type: array
           items:
             $ref: '#/components/schemas/BlogPost'
           description: Successfully processed posts
+          example:
+          - id: '500123'
+            name: Example Record
+            slug: example-value
+            htmlTitle: Example Record
+            postBody: This is an example description.
+            postSummary: example-value
+            blogAuthorId: '500123'
+            authorName: Example Record
+            contentGroupId: '500123'
+            campaign: example-value
+            categoryId: 500123
+            state: DRAFT
+            currentState: active
+            publishDate: '2025-03-15T14:30:00Z'
+            created: '2025-03-15T14:30:00Z'
+            updated: '2025-03-15T14:30:00Z'
+            archivedAt: '2025-03-15T14:30:00Z'
+            currentlyPublished: true
+            domain: example.hubspot.com
+            featuredImage: example-value
+            featuredImageAltText: example-value
+            metaDescription: This is an example description.
+            headHtml: example-value
+            footerHtml: example-value
+            language: en
+            translatedFromId: '500123'
+            tagIds: *id001
+            useFeaturedImage: true
+            url: https://app.hubspot.com/contacts/12345
+            abStatus: master
+            abTestId: '500123'
+            folderId: '500123'
         requestedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the batch was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when processing started
+          example: '2025-03-15T14:30:00Z'
         completedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when processing completed
+          example: '2025-03-15T14:30:00Z'
         links:
           type: object
           additionalProperties:
             type: string
           description: Related links
+          example:
+            key: value
       required:
-        - status
-        - results
-        - startedAt
-        - completedAt
+      - status
+      - results
+      - startedAt
+      - completedAt
 
     BatchResponseWithErrors:
       allOf:
-        - $ref: '#/components/schemas/BatchResponse'
-        - type: object
-          properties:
-            numErrors:
-              type: integer
-              description: Number of errors encountered
-            errors:
-              type: array
-              items:
-                $ref: '#/components/schemas/StandardError'
-              description: List of errors
+      - $ref: '#/components/schemas/BatchResponse'
+      - type: object
+        properties:
+          numErrors:
+            type: integer
+            description: Number of errors encountered
+          errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/StandardError'
+            description: List of errors
 
     DetachFromLanguageGroupRequest:
       type: object
@@ -421,8 +559,9 @@ components:
         id:
           type: string
           description: ID of the post to detach
+          example: '500123'
       required:
-        - id
+      - id
 
     SetLanguagePrimaryRequest:
       type: object
@@ -431,8 +570,9 @@ components:
         id:
           type: string
           description: ID of the post to set as primary
+          example: '500123'
       required:
-        - id
+      - id
 
     AttachToLanguageGroupRequest:
       type: object
@@ -441,19 +581,23 @@ components:
         id:
           type: string
           description: ID of the post to attach
+          example: '500123'
         language:
           type: string
           description: Language code for the post
+          example: en
         primaryId:
           type: string
           description: ID of the primary language post
+          example: '500123'
         primaryLanguage:
           type: string
           description: Language code of the primary post
+          example: en
       required:
-        - id
-        - language
-        - primaryId
+      - id
+      - language
+      - primaryId
 
     CreateLanguageVariationRequest:
       type: object
@@ -462,12 +606,14 @@ components:
         id:
           type: string
           description: ID of the source post
+          example: '500123'
         language:
           type: string
           description: Language code for the new variation
+          example: en
       required:
-        - id
-        - language
+      - id
+      - language
 
     Paging:
       type: object
@@ -485,10 +631,12 @@ components:
         after:
           type: string
           description: Cursor token for the next page
+          example: example-value
         link:
           type: string
           description: API link to the next page
 
+          example: https://app.hubspot.com/contacts/12345
     PagingPrevious:
       type: object
       description: Pagination cursor for previous page
@@ -496,10 +644,12 @@ components:
         before:
           type: string
           description: Cursor token for the previous page
+          example: example-value
         link:
           type: string
           description: API link to the previous page
 
+          example: https://app.hubspot.com/contacts/12345
     StandardError:
       type: object
       description: Standard error in batch operations
@@ -507,34 +657,49 @@ components:
         status:
           type: string
           description: Error status
+          example: active
         id:
           type: string
           description: ID of the failed item
+          example: '500123'
         category:
           type: string
           description: Error category
+          example: standard
         message:
           type: string
           description: Error message
+          example: This is an example description.
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
           description: Detailed errors
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
       required:
-        - status
-        - category
-        - message
+      - status
+      - category
+      - message
 
     ErrorDetail:
       type: object
@@ -543,23 +708,29 @@ components:
         message:
           type: string
           description: Error message
+          example: This is an example description.
         code:
           type: string
           description: Error code
+          example: example-value
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         in:
           type: string
           description: Location of error
+          example: example-value
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example: &id002
+            key: value
       required:
-        - message
+      - message
 
     Error:
       type: object
@@ -568,34 +739,48 @@ components:
         category:
           type: string
           description: Error category
+          example: standard
         correlationId:
           type: string
           format: uuid
           description: Unique tracking identifier
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
           description: Error message
+          example: This is an example description.
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context: *id002
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
 
   examples:
     BlogPostExample:
@@ -645,21 +830,21 @@ components:
       value:
         total: 150
         results:
-          - id: "123456789012"
-            name: "How to Use HubSpot APIs"
-            slug: "how-to-use-hubspot-apis"
-            state: "PUBLISHED"
-            publishDate: "2024-01-15T10:00:00Z"
-            created: "2024-01-10T09:00:00Z"
-            updated: "2024-01-15T10:00:00Z"
-            currentlyPublished: true
-          - id: "123456789013"
-            name: "Getting Started with Webhooks"
-            slug: "getting-started-with-webhooks"
-            state: "DRAFT"
-            created: "2024-01-12T14:00:00Z"
-            updated: "2024-01-14T16:30:00Z"
-            currentlyPublished: false
+        - id: "123456789012"
+          name: "How to Use HubSpot APIs"
+          slug: "how-to-use-hubspot-apis"
+          state: "PUBLISHED"
+          publishDate: "2024-01-15T10:00:00Z"
+          created: "2024-01-10T09:00:00Z"
+          updated: "2024-01-15T10:00:00Z"
+          currentlyPublished: true
+        - id: "123456789013"
+          name: "Getting Started with Webhooks"
+          slug: "getting-started-with-webhooks"
+          state: "DRAFT"
+          created: "2024-01-12T14:00:00Z"
+          updated: "2024-01-14T16:30:00Z"
+          currentlyPublished: false
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -670,11 +855,11 @@ components:
       value:
         status: "COMPLETE"
         results:
-          - id: "123456789012"
-            name: "How to Use HubSpot APIs"
-            state: "PUBLISHED"
-            created: "2024-01-10T09:00:00Z"
-            updated: "2024-01-15T10:00:00Z"
+        - id: "123456789012"
+          name: "How to Use HubSpot APIs"
+          state: "PUBLISHED"
+          created: "2024-01-10T09:00:00Z"
+          updated: "2024-01-15T10:00:00Z"
         requestedAt: "2024-01-20T14:44:00Z"
         startedAt: "2024-01-20T14:44:01Z"
         completedAt: "2024-01-20T14:45:00Z"
@@ -703,9 +888,9 @@ paths:
   /cms/v3/blogs/posts:
     get:
       tags:
-        - Blog Posts
+      - Blog Posts
       operationId: listBlogPosts
-      summary: HubSpot List All Blog Posts
+      summary: Hubspot List All Blog Posts
       description: |
         Retrieve a paginated list of all blog posts in your HubSpot account. 
         Use query parameters to filter, sort, and paginate the results.
@@ -714,41 +899,47 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of results per page
-        - name: after
-          in: query
-          schema:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: example-value
+      - name: sort
+        in: query
+        schema:
+          type: array
+          items:
             type: string
-          description: Pagination cursor for the next page
-        - name: sort
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-          description: Properties to sort by
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to return archived posts
-        - name: property
-          in: query
-          schema:
-            type: string
-          description: Specific property to return
+        description: Properties to sort by
+        example:
+        - example-value
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived posts
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved blog posts
@@ -764,18 +955,18 @@ paths:
 
     post:
       tags:
-        - Blog Posts
+      - Blog Posts
       operationId: createBlogPost
-      summary: HubSpot Create a Blog Post
+      summary: Hubspot Create a Blog Post
       description: Create a new blog post in your HubSpot account.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Blog post data to create
@@ -802,37 +993,39 @@ paths:
   /cms/v3/blogs/posts/{objectId}:
     get:
       tags:
-        - Blog Posts
+      - Blog Posts
       operationId: getBlogPostById
-      summary: HubSpot Retrieve a Blog Post
+      summary: Hubspot Retrieve a Blog Post
       description: Retrieve a specific blog post by its unique identifier.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to return archived posts
-        - name: property
-          in: query
-          schema:
-            type: string
-          description: Specific property to return
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived posts
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved blog post
@@ -848,9 +1041,9 @@ paths:
 
     patch:
       tags:
-        - Blog Posts
+      - Blog Posts
       operationId: updateBlogPost
-      summary: HubSpot Update a Blog Post
+      summary: Hubspot Update a Blog Post
       description: |
         Update an existing blog post. Only the properties included in the 
         request body will be updated.
@@ -859,23 +1052,24 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to update archived posts
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to update archived posts
+        example: false
       requestBody:
         required: true
         description: Blog post properties to update
@@ -901,26 +1095,26 @@ paths:
 
     delete:
       tags:
-        - Blog Posts
+      - Blog Posts
       operationId: archiveBlogPost
-      summary: HubSpot Archive a Blog Post
+      summary: Hubspot Archive a Blog Post
       description: Archive (soft delete) a blog post by its unique identifier.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
       responses:
         '204':
           description: Successfully archived blog post
@@ -930,18 +1124,18 @@ paths:
   /cms/v3/blogs/posts/schedule:
     post:
       tags:
-        - Publishing and Scheduling
+      - Publishing and Scheduling
       operationId: scheduleBlogPost
-      summary: HubSpot Schedule a Blog Post
+      summary: Hubspot Schedule a Blog Post
       description: Schedule a blog post for publication at a specific date and time.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Scheduling details
@@ -961,18 +1155,18 @@ paths:
   /cms/v3/blogs/posts/clone:
     post:
       tags:
-        - Post Cloning
+      - Post Cloning
       operationId: cloneBlogPost
-      summary: HubSpot Clone a Blog Post
+      summary: Hubspot Clone a Blog Post
       description: Create a copy of an existing blog post.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Blog post to clone
@@ -998,26 +1192,26 @@ paths:
   /cms/v3/blogs/posts/{objectId}/draft/push-live:
     post:
       tags:
-        - Drafts and Revisions
+      - Drafts and Revisions
       operationId: pushBlogPostDraftLive
-      summary: HubSpot Push Draft to Live
+      summary: Hubspot Push Draft to Live
       description: Push the draft version of a blog post to become the live version.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
       responses:
         '200':
           description: Successfully pushed draft to live
@@ -1027,26 +1221,26 @@ paths:
   /cms/v3/blogs/posts/{objectId}/draft/reset:
     post:
       tags:
-        - Drafts and Revisions
+      - Drafts and Revisions
       operationId: resetBlogPostDraft
-      summary: HubSpot Reset Draft to Live Version
+      summary: Hubspot Reset Draft to Live Version
       description: Reset the draft version of a blog post to match the live version.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
       responses:
         '200':
           description: Successfully reset draft
@@ -1056,37 +1250,39 @@ paths:
   /cms/v3/blogs/posts/{objectId}/revisions:
     get:
       tags:
-        - Drafts and Revisions
+      - Drafts and Revisions
       operationId: getBlogPostRevisions
-      summary: HubSpot Get Revision History
+      summary: Hubspot Get Revision History
       description: Retrieve the revision history for a blog post.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 20
-          description: Maximum number of revisions to return
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 20
+        description: Maximum number of revisions to return
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved revisions
@@ -1101,39 +1297,52 @@ paths:
                       $ref: '#/components/schemas/VersionHistory'
                   paging:
                     $ref: '#/components/schemas/Paging'
+              examples:
+                Getblogpostrevisions200Example:
+                  summary: Default getBlogPostRevisions 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: {}
+                      object: {}
+                      user: {}
+                      timestamp: {}
+                    paging:
+                      next: {}
+                      prev: {}
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/posts/{objectId}/revisions/{revisionId}/restore:
     post:
       tags:
-        - Drafts and Revisions
+      - Drafts and Revisions
       operationId: restoreBlogPostRevision
-      summary: HubSpot Restore a Previous Version
+      summary: Hubspot Restore a Previous Version
       description: Restore a blog post to a previous version from its revision history.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog post
-          example: "123456789012"
-        - name: revisionId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The revision ID to restore
-          example: "rev_123456"
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog post
+        example: "123456789012"
+      - name: revisionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The revision ID to restore
+        example: "rev_123456"
       responses:
         '200':
           description: Successfully restored revision
@@ -1150,25 +1359,26 @@ paths:
   /cms/v3/blogs/posts/batch/read:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchReadBlogPosts
-      summary: HubSpot Read Multiple Blog Posts
+      summary: Hubspot Read Multiple Blog Posts
       description: Retrieve multiple blog posts by their IDs in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to include archived posts
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to include archived posts
+        example: false
       requestBody:
         required: true
         description: List of post IDs to retrieve
@@ -1178,8 +1388,8 @@ paths:
               $ref: '#/components/schemas/BatchInput'
             example:
               inputs:
-                - id: "123456789012"
-                - id: "123456789013"
+              - id: "123456789012"
+              - id: "123456789013"
       responses:
         '200':
           description: Successfully retrieved blog posts
@@ -1196,24 +1406,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchreadblogposts207Example:
+                  summary: Default batchReadBlogPosts 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/posts/batch/create:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchCreateBlogPosts
-      summary: HubSpot Create Multiple Blog Posts
+      summary: Hubspot Create Multiple Blog Posts
       description: Create multiple blog posts in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: List of blog posts to create
@@ -1227,15 +1442,15 @@ paths:
                   items:
                     $ref: '#/components/schemas/BlogPostInput'
               required:
-                - inputs
+              - inputs
             example:
               inputs:
-                - name: "First Blog Post"
-                  contentGroupId: "9876543210"
-                  postBody: "<p>Content here</p>"
-                - name: "Second Blog Post"
-                  contentGroupId: "9876543210"
-                  postBody: "<p>More content</p>"
+              - name: "First Blog Post"
+                contentGroupId: "9876543210"
+                postBody: "<p>Content here</p>"
+              - name: "Second Blog Post"
+                contentGroupId: "9876543210"
+                postBody: "<p>More content</p>"
       responses:
         '201':
           description: Successfully created blog posts
@@ -1252,31 +1467,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchcreateblogposts207Example:
+                  summary: Default batchCreateBlogPosts 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/posts/batch/update:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchUpdateBlogPosts
-      summary: HubSpot Update Multiple Blog Posts
+      summary: Hubspot Update Multiple Blog Posts
       description: Update multiple blog posts in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to update archived posts
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to update archived posts
+        example: false
       requestBody:
         required: true
         description: List of blog posts to update
@@ -1295,14 +1516,14 @@ paths:
                       properties:
                         $ref: '#/components/schemas/BlogPostInput'
                     required:
-                      - id
+                    - id
               required:
-                - inputs
+              - inputs
             example:
               inputs:
-                - id: "123456789012"
-                  properties:
-                    postBody: "<p>Updated content</p>"
+              - id: "123456789012"
+                properties:
+                  postBody: "<p>Updated content</p>"
       responses:
         '200':
           description: Successfully updated blog posts
@@ -1319,24 +1540,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchupdateblogposts207Example:
+                  summary: Default batchUpdateBlogPosts 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/posts/batch/archive:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchArchiveBlogPosts
-      summary: HubSpot Archive Multiple Blog Posts
+      summary: Hubspot Archive Multiple Blog Posts
       description: Archive multiple blog posts in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: List of post IDs to archive
@@ -1346,8 +1572,8 @@ paths:
               $ref: '#/components/schemas/BatchInput'
             example:
               inputs:
-                - id: "123456789012"
-                - id: "123456789013"
+              - id: "123456789012"
+              - id: "123456789013"
       responses:
         '204':
           description: Successfully archived blog posts
@@ -1357,18 +1583,18 @@ paths:
   /cms/v3/blogs/posts/multi-language/detach-from-lang-group:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: detachBlogPostFromLanguageGroup
-      summary: HubSpot Detach Post from Language Group
+      summary: Hubspot Detach Post From Language Group
       description: Detach a blog post from its multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Post to detach from language group
@@ -1387,18 +1613,18 @@ paths:
   /cms/v3/blogs/posts/multi-language/set-new-lang-primary:
     put:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: setBlogPostLanguagePrimary
-      summary: HubSpot Set New Primary Language
+      summary: Hubspot Set New Primary Language
       description: Set a blog post as the primary language of a multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Post to set as primary language
@@ -1417,18 +1643,18 @@ paths:
   /cms/v3/blogs/posts/multi-language/attach-to-lang-group:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: attachBlogPostToLanguageGroup
-      summary: HubSpot Attach Post to Language Group
+      summary: Hubspot Attach Post to Language Group
       description: Attach a blog post to an existing multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Post and language group details
@@ -1450,18 +1676,18 @@ paths:
   /cms/v3/blogs/posts/multi-language/create-language-variation:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: createBlogPostLanguageVariation
-      summary: HubSpot Create Language Variation
+      summary: Hubspot Create Language Variation
       description: Create a new language variation of an existing blog post.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Source post and target language

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/custom-workflow-actions-api-batch-callback-completion-request-structure.json",
+  "name": "BatchCallbackCompletionRequest",
+  "description": "Request body for completing multiple callbacks",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of callbacks to complete",
+      "items": {
+        "type": "object",
+        "description": "A single callback completion input",
+        "required": [
+          "callbackId",
+          "outputFields"
+        ],
+        "properties": {
+          "callbackId": {
+            "type": "string",
+            "description": "The unique identifier of the callback",
+            "example": "500123"
+          },
+          "outputFields": {
+            "type": "object",
+            "description": "The output values to return",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "callbackId": "500123",
+          "outputFields": {
+            "key": "value"
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

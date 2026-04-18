@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-action-definition-revision-schema.json",
+  "title": "ActionDefinitionRevision",
+  "description": "A revision of an action definition",
+  "type": "object",
+  "properties": {
+    "revisionId": {
+      "type": "string",
+      "description": "The unique identifier of the revision",
+      "example": "500123"
+    },
+    "definition": {
+      "type": "object",
+      "description": "A custom workflow action definition",
+      "required": [
+        "id",
+        "revisionId",
+        "actionUrl",
+        "labels",
+        "objectTypes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the action definition",
+          "example": "500123"
+        },
+        "revisionId": {
+          "type": "string",
+          "description": "The current revision identifier",
+          "example": "500123"
+        },
+        "actionUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL that HubSpot will call when the action executes",
+          "example": "https://app.hubspot.com/contacts/12345"
+        },
+        "labels": {
+          "type": "object",
+          "description": "Human-readable labels for the action",
+          "required": [
+            "actionName"
+          ],
+          "properties": {
+            "actionName": {
+              "type": "string",
+              "description": "The display name of the action",
+              "example": "Example Record"
+            },
+            "actionDescription": {
+              "type": "string",
+              "description": "A description of what the action does",
+              "example": "This is an example description."
+            },
+            "appDisplayName": {
+              "type": "string",
+              "description": "The name of the app providing this action",
+              "example": "Example Record"
+            },
+            "actionCardContent": {
+              "type": "string",
+              "description": "Content to display on the action card in the workflow editor",
+              "example": "example-value"
+            }
+          }
+        },
+        "inputFields": {
+          "type": "array",
+          "description": "Input fields that users can configure for the action",
+          "items": {
+            "$ref": "#/components/schemas/InputField"
+          },
+          "example": [
+            {
+              "typeDefinition": {},
+              "supportedValueTypes": [
+                {}
+              ],
+              "isRequired": true
+            }
+          ]
+        },
+        "outputFields": {
+          "type": "array",
+          "description": "Output fields that the action returns",
+          "items": {
+            "$ref": "#/components/schemas/OutputField"
+          },
+          "example": [
+            {
+              "typeDefinition": {}
+            }
+          ]
+        },
+        "objectTypes": {
+          "type": "array",
+          "description": "CRM object types this action can operate on",
+          "items": {
+            "type": "string",
+            "enum": [
+              "CONTACT",
+              "COMPANY",
+              "DEAL",
+              "TICKET",
+              "QUOTE"
+            ]
+          },
+          "example": [
+            "CONTACT"
+          ]
+        },
+        "objectRequestOptions": {
+          "type": "object",
+          "description": "Options for requesting CRM object data",
+          "properties": {
+            "properties": {
+              "type": "array",
+              "description": "CRM properties to include in the action execution request",
+              "items": {
+                "type": "string"
+              },
+              "example": [
+                "example-value"
+              ]
+            }
+          }
+        },
+        "published": {
+          "type": "boolean",
+          "description": "Whether the action is published and available for use",
+          "example": true
+        },
+        "functions": {
+          "type": "array",
+          "description": "Functions associated with this action",
+          "items": {
+            "$ref": "#/components/schemas/ActionFunctionReference"
+          },
+          "example": [
+            {
+              "functionType": "PRE_ACTION_EXECUTION",
+              "id": "500123"
+            }
+          ]
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the revision was created",
+      "example": "2025-03-15T14:30:00Z"
+    }
+  },
+  "required": [
+    "revisionId",
+    "definition",
+    "createdAt"
+  ]
+}

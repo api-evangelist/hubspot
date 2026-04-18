@@ -25,19 +25,19 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 
 tags:
-  - name: Association Label Management
-    description: Create, update, and delete custom labels for association types
+- name: Association Label Management
+  description: Create, update, and delete custom labels for association types
 
-  - name: Association Type Definitions
-    description: Retrieve and manage association type definitions across object types
-  - name: Batch Association Operations
-    description: Perform bulk create, read, and archive operations on multiple associations
-  - name: Object Associations
-    description: Create, retrieve, and delete associations between individual CRM objects
+- name: Association Type Definitions
+  description: Retrieve and manage association type definitions across object types
+- name: Batch Association Operations
+  description: Perform bulk create, read, and archive operations on multiple associations
+- name: Object Associations
+  description: Create, retrieve, and delete associations between individual CRM objects
 components:
   securitySchemes:
     OAuth2:
@@ -66,14 +66,19 @@ components:
         toObjectId:
           type: string
           description: ID of the target object
+          example: '500123'
         associationTypes:
           type: array
           items:
             $ref: '#/components/schemas/AssociationType'
           description: Types of associations between the objects
+          example: &id001
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+            label: Example Record
       required:
-        - toObjectId
-        - associationTypes
+      - toObjectId
+      - associationTypes
 
     AssociationType:
       type: object
@@ -82,19 +87,22 @@ components:
         associationCategory:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
           description: Category of the association type
+          example: HUBSPOT_DEFINED
         associationTypeId:
           type: integer
           description: Numeric identifier for the association type
+          example: 500123
         label:
           type: string
           description: Human-readable label for the association
+          example: Example Record
       required:
-        - associationCategory
-        - associationTypeId
+      - associationCategory
+      - associationTypeId
 
     AssociationDefinition:
       type: object
@@ -103,32 +111,39 @@ components:
         id:
           type: string
           description: Unique identifier for the association definition
+          example: '500123'
         fromObjectTypeId:
           type: string
           description: Source object type ID
+          example: '500123'
         toObjectTypeId:
           type: string
           description: Target object type ID
+          example: '500123'
         name:
           type: string
           description: Name of the association type
+          example: Example Record
         label:
           type: string
           description: Display label for the association
+          example: Example Record
         inverseLabel:
           type: string
           description: Label for the inverse association
+          example: Example Record
         category:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
           description: Category of the association definition
+          example: HUBSPOT_DEFINED
       required:
-        - id
-        - fromObjectTypeId
-        - toObjectTypeId
+      - id
+      - fromObjectTypeId
+      - toObjectTypeId
 
     AssociationLabel:
       type: object
@@ -137,20 +152,23 @@ components:
         typeId:
           type: integer
           description: Numeric identifier for the label type
+          example: 500123
         label:
           type: string
           description: Display text for the label
+          example: Example Record
         category:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
           description: Category of the label
+          example: HUBSPOT_DEFINED
       required:
-        - typeId
-        - label
-        - category
+      - typeId
+      - label
+      - category
 
     CreateAssociationInput:
       type: object
@@ -163,9 +181,12 @@ components:
           items:
             $ref: '#/components/schemas/AssociationTypeInput'
           description: Association types to create
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
       required:
-        - to
-        - types
+      - to
+      - types
 
     ObjectReference:
       type: object
@@ -174,8 +195,9 @@ components:
         id:
           type: string
           description: ID of the object
+          example: '500123'
       required:
-        - id
+      - id
 
     AssociationTypeInput:
       type: object
@@ -184,14 +206,16 @@ components:
         associationCategory:
           type: string
           enum:
-            - HUBSPOT_DEFINED
-            - USER_DEFINED
-            - INTEGRATOR_DEFINED
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          example: HUBSPOT_DEFINED
         associationTypeId:
           type: integer
+          example: 500123
       required:
-        - associationCategory
-        - associationTypeId
+      - associationCategory
+      - associationTypeId
 
     BatchAssociationReadInput:
       type: object
@@ -202,8 +226,10 @@ components:
           items:
             $ref: '#/components/schemas/ObjectReference'
           description: Source objects to read associations for
+          example:
+          - id: '500123'
       required:
-        - inputs
+      - inputs
 
     BatchAssociationCreateInput:
       type: object
@@ -214,8 +240,13 @@ components:
           items:
             $ref: '#/components/schemas/BatchAssociationCreateItem'
           description: Associations to create
+          example:
+          - from: {}
+            to: {}
+            types:
+            - {}
       required:
-        - inputs
+      - inputs
 
     BatchAssociationCreateItem:
       type: object
@@ -229,10 +260,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AssociationTypeInput'
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
       required:
-        - from
-        - to
-        - types
+      - from
+      - to
+      - types
 
     BatchAssociationArchiveInput:
       type: object
@@ -243,8 +277,13 @@ components:
           items:
             $ref: '#/components/schemas/BatchAssociationArchiveItem'
           description: Associations to archive
+          example:
+          - from: {}
+            to: {}
+            types:
+            - {}
       required:
-        - inputs
+      - inputs
 
     BatchAssociationArchiveItem:
       type: object
@@ -258,9 +297,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AssociationTypeInput'
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
       required:
-        - from
-        - to
+      - from
+      - to
 
     CreateLabelInput:
       type: object
@@ -269,15 +311,18 @@ components:
         label:
           type: string
           description: Display text for the label
+          example: Example Record
         name:
           type: string
           description: Internal name for the label
+          example: Example Record
         inverseLabel:
           type: string
           description: Label for the inverse direction
+          example: Example Record
       required:
-        - label
-        - name
+      - label
+      - name
 
     AssociationResult:
       type: object
@@ -290,11 +335,14 @@ components:
           items:
             $ref: '#/components/schemas/Association'
           description: Associated objects
+          example: &id002
+          - toObjectId: '500123'
+            associationTypes: *id001
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - from
-        - to
+      - from
+      - to
 
     BatchAssociationResponse:
       type: object
@@ -303,45 +351,67 @@ components:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: Status of the batch operation
+          example: PENDING
         results:
           type: array
           items:
             $ref: '#/components/schemas/AssociationResult'
           description: Successfully processed associations
+          example:
+          - from: {}
+            to: *id002
+            paging: {}
         requestedAt:
           type: string
           format: date-time
           description: When the batch was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
           description: When processing started
+          example: '2025-03-15T14:30:00Z'
         completedAt:
           type: string
           format: date-time
           description: When processing completed
+          example: '2025-03-15T14:30:00Z'
         numErrors:
           type: integer
           description: Number of errors encountered
+          example: 100
         errors:
           type: array
           items:
             $ref: '#/components/schemas/StandardError'
           description: List of errors
+          example:
+          - status: active
+            id: '500123'
+            category: standard
+            message: This is an example description.
+            errors:
+            - {}
+            context:
+              key: value
+            links:
+              key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
       required:
-        - status
-        - results
-        - startedAt
-        - completedAt
+      - status
+      - results
+      - startedAt
+      - completedAt
 
     PagingNext:
       type: object
@@ -350,10 +420,12 @@ components:
         after:
           type: string
           description: Cursor token for the next page
+          example: example-value
         link:
           type: string
           description: Link to the next page
 
+          example: https://app.hubspot.com/contacts/12345
     Paging:
       type: object
       description: Pagination information
@@ -370,10 +442,18 @@ components:
           items:
             $ref: '#/components/schemas/AssociationDefinition'
           description: Array of association definitions
+          example:
+          - id: '500123'
+            fromObjectTypeId: '500123'
+            toObjectTypeId: '500123'
+            name: Example Record
+            label: Example Record
+            inverseLabel: Example Record
+            category: HUBSPOT_DEFINED
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     AssociationLabelCollection:
       type: object
@@ -384,10 +464,14 @@ components:
           items:
             $ref: '#/components/schemas/AssociationLabel'
           description: Array of association labels
+          example:
+          - typeId: 500123
+            label: Example Record
+            category: HUBSPOT_DEFINED
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     StandardError:
       type: object
@@ -395,30 +479,45 @@ components:
       properties:
         status:
           type: string
+          example: active
         id:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
         message:
           type: string
+          example: This is an example description.
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
       required:
-        - status
-        - category
-        - message
+      - status
+      - category
+      - message
 
     ErrorDetail:
       type: object
@@ -426,20 +525,26 @@ components:
       properties:
         message:
           type: string
+          example: This is an example description.
         code:
           type: string
+          example: example-value
         subCategory:
           type: string
+          example: standard
         in:
           type: string
+          example: example-value
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example: &id003
+            key: value
       required:
-        - message
+      - message
 
     Error:
       type: object
@@ -451,28 +556,41 @@ components:
         correlationId:
           type: string
           format: uuid
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
+          example: This is an example description.
         subCategory:
           type: string
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context: *id003
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
 
   examples:
     AssociationResultExample:
@@ -481,16 +599,16 @@ components:
         from:
           id: "12345"
         to:
-          - toObjectId: "67890"
-            associationTypes:
-              - associationCategory: "HUBSPOT_DEFINED"
-                associationTypeId: 1
-                label: "Primary Company"
-          - toObjectId: "67891"
-            associationTypes:
-              - associationCategory: "USER_DEFINED"
-                associationTypeId: 101
-                label: "Partner Company"
+        - toObjectId: "67890"
+          associationTypes:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 1
+            label: "Primary Company"
+        - toObjectId: "67891"
+          associationTypes:
+          - associationCategory: "USER_DEFINED"
+            associationTypeId: 101
+            label: "Partner Company"
 
     AssociationDefinitionExample:
       summary: Example association definition
@@ -507,20 +625,20 @@ components:
       summary: Example collection of association definitions
       value:
         results:
-          - id: "contact_to_company"
-            fromObjectTypeId: "0-1"
-            toObjectTypeId: "0-2"
-            name: "contact_to_company"
-            label: "Company"
-            inverseLabel: "Contacts"
-            category: "HUBSPOT_DEFINED"
-          - id: "deal_to_contact"
-            fromObjectTypeId: "0-3"
-            toObjectTypeId: "0-1"
-            name: "deal_to_contact"
-            label: "Contact"
-            inverseLabel: "Deals"
-            category: "HUBSPOT_DEFINED"
+        - id: "contact_to_company"
+          fromObjectTypeId: "0-1"
+          toObjectTypeId: "0-2"
+          name: "contact_to_company"
+          label: "Company"
+          inverseLabel: "Contacts"
+          category: "HUBSPOT_DEFINED"
+        - id: "deal_to_contact"
+          fromObjectTypeId: "0-3"
+          toObjectTypeId: "0-1"
+          name: "deal_to_contact"
+          label: "Contact"
+          inverseLabel: "Deals"
+          category: "HUBSPOT_DEFINED"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -537,12 +655,12 @@ components:
       summary: Example collection of association labels
       value:
         results:
-          - typeId: 101
-            label: "Primary Contact"
-            category: "USER_DEFINED"
-          - typeId: 102
-            label: "Billing Contact"
-            category: "USER_DEFINED"
+        - typeId: 101
+          label: "Primary Contact"
+          category: "USER_DEFINED"
+        - typeId: 102
+          label: "Billing Contact"
+          category: "USER_DEFINED"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -553,13 +671,13 @@ components:
       value:
         status: "COMPLETE"
         results:
-          - from:
-              id: "12345"
-            to:
-              - toObjectId: "67890"
-                associationTypes:
-                  - associationCategory: "HUBSPOT_DEFINED"
-                    associationTypeId: 1
+        - from:
+            id: "12345"
+          to:
+          - toObjectId: "67890"
+            associationTypes:
+            - associationCategory: "HUBSPOT_DEFINED"
+              associationTypeId: 1
         requestedAt: "2024-01-20T14:44:00Z"
         startedAt: "2024-01-20T14:44:01Z"
         completedAt: "2024-01-20T14:45:00Z"
@@ -570,36 +688,36 @@ components:
         to:
           id: "67890"
         types:
-          - associationCategory: "HUBSPOT_DEFINED"
-            associationTypeId: 1
+        - associationCategory: "HUBSPOT_DEFINED"
+          associationTypeId: 1
 
     BatchAssociationReadInputExample:
       summary: Example batch read input
       value:
         inputs:
-          - id: "12345"
-          - id: "12346"
+        - id: "12345"
+        - id: "12346"
 
     BatchAssociationCreateInputExample:
       summary: Example batch create input
       value:
         inputs:
-          - from:
-              id: "12345"
-            to:
-              id: "67890"
-            types:
-              - associationCategory: "HUBSPOT_DEFINED"
-                associationTypeId: 1
+        - from:
+            id: "12345"
+          to:
+            id: "67890"
+          types:
+          - associationCategory: "HUBSPOT_DEFINED"
+            associationTypeId: 1
 
     BatchAssociationArchiveInputExample:
       summary: Example batch archive input
       value:
         inputs:
-          - from:
-              id: "12345"
-            to:
-              id: "67890"
+        - from:
+            id: "12345"
+          to:
+            id: "67890"
 
     CreateLabelInputExample:
       summary: Example create label input
@@ -630,9 +748,9 @@ paths:
   /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}:
     get:
       tags:
-        - Object Associations
+      - Object Associations
       operationId: listObjectAssociations
-      summary: HubSpot List associations for an object
+      summary: Hubspot List Associations for an Object
       description: |
         Retrieves all associations of a specific type for a given CRM object.
         Returns paginated results with the associated objects and their association types.
@@ -643,44 +761,46 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of the source object (e.g., contacts, companies, deals)
-          example: contacts
-        - name: fromObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the source object
-          example: "12345"
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of target objects to retrieve associations for
-          example: companies
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 500
-            default: 100
-          description: Maximum number of results per page
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for fetching next page of results
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object (e.g., contacts, companies, deals)
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: "12345"
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects to retrieve associations for
+        example: companies
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 100
+        description: Maximum number of results per page
+        example: 100
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for fetching next page of results
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved associations
@@ -696,9 +816,9 @@ paths:
 
     put:
       tags:
-        - Object Associations
+      - Object Associations
       operationId: createObjectAssociation
-      summary: HubSpot Create an association between objects
+      summary: Hubspot Create an Association Between Objects
       description: |
         Creates a new association between two CRM objects.
         Specify the target object and the association types to establish the relationship.
@@ -709,31 +829,31 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of the source object
-          example: contacts
-        - name: fromObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the source object
-          example: "12345"
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of the target object
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: "12345"
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the target object
+        example: companies
       requestBody:
         required: true
         description: Association details to create
@@ -760,9 +880,9 @@ paths:
   /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}:
     delete:
       tags:
-        - Object Associations
+      - Object Associations
       operationId: deleteObjectAssociation
-      summary: HubSpot Delete an association between objects
+      summary: Hubspot Delete an Association Between Objects
       description: |
         Removes an association between two CRM objects.
         This operation deletes all association types between the specified objects.
@@ -772,38 +892,38 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of the source object
-          example: contacts
-        - name: fromObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the source object
-          example: "12345"
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of the target object
-          example: companies
-        - name: toObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the target object
-          example: "67890"
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: "12345"
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the target object
+        example: companies
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the target object
+        example: "67890"
       responses:
         '204':
           description: Successfully deleted association
@@ -813,9 +933,9 @@ paths:
   /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/read:
     post:
       tags:
-        - Batch Association Operations
+      - Batch Association Operations
       operationId: batchReadAssociations
-      summary: HubSpot Batch read associations for multiple objects
+      summary: Hubspot Batch Read Associations for Multiple Objects
       description: |
         Retrieves associations for multiple source objects in a single request.
         Useful for efficiently loading associations for a list of records.
@@ -826,24 +946,24 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of source objects
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of target objects
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
       requestBody:
         required: true
         description: List of source object IDs to read associations for
@@ -870,9 +990,9 @@ paths:
   /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/create:
     post:
       tags:
-        - Batch Association Operations
+      - Batch Association Operations
       operationId: batchCreateAssociations
-      summary: HubSpot Batch create associations
+      summary: Hubspot Batch Create Associations
       description: |
         Creates multiple associations in a single request.
         Allows efficient bulk creation of relationships between CRM objects.
@@ -883,24 +1003,24 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of source objects
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of target objects
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
       requestBody:
         required: true
         description: List of associations to create
@@ -927,9 +1047,9 @@ paths:
   /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/archive:
     post:
       tags:
-        - Batch Association Operations
+      - Batch Association Operations
       operationId: batchArchiveAssociations
-      summary: HubSpot Batch archive associations
+      summary: Hubspot Batch Archive Associations
       description: |
         Deletes multiple associations in a single request.
         Efficiently removes relationships between multiple CRM objects.
@@ -939,24 +1059,24 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of source objects
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Type of target objects
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
       requestBody:
         required: true
         description: List of associations to archive
@@ -976,9 +1096,9 @@ paths:
   /crm/v4/associations/{fromObjectType}/{toObjectType}/labels:
     get:
       tags:
-        - Association Label Management
+      - Association Label Management
       operationId: listAssociationLabels
-      summary: HubSpot List association labels
+      summary: Hubspot List Association Labels
       description: |
         Retrieves all association labels defined for a pair of object types.
         Labels provide human-readable descriptions for different types of associations.
@@ -989,24 +1109,24 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Source object type
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Target object type
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
       responses:
         '200':
           description: Successfully retrieved association labels
@@ -1022,9 +1142,9 @@ paths:
 
     post:
       tags:
-        - Association Label Management
+      - Association Label Management
       operationId: createAssociationLabel
-      summary: HubSpot Create an association label
+      summary: Hubspot Create an Association Label
       description: |
         Creates a new custom association label for categorizing relationships.
         Custom labels help distinguish between different types of associations.
@@ -1035,24 +1155,24 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Source object type
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Target object type
-          example: companies
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
       requestBody:
         required: true
         description: Label details to create
@@ -1079,9 +1199,9 @@ paths:
   /crm/v4/associations/{fromObjectType}/{toObjectType}/labels/{associationTypeId}:
     put:
       tags:
-        - Association Label Management
+      - Association Label Management
       operationId: updateAssociationLabel
-      summary: HubSpot Update an association label
+      summary: Hubspot Update an Association Label
       description: |
         Updates an existing association label.
         Modify the display text or inverse label for a custom association type.
@@ -1091,31 +1211,31 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Source object type
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Target object type
-          example: companies
-        - name: associationTypeId
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Association type ID to update
-          example: 101
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      - name: associationTypeId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Association type ID to update
+        example: 101
       requestBody:
         required: true
         description: Updated label details
@@ -1134,9 +1254,9 @@ paths:
 
     delete:
       tags:
-        - Association Label Management
+      - Association Label Management
       operationId: deleteAssociationLabel
-      summary: HubSpot Delete an association label
+      summary: Hubspot Delete an Association Label
       description: |
         Deletes a custom association label.
         This removes the label definition but does not affect existing associations.
@@ -1146,31 +1266,31 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.write
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
       parameters:
-        - name: fromObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Source object type
-          example: contacts
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-          description: Target object type
-          example: companies
-        - name: associationTypeId
-          in: path
-          required: true
-          schema:
-            type: integer
-          description: Association type ID to delete
-          example: 101
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      - name: associationTypeId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Association type ID to delete
+        example: 101
       responses:
         '204':
           description: Successfully deleted association label
@@ -1180,9 +1300,9 @@ paths:
   /crm/v4/associations/definitions:
     get:
       tags:
-        - Association Type Definitions
+      - Association Type Definitions
       operationId: listAssociationDefinitions
-      summary: HubSpot List all association definitions
+      summary: Hubspot List All Association Definitions
       description: |
         Retrieves all association type definitions available in the account.
         Returns both HubSpot-defined and custom association types across all object types.
@@ -1193,9 +1313,9 @@ paths:
           return "success"
         delay: 100
       security:
-        - OAuth2:
-            - crm.objects.contacts.read
-        - PrivateAppToken: []
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
       responses:
         '200':
           description: Successfully retrieved association definitions

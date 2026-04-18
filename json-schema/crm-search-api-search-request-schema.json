@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-search-api-search-request-schema.json",
+  "title": "SearchRequest",
+  "description": "A search request for CRM objects. Filter groups are combined with OR logic; filters within a group are combined with AND logic.",
+  "type": "object",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "description": "An array of filter groups. Records matching any filter group will be included in results (OR logic between groups). Filters within a group are all required (AND logic within groups).",
+      "items": {
+        "type": "object",
+        "description": "A group of filter conditions combined with AND logic. Use multiple filter groups to create OR conditions between groups.",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "description": "An array of filters, all of which must match (AND logic).",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "example": [
+              {
+                "propertyName": "Example Record",
+                "operator": "EQ",
+                "value": "example-value",
+                "highValue": "example-value",
+                "values": [
+                  {}
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "filters": [
+            {}
+          ]
+        }
+      ]
+    },
+    "sorts": {
+      "type": "array",
+      "description": "An array of sort criteria to order the results.",
+      "items": {
+        "type": "object",
+        "description": "A sort criterion for ordering search results.",
+        "required": [
+          "propertyName"
+        ],
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The name of the CRM property to sort by.",
+            "example": "Example Record"
+          },
+          "direction": {
+            "type": "string",
+            "description": "The sort direction.",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ],
+            "default": "ASCENDING",
+            "example": "ASCENDING"
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "Example Record",
+          "direction": "ASCENDING"
+        }
+      ]
+    },
+    "query": {
+      "type": "string",
+      "description": "A full-text search query string. When provided, returns records where any searchable property contains the query term.",
+      "example": "example-value"
+    },
+    "properties": {
+      "type": "array",
+      "description": "An array of property names to include in the response for each record. If not specified, a default set of properties is returned.",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "description": "The maximum number of results to return. Maximum value is 200.",
+      "default": 10,
+      "maximum": 200,
+      "example": 10
+    },
+    "after": {
+      "type": "string",
+      "description": "The cursor token for pagination. Use the value from the previous response's paging.next.after to get the next page of results.",
+      "example": "example-value"
+    }
+  }
+}

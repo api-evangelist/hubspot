@@ -1,0 +1,121 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Marketing Transactional Email API
+  description: "The HubSpot Marketing Transactional Email API enables you to send transactional emails and manage SMTP tokens.\n\nUse this API to:\n- Create and manage SMTP API tokens for sending transactional
+    emails\n- "
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: marketing-emal-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Marketing Transactional Email API enables you to send transactional emails and manage SMTP tokens.\n\nUse this API to:\n- Create and manage SMTP API tokens for sending transactional
+      emails\n- "
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: smtp-tokens
+      path: /smtp-tokens
+      description: smtp-tokens operations
+      operations:
+      - name: listsmtptokens
+        method: GET
+        description: HubSpot List All SMTP Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsmtptoken
+        method: POST
+        description: HubSpot Create an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsmtptokenbyid
+        method: GET
+        description: HubSpot Get an SMTP Token by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesmtptoken
+        method: DELETE
+        description: HubSpot Delete an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: password-reset
+      path: /password-reset
+      description: password-reset operations
+      operations:
+      - name: resetsmtptokenpassword
+        method: POST
+        description: HubSpot Reset SMTP Token Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: send
+      path: /send
+      description: send operations
+      operations:
+      - name: sendtransactionalemail
+        method: POST
+        description: HubSpot Send a Transactional Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9123
+    namespace: marketing-emal-api-mcp
+    transport: http
+    tools:
+    - name: listsmtptokens
+      description: HubSpot List All SMTP Tokens
+      hints:
+        readOnly: true
+      call: marketing-emal-api.listsmtptokens
+    - name: createsmtptoken
+      description: HubSpot Create an SMTP Token
+      hints:
+        readOnly: false
+      call: marketing-emal-api.createsmtptoken
+    - name: getsmtptokenbyid
+      description: HubSpot Get an SMTP Token by ID
+      hints:
+        readOnly: true
+      call: marketing-emal-api.getsmtptokenbyid
+    - name: deletesmtptoken
+      description: HubSpot Delete an SMTP Token
+      hints:
+        destructive: true
+      call: marketing-emal-api.deletesmtptoken
+    - name: resetsmtptokenpassword
+      description: HubSpot Reset SMTP Token Password
+      hints:
+        readOnly: false
+      call: marketing-emal-api.resetsmtptokenpassword
+    - name: sendtransactionalemail
+      description: HubSpot Send a Transactional Email
+      hints:
+        readOnly: false
+      call: marketing-emal-api.sendtransactionalemail

@@ -1,0 +1,272 @@
+{
+  "type": "object",
+  "description": "Response from batch association operations",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Status of the batch operation",
+      "example": "PENDING",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "description": "Successfully processed associations",
+      "example": [
+        {
+          "from": {},
+          "to": [
+            {
+              "toObjectId": "500123",
+              "associationTypes": [
+                {
+                  "associationCategory": "HUBSPOT_DEFINED",
+                  "associationTypeId": 500123,
+                  "label": "Example Record"
+                }
+              ]
+            }
+          ],
+          "paging": {}
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Result of an association query",
+        "properties": {
+          "from": {
+            "type": "object",
+            "description": "Reference to a CRM object by ID",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID of the object",
+                "example": "500123"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "description": "Associated objects",
+            "example": [
+              {
+                "toObjectId": "500123",
+                "associationTypes": [
+                  {
+                    "associationCategory": "HUBSPOT_DEFINED",
+                    "associationTypeId": 500123,
+                    "label": "Example Record"
+                  }
+                ]
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Represents an association between two CRM objects",
+              "properties": {
+                "toObjectId": {
+                  "type": "string",
+                  "description": "ID of the target object",
+                  "example": "500123"
+                },
+                "associationTypes": {
+                  "type": "array",
+                  "description": "Types of associations between the objects",
+                  "example": [
+                    {
+                      "associationCategory": "HUBSPOT_DEFINED",
+                      "associationTypeId": 500123,
+                      "label": "Example Record"
+                    }
+                  ],
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "toObjectId",
+                "associationTypes"
+              ]
+            }
+          },
+          "paging": {
+            "type": "object",
+            "description": "Pagination information",
+            "properties": {
+              "next": {
+                "type": "object",
+                "description": "Pagination cursor for next page",
+                "properties": {
+                  "after": {
+                    "type": "string",
+                    "description": "Cursor token for the next page",
+                    "example": "example-value"
+                  },
+                  "link": {
+                    "type": "string",
+                    "description": "Link to the next page",
+                    "example": "https://app.hubspot.com/contacts/12345"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "string",
+      "description": "When the batch was requested",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "startedAt": {
+      "type": "string",
+      "description": "When processing started",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "completedAt": {
+      "type": "string",
+      "description": "When processing completed",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "numErrors": {
+      "type": "integer",
+      "description": "Number of errors encountered",
+      "example": 100
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors",
+      "example": [
+        {
+          "status": "active",
+          "id": "500123",
+          "category": "standard",
+          "message": "This is an example description.",
+          "errors": [
+            {}
+          ],
+          "context": {
+            "key": "value"
+          },
+          "links": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Standard error in batch operations",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "active"
+          },
+          "id": {
+            "type": "string",
+            "example": "500123"
+          },
+          "category": {
+            "type": "string",
+            "example": "standard"
+          },
+          "message": {
+            "type": "string",
+            "example": "This is an example description."
+          },
+          "errors": {
+            "type": "array",
+            "example": [
+              {
+                "message": "This is an example description.",
+                "code": "example-value",
+                "subCategory": "standard",
+                "in": "example-value",
+                "context": {
+                  "key": "value"
+                }
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Details about a specific error",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "This is an example description."
+                },
+                "code": {
+                  "type": "string",
+                  "example": "example-value"
+                },
+                "subCategory": {
+                  "type": "string",
+                  "example": "standard"
+                },
+                "in": {
+                  "type": "string",
+                  "example": "example-value"
+                },
+                "context": {
+                  "type": "object",
+                  "example": {
+                    "key": "value"
+                  }
+                }
+              },
+              "required": [
+                "message"
+              ]
+            }
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          },
+          "links": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "category",
+          "message"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchAssociationResponse"
+}

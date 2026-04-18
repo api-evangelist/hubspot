@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-associations-api-association-structure.json",
+  "name": "Association",
+  "description": "Represents an association between two CRM objects",
+  "type": "object",
+  "properties": {
+    "toObjectId": {
+      "type": "string",
+      "description": "ID of the target object",
+      "example": "500123"
+    },
+    "associationTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Defines the type of association",
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ],
+            "description": "Category of the association type",
+            "example": "HUBSPOT_DEFINED"
+          },
+          "associationTypeId": {
+            "type": "int32",
+            "description": "Numeric identifier for the association type",
+            "example": 500123
+          },
+          "label": {
+            "type": "string",
+            "description": "Human-readable label for the association",
+            "example": "Example Record"
+          }
+        },
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ]
+      },
+      "description": "Types of associations between the objects",
+      "example": [
+        {
+          "associationCategory": "HUBSPOT_DEFINED",
+          "associationTypeId": 500123,
+          "label": "Example Record"
+        }
+      ]
+    }
+  },
+  "required": [
+    "toObjectId",
+    "associationTypes"
+  ]
+}

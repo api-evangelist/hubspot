@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "description": "Request body for batch creating commerce payments",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payments to create",
+      "example": [
+        {
+          "properties": {
+            "key": "value"
+          },
+          "associations": [
+            {
+              "to": {
+                "id": {}
+              },
+              "types": [
+                {}
+              ]
+            }
+          ]
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Input for creating a new commerce payment",
+        "properties": {
+          "properties": {
+            "type": "object",
+            "description": "The properties to set on the commerce payment",
+            "example": {
+              "key": "value"
+            }
+          },
+          "associations": {
+            "type": "array",
+            "description": "Associations to create with other objects",
+            "example": [
+              {
+                "to": {
+                  "id": {}
+                },
+                "types": [
+                  {}
+                ]
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Input for creating an association",
+              "properties": {
+                "to": {
+                  "type": "object",
+                  "example": {
+                    "id": "500123"
+                  },
+                  "properties": {
+                    "id": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "types": {
+                  "type": "array",
+                  "description": "The association types",
+                  "example": [
+                    {
+                      "associationCategory": "HUBSPOT_DEFINED",
+                      "associationTypeId": 500123
+                    }
+                  ],
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "to",
+                "types"
+              ]
+            }
+          }
+        },
+        "required": [
+          "properties"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchCreateRequest"
+}

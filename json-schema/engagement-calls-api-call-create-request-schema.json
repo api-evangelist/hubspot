@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/engagement-calls-api-call-create-request-schema.json",
+  "title": "CallCreateRequest",
+  "description": "Request body for creating a call",
+  "type": "object",
+  "properties": {
+    "properties": {
+      "type": "object",
+      "description": "The call properties to set",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "hs_call_title": "Discovery Call",
+        "hs_call_body": "Discussed product requirements",
+        "hs_call_duration": "1800000",
+        "hs_call_direction": "OUTBOUND",
+        "hs_timestamp": "2024-01-15T10:30:00.000Z"
+      }
+    },
+    "associations": {
+      "type": "array",
+      "description": "Associations to create with other objects",
+      "items": {
+        "type": "object",
+        "description": "Association to create with another object",
+        "required": [
+          "to",
+          "types"
+        ],
+        "properties": {
+          "to": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the object to associate with",
+                "example": "101"
+              }
+            },
+            "example": {
+              "id": "101"
+            }
+          },
+          "types": {
+            "type": "array",
+            "description": "The association types",
+            "items": {
+              "$ref": "#/components/schemas/AssociationType"
+            },
+            "example": [
+              {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 194
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "to": {
+            "id": {}
+          },
+          "types": [
+            {}
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "properties"
+  ]
+}

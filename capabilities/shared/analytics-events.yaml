@@ -1,0 +1,162 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot Analytics Events"
+  description: "Retrieve event completion data and event types from HubSpot for analyzing user behavior and engagement patterns."
+  tags:
+    - HubSpot
+    - Analytics
+    - Events
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: analytics-events
+      baseUri: https://api.hubapi.com
+      description: "HubSpot Analytics Events API for retrieving event completion data from CRM objects."
+      authentication:
+        type: bearer
+        token: "{{HUBSPOT_ACCESS_TOKEN}}"
+      resources:
+        - name: event-instances
+          path: /events/v3/events
+          description: "Event instances for CRM objects"
+          operations:
+            - name: get-event-instances
+              method: GET
+              description: "Retrieve instances of event completion data"
+              inputParameters:
+                - name: objectType
+                  in: query
+                  type: string
+                  required: false
+                  description: "The type of CRM object to filter on"
+                - name: objectId
+                  in: query
+                  type: string
+                  required: false
+                  description: "The ID of the CRM object to filter events"
+                - name: eventType
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter by specific event type name"
+                - name: occurredAfter
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter for events after this ISO 8601 datetime"
+                - name: occurredBefore
+                  in: query
+                  type: string
+                  required: false
+                  description: "Filter for events before this ISO 8601 datetime"
+                - name: sort
+                  in: query
+                  type: string
+                  required: false
+                  description: "Sort direction based on event timestamp"
+                - name: limit
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Maximum number of results per page"
+                - name: after
+                  in: query
+                  type: string
+                  required: false
+                  description: "Pagination cursor for the next page"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: event-types
+          path: /events/v3/events/event-types
+          description: "Available event type definitions"
+          operations:
+            - name: get-event-types
+              method: GET
+              description: "Retrieve available event types"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: rest
+      port: 8100
+      namespace: analytics-events-api
+      resources:
+        - path: /v1/events
+          name: events
+          description: "Event instances"
+          operations:
+            - method: GET
+              name: list-events
+              description: "Retrieve event instances"
+              call: "analytics-events.get-event-instances"
+              with:
+                objectType: "rest.objectType"
+                objectId: "rest.objectId"
+                eventType: "rest.eventType"
+                occurredAfter: "rest.occurredAfter"
+                occurredBefore: "rest.occurredBefore"
+                sort: "rest.sort"
+                limit: "rest.limit"
+                after: "rest.after"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/event-types
+          name: event-types
+          description: "Event type definitions"
+          operations:
+            - method: GET
+              name: list-event-types
+              description: "Retrieve available event types"
+              call: "analytics-events.get-event-types"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9100
+      namespace: analytics-events-mcp
+      transport: http
+      tools:
+        - name: get-event-instances
+          description: "Retrieve event completion data from HubSpot CRM objects"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "analytics-events.get-event-instances"
+          with:
+            objectType: "tools.objectType"
+            objectId: "tools.objectId"
+            eventType: "tools.eventType"
+            occurredAfter: "tools.occurredAfter"
+            occurredBefore: "tools.occurredBefore"
+            sort: "tools.sort"
+            limit: "tools.limit"
+            after: "tools.after"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-event-types
+          description: "Retrieve available event types in HubSpot"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "analytics-events.get-event-types"
+          outputParameters:
+            - type: object
+              mapping: "$."

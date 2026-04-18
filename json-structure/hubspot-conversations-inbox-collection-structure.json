@@ -1,0 +1,75 @@
+{
+  "type": "object",
+  "description": "Paginated collection of inboxes",
+  "name": "InboxCollection",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of inbox records",
+      "items": {
+        "type": "object",
+        "description": "Represents a conversation inbox configuration where messages are organized and routed.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the inbox"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the inbox"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of inbox (e.g., CONVERSATIONS_INBOX)"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the inbox was created"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the inbox was last updated"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the inbox is archived"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of inboxes available"
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor information for retrieving the next page.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

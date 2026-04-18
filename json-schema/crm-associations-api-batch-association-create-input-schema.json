@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-associations-api-batch-association-create-input-schema.json",
+  "title": "BatchAssociationCreateInput",
+  "description": "Input for batch creating associations",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Single item in a batch association create request",
+        "properties": {
+          "from": {
+            "$ref": "#/components/schemas/ObjectReference"
+          },
+          "to": {
+            "$ref": "#/components/schemas/ObjectReference"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociationTypeInput"
+            },
+            "example": [
+              {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 500123
+              }
+            ]
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "types"
+        ]
+      },
+      "description": "Associations to create",
+      "example": [
+        {
+          "from": {},
+          "to": {},
+          "types": [
+            {}
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

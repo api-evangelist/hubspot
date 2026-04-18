@@ -1,0 +1,98 @@
+naftiko: "1.0.0-alpha1"
+info:
+  label: "HubSpot Commerce Payments"
+  description: "Manage commerce payment records within HubSpot CRM including CRUD, batch, and search."
+  tags:
+    - HubSpot
+    - Commerce
+    - Payments
+  created: "2026-04-18"
+  modified: "2026-04-18"
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: commerce-payments
+      baseUri: https://api.hubapi.com
+      description: "HubSpot Commerce Payments API."
+      authentication:
+        type: bearer
+        token: "{{HUBSPOT_ACCESS_TOKEN}}"
+      resources:
+        - name: payments
+          path: /crm/v3/objects/commerce_payments
+          description: "Commerce payment records"
+          operations:
+            - name: list-payments
+              method: GET
+              description: "List all commerce payments"
+              inputParameters:
+                - { name: limit, in: query, type: integer, required: false, description: "Max results" }
+                - { name: after, in: query, type: string, required: false, description: "Cursor" }
+                - { name: properties, in: query, type: string, required: false, description: "Properties" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+            - name: create-payment
+              method: POST
+              description: "Create a payment"
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+              body: { type: json, data: { properties: "{{tools.properties}}" } }
+        - name: payment-by-id
+          path: /crm/v3/objects/commerce_payments/{commercePaymentId}
+          description: "Individual payment"
+          operations:
+            - name: get-payment
+              method: GET
+              description: "Get a payment"
+              inputParameters:
+                - { name: commercePaymentId, in: path, type: string, required: true, description: "Payment ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+            - name: update-payment
+              method: PATCH
+              description: "Update a payment"
+              inputParameters:
+                - { name: commercePaymentId, in: path, type: string, required: true, description: "Payment ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+              body: { type: json, data: { properties: "{{tools.properties}}" } }
+            - name: archive-payment
+              method: DELETE
+              description: "Archive a payment"
+              inputParameters:
+                - { name: commercePaymentId, in: path, type: string, required: true, description: "Payment ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+        - name: search
+          path: /crm/v3/objects/commerce_payments/search
+          description: "Search payments"
+          operations:
+            - name: search-payments
+              method: POST
+              description: "Search payments"
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+              body: { type: json, data: { filterGroups: "{{tools.filterGroups}}", query: "{{tools.query}}" } }
+  exposes:
+    - type: rest
+      port: 8107
+      namespace: commerce-payments-api
+      resources:
+        - path: /v1/payments
+          name: payments
+          description: "Payment records"
+          operations:
+            - { method: GET, name: list, description: "List payments", call: "commerce-payments.list-payments", outputParameters: [{ type: object, mapping: "$." }] }
+    - type: mcp
+      port: 9107
+      namespace: commerce-payments-mcp
+      transport: http
+      tools:
+        - { name: list-payments, description: "List all commerce payments", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.list-payments", with: { limit: "tools.limit", after: "tools.after" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-payment, description: "Get a payment by ID", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.get-payment", with: { commercePaymentId: "tools.commercePaymentId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-payment, description: "Create a commerce payment", hints: { readOnly: false }, call: "commerce-payments.create-payment", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: search-payments, description: "Search commerce payments", hints: { readOnly: true, idempotent: true }, call: "commerce-payments.search-payments", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }

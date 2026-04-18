@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-associations-api-batch-association-archive-input-schema.json",
+  "title": "BatchAssociationArchiveInput",
+  "description": "Input for batch archiving associations",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Single item in a batch association archive request",
+        "properties": {
+          "from": {
+            "$ref": "#/components/schemas/ObjectReference"
+          },
+          "to": {
+            "$ref": "#/components/schemas/ObjectReference"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociationTypeInput"
+            },
+            "example": [
+              {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 500123
+              }
+            ]
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      },
+      "description": "Associations to archive",
+      "example": [
+        {
+          "from": {},
+          "to": {},
+          "types": [
+            {}
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

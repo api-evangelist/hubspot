@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-deals-api-deal-schema.json",
+  "title": "Deal",
+  "description": "A HubSpot deal record.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the deal.",
+      "example": "500123"
+    },
+    "properties": {
+      "type": "object",
+      "description": "The deal's properties as key-value pairs.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the deal was created.",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date and time the deal was last updated.",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "archived": {
+      "type": "boolean",
+      "description": "Whether the deal has been archived.",
+      "example": true
+    },
+    "associations": {
+      "type": "object",
+      "description": "The deal's associations with other CRM objects.",
+      "additionalProperties": {
+        "type": "object",
+        "description": "A list of associations.",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Association"
+            },
+            "example": [
+              {
+                "id": "500123",
+                "type": "standard"
+              }
+            ]
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    }
+  }
+}

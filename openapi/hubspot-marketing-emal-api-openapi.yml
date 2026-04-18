@@ -21,19 +21,19 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: Single Send
-    description: Send individual transactional emails using templates
-  - name: SMTP Token Management
-    description: Create, query, and manage SMTP API tokens for transactional email sending
+- name: Single Send
+  description: Send individual transactional emails using templates
+- name: SMTP Token Management
+  description: Create, query, and manage SMTP API tokens for transactional email sending
 paths:
   /marketing/v3/transactional/smtp-tokens:
     get:
       tags:
-        - SMTP Token Management
-      summary: HubSpot List all SMTP tokens
+      - SMTP Token Management
+      summary: Hubspot List All Smtp Tokens
       description: |
         Returns a paginated list of all SMTP API tokens for the account.
         Use this endpoint to view all configured tokens and their associated campaigns.
@@ -43,10 +43,14 @@ paths:
         dispatcherRules: |
           return "ListSmtpTokensSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/CampaignNameParam'
-        - $ref: '#/components/parameters/EmailCampaignIdParam'
-        - $ref: '#/components/parameters/AfterParam'
-        - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/CampaignNameParam'
+        example: example-value
+      - $ref: '#/components/parameters/EmailCampaignIdParam'
+        example: example-value
+      - $ref: '#/components/parameters/AfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/LimitParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the list of SMTP tokens
@@ -67,14 +71,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
     post:
       tags:
-        - SMTP Token Management
-      summary: HubSpot Create an SMTP token
+      - SMTP Token Management
+      summary: Hubspot Create an Smtp Token
       description: |
         Creates a new SMTP API token for sending transactional emails.
         The token can be associated with a specific email campaign and optionally configured to create contacts.
@@ -112,15 +116,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
   /marketing/v3/transactional/smtp-tokens/{tokenId}:
     get:
       tags:
-        - SMTP Token Management
-      summary: HubSpot Get an SMTP token by ID
+      - SMTP Token Management
+      summary: Hubspot Get an Smtp Token by Id
       description: |
         Retrieves detailed information about a single SMTP API token by its unique identifier.
         Note: The password is not returned in this response for security reasons.
@@ -130,7 +134,8 @@ paths:
         dispatcherRules: |
           return "GetSmtpTokenSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/TokenIdParam'
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved the SMTP token
@@ -151,14 +156,14 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
     delete:
       tags:
-        - SMTP Token Management
-      summary: HubSpot Delete an SMTP token
+      - SMTP Token Management
+      summary: Hubspot Delete an Smtp Token
       description: |
         Permanently deletes an SMTP API token.
         Any applications using this token will no longer be able to send emails.
@@ -168,7 +173,8 @@ paths:
         dispatcherRules: |
           return "DeleteSmtpTokenSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/TokenIdParam'
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
       responses:
         '204':
           description: Successfully deleted the SMTP token (no content returned)
@@ -182,15 +188,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
   /marketing/v3/transactional/smtp-tokens/{tokenId}/password-reset:
     post:
       tags:
-        - SMTP Token Management
-      summary: HubSpot Reset SMTP token password
+      - SMTP Token Management
+      summary: Hubspot Reset Smtp Token Password
       description: |
         Resets the password for an existing SMTP API token.
         The new password will be returned in the response. Store it securely as it cannot be retrieved again.
@@ -200,7 +206,8 @@ paths:
         dispatcherRules: |
           return "ResetSmtpTokenPasswordSuccessResponse"
       parameters:
-        - $ref: '#/components/parameters/TokenIdParam'
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
       responses:
         '200':
           description: Successfully reset the SMTP token password
@@ -221,15 +228,15 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
   /marketing/v3/transactional/single-email/send:
     post:
       tags:
-        - Single Send
-      summary: HubSpot Send a transactional email
+      - Single Send
+      summary: Hubspot Send a Transactional Email
       description: |
         Sends a single transactional email using a pre-defined email template.
         The email is sent immediately to the specified recipient with the provided personalization tokens.
@@ -267,21 +274,21 @@ paths:
                 ErrorResponse:
                   $ref: '#/components/examples/ErrorResponse'
       security:
-        - OAuth2:
-            - transactional-email
-        - PrivateApp:
-            - transactional-email
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
 components:
   schemas:
     SmtpToken:
       type: object
       description: Represents an SMTP API token for transactional email sending
       required:
-        - id
-        - createdAt
-        - createdBy
-        - campaignName
-        - createContact
+      - id
+      - createdAt
+      - createdBy
+      - campaignName
+      - createContact
       properties:
         id:
           type: string
@@ -312,12 +319,12 @@ components:
       type: object
       description: SMTP token with password (returned only on creation or password reset)
       required:
-        - id
-        - createdAt
-        - createdBy
-        - campaignName
-        - createContact
-        - password
+      - id
+      - createdAt
+      - createdBy
+      - campaignName
+      - createContact
+      - password
       properties:
         id:
           type: string
@@ -352,21 +359,28 @@ components:
       type: object
       description: A paginated collection of SMTP tokens
       required:
-        - results
+      - results
       properties:
         results:
           type: array
           description: The list of SMTP tokens
           items:
             $ref: '#/components/schemas/SmtpToken'
+          example:
+          - id: "smtp-token-abc123"
+            campaignName: "Password Reset Emails"
+            emailCampaignId: "campaign-xyz789"
+            createContact: true
+            createdAt: "2024-01-15T10:30:00.000Z"
+            createdBy: "user@example.com"
         paging:
           $ref: '#/components/schemas/Paging'
     SmtpTokenCreateRequest:
       type: object
       description: Request body for creating an SMTP token
       required:
-        - campaignName
-        - createContact
+      - campaignName
+      - createContact
       properties:
         campaignName:
           type: string
@@ -380,8 +394,8 @@ components:
       type: object
       description: Request body for sending a transactional email
       required:
-        - emailId
-        - message
+      - emailId
+      - message
       properties:
         emailId:
           type: integer
@@ -410,7 +424,7 @@ components:
       type: object
       description: The email message configuration
       required:
-        - to
+      - to
       properties:
         to:
           type: string
@@ -433,33 +447,37 @@ components:
             type: string
             format: email
           example:
-            - "support@yourcompany.com"
+          - "support@yourcompany.com"
         cc:
           type: array
           description: CC email addresses
           items:
             type: string
             format: email
+          example:
+          - jsmith@example.com
         bcc:
           type: array
           description: BCC email addresses
           items:
             type: string
             format: email
+          example:
+          - jsmith@example.com
     TransactionalEmailResponse:
       type: object
       description: Response after sending a transactional email
       required:
-        - status
-        - statusId
+      - status
+      - statusId
       properties:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: The status of the email send
           example: "PENDING"
         statusId:
@@ -474,14 +492,17 @@ components:
           type: string
           format: date-time
           description: When the send was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
           description: When the send processing started
+          example: '2025-03-15T14:30:00Z'
         completedAt:
           type: string
           format: date-time
           description: When the send processing completed
+          example: '2025-03-15T14:30:00Z'
     Paging:
       type: object
       description: Pagination information
@@ -492,7 +513,7 @@ components:
       type: object
       description: Information about the next page
       required:
-        - after
+      - after
       properties:
         after:
           type: string
@@ -501,13 +522,14 @@ components:
         link:
           type: string
           description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
     Error:
       type: object
       description: Error response
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -525,44 +547,62 @@ components:
         subCategory:
           type: string
           description: More specific error category
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     ErrorDetail:
       type: object
       description: Detailed error information
       required:
-        - message
+      - message
       properties:
         message:
           type: string
           description: Error message
+          example: This is an example description.
         code:
           type: string
           description: Error code
+          example: example-value
         in:
           type: string
           description: Field where error occurred
+          example: example-value
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         context:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
+          example:
+            key: value
   parameters:
     TokenIdParam:
       name: tokenId
@@ -607,18 +647,18 @@ components:
       summary: Successful response listing SMTP tokens
       value:
         results:
-          - id: "smtp-token-abc123"
-            campaignName: "Password Reset Emails"
-            emailCampaignId: "campaign-xyz789"
-            createContact: true
-            createdAt: "2024-01-15T10:30:00.000Z"
-            createdBy: "user@example.com"
-          - id: "smtp-token-def456"
-            campaignName: "Order Confirmation Emails"
-            emailCampaignId: "campaign-uvw456"
-            createContact: false
-            createdAt: "2024-01-10T08:00:00.000Z"
-            createdBy: "admin@example.com"
+        - id: "smtp-token-abc123"
+          campaignName: "Password Reset Emails"
+          emailCampaignId: "campaign-xyz789"
+          createContact: true
+          createdAt: "2024-01-15T10:30:00.000Z"
+          createdBy: "user@example.com"
+        - id: "smtp-token-def456"
+          campaignName: "Order Confirmation Emails"
+          emailCampaignId: "campaign-uvw456"
+          createContact: false
+          createdAt: "2024-01-10T08:00:00.000Z"
+          createdBy: "admin@example.com"
         paging:
           next:
             after: "c210cC10b2tlbi1kZWY0NTY%3D"
@@ -664,7 +704,7 @@ components:
           from: "noreply@yourcompany.com"
           sendId: "unique-send-id-123"
           replyTo:
-            - "support@yourcompany.com"
+          - "support@yourcompany.com"
         contactProperties:
           firstname: "John"
           lastname: "Doe"

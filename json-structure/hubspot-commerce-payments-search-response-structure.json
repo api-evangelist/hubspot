@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "description": "Response from a search operation",
+  "name": "SearchResponse",
+  "properties": {
+    "total": {
+      "type": "integer",
+      "description": "Total number of matching results"
+    },
+    "results": {
+      "type": "array",
+      "description": "The matching commerce payments",
+      "items": {
+        "type": "object",
+        "description": "A commerce payment object representing a payment transaction",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the commerce payment"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties of the commerce payment"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was created"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was last updated"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the commerce payment is archived"
+          },
+          "archivedAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was archived"
+          },
+          "associations": {
+            "type": "object",
+            "description": "Associated objects"
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their value history"
+          }
+        },
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page"
+            }
+          }
+        },
+        "prev": {
+          "type": "object",
+          "properties": {
+            "before": {
+              "type": "string",
+              "description": "Cursor for the previous page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the previous page"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "total",
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

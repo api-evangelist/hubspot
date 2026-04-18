@@ -1,0 +1,54 @@
+{
+  "type": "object",
+  "description": "Response from a batch callback completion operation",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Overall status of the batch operation",
+      "example": "COMPLETE",
+      "enum": [
+        "COMPLETE",
+        "PARTIAL"
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors for failed callbacks",
+      "example": [
+        {
+          "callbackId": "500123",
+          "message": "This is an example description.",
+          "category": "standard"
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Error information for a failed callback",
+        "properties": {
+          "callbackId": {
+            "type": "string",
+            "description": "The callback that failed",
+            "example": "500123"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "category": {
+            "type": "string",
+            "description": "Error category",
+            "example": "standard"
+          }
+        },
+        "required": [
+          "callbackId",
+          "message",
+          "category"
+        ]
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchCallbackResponse"
+}

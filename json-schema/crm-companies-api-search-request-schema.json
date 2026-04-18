@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/crm-companies-api-search-request-schema.json",
+  "title": "SearchRequest",
+  "description": "A search request for CRM objects.",
+  "type": "object",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A group of filters combined with AND logic.",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "example": [
+              {
+                "propertyName": "Example Record",
+                "operator": "EQ",
+                "value": "example-value"
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "filters": [
+            {}
+          ]
+        }
+      ]
+    },
+    "sorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "propertyName": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "Example Record",
+          "direction": "ASCENDING"
+        }
+      ]
+    },
+    "query": {
+      "type": "string",
+      "example": "example-value"
+    },
+    "properties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "maximum": 200,
+      "example": 100
+    },
+    "after": {
+      "type": "string",
+      "example": "example-value"
+    }
+  }
+}

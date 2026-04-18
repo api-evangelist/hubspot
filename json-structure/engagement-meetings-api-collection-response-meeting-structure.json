@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-meetings-api-collection-response-meeting-structure.json",
+  "name": "CollectionResponseMeeting",
+  "description": "CollectionResponseMeeting schema from HubSpot Engagement Meetings API",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A HubSpot meeting engagement record.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the meeting.",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The meeting's properties as key-value pairs.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "datetime",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "example": true
+          },
+          "associations": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CollectionResponseAssociation"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "archived": true,
+          "associations": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "after": "example-value"
+          }
+        }
+      }
+    }
+  }
+}

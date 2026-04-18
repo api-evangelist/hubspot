@@ -28,21 +28,21 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 
 tags:
-  - name: Actors
-    description: Operations for managing conversation participants including visitors and agents.
+- name: Actors
+  description: Operations for managing conversation participants including visitors and agents.
 
-  - name: Channels
-    description: Operations for managing communication channels such as email, chat, and social media.
-  - name: Inboxes
-    description: Operations for managing conversation inboxes where messages are organized and routed.
-  - name: Messages
-    description: Operations for sending, receiving, and managing messages within conversation threads.
-  - name: Threads
-    description: Operations for creating, retrieving, updating, and archiving conversation threads.
+- name: Channels
+  description: Operations for managing communication channels such as email, chat, and social media.
+- name: Inboxes
+  description: Operations for managing conversation inboxes where messages are organized and routed.
+- name: Messages
+  description: Operations for sending, receiving, and managing messages within conversation threads.
+- name: Threads
+  description: Operations for creating, retrieving, updating, and archiving conversation threads.
 components:
   securitySchemes:
     OAuth2:
@@ -92,10 +92,10 @@ components:
           description: Whether the inbox is archived
           example: false
       required:
-        - id
-        - name
-        - createdAt
-        - updatedAt
+      - id
+      - name
+      - createdAt
+      - updatedAt
 
     InboxCollection:
       type: object
@@ -106,6 +106,13 @@ components:
           items:
             $ref: '#/components/schemas/Inbox'
           description: Array of inbox records
+          example:
+          - id: "12345678"
+            name: "Support Inbox"
+            type: "CONVERSATIONS_INBOX"
+            createdAt: "2024-01-10T09:00:00Z"
+            updatedAt: "2024-01-15T14:30:00Z"
+            archived: false
         total:
           type: integer
           description: Total number of inboxes available
@@ -113,7 +120,7 @@ components:
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     Thread:
       type: object
@@ -130,8 +137,8 @@ components:
         status:
           type: string
           enum:
-            - OPEN
-            - CLOSED
+          - OPEN
+          - CLOSED
           description: Current status of the thread
           example: "OPEN"
         spam:
@@ -184,10 +191,10 @@ components:
           description: Whether the thread is archived
           example: false
       required:
-        - id
-        - inboxId
-        - status
-        - createdAt
+      - id
+      - inboxId
+      - status
+      - createdAt
 
     ThreadCollection:
       type: object
@@ -198,10 +205,25 @@ components:
           items:
             $ref: '#/components/schemas/Thread'
           description: Array of thread records
+          example:
+          - id: "987654321"
+            inboxId: "12345678"
+            status: "OPEN"
+            spam: false
+            associatedContactId: "101"
+            assignedTo: "user_456"
+            originalChannelId: "channel_789"
+            originalChannelAccountId: "account_123"
+            latestMessageTimestamp: "2024-01-20T10:30:00Z"
+            latestMessageSentTimestamp: "2024-01-20T10:25:00Z"
+            latestMessageReceivedTimestamp: "2024-01-20T10:30:00Z"
+            closedAt: "2024-01-21T15:00:00Z"
+            createdAt: "2024-01-15T09:00:00Z"
+            archived: false
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     Message:
       type: object
@@ -214,9 +236,9 @@ components:
         type:
           type: string
           enum:
-            - MESSAGE
-            - COMMENT
-            - WELCOME_MESSAGE
+          - MESSAGE
+          - COMMENT
+          - WELCOME_MESSAGE
           description: Type of message
           example: "MESSAGE"
         text:
@@ -230,8 +252,8 @@ components:
         direction:
           type: string
           enum:
-            - INCOMING
-            - OUTGOING
+          - INCOMING
+          - OUTGOING
           description: Direction of the message (incoming or outgoing)
           example: "INCOMING"
         channelId:
@@ -247,11 +269,23 @@ components:
           items:
             $ref: '#/components/schemas/Actor'
           description: List of message senders
+          example: &id001
+          - id: "actor_101"
+            actorId: "actor_101"
+            name: "John Customer"
+            email: "john@example.com"
+            type: "VISITOR"
         recipients:
           type: array
           items:
             $ref: '#/components/schemas/Actor'
           description: List of message recipients
+          example: &id002
+          - id: "actor_101"
+            actorId: "actor_101"
+            name: "John Customer"
+            email: "john@example.com"
+            type: "VISITOR"
         status:
           $ref: '#/components/schemas/MessageStatus'
         createdAt:
@@ -268,10 +302,16 @@ components:
           items:
             $ref: '#/components/schemas/Attachment'
           description: Message attachments
+          example: &id003
+          - id: "attach_001"
+            type: "application/pdf"
+            url: "https://api.hubapi.com/files/v3/files/attach_001"
+            filename: "invoice.pdf"
+            size: 102400
       required:
-        - id
-        - type
-        - createdAt
+      - id
+      - type
+      - createdAt
 
     MessageStatus:
       type: object
@@ -280,10 +320,10 @@ components:
         statusType:
           type: string
           enum:
-            - SENT
-            - DELIVERED
-            - READ
-            - FAILED
+          - SENT
+          - DELIVERED
+          - READ
+          - FAILED
           description: Current delivery status type
           example: "DELIVERED"
 
@@ -296,10 +336,24 @@ components:
           items:
             $ref: '#/components/schemas/Message'
           description: Array of message records
+          example:
+          - id: "msg_123456"
+            type: "MESSAGE"
+            text: "Hello, I need help with my order."
+            richText: "<p>Hello, I need help with my order.</p>"
+            direction: "INCOMING"
+            channelId: "channel_789"
+            channelAccountId: "account_123"
+            senders: *id001
+            recipients: *id002
+            status: {}
+            createdAt: "2024-01-20T10:30:00Z"
+            truncationStatus: "NOT_TRUNCATED"
+            attachments: *id003
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     Actor:
       type: object
@@ -327,7 +381,7 @@ components:
           description: Type of actor (e.g., VISITOR, AGENT, BOT)
           example: "VISITOR"
       required:
-        - id
+      - id
 
     ActorCollection:
       type: object
@@ -338,10 +392,16 @@ components:
           items:
             $ref: '#/components/schemas/Actor'
           description: Array of actor records
+          example:
+          - id: "actor_101"
+            actorId: "actor_101"
+            name: "John Customer"
+            email: "john@example.com"
+            type: "VISITOR"
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     Attachment:
       type: object
@@ -395,9 +455,9 @@ components:
           description: ISO 8601 timestamp when the channel was created
           example: "2024-01-01T00:00:00Z"
       required:
-        - id
-        - name
-        - type
+      - id
+      - name
+      - type
 
     ChannelCollection:
       type: object
@@ -408,10 +468,16 @@ components:
           items:
             $ref: '#/components/schemas/Channel'
           description: Array of channel records
+          example:
+          - id: "channel_789"
+            name: "Website Chat"
+            type: "CHAT"
+            accountId: "account_123"
+            createdAt: "2024-01-01T00:00:00Z"
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     SendMessageRequest:
       type: object
@@ -420,8 +486,8 @@ components:
         type:
           type: string
           enum:
-            - MESSAGE
-            - COMMENT
+          - MESSAGE
+          - COMMENT
           description: Type of message to send
           example: "MESSAGE"
         text:
@@ -449,10 +515,12 @@ components:
           items:
             $ref: '#/components/schemas/MessageRecipient'
           description: Message recipients
+          example:
+          - actorId: "actor_101"
       required:
-        - type
-        - text
-        - senderActorId
+      - type
+      - text
+      - senderActorId
 
     MessageRecipient:
       type: object
@@ -470,8 +538,8 @@ components:
         status:
           type: string
           enum:
-            - OPEN
-            - CLOSED
+          - OPEN
+          - CLOSED
           description: New thread status
           example: "CLOSED"
         assignedTo:
@@ -525,8 +593,10 @@ components:
             type: array
             items:
               type: string
+          example: &id004
+            key: value
       required:
-        - message
+      - message
 
     Error:
       type: object
@@ -555,18 +625,28 @@ components:
             type: array
             items:
               type: string
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: "Invalid thread ID format"
+            code: "INVALID_FORMAT"
+            subCategory: "PARAMETER_ERROR"
+            in: "path"
+            context: *id004
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
 
   examples:
     InboxExample:
@@ -583,18 +663,18 @@ components:
       summary: Paginated list of inboxes
       value:
         results:
-          - id: "12345678"
-            name: "Support Inbox"
-            type: "CONVERSATIONS_INBOX"
-            createdAt: "2024-01-10T09:00:00Z"
-            updatedAt: "2024-01-15T14:30:00Z"
-            archived: false
-          - id: "12345679"
-            name: "Sales Inbox"
-            type: "CONVERSATIONS_INBOX"
-            createdAt: "2024-01-08T10:00:00Z"
-            updatedAt: "2024-01-14T16:00:00Z"
-            archived: false
+        - id: "12345678"
+          name: "Support Inbox"
+          type: "CONVERSATIONS_INBOX"
+          createdAt: "2024-01-10T09:00:00Z"
+          updatedAt: "2024-01-15T14:30:00Z"
+          archived: false
+        - id: "12345679"
+          name: "Sales Inbox"
+          type: "CONVERSATIONS_INBOX"
+          createdAt: "2024-01-08T10:00:00Z"
+          updatedAt: "2024-01-14T16:00:00Z"
+          archived: false
         total: 2
         paging:
           next:
@@ -622,20 +702,20 @@ components:
       summary: Paginated list of threads
       value:
         results:
-          - id: "987654321"
-            inboxId: "12345678"
-            status: "OPEN"
-            spam: false
-            associatedContactId: "101"
-            createdAt: "2024-01-15T09:00:00Z"
-            archived: false
-          - id: "987654322"
-            inboxId: "12345678"
-            status: "CLOSED"
-            spam: false
-            associatedContactId: "102"
-            createdAt: "2024-01-14T11:00:00Z"
-            archived: false
+        - id: "987654321"
+          inboxId: "12345678"
+          status: "OPEN"
+          spam: false
+          associatedContactId: "101"
+          createdAt: "2024-01-15T09:00:00Z"
+          archived: false
+        - id: "987654322"
+          inboxId: "12345678"
+          status: "CLOSED"
+          spam: false
+          associatedContactId: "102"
+          createdAt: "2024-01-14T11:00:00Z"
+          archived: false
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -651,10 +731,10 @@ components:
         channelId: "channel_789"
         channelAccountId: "account_123"
         senders:
-          - id: "actor_101"
-            name: "John Customer"
-            email: "john@example.com"
-            type: "VISITOR"
+        - id: "actor_101"
+          name: "John Customer"
+          email: "john@example.com"
+          type: "VISITOR"
         status:
           statusType: "DELIVERED"
         createdAt: "2024-01-20T10:30:00Z"
@@ -663,16 +743,16 @@ components:
       summary: Paginated list of messages
       value:
         results:
-          - id: "msg_123456"
-            type: "MESSAGE"
-            text: "Hello, I need help with my order."
-            direction: "INCOMING"
-            createdAt: "2024-01-20T10:30:00Z"
-          - id: "msg_123457"
-            type: "MESSAGE"
-            text: "Hi! I'd be happy to help. What's your order number?"
-            direction: "OUTGOING"
-            createdAt: "2024-01-20T10:32:00Z"
+        - id: "msg_123456"
+          type: "MESSAGE"
+          text: "Hello, I need help with my order."
+          direction: "INCOMING"
+          createdAt: "2024-01-20T10:30:00Z"
+        - id: "msg_123457"
+          type: "MESSAGE"
+          text: "Hi! I'd be happy to help. What's your order number?"
+          direction: "OUTGOING"
+          createdAt: "2024-01-20T10:32:00Z"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -691,16 +771,16 @@ components:
       summary: Paginated list of channels
       value:
         results:
-          - id: "channel_789"
-            name: "Website Chat"
-            type: "CHAT"
-            accountId: "account_123"
-            createdAt: "2024-01-01T00:00:00Z"
-          - id: "channel_790"
-            name: "Support Email"
-            type: "EMAIL"
-            accountId: "account_124"
-            createdAt: "2024-01-01T00:00:00Z"
+        - id: "channel_789"
+          name: "Website Chat"
+          type: "CHAT"
+          accountId: "account_123"
+          createdAt: "2024-01-01T00:00:00Z"
+        - id: "channel_790"
+          name: "Support Email"
+          type: "EMAIL"
+          accountId: "account_124"
+          createdAt: "2024-01-01T00:00:00Z"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -719,16 +799,16 @@ components:
       summary: Paginated list of actors
       value:
         results:
-          - id: "actor_101"
-            actorId: "actor_101"
-            name: "John Customer"
-            email: "john@example.com"
-            type: "VISITOR"
-          - id: "actor_agent_123"
-            actorId: "actor_agent_123"
-            name: "Support Agent"
-            email: "support@example.com"
-            type: "AGENT"
+        - id: "actor_101"
+          actorId: "actor_101"
+          name: "John Customer"
+          email: "john@example.com"
+          type: "VISITOR"
+        - id: "actor_agent_123"
+          actorId: "actor_agent_123"
+          name: "Support Agent"
+          email: "support@example.com"
+          type: "AGENT"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -757,7 +837,7 @@ components:
         message: "Invalid input parameters"
         context:
           invalidFields:
-            - "threadId"
+          - "threadId"
 
   responses:
     ErrorResponse:
@@ -774,9 +854,9 @@ paths:
   /conversations/v3/conversations/inboxes:
     get:
       tags:
-        - Inboxes
+      - Inboxes
       operationId: listInboxes
-      summary: HubSpot List All Inboxes
+      summary: Hubspot List All Inboxes
       description: |
         Retrieve a paginated list of all conversation inboxes in your HubSpot account.
         Use query parameters to filter, sort, and paginate results.
@@ -785,38 +865,38 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of results per page (1-100)
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for retrieving the next page of results
-          example: "NTI1Cg%3D%3D"
-        - name: sort
-          in: query
-          schema:
-            type: string
-          description: Property name to sort results by
-          example: "createdAt"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Set to true to include archived inboxes in results
-          example: false
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page (1-100)
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for retrieving the next page of results
+        example: "NTI1Cg%3D%3D"
+      - name: sort
+        in: query
+        schema:
+          type: string
+        description: Property name to sort results by
+        example: "createdAt"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Set to true to include archived inboxes in results
+        example: false
       responses:
         '200':
           description: Successfully retrieved the list of inboxes
@@ -833,9 +913,9 @@ paths:
   /conversations/v3/conversations/inboxes/{inboxId}:
     get:
       tags:
-        - Inboxes
+      - Inboxes
       operationId: getInboxById
-      summary: HubSpot Retrieve An Inbox
+      summary: Hubspot Retrieve an Inbox
       description: |
         Retrieve a specific conversation inbox by its unique identifier.
         Returns the complete inbox configuration details.
@@ -844,17 +924,17 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: inboxId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the inbox to retrieve
-          example: "12345678"
+      - name: inboxId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the inbox to retrieve
+        example: "12345678"
       responses:
         '200':
           description: Successfully retrieved the inbox details
@@ -871,9 +951,9 @@ paths:
   /conversations/v3/conversations/threads:
     get:
       tags:
-        - Threads
+      - Threads
       operationId: listThreads
-      summary: HubSpot List Conversation Threads
+      summary: Hubspot List Conversation Threads
       description: |
         Retrieve a paginated list of conversation threads with optional filtering.
         Filter by inbox, contact, or status to find specific conversations.
@@ -882,52 +962,52 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: inboxId
-          in: query
-          schema:
-            type: string
-          description: Filter threads by inbox ID
-          example: "12345678"
-        - name: associatedContactId
-          in: query
-          schema:
-            type: string
-          description: Filter threads by associated CRM contact ID
-          example: "101"
-        - name: status
-          in: query
-          schema:
-            type: string
-            enum:
-              - OPEN
-              - CLOSED
-          description: Filter threads by status
-          example: "OPEN"
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of results per page
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for the next page
-          example: "NTI1Cg%3D%3D"
-        - name: sort
-          in: query
-          schema:
-            type: string
-          description: Property to sort results by
-          example: "latestMessageTimestamp"
+      - name: inboxId
+        in: query
+        schema:
+          type: string
+        description: Filter threads by inbox ID
+        example: "12345678"
+      - name: associatedContactId
+        in: query
+        schema:
+          type: string
+        description: Filter threads by associated CRM contact ID
+        example: "101"
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - OPEN
+          - CLOSED
+        description: Filter threads by status
+        example: "OPEN"
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: "NTI1Cg%3D%3D"
+      - name: sort
+        in: query
+        schema:
+          type: string
+        description: Property to sort results by
+        example: "latestMessageTimestamp"
       responses:
         '200':
           description: Successfully retrieved the list of threads
@@ -944,9 +1024,9 @@ paths:
   /conversations/v3/conversations/threads/{threadId}:
     get:
       tags:
-        - Threads
+      - Threads
       operationId: getThreadById
-      summary: HubSpot Retrieve A Thread
+      summary: Hubspot Retrieve a Thread
       description: |
         Retrieve a specific conversation thread by its unique identifier.
         Optionally include associated objects like tickets.
@@ -955,38 +1035,38 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread to retrieve
-          example: "987654321"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Set to true to retrieve archived threads
-          example: false
-        - name: property
-          in: query
-          schema:
-            type: string
-          description: Specific property to return in the response
-          example: "status"
-        - name: association
-          in: query
-          schema:
-            type: string
-            enum:
-              - TICKET
-          description: Include associated objects in the response
-          example: "TICKET"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to retrieve
+        example: "987654321"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Set to true to retrieve archived threads
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return in the response
+        example: "status"
+      - name: association
+        in: query
+        schema:
+          type: string
+          enum:
+          - TICKET
+        description: Include associated objects in the response
+        example: "TICKET"
       responses:
         '200':
           description: Successfully retrieved the thread details
@@ -1002,9 +1082,9 @@ paths:
 
     patch:
       tags:
-        - Threads
+      - Threads
       operationId: updateThread
-      summary: HubSpot Update A Thread
+      summary: Hubspot Update a Thread
       description: |
         Update properties of an existing conversation thread.
         Use this to change status, reassign the thread, or modify other properties.
@@ -1013,17 +1093,17 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.write
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.write
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread to update
-          example: "987654321"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to update
+        example: "987654321"
       requestBody:
         required: true
         description: Thread properties to update
@@ -1049,9 +1129,9 @@ paths:
 
     delete:
       tags:
-        - Threads
+      - Threads
       operationId: archiveThread
-      summary: HubSpot Archive A Thread
+      summary: Hubspot Archive a Thread
       description: |
         Archive a conversation thread. The thread will be permanently deleted 
         30 days after being archived. This action can be undone within the retention period.
@@ -1060,17 +1140,17 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.write
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.write
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread to archive
-          example: "987654321"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to archive
+        example: "987654321"
       responses:
         '204':
           description: Successfully archived the thread
@@ -1080,9 +1160,9 @@ paths:
   /conversations/v3/conversations/threads/{threadId}/messages:
     get:
       tags:
-        - Messages
+      - Messages
       operationId: listThreadMessages
-      summary: HubSpot List Thread Messages
+      summary: Hubspot List Thread Messages
       description: |
         Retrieve all messages in a conversation thread. Messages are returned
         in chronological order with pagination support.
@@ -1091,32 +1171,32 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread
-          example: "987654321"
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of messages per page
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for the next page
-          example: "NTI1Cg%3D%3D"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread
+        example: "987654321"
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of messages per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: "NTI1Cg%3D%3D"
       responses:
         '200':
           description: Successfully retrieved the list of messages
@@ -1132,9 +1212,9 @@ paths:
 
     post:
       tags:
-        - Messages
+      - Messages
       operationId: sendMessage
-      summary: HubSpot Send A Message
+      summary: Hubspot Send a Message
       description: |
         Send a new message to a conversation thread. The message will be delivered
         through the specified channel to the thread participants.
@@ -1143,17 +1223,17 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.write
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.write
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread to send the message to
-          example: "987654321"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to send the message to
+        example: "987654321"
       requestBody:
         required: true
         description: Message content and delivery configuration
@@ -1180,9 +1260,9 @@ paths:
   /conversations/v3/conversations/threads/{threadId}/messages/{messageId}:
     get:
       tags:
-        - Messages
+      - Messages
       operationId: getMessageById
-      summary: HubSpot Retrieve A Message
+      summary: Hubspot Retrieve a Message
       description: |
         Retrieve a specific message by its unique identifier within a thread.
         Returns the complete message details including sender, recipients, and attachments.
@@ -1191,24 +1271,24 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: threadId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the thread containing the message
-          example: "987654321"
-        - name: messageId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the message to retrieve
-          example: "msg_123456"
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread containing the message
+        example: "987654321"
+      - name: messageId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the message to retrieve
+        example: "msg_123456"
       responses:
         '200':
           description: Successfully retrieved the message details
@@ -1225,9 +1305,9 @@ paths:
   /conversations/v3/conversations/channels:
     get:
       tags:
-        - Channels
+      - Channels
       operationId: listChannels
-      summary: HubSpot List Channels
+      summary: Hubspot List Channels
       description: |
         Retrieve a list of available conversation channels configured in your account.
         Channels represent different communication methods like email, chat, or social media.
@@ -1236,25 +1316,25 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of channels per page
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for the next page
-          example: "NTI1Cg%3D%3D"
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of channels per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: "NTI1Cg%3D%3D"
       responses:
         '200':
           description: Successfully retrieved the list of channels
@@ -1271,9 +1351,9 @@ paths:
   /conversations/v3/conversations/actors:
     get:
       tags:
-        - Actors
+      - Actors
       operationId: listActors
-      summary: HubSpot List Actors
+      summary: Hubspot List Actors
       description: |
         Retrieve a list of conversation actors (participants) in your account.
         Actors can be visitors, agents, or bots who participate in conversations.
@@ -1282,25 +1362,25 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of actors per page
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for the next page
-          example: "NTI1Cg%3D%3D"
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of actors per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: "NTI1Cg%3D%3D"
       responses:
         '200':
           description: Successfully retrieved the list of actors
@@ -1317,9 +1397,9 @@ paths:
   /conversations/v3/conversations/actors/{actorId}:
     get:
       tags:
-        - Actors
+      - Actors
       operationId: getActorById
-      summary: HubSpot Retrieve An Actor
+      summary: Hubspot Retrieve an Actor
       description: |
         Retrieve a specific actor by their unique identifier.
         Returns complete details about the conversation participant.
@@ -1328,17 +1408,17 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - conversations.read
-        - PrivateApp: []
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
       parameters:
-        - name: actorId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the actor to retrieve
-          example: "actor_101"
+      - name: actorId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the actor to retrieve
+        example: "actor_101"
       responses:
         '200':
           description: Successfully retrieved the actor details

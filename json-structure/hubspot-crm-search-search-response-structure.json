@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "description": "The response from a CRM search operation.",
+  "name": "SearchResponse",
+  "properties": {
+    "total": {
+      "type": "integer",
+      "description": "The total number of records matching the search criteria."
+    },
+    "results": {
+      "type": "array",
+      "description": "The matching CRM records for the current page.",
+      "items": {
+        "type": "object",
+        "description": "A CRM object record returned from a search.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the CRM record."
+          },
+          "properties": {
+            "type": "object",
+            "description": "The CRM record's properties as key-value pairs."
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "The date and time the record was created."
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "The date and time the record was last updated."
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the record has been archived."
+          }
+        }
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for the response.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Information for retrieving the next page of results.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "The cursor token to use in the after parameter for the next page."
+            },
+            "link": {
+              "type": "string",
+              "description": "A URL link to the next page of results."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

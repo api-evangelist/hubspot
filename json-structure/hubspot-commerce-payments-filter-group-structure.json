@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "description": "A group of filters combined with AND logic",
+  "name": "FilterGroup",
+  "properties": {
+    "filters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A single filter criterion",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to filter on"
+          },
+          "operator": {
+            "type": "string",
+            "description": "The comparison operator",
+            "enum": [
+              "EQ",
+              "NEQ",
+              "LT",
+              "LTE",
+              "GT",
+              "GTE",
+              "BETWEEN",
+              "IN",
+              "NOT_IN",
+              "HAS_PROPERTY",
+              "NOT_HAS_PROPERTY",
+              "CONTAINS_TOKEN",
+              "NOT_CONTAINS_TOKEN"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to compare against"
+          },
+          "values": {
+            "type": "array",
+            "description": "Values for IN/NOT_IN operators",
+            "items": {
+              "type": "string"
+            }
+          },
+          "highValue": {
+            "type": "string",
+            "description": "Upper bound for BETWEEN operator"
+          }
+        },
+        "required": [
+          "propertyName",
+          "operator"
+        ]
+      }
+    }
+  },
+  "required": [
+    "filters"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

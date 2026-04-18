@@ -1,0 +1,84 @@
+{
+  "type": "object",
+  "description": "Paginated collection of event instances",
+  "name": "EventInstanceCollection",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of event instances",
+      "items": {
+        "type": "object",
+        "description": "Represents a single event instance that occurred in the system",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the event instance"
+          },
+          "eventType": {
+            "type": "string",
+            "description": "The type of event that occurred"
+          },
+          "objectId": {
+            "type": "string",
+            "description": "The ID of the CRM object associated with this event"
+          },
+          "objectType": {
+            "type": "string",
+            "description": "The type of CRM object (e.g., contact, company, deal)"
+          },
+          "occurredAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the event occurred"
+          },
+          "properties": {
+            "type": "object",
+            "description": "Additional properties associated with the event"
+          }
+        },
+        "required": [
+          "id",
+          "eventType",
+          "occurredAt"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for navigating result sets",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor for retrieving the next page of results",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page of results"
+            }
+          }
+        },
+        "prev": {
+          "type": "object",
+          "description": "Pagination cursor for retrieving the previous page of results",
+          "properties": {
+            "before": {
+              "type": "string",
+              "description": "Cursor token for the previous page"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the previous page of results"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

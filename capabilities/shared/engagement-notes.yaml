@@ -1,0 +1,88 @@
+naftiko: "1.0.0-alpha1"
+info:
+  label: "HubSpot Engagement Notes"
+  description: "Manage note engagement records attached to CRM objects in HubSpot."
+  tags:
+    - HubSpot
+    - CRM
+    - Engagements
+    - Notes
+  created: "2026-04-18"
+  modified: "2026-04-18"
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: engagement-notes
+      baseUri: https://api.hubapi.com
+      description: "HubSpot Engagement Notes API."
+      authentication:
+        type: bearer
+        token: "{{HUBSPOT_ACCESS_TOKEN}}"
+      resources:
+        - name: notes
+          path: /crm/v3/objects/notes
+          description: "Note records"
+          operations:
+            - name: list-notes
+              method: GET
+              description: "List all notes"
+              inputParameters:
+                - { name: limit, in: query, type: integer, required: false, description: "Max results" }
+                - { name: after, in: query, type: string, required: false, description: "Cursor" }
+                - { name: properties, in: query, type: string, required: false, description: "Properties" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+            - name: create-note
+              method: POST
+              description: "Create a note"
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+              body: { type: json, data: { properties: "{{tools.properties}}" } }
+        - name: note-by-id
+          path: /crm/v3/objects/notes/{noteId}
+          description: "Individual note"
+          operations:
+            - name: get-note
+              method: GET
+              description: "Get a note"
+              inputParameters:
+                - { name: noteId, in: path, type: string, required: true, description: "Note ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+            - name: update-note
+              method: PATCH
+              description: "Update a note"
+              inputParameters:
+                - { name: noteId, in: path, type: string, required: true, description: "Note ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+              body: { type: json, data: { properties: "{{tools.properties}}" } }
+            - name: archive-note
+              method: DELETE
+              description: "Archive a note"
+              inputParameters:
+                - { name: noteId, in: path, type: string, required: true, description: "Note ID" }
+              outputRawFormat: json
+              outputParameters: [{ name: result, type: object, value: "$." }]
+  exposes:
+    - type: rest
+      port: 8112
+      namespace: engagement-notes-api
+      resources:
+        - path: /v1/notes
+          name: notes
+          description: "Note records"
+          operations:
+            - { method: GET, name: list, description: "List notes", call: "engagement-notes.list-notes", outputParameters: [{ type: object, mapping: "$." }] }
+    - type: mcp
+      port: 9112
+      namespace: engagement-notes-mcp
+      transport: http
+      tools:
+        - { name: list-notes, description: "List all note engagements", hints: { readOnly: true, idempotent: true }, call: "engagement-notes.list-notes", with: { limit: "tools.limit", after: "tools.after" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: get-note, description: "Get a note by ID", hints: { readOnly: true, idempotent: true }, call: "engagement-notes.get-note", with: { noteId: "tools.noteId" }, outputParameters: [{ type: object, mapping: "$." }] }
+        - { name: create-note, description: "Create a new note", hints: { readOnly: false }, call: "engagement-notes.create-note", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }

@@ -24,16 +24,16 @@ info:
     cms: STARTER
 
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 
 tags:
-  - name: Batch Operations
-    description: Perform bulk operations on multiple blog authors simultaneously
-  - name: Blog Authors
-    description: Create, read, update, and delete individual blog author profiles
-  - name: Multi-Language Management
-    description: Manage multi-language author groups and language variations
+- name: Batch Operations
+  description: Perform bulk operations on multiple blog authors simultaneously
+- name: Blog Authors
+  description: Create, read, update, and delete individual blog author profiles
+- name: Multi-Language Management
+  description: Manage multi-language author groups and language variations
 
 components:
   securitySchemes:
@@ -58,59 +58,74 @@ components:
         id:
           type: string
           description: Unique identifier for the blog author
+          example: '500123'
         name:
           type: string
           description: Full display name of the author
+          example: Example Record
         slug:
           type: string
           description: URL-friendly identifier for the author
+          example: example-value
         email:
           type: string
           format: email
           description: Author's email address
+          example: jsmith@example.com
         bio:
           type: string
           description: Author biography or description
+          example: example-value
         website:
           type: string
           format: uri
           description: Author's personal website URL
+          example: https://app.hubspot.com/contacts/12345
         twitter:
           type: string
           description: Author's Twitter/X handle
+          example: example-value
         facebook:
           type: string
           description: Author's Facebook profile URL
+          example: example-value
         linkedin:
           type: string
           description: Author's LinkedIn profile URL
+          example: https://app.hubspot.com/contacts/12345
         avatar:
           type: string
           format: uri
           description: URL to the author's avatar image
+          example: https://app.hubspot.com/contacts/12345
         language:
           type: string
           description: Language code for the author profile (e.g., en, es, fr)
+          example: en
         translatedFromId:
           type: string
           description: ID of the original author this was translated from
+          example: '500123'
         created:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the author was created
+          example: '2025-03-15T14:30:00Z'
         updated:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the author was last updated
+          example: '2025-03-15T14:30:00Z'
         deletedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the author was archived
+          example: '2025-03-15T14:30:00Z'
       required:
-        - id
-        - name
-        - created
-        - updated
+      - id
+      - name
+      - created
+      - updated
 
     BlogAuthorInput:
       type: object
@@ -119,35 +134,44 @@ components:
         name:
           type: string
           description: Full display name of the author
+          example: Example Record
         slug:
           type: string
           description: URL-friendly identifier for the author
+          example: example-value
         email:
           type: string
           format: email
           description: Author's email address
+          example: jsmith@example.com
         bio:
           type: string
           description: Author biography or description
+          example: example-value
         website:
           type: string
           format: uri
           description: Author's personal website URL
+          example: https://app.hubspot.com/contacts/12345
         twitter:
           type: string
           description: Author's Twitter/X handle
+          example: example-value
         facebook:
           type: string
           description: Author's Facebook profile URL
+          example: example-value
         linkedin:
           type: string
           description: Author's LinkedIn profile URL
+          example: https://app.hubspot.com/contacts/12345
         avatar:
           type: string
           format: uri
           description: URL to the author's avatar image
+          example: https://app.hubspot.com/contacts/12345
       required:
-        - name
+      - name
 
     BlogAuthorCollection:
       type: object
@@ -156,16 +180,33 @@ components:
         total:
           type: integer
           description: Total number of authors matching the query
+          example: 10
         results:
           type: array
           items:
             $ref: '#/components/schemas/BlogAuthor'
           description: Array of blog authors
+          example:
+          - id: '500123'
+            name: Example Record
+            slug: example-value
+            email: jsmith@example.com
+            bio: example-value
+            website: https://app.hubspot.com/contacts/12345
+            twitter: example-value
+            facebook: example-value
+            linkedin: https://app.hubspot.com/contacts/12345
+            avatar: https://app.hubspot.com/contacts/12345
+            language: en
+            translatedFromId: '500123'
+            created: '2025-03-15T14:30:00Z'
+            updated: '2025-03-15T14:30:00Z'
+            deletedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - total
-        - results
+      - total
+      - results
 
     BatchInputItem:
       type: object
@@ -174,10 +215,11 @@ components:
         id:
           type: string
           description: ID of the author to update
+          example: '500123'
         properties:
           $ref: '#/components/schemas/BlogAuthorInput'
       required:
-        - id
+      - id
 
     BatchInput:
       type: object
@@ -188,8 +230,11 @@ components:
           items:
             $ref: '#/components/schemas/BatchInputItem'
           description: Array of items to process
+          example:
+          - id: '500123'
+            properties: {}
       required:
-        - inputs
+      - inputs
 
     BatchReadInput:
       type: object
@@ -204,10 +249,12 @@ components:
                 type: string
                 description: ID of the author to read
             required:
-              - id
+            - id
           description: Array of author IDs to retrieve
+          example:
+          - id: '500123'
       required:
-        - inputs
+      - inputs
 
     BatchCreateInput:
       type: object
@@ -218,8 +265,18 @@ components:
           items:
             $ref: '#/components/schemas/BlogAuthorInput'
           description: Array of authors to create
+          example:
+          - name: Example Record
+            slug: example-value
+            email: jsmith@example.com
+            bio: example-value
+            website: https://app.hubspot.com/contacts/12345
+            twitter: example-value
+            facebook: example-value
+            linkedin: https://app.hubspot.com/contacts/12345
+            avatar: https://app.hubspot.com/contacts/12345
       required:
-        - inputs
+      - inputs
 
     BatchArchiveInput:
       type: object
@@ -234,10 +291,12 @@ components:
                 type: string
                 description: ID of the author to archive
             required:
-              - id
+            - id
           description: Array of author IDs to archive
+          example:
+          - id: '500123'
       required:
-        - inputs
+      - inputs
 
     BatchResponse:
       type: object
@@ -246,52 +305,74 @@ components:
         status:
           type: string
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           description: Current status of the batch operation
+          example: PENDING
         results:
           type: array
           items:
             $ref: '#/components/schemas/BlogAuthor'
           description: Successfully processed authors
+          example:
+          - id: '500123'
+            name: Example Record
+            slug: example-value
+            email: jsmith@example.com
+            bio: example-value
+            website: https://app.hubspot.com/contacts/12345
+            twitter: example-value
+            facebook: example-value
+            linkedin: https://app.hubspot.com/contacts/12345
+            avatar: https://app.hubspot.com/contacts/12345
+            language: en
+            translatedFromId: '500123'
+            created: '2025-03-15T14:30:00Z'
+            updated: '2025-03-15T14:30:00Z'
+            deletedAt: '2025-03-15T14:30:00Z'
         requestedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the batch was requested
+          example: '2025-03-15T14:30:00Z'
         startedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when processing started
+          example: '2025-03-15T14:30:00Z'
         completedAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when processing completed
+          example: '2025-03-15T14:30:00Z'
         links:
           type: object
           additionalProperties:
             type: string
           description: Related links for the batch operation
+          example:
+            key: value
       required:
-        - status
-        - results
-        - startedAt
-        - completedAt
+      - status
+      - results
+      - startedAt
+      - completedAt
 
     BatchResponseWithErrors:
       allOf:
-        - $ref: '#/components/schemas/BatchResponse'
-        - type: object
-          properties:
-            numErrors:
-              type: integer
-              description: Number of errors encountered during processing
-            errors:
-              type: array
-              items:
-                $ref: '#/components/schemas/StandardError'
-              description: List of errors encountered
+      - $ref: '#/components/schemas/BatchResponse'
+      - type: object
+        properties:
+          numErrors:
+            type: integer
+            description: Number of errors encountered during processing
+          errors:
+            type: array
+            items:
+              $ref: '#/components/schemas/StandardError'
+            description: List of errors encountered
 
     DetachFromLanguageGroupRequest:
       type: object
@@ -300,8 +381,9 @@ components:
         id:
           type: string
           description: ID of the author to detach
+          example: '500123'
       required:
-        - id
+      - id
 
     SetLanguagePrimaryRequest:
       type: object
@@ -310,8 +392,9 @@ components:
         id:
           type: string
           description: ID of the author to set as primary
+          example: '500123'
       required:
-        - id
+      - id
 
     AttachToLanguageGroupRequest:
       type: object
@@ -320,19 +403,23 @@ components:
         id:
           type: string
           description: ID of the author to attach
+          example: '500123'
         language:
           type: string
           description: Language code for the author (e.g., es, fr, de)
+          example: en
         primaryId:
           type: string
           description: ID of the primary language author
+          example: '500123'
         primaryLanguage:
           type: string
           description: Language code of the primary author
+          example: en
       required:
-        - id
-        - language
-        - primaryId
+      - id
+      - language
+      - primaryId
 
     CreateLanguageVariationRequest:
       type: object
@@ -341,12 +428,14 @@ components:
         id:
           type: string
           description: ID of the source author
+          example: '500123'
         language:
           type: string
           description: Language code for the new variation
+          example: en
       required:
-        - id
-        - language
+      - id
+      - language
 
     Paging:
       type: object
@@ -362,10 +451,12 @@ components:
         after:
           type: string
           description: Cursor token for the next page
+          example: example-value
         link:
           type: string
           description: API link to the next page of results
 
+          example: https://app.hubspot.com/contacts/12345
     StandardError:
       type: object
       description: Standard error in batch operations
@@ -373,20 +464,31 @@ components:
         status:
           type: string
           description: Error status code
+          example: active
         id:
           type: string
           description: ID of the failed item
+          example: '500123'
         category:
           type: string
           description: Error category
+          example: standard
         message:
           type: string
           description: Human-readable error message
+          example: This is an example description.
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
           description: List of detailed errors
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
         context:
           type: object
           additionalProperties:
@@ -394,15 +496,19 @@ components:
             items:
               type: string
           description: Additional error context
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
           description: Related links for error resolution
+          example:
+            key: value
       required:
-        - status
-        - category
-        - message
+      - status
+      - category
+      - message
 
     ErrorDetail:
       type: object
@@ -411,15 +517,19 @@ components:
         message:
           type: string
           description: Human-readable error message
+          example: This is an example description.
         code:
           type: string
           description: Machine-readable error code
+          example: example-value
         subCategory:
           type: string
           description: Specific error subcategory
+          example: standard
         in:
           type: string
           description: Location where the error occurred
+          example: example-value
         context:
           type: object
           additionalProperties:
@@ -427,8 +537,10 @@ components:
             items:
               type: string
           description: Additional context about the error
+          example: &id001
+            key: value
       required:
-        - message
+      - message
 
     Error:
       type: object
@@ -437,16 +549,20 @@ components:
         category:
           type: string
           description: High-level error category
+          example: standard
         correlationId:
           type: string
           format: uuid
           description: Unique identifier for tracking and debugging
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
           description: Human-readable error message
+          example: This is an example description.
         subCategory:
           type: string
           description: Specific error subcategory
+          example: standard
         context:
           type: object
           additionalProperties:
@@ -454,20 +570,30 @@ components:
             items:
               type: string
           description: Additional error context
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
           description: Related links for error resolution
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
           description: List of specific errors
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context: *id001
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
 
   examples:
     BlogAuthorExample:
@@ -501,22 +627,22 @@ components:
       value:
         total: 25
         results:
-          - id: "12345678901"
-            name: "Jane Smith"
-            slug: "jane-smith"
-            email: "jane.smith@example.com"
-            bio: "Senior content strategist"
-            language: "en"
-            created: "2024-01-15T10:30:00Z"
-            updated: "2024-01-20T14:45:00Z"
-          - id: "12345678902"
-            name: "John Doe"
-            slug: "john-doe"
-            email: "john.doe@example.com"
-            bio: "Technical writer and developer advocate"
-            language: "en"
-            created: "2024-01-10T09:00:00Z"
-            updated: "2024-01-18T11:30:00Z"
+        - id: "12345678901"
+          name: "Jane Smith"
+          slug: "jane-smith"
+          email: "jane.smith@example.com"
+          bio: "Senior content strategist"
+          language: "en"
+          created: "2024-01-15T10:30:00Z"
+          updated: "2024-01-20T14:45:00Z"
+        - id: "12345678902"
+          name: "John Doe"
+          slug: "john-doe"
+          email: "john.doe@example.com"
+          bio: "Technical writer and developer advocate"
+          language: "en"
+          created: "2024-01-10T09:00:00Z"
+          updated: "2024-01-18T11:30:00Z"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -527,11 +653,11 @@ components:
       value:
         status: "COMPLETE"
         results:
-          - id: "12345678901"
-            name: "Jane Smith"
-            slug: "jane-smith"
-            created: "2024-01-15T10:30:00Z"
-            updated: "2024-01-20T14:45:00Z"
+        - id: "12345678901"
+          name: "Jane Smith"
+          slug: "jane-smith"
+          created: "2024-01-15T10:30:00Z"
+          updated: "2024-01-20T14:45:00Z"
         requestedAt: "2024-01-20T14:44:00Z"
         startedAt: "2024-01-20T14:44:01Z"
         completedAt: "2024-01-20T14:45:00Z"
@@ -540,8 +666,8 @@ components:
       summary: Batch read input
       value:
         inputs:
-          - id: "12345678901"
-          - id: "12345678902"
+        - id: "12345678901"
+        - id: "12345678902"
 
     ErrorExample:
       summary: Validation error response
@@ -567,9 +693,9 @@ paths:
   /cms/v3/blogs/authors:
     get:
       tags:
-        - Blog Authors
+      - Blog Authors
       operationId: listBlogAuthors
-      summary: HubSpot List All Blog Authors
+      summary: Hubspot List All Blog Authors
       description: |
         Retrieve a paginated list of all blog authors in your HubSpot account. 
         Use query parameters to filter, sort, and paginate the results.
@@ -578,41 +704,47 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of results per page (1-100)
-        - name: after
-          in: query
-          schema:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page (1-100)
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: example-value
+      - name: sort
+        in: query
+        schema:
+          type: array
+          items:
             type: string
-          description: Pagination cursor for the next page
-        - name: sort
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-          description: Properties to sort by
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to return archived authors
-        - name: property
-          in: query
-          schema:
-            type: string
-          description: Specific property to return
+        description: Properties to sort by
+        example:
+        - example-value
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived authors
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved blog authors
@@ -628,18 +760,18 @@ paths:
 
     post:
       tags:
-        - Blog Authors
+      - Blog Authors
       operationId: createBlogAuthor
-      summary: HubSpot Create a Blog Author
+      summary: Hubspot Create a Blog Author
       description: Create a new blog author profile in your HubSpot account.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Blog author data to create
@@ -666,37 +798,39 @@ paths:
   /cms/v3/blogs/authors/{objectId}:
     get:
       tags:
-        - Blog Authors
+      - Blog Authors
       operationId: getBlogAuthorById
-      summary: HubSpot Retrieve a Blog Author
+      summary: Hubspot Retrieve a Blog Author
       description: Retrieve a specific blog author by their unique identifier.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog author
-          example: "12345678901"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to return archived authors
-        - name: property
-          in: query
-          schema:
-            type: string
-          description: Specific property to return
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: "12345678901"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived authors
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved blog author
@@ -712,9 +846,9 @@ paths:
 
     patch:
       tags:
-        - Blog Authors
+      - Blog Authors
       operationId: updateBlogAuthor
-      summary: HubSpot Update a Blog Author
+      summary: Hubspot Update a Blog Author
       description: |
         Update an existing blog author. Only the properties included in the 
         request body will be updated; all other properties remain unchanged.
@@ -723,23 +857,24 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog author
-          example: "12345678901"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to update archived authors
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: "12345678901"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to update archived authors
+        example: false
       requestBody:
         required: true
         description: Blog author properties to update
@@ -765,31 +900,32 @@ paths:
 
     delete:
       tags:
-        - Blog Authors
+      - Blog Authors
       operationId: archiveBlogAuthor
-      summary: HubSpot Archive a Blog Author
+      summary: Hubspot Archive a Blog Author
       description: Archive (soft delete) a blog author by their unique identifier.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The unique identifier of the blog author
-          example: "12345678901"
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-          description: Whether to return archived authors
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: "12345678901"
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+        description: Whether to return archived authors
+        example: true
       responses:
         '204':
           description: Successfully archived blog author
@@ -799,25 +935,26 @@ paths:
   /cms/v3/blogs/authors/batch/read:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchReadBlogAuthors
-      summary: HubSpot Read Multiple Blog Authors
+      summary: Hubspot Read Multiple Blog Authors
       description: Retrieve multiple blog authors by their IDs in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to include archived authors
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to include archived authors
+        example: false
       requestBody:
         required: true
         description: List of author IDs to retrieve
@@ -844,24 +981,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchreadblogauthors207Example:
+                  summary: Default batchReadBlogAuthors 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/authors/batch/create:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchCreateBlogAuthors
-      summary: HubSpot Create Multiple Blog Authors
+      summary: Hubspot Create Multiple Blog Authors
       description: Create multiple blog authors in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: List of blog authors to create
@@ -871,12 +1013,12 @@ paths:
               $ref: '#/components/schemas/BatchCreateInput'
             example:
               inputs:
-                - name: "Jane Smith"
-                  slug: "jane-smith"
-                  email: "jane@example.com"
-                - name: "John Doe"
-                  slug: "john-doe"
-                  email: "john@example.com"
+              - name: "Jane Smith"
+                slug: "jane-smith"
+                email: "jane@example.com"
+              - name: "John Doe"
+                slug: "john-doe"
+                email: "john@example.com"
       responses:
         '201':
           description: Successfully created blog authors
@@ -893,31 +1035,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchcreateblogauthors207Example:
+                  summary: Default batchCreateBlogAuthors 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/authors/batch/update:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchUpdateBlogAuthors
-      summary: HubSpot Update Multiple Blog Authors
+      summary: Hubspot Update Multiple Blog Authors
       description: Update multiple blog authors in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       parameters:
-        - name: archived
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: Whether to update archived authors
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to update archived authors
+        example: false
       requestBody:
         required: true
         description: List of blog authors to update
@@ -927,12 +1075,12 @@ paths:
               $ref: '#/components/schemas/BatchInput'
             example:
               inputs:
-                - id: "12345678901"
-                  properties:
-                    bio: "Updated bio content"
-                - id: "12345678902"
-                  properties:
-                    bio: "Another updated bio"
+              - id: "12345678901"
+                properties:
+                  bio: "Updated bio content"
+              - id: "12345678902"
+                properties:
+                  bio: "Another updated bio"
       responses:
         '200':
           description: Successfully updated blog authors
@@ -949,24 +1097,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseWithErrors'
+              examples:
+                Batchupdateblogauthors207Example:
+                  summary: Default batchUpdateBlogAuthors 207 response
+                  x-microcks-default: true
+                  value: example-value
         default:
           $ref: '#/components/responses/ErrorResponse'
 
   /cms/v3/blogs/authors/batch/archive:
     post:
       tags:
-        - Batch Operations
+      - Batch Operations
       operationId: batchArchiveBlogAuthors
-      summary: HubSpot Archive Multiple Blog Authors
+      summary: Hubspot Archive Multiple Blog Authors
       description: Archive multiple blog authors in a single request.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: List of author IDs to archive
@@ -976,8 +1129,8 @@ paths:
               $ref: '#/components/schemas/BatchArchiveInput'
             example:
               inputs:
-                - id: "12345678901"
-                - id: "12345678902"
+              - id: "12345678901"
+              - id: "12345678902"
       responses:
         '204':
           description: Successfully archived blog authors
@@ -987,18 +1140,18 @@ paths:
   /cms/v3/blogs/authors/multi-language/detach-from-lang-group:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: detachBlogAuthorFromLanguageGroup
-      summary: HubSpot Detach Author from Language Group
+      summary: Hubspot Detach Author From Language Group
       description: Detach a blog author from their multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Author to detach from language group
@@ -1017,18 +1170,18 @@ paths:
   /cms/v3/blogs/authors/multi-language/set-new-lang-primary:
     put:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: setNewBlogAuthorLanguagePrimary
-      summary: HubSpot Set New Primary Language
+      summary: Hubspot Set New Primary Language
       description: Set a blog author as the primary language of a multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Author to set as primary language
@@ -1047,18 +1200,18 @@ paths:
   /cms/v3/blogs/authors/multi-language/attach-to-lang-group:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: attachBlogAuthorToLanguageGroup
-      summary: HubSpot Attach Author to Language Group
+      summary: Hubspot Attach Author to Language Group
       description: Attach a blog author to an existing multi-language group.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Author and language group details
@@ -1080,18 +1233,18 @@ paths:
   /cms/v3/blogs/authors/multi-language/create-language-variation:
     post:
       tags:
-        - Multi-Language Management
+      - Multi-Language Management
       operationId: createBlogAuthorLanguageVariation
-      summary: HubSpot Create Language Variation
+      summary: Hubspot Create Language Variation
       description: Create a new language variation of an existing blog author.
       x-microcks-operation:
         dispatcher: SCRIPT
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - content
-        - PrivateApp: []
+      - OAuth2:
+        - content
+      - PrivateApp: []
       requestBody:
         required: true
         description: Source author and target language

@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/custom-workflow-actions-api-action-definition-collection-structure.json",
+  "name": "ActionDefinitionCollection",
+  "description": "A paginated collection of action definitions",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "List of action definitions",
+      "items": {
+        "type": "object",
+        "description": "A custom workflow action definition",
+        "required": [
+          "id",
+          "revisionId",
+          "actionUrl",
+          "labels",
+          "objectTypes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the action definition",
+            "example": "500123"
+          },
+          "revisionId": {
+            "type": "string",
+            "description": "The current revision identifier",
+            "example": "500123"
+          },
+          "actionUrl": {
+            "type": "uri",
+            "description": "The URL that HubSpot will call when the action executes",
+            "example": "https://app.hubspot.com/contacts/12345"
+          },
+          "labels": {
+            "$ref": "#/components/schemas/ActionLabels"
+          },
+          "inputFields": {
+            "type": "array",
+            "description": "Input fields that users can configure for the action",
+            "items": {
+              "$ref": "#/components/schemas/InputField"
+            },
+            "example": [
+              {
+                "typeDefinition": {},
+                "supportedValueTypes": [
+                  {}
+                ],
+                "isRequired": true
+              }
+            ]
+          },
+          "outputFields": {
+            "type": "array",
+            "description": "Output fields that the action returns",
+            "items": {
+              "$ref": "#/components/schemas/OutputField"
+            },
+            "example": [
+              {
+                "typeDefinition": {}
+              }
+            ]
+          },
+          "objectTypes": {
+            "type": "array",
+            "description": "CRM object types this action can operate on",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CONTACT",
+                "COMPANY",
+                "DEAL",
+                "TICKET",
+                "QUOTE"
+              ]
+            },
+            "example": [
+              "CONTACT"
+            ]
+          },
+          "objectRequestOptions": {
+            "$ref": "#/components/schemas/ObjectRequestOptions"
+          },
+          "published": {
+            "type": "boolean",
+            "description": "Whether the action is published and available for use",
+            "example": true
+          },
+          "functions": {
+            "type": "array",
+            "description": "Functions associated with this action",
+            "items": {
+              "$ref": "#/components/schemas/ActionFunctionReference"
+            },
+            "example": [
+              {
+                "functionType": "PRE_ACTION_EXECUTION",
+                "id": "500123"
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "revisionId": "500123",
+          "actionUrl": "https://app.hubspot.com/contacts/12345",
+          "labels": {},
+          "inputFields": [
+            {
+              "typeDefinition": {},
+              "supportedValueTypes": [
+                {}
+              ],
+              "isRequired": true
+            }
+          ],
+          "outputFields": [
+            {
+              "typeDefinition": {}
+            }
+          ],
+          "objectTypes": [
+            "CONTACT"
+          ],
+          "objectRequestOptions": {},
+          "published": true,
+          "functions": [
+            {
+              "functionType": "PRE_ACTION_EXECUTION",
+              "id": "500123"
+            }
+          ]
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            }
+          },
+          "example": {
+            "after": "example-value"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

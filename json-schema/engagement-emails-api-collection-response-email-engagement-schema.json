@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/engagement-emails-api-collection-response-email-engagement-schema.json",
+  "title": "CollectionResponseEmailEngagement",
+  "description": "CollectionResponseEmailEngagement schema from HubSpot Engagement Emails API",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A HubSpot email engagement record.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the email engagement.",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The email engagement's properties as key-value pairs.",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "example": true
+          },
+          "associations": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/CollectionResponseAssociation"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "archived": true,
+          "associations": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string"
+            }
+          },
+          "example": {
+            "after": "example-value"
+          }
+        }
+      }
+    }
+  }
+}

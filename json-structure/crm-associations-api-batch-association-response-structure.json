@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/crm-associations-api-batch-association-response-structure.json",
+  "name": "BatchAssociationResponse",
+  "description": "Response from batch association operations",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ],
+      "description": "Status of the batch operation",
+      "example": "PENDING"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Result of an association query",
+        "properties": {
+          "from": {
+            "$ref": "#/components/schemas/ObjectReference"
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Association"
+            },
+            "description": "Associated objects",
+            "example": [
+              {
+                "toObjectId": "500123",
+                "associationTypes": [
+                  {
+                    "associationCategory": "HUBSPOT_DEFINED",
+                    "associationTypeId": 500123,
+                    "label": "Example Record"
+                  }
+                ]
+              }
+            ]
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      },
+      "description": "Successfully processed associations",
+      "example": [
+        {
+          "from": {},
+          "to": [
+            {
+              "toObjectId": "500123",
+              "associationTypes": [
+                {
+                  "associationCategory": "HUBSPOT_DEFINED",
+                  "associationTypeId": 500123,
+                  "label": "Example Record"
+                }
+              ]
+            }
+          ],
+          "paging": {}
+        }
+      ]
+    },
+    "requestedAt": {
+      "type": "datetime",
+      "description": "When the batch was requested",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "When processing started",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "When processing completed",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "numErrors": {
+      "type": "int32",
+      "description": "Number of errors encountered",
+      "example": 100
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Standard error in batch operations",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "active"
+          },
+          "id": {
+            "type": "string",
+            "example": "500123"
+          },
+          "category": {
+            "type": "string",
+            "example": "standard"
+          },
+          "message": {
+            "type": "string",
+            "example": "This is an example description."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ErrorDetail"
+            },
+            "example": [
+              {
+                "message": "This is an example description.",
+                "code": "example-value",
+                "subCategory": "standard",
+                "in": "example-value",
+                "context": {
+                  "key": "value"
+                }
+              }
+            ]
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "links": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "category",
+          "message"
+        ]
+      },
+      "description": "List of errors",
+      "example": [
+        {
+          "status": "active",
+          "id": "500123",
+          "category": "standard",
+          "message": "This is an example description.",
+          "errors": [
+            {}
+          ],
+          "context": {
+            "key": "value"
+          },
+          "links": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ]
+}

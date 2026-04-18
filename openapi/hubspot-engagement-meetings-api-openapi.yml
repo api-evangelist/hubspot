@@ -11,52 +11,56 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Associations
-    description: Operations for managing meeting associations
-  - name: Batch
-    description: Batch operations for meetings
-  - name: Meetings
-    description: Operations for managing meeting engagement records
+- name: Associations
+  description: Operations for managing meeting associations
+- name: Batch
+  description: Batch operations for meetings
+- name: Meetings
+  description: Operations for managing meeting engagement records
 paths:
   /crm/v3/objects/meetings:
     get:
       operationId: listMeetings
-      summary: HubSpot List meetings
+      summary: Hubspot List Meetings
       description: >-
         Returns a page of meeting engagement records. Use the limit and after
         parameters to paginate through meetings. You can also specify which
         properties to return using the properties parameter.
       tags:
-        - Meetings
+      - Meetings
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 10
-            maximum: 100
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived meetings.
-          schema:
-            type: boolean
-            default: false
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived meetings.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of meetings.
@@ -64,23 +68,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseMeeting'
+              examples:
+                Listmeetings200Example:
+                  summary: Default listMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id005
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: &id002
+                        key: value
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createMeeting
-      summary: HubSpot Create a meeting
+      summary: Hubspot Create a Meeting
       description: >-
         Creates a new meeting engagement record with the provided properties.
         Common meeting properties include hs_meeting_title, hs_meeting_body,
         hs_meeting_start_time, hs_meeting_end_time, and hs_meeting_outcome.
       tags:
-        - Meetings
+      - Meetings
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatemeetingRequestExample:
+                summary: Default createMeeting request
+                x-microcks-default: true
+                value:
+                  properties: &id003
+                    key: value
       responses:
         '201':
           description: Meeting created successfully.
@@ -88,37 +118,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
+              examples:
+                Createmeeting201Example:
+                  summary: Default createMeeting 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/{meetingId}:
     get:
       operationId: getMeeting
-      summary: HubSpot Get a meeting
+      summary: Hubspot Get a Meeting
       description: >-
         Returns a single meeting engagement record by its ID. You can specify
         which properties to return using the properties parameter.
       tags:
-        - Meetings
+      - Meetings
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          description: The ID of the meeting to retrieve.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived meetings.
-          schema:
-            type: boolean
-            default: false
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived meetings.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the meeting record.
@@ -126,31 +173,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
+              examples:
+                Getmeeting200Example:
+                  summary: Default getMeeting 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateMeeting
-      summary: HubSpot Update a meeting
+      summary: Hubspot Update a Meeting
       description: >-
         Performs a partial update of a meeting engagement record. Only the
         properties included in the request body will be updated.
       tags:
-        - Meetings
+      - Meetings
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          description: The ID of the meeting to update.
-          schema:
-            type: string
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to update.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatemeetingRequestExample:
+                summary: Default updateMeeting request
+                x-microcks-default: true
+                value:
+                  properties: *id003
       responses:
         '200':
           description: Meeting updated successfully.
@@ -158,27 +226,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
+              examples:
+                Updatemeeting200Example:
+                  summary: Default updateMeeting 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteMeeting
-      summary: HubSpot Archive a meeting
+      summary: Hubspot Archive a Meeting
       description: >-
         Archives (soft deletes) a meeting engagement record by its ID.
         Archived meetings can be restored using the HubSpot UI or API.
       tags:
-        - Meetings
+      - Meetings
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          description: The ID of the meeting to archive.
-          schema:
-            type: string
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting to archive.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Meeting archived successfully.
@@ -186,21 +269,33 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/batch/read:
     post:
       operationId: batchReadMeetings
-      summary: HubSpot Batch read meetings
+      summary: Hubspot Batch Read Meetings
       description: >-
         Reads a batch of meeting records by their IDs. Useful for retrieving
         multiple meetings in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadmeetingsRequestExample:
+                summary: Default batchReadMeetings request
+                x-microcks-default: true
+                value:
+                  properties: &id006
+                  - example-value
+                  inputs: &id007
+                  - id: '500123'
       responses:
         '200':
           description: Batch read completed successfully.
@@ -208,24 +303,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchreadmeetings200Example:
+                  summary: Default batchReadMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: &id004
+                    - id: '500123'
+                      properties: *id001
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: *id002
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/batch/create:
     post:
       operationId: batchCreateMeetings
-      summary: HubSpot Batch create meetings
+      summary: Hubspot Batch Create Meetings
       description: >-
         Creates multiple meeting engagement records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatemeetingsRequestExample:
+                summary: Default batchCreateMeetings request
+                x-microcks-default: true
+                value:
+                  inputs: &id008
+                  - properties: *id003
       responses:
         '201':
           description: Meetings created successfully.
@@ -233,24 +352,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchcreatemeetings201Example:
+                  summary: Default batchCreateMeetings 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/batch/update:
     post:
       operationId: batchUpdateMeetings
-      summary: HubSpot Batch update meetings
+      summary: Hubspot Batch Update Meetings
       description: >-
         Updates multiple meeting engagement records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatemeetingsRequestExample:
+                summary: Default batchUpdateMeetings request
+                x-microcks-default: true
+                value:
+                  inputs: &id009
+                  - id: '500123'
+                    properties:
+                      key: value
       responses:
         '200':
           description: Meetings updated successfully.
@@ -258,25 +397,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchupdatemeetings200Example:
+                  summary: Default batchUpdateMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/search:
     post:
       operationId: searchMeetings
-      summary: HubSpot Search meetings
+      summary: Hubspot Search Meetings
       description: >-
         Searches for meeting engagement records using filter groups, sorts,
         and other query parameters.
       tags:
-        - Meetings
+      - Meetings
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchmeetingsRequestExample:
+                summary: Default searchMeetings request
+                x-microcks-default: true
+                value:
+                  filterGroups: &id010
+                  - filters:
+                    - {}
+                  sorts: &id011
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties: &id012
+                  - example-value
+                  limit: 100
+                  after: example-value
       responses:
         '200':
           description: Search results returned successfully.
@@ -284,32 +450,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseMeeting'
+              examples:
+                Searchmeetings200Example:
+                  summary: Default searchMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id005
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}:
     get:
       operationId: listMeetingAssociations
-      summary: HubSpot List meeting associations
+      summary: Hubspot List Meeting Associations
       description: >-
         Returns all associations of a meeting record to objects of a specified
         type, such as contacts, companies, or deals.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          description: The ID of the meeting.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of associated object.
-          schema:
-            type: string
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: List of associations returned successfully.
@@ -317,39 +496,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listmeetingassociations200Example:
+                  summary: Default listMeetingAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id013
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createMeetingAssociation
-      summary: HubSpot Create a meeting association
+      summary: Hubspot Create a Meeting Association
       description: >-
         Creates an association between a meeting record and another CRM object.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: Association created successfully.
@@ -357,38 +553,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Association'
+              examples:
+                Createmeetingassociation200Example:
+                  summary: Default createMeetingAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteMeetingAssociation
-      summary: HubSpot Delete a meeting association
+      summary: Hubspot Delete a Meeting Association
       description: >-
         Removes an association between a meeting record and another CRM object.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: meetingId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
       responses:
         '204':
           description: Association deleted successfully.
@@ -396,6 +606,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -410,23 +623,29 @@ components:
         id:
           type: string
           description: The unique identifier for the meeting.
+          example: '500123'
         properties:
           type: object
           description: The meeting's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
+          example: true
         associations:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/CollectionResponseAssociation'
+          example: *id002
     CollectionResponseMeeting:
       type: object
       properties:
@@ -434,6 +653,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Meeting'
+          example: *id005
         paging:
           $ref: '#/components/schemas/Paging'
     BatchResponseMeeting:
@@ -441,13 +661,16 @@ components:
       properties:
         status:
           type: string
+          example: active
         results:
           type: array
           items:
             $ref: '#/components/schemas/Meeting'
+          example: *id004
         completedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
     SimplePublicObjectInput:
       type: object
       properties:
@@ -455,6 +678,7 @@ components:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchReadInput:
       type: object
       properties:
@@ -462,6 +686,7 @@ components:
           type: array
           items:
             type: string
+          example: *id006
         inputs:
           type: array
           items:
@@ -469,6 +694,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id007
     BatchCreateInput:
       type: object
       properties:
@@ -476,6 +702,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
+          example: *id008
     BatchUpdateInput:
       type: object
       properties:
@@ -490,6 +717,7 @@ components:
                 type: object
                 additionalProperties:
                   type: string
+          example: *id009
     SearchRequest:
       type: object
       properties:
@@ -497,6 +725,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example: *id010
         sorts:
           type: array
           items:
@@ -507,17 +736,22 @@ components:
               direction:
                 type: string
                 enum: [ASCENDING, DESCENDING]
+          example: *id011
         query:
           type: string
+          example: example-value
         properties:
           type: array
           items:
             type: string
+          example: *id012
         limit:
           type: integer
           maximum: 200
+          example: 100
         after:
           type: string
+          example: example-value
     FilterGroup:
       type: object
       properties:
@@ -525,23 +759,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
     Filter:
       type: object
       properties:
         propertyName:
           type: string
+          example: Example Record
         operator:
           type: string
           enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+          example: EQ
         value:
           type: string
+          example: example-value
     Association:
       type: object
       properties:
         id:
           type: string
+          example: '500123'
         type:
           type: string
+          example: standard
     CollectionResponseAssociation:
       type: object
       properties:
@@ -549,6 +792,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Association'
+          example: *id013
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -559,17 +803,23 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

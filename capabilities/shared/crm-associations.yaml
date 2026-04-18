@@ -1,0 +1,284 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot CRM Associations"
+  description: "Manage relationships between CRM objects including association types, labels, and batch operations."
+  tags:
+    - HubSpot
+    - CRM
+    - Associations
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: crm-associations
+      baseUri: https://api.hubapi.com
+      description: "HubSpot CRM Associations API for managing relationships between CRM objects."
+      authentication:
+        type: bearer
+        token: "{{HUBSPOT_ACCESS_TOKEN}}"
+      resources:
+        - name: object-associations
+          path: /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}
+          description: "Object associations"
+          operations:
+            - name: list-associations
+              method: GET
+              description: "List associations for an object"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: fromObjectId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object ID"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-association
+              method: PUT
+              description: "Create an association between objects"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: fromObjectId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object ID"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  to: "{{tools.to}}"
+                  types: "{{tools.types}}"
+        - name: batch-read
+          path: /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/read
+          description: "Batch read associations"
+          operations:
+            - name: batch-read-associations
+              method: POST
+              description: "Read associations for multiple objects"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  inputs: "{{tools.inputs}}"
+        - name: batch-create
+          path: /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/create
+          description: "Batch create associations"
+          operations:
+            - name: batch-create-associations
+              method: POST
+              description: "Create multiple associations"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  inputs: "{{tools.inputs}}"
+        - name: definitions
+          path: /crm/v4/associations/definitions
+          description: "Association definitions"
+          operations:
+            - name: list-definitions
+              method: GET
+              description: "List all association definitions"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: labels
+          path: /crm/v4/associations/{fromObjectType}/{toObjectType}/labels
+          description: "Association labels"
+          operations:
+            - name: list-labels
+              method: GET
+              description: "List association labels"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-label
+              method: POST
+              description: "Create an association label"
+              inputParameters:
+                - name: fromObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Source object type"
+                - name: toObjectType
+                  in: path
+                  type: string
+                  required: true
+                  description: "Target object type"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  label: "{{tools.label}}"
+                  name: "{{tools.name}}"
+
+  exposes:
+    - type: rest
+      port: 8115
+      namespace: crm-associations-api
+      resources:
+        - path: /v1/associations/{fromObjectType}/{fromObjectId}/{toObjectType}
+          name: associations
+          description: "Object associations"
+          operations:
+            - method: GET
+              name: list
+              description: "List associations"
+              call: "crm-associations.list-associations"
+              with:
+                fromObjectType: "rest.fromObjectType"
+                fromObjectId: "rest.fromObjectId"
+                toObjectType: "rest.toObjectType"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/association-definitions
+          name: definitions
+          description: "Association definitions"
+          operations:
+            - method: GET
+              name: list
+              description: "List association definitions"
+              call: "crm-associations.list-definitions"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9115
+      namespace: crm-associations-mcp
+      transport: http
+      tools:
+        - name: list-associations
+          description: "List associations for a CRM object"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-associations.list-associations"
+          with:
+            fromObjectType: "tools.fromObjectType"
+            fromObjectId: "tools.fromObjectId"
+            toObjectType: "tools.toObjectType"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-association
+          description: "Create an association between two objects"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "crm-associations.create-association"
+          with:
+            fromObjectType: "tools.fromObjectType"
+            fromObjectId: "tools.fromObjectId"
+            toObjectType: "tools.toObjectType"
+            to: "tools.to"
+            types: "tools.types"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-association-definitions
+          description: "List all association type definitions"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-associations.list-definitions"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-association-labels
+          description: "List association labels for object types"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-associations.list-labels"
+          with:
+            fromObjectType: "tools.fromObjectType"
+            toObjectType: "tools.toObjectType"
+          outputParameters:
+            - type: object
+              mapping: "$."

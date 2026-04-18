@@ -11,61 +11,67 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Landing Pages
-    description: Operations for managing landing pages
-  - name: Site Pages
-    description: Operations for managing site pages
+- name: Landing Pages
+  description: Operations for managing landing pages
+- name: Site Pages
+  description: Operations for managing site pages
 paths:
   /cms/v3/pages/site-pages:
     get:
       operationId: listSitePages
-      summary: HubSpot List site pages
+      summary: Hubspot List Site Pages
       description: >-
         Returns a list of site pages in the portal. You can filter by various
         properties and paginate through results. Both draft and published pages
         are accessible through this endpoint.
       tags:
-        - Site Pages
+      - Site Pages
       parameters:
-        - name: sort
-          in: query
-          description: Field to sort results by.
-          schema:
-            type: string
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 20
-        - name: createdAt
-          in: query
-          description: Filter pages created at this timestamp.
-          schema:
-            type: string
-            format: date-time
-        - name: updatedAt
-          in: query
-          description: Filter pages updated at this timestamp.
-          schema:
-            type: string
-            format: date-time
-        - name: archived
-          in: query
-          description: Whether to return archived pages.
-          schema:
-            type: boolean
-            default: false
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+        example: example-value
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+        example: 20
+      - name: createdAt
+        in: query
+        description: Filter pages created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      - name: updatedAt
+        in: query
+        description: Filter pages updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      - name: archived
+        in: query
+        description: Whether to return archived pages.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of site pages.
@@ -73,23 +79,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponsePage'
+              examples:
+                Listsitepages200Example:
+                  summary: Default listSitePages 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id001
+                    - id: '500123'
+                      name: Example Record
+                      htmlTitle: Example Record
+                      slug: example-value
+                      state: DRAFT
+                      currentState: active
+                      contentTypeCategory: 100
+                      publishDate: '2025-03-15T14:30:00Z'
+                      metaDescription: This is an example description.
+                      url: https://app.hubspot.com/contacts/12345
+                      domain: example.hubspot.com
+                      language: en
+                      templatePath: /content/templates/example
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createSitePage
-      summary: HubSpot Create a site page
+      summary: Hubspot Create a Site Page
       description: >-
         Creates a new site page with the specified content and settings. The
         new page starts in draft state and must be published to make it
         publicly accessible.
       tags:
-        - Site Pages
+      - Site Pages
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PageCreateRequest'
+            examples:
+              CreatesitepageRequestExample:
+                summary: Default createSitePage request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  htmlTitle: Example Record
+                  slug: example-value
+                  metaDescription: This is an example description.
+                  domain: example.hubspot.com
+                  language: en
+                  templatePath: /content/templates/example
+                  layoutSections: &id002
+                    key: value
       responses:
         '201':
           description: Site page created successfully.
@@ -97,32 +144,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Createsitepage201Example:
+                  summary: Default createSitePage 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /cms/v3/pages/site-pages/{objectId}:
     get:
       operationId: getSitePage
-      summary: HubSpot Get a site page
+      summary: Hubspot Get a Site Page
       description: >-
         Returns the details of a specific site page by its ID, including
         content, SEO settings, publish state, and metadata.
       tags:
-        - Site Pages
+      - Site Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the site page to retrieve.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived pages.
-          schema:
-            type: boolean
-            default: false
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: archived
+        in: query
+        description: Whether to return archived pages.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the site page details.
@@ -130,32 +203,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Getsitepage200Example:
+                  summary: Default getSitePage 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateSitePage
-      summary: HubSpot Update a site page
+      summary: Hubspot Update a Site Page
       description: >-
         Performs a partial update of a site page. Only the properties included
         in the request body will be updated. Changes are applied to the draft
         version and must be published.
       tags:
-        - Site Pages
+      - Site Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the site page to update.
-          schema:
-            type: string
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to update.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PageUpdateRequest'
+            examples:
+              UpdatesitepageRequestExample:
+                summary: Default updateSitePage request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  htmlTitle: Example Record
+                  slug: example-value
+                  metaDescription: This is an example description.
+                  layoutSections: &id003
+                    key: value
       responses:
         '200':
           description: Site page updated successfully.
@@ -163,27 +272,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Updatesitepage200Example:
+                  summary: Default updateSitePage 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteSitePage
-      summary: HubSpot Delete a site page
+      summary: Hubspot Delete a Site Page
       description: >-
         Archives (soft deletes) a site page by its ID. Archived pages are no
         longer publicly accessible but can be restored using the HubSpot UI.
       tags:
-        - Site Pages
+      - Site Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the site page to delete.
-          schema:
-            type: string
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to delete.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Site page deleted successfully.
@@ -191,23 +325,27 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /cms/v3/pages/site-pages/{objectId}/draft/push-live:
     post:
       operationId: publishSitePage
-      summary: HubSpot Publish a site page
+      summary: Hubspot Publish a Site Page
       description: >-
         Publishes the draft version of a site page, making all pending content
         changes live and publicly accessible. After publishing, the page becomes
         visible at its URL.
       tags:
-        - Site Pages
+      - Site Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the site page to publish.
-          schema:
-            type: string
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the site page to publish.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '200':
           description: Site page published successfully.
@@ -215,55 +353,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Publishsitepage200Example:
+                  summary: Default publishSitePage 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /cms/v3/pages/landing-pages:
     get:
       operationId: listLandingPages
-      summary: HubSpot List landing pages
+      summary: Hubspot List Landing Pages
       description: >-
         Returns a list of landing pages in the portal. You can filter by
         various properties and paginate through results. Both draft and
         published landing pages are accessible.
       tags:
-        - Landing Pages
+      - Landing Pages
       parameters:
-        - name: sort
-          in: query
-          description: Field to sort results by.
-          schema:
-            type: string
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 20
-        - name: createdAt
-          in: query
-          description: Filter landing pages created at this timestamp.
-          schema:
-            type: string
-            format: date-time
-        - name: updatedAt
-          in: query
-          description: Filter landing pages updated at this timestamp.
-          schema:
-            type: string
-            format: date-time
-        - name: archived
-          in: query
-          description: Whether to return archived landing pages.
-          schema:
-            type: boolean
-            default: false
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+        example: example-value
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 20
+        example: 20
+      - name: createdAt
+        in: query
+        description: Filter landing pages created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      - name: updatedAt
+        in: query
+        description: Filter landing pages updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      - name: archived
+        in: query
+        description: Whether to return archived landing pages.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of landing pages.
@@ -271,23 +439,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponsePage'
+              examples:
+                Listlandingpages200Example:
+                  summary: Default listLandingPages 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id001
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createLandingPage
-      summary: HubSpot Create a landing page
+      summary: Hubspot Create a Landing Page
       description: >-
         Creates a new landing page with the specified content and settings.
         The new landing page starts in draft state and must be published
         to make it publicly accessible.
       tags:
-        - Landing Pages
+      - Landing Pages
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PageCreateRequest'
+            examples:
+              CreatelandingpageRequestExample:
+                summary: Default createLandingPage request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  htmlTitle: Example Record
+                  slug: example-value
+                  metaDescription: This is an example description.
+                  domain: example.hubspot.com
+                  language: en
+                  templatePath: /content/templates/example
+                  layoutSections: *id002
       responses:
         '201':
           description: Landing page created successfully.
@@ -295,32 +487,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Createlandingpage201Example:
+                  summary: Default createLandingPage 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /cms/v3/pages/landing-pages/{objectId}:
     get:
       operationId: getLandingPage
-      summary: HubSpot Get a landing page
+      summary: Hubspot Get a Landing Page
       description: >-
         Returns the details of a specific landing page by its ID, including
         content, form connections, SEO settings, and publish state.
       tags:
-        - Landing Pages
+      - Landing Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the landing page to retrieve.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived landing pages.
-          schema:
-            type: boolean
-            default: false
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the landing page to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: archived
+        in: query
+        description: Whether to return archived landing pages.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the landing page details.
@@ -328,26 +546,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Page'
+              examples:
+                Getlandingpage200Example:
+                  summary: Default getLandingPage 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    htmlTitle: Example Record
+                    slug: example-value
+                    state: DRAFT
+                    currentState: active
+                    contentTypeCategory: 100
+                    publishDate: '2025-03-15T14:30:00Z'
+                    metaDescription: This is an example description.
+                    url: https://app.hubspot.com/contacts/12345
+                    domain: example.hubspot.com
+                    language: en
+                    templatePath: /content/templates/example
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteLandingPage
-      summary: HubSpot Delete a landing page
+      summary: Hubspot Delete a Landing Page
       description: >-
         Archives (soft deletes) a landing page by its ID. Archived landing
         pages are no longer publicly accessible but can be restored using
         the HubSpot UI.
       tags:
-        - Landing Pages
+      - Landing Pages
       parameters:
-        - name: objectId
-          in: path
-          required: true
-          description: The ID of the landing page to delete.
-          schema:
-            type: string
+      - name: objectId
+        in: path
+        required: true
+        description: The ID of the landing page to delete.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Landing page deleted successfully.
@@ -355,6 +598,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -369,55 +615,71 @@ components:
         id:
           type: string
           description: The unique identifier for the page.
+          example: '500123'
         name:
           type: string
           description: The internal name of the page.
+          example: Example Record
         htmlTitle:
           type: string
           description: The HTML title tag content for the page.
+          example: Example Record
         slug:
           type: string
           description: The URL slug for the page.
+          example: example-value
         state:
           type: string
           description: The current publish state of the page.
           enum: [DRAFT, PUBLISHED, ARCHIVED]
+          example: DRAFT
         currentState:
           type: string
           description: The current display state of the page.
+          example: active
         contentTypeCategory:
           type: integer
           description: The content type category code.
+          example: 100
         publishDate:
           type: string
           format: date-time
           description: The date and time the page was or will be published.
+          example: '2025-03-15T14:30:00Z'
         metaDescription:
           type: string
           description: The meta description for SEO.
+          example: This is an example description.
         url:
           type: string
           description: The full URL of the published page.
+          example: https://app.hubspot.com/contacts/12345
         domain:
           type: string
           description: The domain the page is hosted on.
+          example: example.hubspot.com
         language:
           type: string
           description: The language code for the page content.
+          example: en
         templatePath:
           type: string
           description: The path to the template used by the page.
+          example: /content/templates/example
         createdAt:
           type: string
           format: date-time
           description: The date and time the page was created.
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
           description: The date and time the page was last updated.
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
           description: Whether the page has been archived.
+          example: true
     CollectionResponsePage:
       type: object
       description: A paginated list of CMS pages.
@@ -426,40 +688,49 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Page'
+          example: *id001
         paging:
           $ref: '#/components/schemas/Paging'
     PageCreateRequest:
       type: object
       description: Request body for creating a CMS page.
       required:
-        - name
-        - slug
+      - name
+      - slug
       properties:
         name:
           type: string
           description: The internal name of the page.
+          example: Example Record
         htmlTitle:
           type: string
           description: The HTML title tag content.
+          example: Example Record
         slug:
           type: string
           description: The URL slug for the page.
+          example: example-value
         metaDescription:
           type: string
           description: The meta description for SEO.
+          example: This is an example description.
         domain:
           type: string
           description: The domain to host the page on.
+          example: example.hubspot.com
         language:
           type: string
           description: The language code for the page content.
+          example: en
         templatePath:
           type: string
           description: The path to the template to use for the page.
+          example: /content/templates/example
         layoutSections:
           type: object
           description: The layout sections and widget data for the page content.
           additionalProperties: true
+          example: *id002
     PageUpdateRequest:
       type: object
       description: Request body for updating a CMS page.
@@ -467,19 +738,24 @@ components:
         name:
           type: string
           description: The internal name of the page.
+          example: Example Record
         htmlTitle:
           type: string
           description: The HTML title tag content.
+          example: Example Record
         slug:
           type: string
           description: The URL slug for the page.
+          example: example-value
         metaDescription:
           type: string
           description: The meta description for SEO.
+          example: This is an example description.
         layoutSections:
           type: object
           description: The layout sections and widget data for the page content.
           additionalProperties: true
+          example: *id003
     Paging:
       type: object
       description: Pagination information.
@@ -489,18 +765,24 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       description: An error response.
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

@@ -1,0 +1,393 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Management
+  description: Unified CRM workflow for managing contacts, companies, deals, tickets, and their associations.
+  tags:
+  - HubSpot
+  - CRM
+  - Sales
+  - Contacts
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: crm-contacts-api
+    location: ./shared/crm-contacts-api.yaml
+  - import: crm-companies-api
+    location: ./shared/crm-companies-api.yaml
+  - import: crm-deals-api
+    location: ./shared/crm-deals-api.yaml
+  - import: crm-tickets-api
+    location: ./shared/crm-tickets-api.yaml
+  - import: crm-associations-api
+    location: ./shared/crm-associations-api.yaml
+  - import: crm-search-api
+    location: ./shared/crm-search-api.yaml
+  - import: crm-lists-api
+    location: ./shared/crm-lists-api.yaml
+  exposes:
+  - type: mcp
+    port: 9090
+    namespace: crm-management-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot CRM Management.
+    tools:
+    - name: listcontacts
+      description: HubSpot List Contacts
+      hints:
+        readOnly: true
+      call: crm-contacts-api.listcontacts
+    - name: createcontact
+      description: HubSpot Create a Contact
+      hints:
+        readOnly: false
+      call: crm-contacts-api.createcontact
+    - name: getcontact
+      description: HubSpot Get a Contact
+      hints:
+        readOnly: true
+      call: crm-contacts-api.getcontact
+    - name: updatecontact
+      description: HubSpot Update a Contact
+      hints:
+        readOnly: false
+      call: crm-contacts-api.updatecontact
+    - name: deletecontact
+      description: HubSpot Archive a Contact
+      hints:
+        destructive: true
+      call: crm-contacts-api.deletecontact
+    - name: batchreadcontacts
+      description: HubSpot Batch Read Contacts
+      hints:
+        readOnly: false
+      call: crm-contacts-api.batchreadcontacts
+    - name: batchcreatecontacts
+      description: HubSpot Batch Create Contacts
+      hints:
+        readOnly: false
+      call: crm-contacts-api.batchcreatecontacts
+    - name: batchupdatecontacts
+      description: HubSpot Batch Update Contacts
+      hints:
+        readOnly: false
+      call: crm-contacts-api.batchupdatecontacts
+    - name: batcharchivecontacts
+      description: HubSpot Batch Archive Contacts
+      hints:
+        readOnly: false
+      call: crm-contacts-api.batcharchivecontacts
+    - name: searchcontacts
+      description: HubSpot Search Contacts
+      hints:
+        readOnly: false
+      call: crm-contacts-api.searchcontacts
+    - name: listcontactassociations
+      description: HubSpot List Contact Associations
+      hints:
+        readOnly: true
+      call: crm-contacts-api.listcontactassociations
+    - name: createcontactassociation
+      description: HubSpot Create a Contact Association
+      hints:
+        readOnly: false
+      call: crm-contacts-api.createcontactassociation
+    - name: deletecontactassociation
+      description: HubSpot Delete a Contact Association
+      hints:
+        destructive: true
+      call: crm-contacts-api.deletecontactassociation
+    - name: listcompanies
+      description: HubSpot List Companies
+      hints:
+        readOnly: true
+      call: crm-companies-api.listcompanies
+    - name: createcompany
+      description: HubSpot Create a Company
+      hints:
+        readOnly: false
+      call: crm-companies-api.createcompany
+    - name: getcompany
+      description: HubSpot Get a Company
+      hints:
+        readOnly: true
+      call: crm-companies-api.getcompany
+    - name: updatecompany
+      description: HubSpot Update a Company
+      hints:
+        readOnly: false
+      call: crm-companies-api.updatecompany
+    - name: deletecompany
+      description: HubSpot Archive a Company
+      hints:
+        destructive: true
+      call: crm-companies-api.deletecompany
+    - name: batchreadcompanies
+      description: HubSpot Batch Read Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchreadcompanies
+    - name: batchcreatecompanies
+      description: HubSpot Batch Create Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchcreatecompanies
+    - name: batchupdatecompanies
+      description: HubSpot Batch Update Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchupdatecompanies
+    - name: batcharchivecompanies
+      description: HubSpot Batch Archive Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batcharchivecompanies
+    - name: searchcompanies
+      description: HubSpot Search Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.searchcompanies
+    - name: listcompanyassociations
+      description: HubSpot List Company Associations
+      hints:
+        readOnly: true
+      call: crm-companies-api.listcompanyassociations
+    - name: createcompanyassociation
+      description: HubSpot Create a Company Association
+      hints:
+        readOnly: false
+      call: crm-companies-api.createcompanyassociation
+    - name: deletecompanyassociation
+      description: HubSpot Delete a Company Association
+      hints:
+        destructive: true
+      call: crm-companies-api.deletecompanyassociation
+    - name: listdeals
+      description: HubSpot List Deals
+      hints:
+        readOnly: true
+      call: crm-deals-api.listdeals
+    - name: createdeal
+      description: HubSpot Create a Deal
+      hints:
+        readOnly: false
+      call: crm-deals-api.createdeal
+    - name: getdeal
+      description: HubSpot Get a Deal
+      hints:
+        readOnly: true
+      call: crm-deals-api.getdeal
+    - name: updatedeal
+      description: HubSpot Update a Deal
+      hints:
+        readOnly: false
+      call: crm-deals-api.updatedeal
+    - name: deletedeal
+      description: HubSpot Archive a Deal
+      hints:
+        destructive: true
+      call: crm-deals-api.deletedeal
+    - name: batchreaddeals
+      description: HubSpot Batch Read Deals
+      hints:
+        readOnly: false
+      call: crm-deals-api.batchreaddeals
+    - name: batchcreatedeals
+      description: HubSpot Batch Create Deals
+      hints:
+        readOnly: false
+      call: crm-deals-api.batchcreatedeals
+    - name: batchupdatedeals
+      description: HubSpot Batch Update Deals
+      hints:
+        readOnly: false
+      call: crm-deals-api.batchupdatedeals
+    - name: batcharchivedeals
+      description: HubSpot Batch Archive Deals
+      hints:
+        readOnly: false
+      call: crm-deals-api.batcharchivedeals
+    - name: searchdeals
+      description: HubSpot Search Deals
+      hints:
+        readOnly: false
+      call: crm-deals-api.searchdeals
+    - name: listdealassociations
+      description: HubSpot List Deal Associations
+      hints:
+        readOnly: true
+      call: crm-deals-api.listdealassociations
+    - name: createdealassociation
+      description: HubSpot Create a Deal Association
+      hints:
+        readOnly: false
+      call: crm-deals-api.createdealassociation
+    - name: deletedealassociation
+      description: HubSpot Delete a Deal Association
+      hints:
+        destructive: true
+      call: crm-deals-api.deletedealassociation
+    - name: listtickets
+      description: HubSpot List Tickets
+      hints:
+        readOnly: true
+      call: crm-tickets-api.listtickets
+    - name: createticket
+      description: HubSpot Create a Ticket
+      hints:
+        readOnly: false
+      call: crm-tickets-api.createticket
+    - name: getticket
+      description: HubSpot Get a Ticket
+      hints:
+        readOnly: true
+      call: crm-tickets-api.getticket
+    - name: updateticket
+      description: HubSpot Update a Ticket
+      hints:
+        readOnly: false
+      call: crm-tickets-api.updateticket
+    - name: deleteticket
+      description: HubSpot Archive a Ticket
+      hints:
+        destructive: true
+      call: crm-tickets-api.deleteticket
+    - name: batchreadtickets
+      description: HubSpot Batch Read Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchreadtickets
+    - name: batchcreatetickets
+      description: HubSpot Batch Create Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchcreatetickets
+    - name: batchupdatetickets
+      description: HubSpot Batch Update Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batchupdatetickets
+    - name: batcharchivetickets
+      description: HubSpot Batch Archive Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.batcharchivetickets
+    - name: searchtickets
+      description: HubSpot Search Tickets
+      hints:
+        readOnly: false
+      call: crm-tickets-api.searchtickets
+    - name: listticketassociations
+      description: HubSpot List Ticket Associations
+      hints:
+        readOnly: true
+      call: crm-tickets-api.listticketassociations
+    - name: createticketassociation
+      description: HubSpot Create a Ticket Association
+      hints:
+        readOnly: false
+      call: crm-tickets-api.createticketassociation
+    - name: deleteticketassociation
+      description: HubSpot Delete a Ticket Association
+      hints:
+        destructive: true
+      call: crm-tickets-api.deleteticketassociation
+    - name: listobjectassociations
+      description: HubSpot List Associations for an Object
+      hints:
+        readOnly: true
+      call: crm-associations-api.listobjectassociations
+    - name: createobjectassociation
+      description: HubSpot Create an Association Between Objects
+      hints:
+        readOnly: false
+      call: crm-associations-api.createobjectassociation
+    - name: deleteobjectassociation
+      description: HubSpot Delete an Association Between Objects
+      hints:
+        destructive: true
+      call: crm-associations-api.deleteobjectassociation
+    - name: batchreadassociations
+      description: HubSpot Batch Read Associations for Multiple Objects
+      hints:
+        readOnly: false
+      call: crm-associations-api.batchreadassociations
+    - name: batchcreateassociations
+      description: HubSpot Batch Create Associations
+      hints:
+        readOnly: false
+      call: crm-associations-api.batchcreateassociations
+    - name: batcharchiveassociations
+      description: HubSpot Batch Archive Associations
+      hints:
+        readOnly: false
+      call: crm-associations-api.batcharchiveassociations
+    - name: listassociationlabels
+      description: HubSpot List Association Labels
+      hints:
+        readOnly: true
+      call: crm-associations-api.listassociationlabels
+    - name: createassociationlabel
+      description: HubSpot Create an Association Label
+      hints:
+        readOnly: false
+      call: crm-associations-api.createassociationlabel
+    - name: updateassociationlabel
+      description: HubSpot Update an Association Label
+      hints:
+        readOnly: false
+      call: crm-associations-api.updateassociationlabel
+    - name: deleteassociationlabel
+      description: HubSpot Delete an Association Label
+      hints:
+        destructive: true
+      call: crm-associations-api.deleteassociationlabel
+    - name: listassociationdefinitions
+      description: HubSpot List All Association Definitions
+      hints:
+        readOnly: true
+      call: crm-associations-api.listassociationdefinitions
+    - name: searchcrmobjects
+      description: HubSpot Search CRM Objects
+      hints:
+        readOnly: false
+      call: crm-search-api.searchcrmobjects
+    - name: listlists
+      description: HubSpot List All Lists
+      hints:
+        readOnly: true
+      call: crm-lists-api.listlists
+    - name: createlist
+      description: HubSpot Create a List
+      hints:
+        readOnly: false
+      call: crm-lists-api.createlist
+    - name: getlist
+      description: HubSpot Get a List
+      hints:
+        readOnly: true
+      call: crm-lists-api.getlist
+    - name: deletelist
+      description: HubSpot Delete a List
+      hints:
+        destructive: true
+      call: crm-lists-api.deletelist
+    - name: getlistmemberships
+      description: HubSpot Get List Members
+      hints:
+        readOnly: true
+      call: crm-lists-api.getlistmemberships
+    - name: addlistmembers
+      description: HubSpot Add Members to a List
+      hints:
+        readOnly: false
+      call: crm-lists-api.addlistmembers
+    - name: removelistmembers
+      description: HubSpot Remove Members from a List
+      hints:
+        readOnly: false
+      call: crm-lists-api.removelistmembers

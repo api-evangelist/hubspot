@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "description": "Request body for batch creating commerce payments",
+  "name": "BatchCreateRequest",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payments to create",
+      "items": {
+        "type": "object",
+        "description": "Input for creating a new commerce payment",
+        "properties": {
+          "properties": {
+            "type": "object",
+            "description": "The properties to set on the commerce payment"
+          },
+          "associations": {
+            "type": "array",
+            "description": "Associations to create with other objects",
+            "items": {
+              "type": "object",
+              "description": "Input for creating an association",
+              "properties": {
+                "to": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "types": {
+                  "type": "array",
+                  "description": "The association types",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "to",
+                "types"
+              ]
+            }
+          }
+        },
+        "required": [
+          "properties"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

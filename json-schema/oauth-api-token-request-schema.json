@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/oauth-api-token-request-schema.json",
+  "title": "TokenRequest",
+  "description": "Request body for token creation or refresh",
+  "type": "object",
+  "properties": {
+    "grant_type": {
+      "type": "string",
+      "description": "The type of grant being requested",
+      "enum": [
+        "authorization_code",
+        "refresh_token"
+      ],
+      "example": "refresh_token"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "The client ID of your application",
+      "example": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+    },
+    "client_secret": {
+      "type": "string",
+      "description": "The client secret of your application",
+      "example": "12345678-abcd-efgh-ijkl-9876543210ab"
+    },
+    "redirect_uri": {
+      "type": "string",
+      "description": "The redirect URI (required for authorization_code grant)",
+      "example": "https://myapp.example.com/oauth/callback"
+    },
+    "code": {
+      "type": "string",
+      "description": "The authorization code (required for authorization_code grant)",
+      "example": "abc123def456"
+    },
+    "refresh_token": {
+      "type": "string",
+      "description": "The refresh token (required for refresh_token grant)",
+      "example": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a"
+    }
+  },
+  "required": [
+    "grant_type",
+    "client_id",
+    "client_secret"
+  ]
+}

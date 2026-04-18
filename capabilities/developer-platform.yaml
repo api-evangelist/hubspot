@@ -1,0 +1,68 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot Developer Platform"
+  description: "Unified workflow for developers to manage custom workflow actions, feature flags, CMS source code, and OAuth authentication. Combines automation, deployment, and auth APIs for HubSpot platform development."
+  tags:
+    - HubSpot
+    - Developer
+    - Platform
+    - Automation
+    - OAuth
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+      HUBSPOT_API_KEY: HUBSPOT_API_KEY
+
+capability:
+  consumes:
+    - import: custom-workflow-actions
+      location: ./shared/custom-workflow-actions-api.yaml
+    - import: feature-flags
+      location: ./shared/crm-feature-flags-api.yaml
+    - import: source-code
+      location: ./shared/source-code-api.yaml
+    - import: oauth
+      location: ./shared/oauth-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8083
+      namespace: developer-platform-api
+      description: "Unified REST API for HubSpot platform development, workflow customization, and deployment."
+      resources:
+        - path: /v1/access-tokens/{token}
+          name: access-token
+          description: "OAuth token metadata"
+          operations:
+            - method: GET
+              name: get-token-metadata
+              description: "Get access token metadata"
+              call: "oauth.getAccessTokenMetadata"
+              with:
+                token: "rest.token"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9093
+      namespace: developer-platform-mcp
+      transport: http
+      description: "MCP server for AI-assisted HubSpot platform development, workflow automation, and feature management."
+      tools:
+        - name: get-access-token-metadata
+          description: "Retrieve metadata for an OAuth access token"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "oauth.getAccessTokenMetadata"
+          with:
+            token: "tools.token"
+          outputParameters:
+            - type: object
+              mapping: "$."

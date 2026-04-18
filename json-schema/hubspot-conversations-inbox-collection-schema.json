@@ -1,0 +1,96 @@
+{
+  "type": "object",
+  "description": "Paginated collection of inboxes",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of inbox records",
+      "example": [
+        {
+          "id": "12345678",
+          "name": "Support Inbox",
+          "type": "CONVERSATIONS_INBOX",
+          "createdAt": "2024-01-10T09:00:00Z",
+          "updatedAt": "2024-01-15T14:30:00Z",
+          "archived": false
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Represents a conversation inbox configuration where messages are organized and routed.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the inbox",
+            "example": "12345678"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the inbox",
+            "example": "Support Inbox"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of inbox (e.g., CONVERSATIONS_INBOX)",
+            "example": "CONVERSATIONS_INBOX"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp when the inbox was created",
+            "format": "date-time",
+            "example": "2024-01-10T09:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp when the inbox was last updated",
+            "format": "date-time",
+            "example": "2024-01-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the inbox is archived",
+            "example": false
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    },
+    "total": {
+      "type": "integer",
+      "description": "Total number of inboxes available",
+      "example": 2
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor information for retrieving the next page.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "NTI1Cg%3D%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page",
+              "example": "/conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InboxCollection"
+}

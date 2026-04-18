@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "description": "Input for creating an association",
+  "name": "AssociationInput",
+  "properties": {
+    "to": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the object to associate with"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "types": {
+      "type": "array",
+      "description": "The association types",
+      "items": {
+        "type": "object",
+        "description": "An association type definition",
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "description": "The category of the association",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ]
+          },
+          "associationTypeId": {
+            "type": "integer",
+            "description": "The numeric ID of the association type"
+          }
+        },
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ]
+      }
+    }
+  },
+  "required": [
+    "to",
+    "types"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

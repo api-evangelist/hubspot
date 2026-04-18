@@ -1,0 +1,232 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Automation and Integration
+  description: Workflow automation and integration management combining custom workflow actions, OAuth, feature flags, and conversations.
+  tags:
+  - HubSpot
+  - Automation
+  - Integration
+  - OAuth
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: custom-workflow-actions-api
+    location: ./shared/custom-workflow-actions-api.yaml
+  - import: oauth-api
+    location: ./shared/oauth-api.yaml
+  - import: crm-feature-flags-api
+    location: ./shared/crm-feature-flags-api.yaml
+  - import: conversations-api
+    location: ./shared/conversations-api.yaml
+  exposes:
+  - type: mcp
+    port: 9095
+    namespace: automation-and-integration-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot Automation and Integration.
+    tools:
+    - name: completecallback
+      description: HubSpot Complete a Single Callback
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.completecallback
+    - name: batchcompletecallbacks
+      description: HubSpot Complete Multiple Callbacks
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.batchcompletecallbacks
+    - name: listactiondefinitions
+      description: HubSpot List Action Definitions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactiondefinitions
+    - name: createactiondefinition
+      description: HubSpot Create an Action Definition
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.createactiondefinition
+    - name: getactiondefinitionbyid
+      description: HubSpot Retrieve an Action Definition
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactiondefinitionbyid
+    - name: updateactiondefinitionbyid
+      description: HubSpot Update an Action Definition
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.updateactiondefinitionbyid
+    - name: archiveactiondefinitionbyid
+      description: HubSpot Archive an Action Definition
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.archiveactiondefinitionbyid
+    - name: listactionfunctions
+      description: HubSpot List Action Functions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactionfunctions
+    - name: getactionfunctionbytype
+      description: HubSpot Retrieve Function by Type
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactionfunctionbytype
+    - name: upsertactionfunction
+      description: HubSpot Create or Update a Function
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.upsertactionfunction
+    - name: deleteactionfunctionbytype
+      description: HubSpot Delete a Function by Type
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.deleteactionfunctionbytype
+    - name: getactionfunctionbyid
+      description: HubSpot Retrieve a Specific Function
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactionfunctionbyid
+    - name: deleteactionfunctionbyid
+      description: HubSpot Delete a Specific Function
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.deleteactionfunctionbyid
+    - name: listactiondefinitionrevisions
+      description: HubSpot List Definition Revisions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactiondefinitionrevisions
+    - name: getactiondefinitionrevisionbyid
+      description: HubSpot Retrieve a Specific Revision
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactiondefinitionrevisionbyid
+    - name: getaccesstokenmetadata
+      description: HubSpot Retrieve Access Token Metadata
+      hints:
+        readOnly: true
+      call: oauth-api.getaccesstokenmetadata
+    - name: getrefreshtokenmetadata
+      description: HubSpot Retrieve Refresh Token Metadata
+      hints:
+        readOnly: true
+      call: oauth-api.getrefreshtokenmetadata
+    - name: revokerefreshtoken
+      description: HubSpot Revoke a Refresh Token
+      hints:
+        destructive: true
+      call: oauth-api.revokerefreshtoken
+    - name: createorrefreshaccesstoken
+      description: HubSpot Create or Refresh an Access Token
+      hints:
+        readOnly: false
+      call: oauth-api.createorrefreshaccesstoken
+    - name: getapplicationfeatureflag
+      description: HubSpot Retrieve a Feature Flag Configuration
+      hints:
+        readOnly: true
+      call: crm-feature-flags-api.getapplicationfeatureflag
+    - name: upsertapplicationfeatureflag
+      description: HubSpot Create or Update a Feature Flag
+      hints:
+        readOnly: false
+      call: crm-feature-flags-api.upsertapplicationfeatureflag
+    - name: deleteapplicationfeatureflag
+      description: HubSpot Delete a Feature Flag
+      hints:
+        destructive: true
+      call: crm-feature-flags-api.deleteapplicationfeatureflag
+    - name: listportalflagstates
+      description: HubSpot List Portal Flag States
+      hints:
+        readOnly: true
+      call: crm-feature-flags-api.listportalflagstates
+    - name: getportalflagstate
+      description: HubSpot Retrieve a Portal Flag State
+      hints:
+        readOnly: true
+      call: crm-feature-flags-api.getportalflagstate
+    - name: setportalflagstate
+      description: HubSpot Set a Portal Flag State
+      hints:
+        readOnly: false
+      call: crm-feature-flags-api.setportalflagstate
+    - name: deleteportalflagstate
+      description: HubSpot Delete a Portal Flag State
+      hints:
+        destructive: true
+      call: crm-feature-flags-api.deleteportalflagstate
+    - name: batchupsertportalflagstates
+      description: HubSpot Batch Create or Update Portal Flag States
+      hints:
+        readOnly: false
+      call: crm-feature-flags-api.batchupsertportalflagstates
+    - name: batchdeleteportalflagstates
+      description: HubSpot Batch Delete Portal Flag States
+      hints:
+        readOnly: false
+      call: crm-feature-flags-api.batchdeleteportalflagstates
+    - name: listinboxes
+      description: HubSpot List All Inboxes
+      hints:
+        readOnly: true
+      call: conversations-api.listinboxes
+    - name: getinboxbyid
+      description: HubSpot Retrieve an Inbox
+      hints:
+        readOnly: true
+      call: conversations-api.getinboxbyid
+    - name: listthreads
+      description: HubSpot List Conversation Threads
+      hints:
+        readOnly: true
+      call: conversations-api.listthreads
+    - name: getthreadbyid
+      description: HubSpot Retrieve a Thread
+      hints:
+        readOnly: true
+      call: conversations-api.getthreadbyid
+    - name: updatethread
+      description: HubSpot Update a Thread
+      hints:
+        readOnly: false
+      call: conversations-api.updatethread
+    - name: archivethread
+      description: HubSpot Archive a Thread
+      hints:
+        destructive: true
+      call: conversations-api.archivethread
+    - name: listthreadmessages
+      description: HubSpot List Thread Messages
+      hints:
+        readOnly: true
+      call: conversations-api.listthreadmessages
+    - name: sendmessage
+      description: HubSpot Send a Message
+      hints:
+        readOnly: false
+      call: conversations-api.sendmessage
+    - name: getmessagebyid
+      description: HubSpot Retrieve a Message
+      hints:
+        readOnly: true
+      call: conversations-api.getmessagebyid
+    - name: listchannels
+      description: HubSpot List Channels
+      hints:
+        readOnly: true
+      call: conversations-api.listchannels
+    - name: listactors
+      description: HubSpot List Actors
+      hints:
+        readOnly: true
+      call: conversations-api.listactors
+    - name: getactorbyid
+      description: HubSpot Retrieve an Actor
+      hints:
+        readOnly: true
+      call: conversations-api.getactorbyid

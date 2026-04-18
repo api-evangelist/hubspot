@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-payments-api-association-input-structure.json",
+  "name": "AssociationInput",
+  "description": "Input for creating an association",
+  "type": "object",
+  "properties": {
+    "to": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the object to associate with"
+        }
+      },
+      "example": {
+        "id": "500123"
+      }
+    },
+    "types": {
+      "type": "array",
+      "description": "The association types",
+      "items": {
+        "type": "object",
+        "description": "An association type definition",
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ],
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ],
+            "description": "The category of the association",
+            "example": "HUBSPOT_DEFINED"
+          },
+          "associationTypeId": {
+            "type": "int32",
+            "description": "The numeric ID of the association type",
+            "example": 500123
+          }
+        }
+      },
+      "example": [
+        {
+          "associationCategory": "HUBSPOT_DEFINED",
+          "associationTypeId": 500123
+        }
+      ]
+    }
+  },
+  "required": [
+    "to",
+    "types"
+  ]
+}

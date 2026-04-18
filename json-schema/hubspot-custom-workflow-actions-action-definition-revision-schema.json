@@ -1,0 +1,353 @@
+{
+  "type": "object",
+  "description": "A revision of an action definition",
+  "properties": {
+    "revisionId": {
+      "type": "string",
+      "description": "The unique identifier of the revision",
+      "example": "500123"
+    },
+    "definition": {
+      "type": "object",
+      "description": "A custom workflow action definition",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the action definition",
+          "example": "500123"
+        },
+        "revisionId": {
+          "type": "string",
+          "description": "The current revision identifier",
+          "example": "500123"
+        },
+        "actionUrl": {
+          "type": "string",
+          "description": "The URL that HubSpot will call when the action executes",
+          "format": "uri",
+          "example": "https://app.hubspot.com/contacts/12345"
+        },
+        "labels": {
+          "type": "object",
+          "description": "Human-readable labels for the action",
+          "properties": {
+            "actionName": {
+              "type": "string",
+              "description": "The display name of the action",
+              "example": "Example Record"
+            },
+            "actionDescription": {
+              "type": "string",
+              "description": "A description of what the action does",
+              "example": "This is an example description."
+            },
+            "appDisplayName": {
+              "type": "string",
+              "description": "The name of the app providing this action",
+              "example": "Example Record"
+            },
+            "actionCardContent": {
+              "type": "string",
+              "description": "Content to display on the action card in the workflow editor",
+              "example": "example-value"
+            }
+          },
+          "required": [
+            "actionName"
+          ]
+        },
+        "inputFields": {
+          "type": "array",
+          "description": "Input fields that users can configure for the action",
+          "example": [
+            {
+              "typeDefinition": {},
+              "supportedValueTypes": [
+                {}
+              ],
+              "isRequired": true
+            }
+          ],
+          "items": {
+            "type": "object",
+            "description": "An input field for the action",
+            "properties": {
+              "typeDefinition": {
+                "type": "object",
+                "description": "Definition of a field's type and configuration",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The programmatic name of the field",
+                    "example": "Example Record"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The data type of the field",
+                    "example": "STRING",
+                    "enum": [
+                      "STRING",
+                      "NUMBER",
+                      "BOOL",
+                      "DATE",
+                      "DATETIME",
+                      "ENUMERATION",
+                      "PHONE_NUMBER",
+                      "CURRENCY"
+                    ]
+                  },
+                  "fieldType": {
+                    "type": "string",
+                    "description": "The UI field type for input",
+                    "example": "TEXT",
+                    "enum": [
+                      "TEXT",
+                      "TEXTAREA",
+                      "NUMBER",
+                      "SELECT",
+                      "BOOLEANCHECKBOX",
+                      "DATE",
+                      "FILE"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "Human-readable label for the field",
+                    "example": "Example Record"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the field",
+                    "example": "This is an example description."
+                  },
+                  "options": {
+                    "type": "array",
+                    "description": "Options for enumeration fields",
+                    "example": [
+                      {
+                        "label": "Example Record",
+                        "value": "example-value",
+                        "displayOrder": 100
+                      }
+                    ],
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "type"
+                ]
+              },
+              "supportedValueTypes": {
+                "type": "array",
+                "description": "The types of values that can be provided for this field",
+                "example": [
+                  "STATIC_VALUE"
+                ],
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "STATIC_VALUE",
+                    "OBJECT_PROPERTY",
+                    "OUTPUT_FROM_PREVIOUS_ACTION"
+                  ]
+                }
+              },
+              "isRequired": {
+                "type": "boolean",
+                "description": "Whether this field is required",
+                "example": true
+              }
+            },
+            "required": [
+              "typeDefinition",
+              "supportedValueTypes"
+            ]
+          }
+        },
+        "outputFields": {
+          "type": "array",
+          "description": "Output fields that the action returns",
+          "example": [
+            {
+              "typeDefinition": {}
+            }
+          ],
+          "items": {
+            "type": "object",
+            "description": "An output field returned by the action",
+            "properties": {
+              "typeDefinition": {
+                "type": "object",
+                "description": "Definition of a field's type and configuration",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The programmatic name of the field",
+                    "example": "Example Record"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "The data type of the field",
+                    "example": "STRING",
+                    "enum": [
+                      "STRING",
+                      "NUMBER",
+                      "BOOL",
+                      "DATE",
+                      "DATETIME",
+                      "ENUMERATION",
+                      "PHONE_NUMBER",
+                      "CURRENCY"
+                    ]
+                  },
+                  "fieldType": {
+                    "type": "string",
+                    "description": "The UI field type for input",
+                    "example": "TEXT",
+                    "enum": [
+                      "TEXT",
+                      "TEXTAREA",
+                      "NUMBER",
+                      "SELECT",
+                      "BOOLEANCHECKBOX",
+                      "DATE",
+                      "FILE"
+                    ]
+                  },
+                  "label": {
+                    "type": "string",
+                    "description": "Human-readable label for the field",
+                    "example": "Example Record"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description of the field",
+                    "example": "This is an example description."
+                  },
+                  "options": {
+                    "type": "array",
+                    "description": "Options for enumeration fields",
+                    "example": [
+                      {
+                        "label": "Example Record",
+                        "value": "example-value",
+                        "displayOrder": 100
+                      }
+                    ],
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "type"
+                ]
+              }
+            },
+            "required": [
+              "typeDefinition"
+            ]
+          }
+        },
+        "objectTypes": {
+          "type": "array",
+          "description": "CRM object types this action can operate on",
+          "example": [
+            "CONTACT"
+          ],
+          "items": {
+            "type": "string",
+            "enum": [
+              "CONTACT",
+              "COMPANY",
+              "DEAL",
+              "TICKET",
+              "QUOTE"
+            ]
+          }
+        },
+        "objectRequestOptions": {
+          "type": "object",
+          "description": "Options for requesting CRM object data",
+          "properties": {
+            "properties": {
+              "type": "array",
+              "description": "CRM properties to include in the action execution request",
+              "example": [
+                "example-value"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "published": {
+          "type": "boolean",
+          "description": "Whether the action is published and available for use",
+          "example": true
+        },
+        "functions": {
+          "type": "array",
+          "description": "Functions associated with this action",
+          "example": [
+            {
+              "functionType": "PRE_ACTION_EXECUTION",
+              "id": "500123"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "description": "A reference to a function associated with an action",
+            "properties": {
+              "functionType": {
+                "type": "string",
+                "description": "The type of function",
+                "example": "PRE_ACTION_EXECUTION",
+                "enum": [
+                  "PRE_ACTION_EXECUTION",
+                  "PRE_FETCH_OPTIONS",
+                  "POST_FETCH_OPTIONS",
+                  "POST_ACTION_EXECUTION"
+                ]
+              },
+              "id": {
+                "type": "string",
+                "description": "The unique identifier of the function",
+                "example": "500123"
+              }
+            },
+            "required": [
+              "functionType",
+              "id"
+            ]
+          }
+        }
+      },
+      "required": [
+        "id",
+        "revisionId",
+        "actionUrl",
+        "labels",
+        "objectTypes"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "description": "When the revision was created",
+      "format": "date-time",
+      "example": "2025-03-15T14:30:00Z"
+    }
+  },
+  "required": [
+    "revisionId",
+    "definition",
+    "createdAt"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ActionDefinitionRevision"
+}

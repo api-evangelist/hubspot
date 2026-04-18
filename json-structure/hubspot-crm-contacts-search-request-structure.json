@@ -1,0 +1,87 @@
+{
+  "type": "object",
+  "description": "A search request for CRM objects.",
+  "name": "SearchRequest",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A group of filters combined with AND logic.",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "A single filter condition.",
+              "properties": {
+                "propertyName": {
+                  "type": "string",
+                  "description": "The name of the property to filter on."
+                },
+                "operator": {
+                  "type": "string",
+                  "description": "The filter operator.",
+                  "enum": [
+                    "EQ",
+                    "NEQ",
+                    "LT",
+                    "LTE",
+                    "GT",
+                    "GTE",
+                    "BETWEEN",
+                    "IN",
+                    "NOT_IN",
+                    "HAS_PROPERTY",
+                    "NOT_HAS_PROPERTY",
+                    "CONTAINS_TOKEN",
+                    "NOT_CONTAINS_TOKEN"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "description": "The value to compare against."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "propertyName": {
+            "type": "string"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ]
+          }
+        }
+      }
+    },
+    "query": {
+      "type": "string",
+      "description": "Full-text search query string."
+    },
+    "properties": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limit": {
+      "type": "integer"
+    },
+    "after": {
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

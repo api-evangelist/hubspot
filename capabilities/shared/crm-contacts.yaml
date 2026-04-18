@@ -1,0 +1,352 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "HubSpot CRM Contacts"
+  description: "Manage contact records in HubSpot CRM including CRUD, batch, search, and association operations."
+  tags:
+    - HubSpot
+    - CRM
+    - Contacts
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: crm-contacts
+      baseUri: https://api.hubapi.com
+      description: "HubSpot CRM Contacts API for managing contact records."
+      authentication:
+        type: bearer
+        token: "{{HUBSPOT_ACCESS_TOKEN}}"
+      resources:
+        - name: contacts
+          path: /crm/v3/objects/contacts
+          description: "Contact records"
+          operations:
+            - name: list-contacts
+              method: GET
+              description: "List all contacts"
+              inputParameters:
+                - name: limit
+                  in: query
+                  type: integer
+                  required: false
+                  description: "Maximum results per page"
+                - name: after
+                  in: query
+                  type: string
+                  required: false
+                  description: "Pagination cursor"
+                - name: properties
+                  in: query
+                  type: string
+                  required: false
+                  description: "Comma-separated properties to return"
+                - name: archived
+                  in: query
+                  type: boolean
+                  required: false
+                  description: "Return archived contacts"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-contact
+              method: POST
+              description: "Create a contact"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  properties: "{{tools.properties}}"
+        - name: contact-by-id
+          path: /crm/v3/objects/contacts/{contactId}
+          description: "Individual contact"
+          operations:
+            - name: get-contact
+              method: GET
+              description: "Get a contact by ID"
+              inputParameters:
+                - name: contactId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Contact ID"
+                - name: properties
+                  in: query
+                  type: string
+                  required: false
+                  description: "Properties to return"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: update-contact
+              method: PATCH
+              description: "Update a contact"
+              inputParameters:
+                - name: contactId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Contact ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  properties: "{{tools.properties}}"
+            - name: archive-contact
+              method: DELETE
+              description: "Archive a contact"
+              inputParameters:
+                - name: contactId
+                  in: path
+                  type: string
+                  required: true
+                  description: "Contact ID"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: search
+          path: /crm/v3/objects/contacts/search
+          description: "Search contacts"
+          operations:
+            - name: search-contacts
+              method: POST
+              description: "Search contacts with filters"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  filterGroups: "{{tools.filterGroups}}"
+                  query: "{{tools.query}}"
+                  limit: "{{tools.limit}}"
+                  properties: "{{tools.properties}}"
+        - name: batch-read
+          path: /crm/v3/objects/contacts/batch/read
+          description: "Batch read contacts"
+          operations:
+            - name: batch-read-contacts
+              method: POST
+              description: "Read multiple contacts"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  inputs: "{{tools.inputs}}"
+                  properties: "{{tools.properties}}"
+        - name: batch-create
+          path: /crm/v3/objects/contacts/batch/create
+          description: "Batch create contacts"
+          operations:
+            - name: batch-create-contacts
+              method: POST
+              description: "Create multiple contacts"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  inputs: "{{tools.inputs}}"
+        - name: batch-archive
+          path: /crm/v3/objects/contacts/batch/archive
+          description: "Batch archive contacts"
+          operations:
+            - name: batch-archive-contacts
+              method: POST
+              description: "Archive multiple contacts"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+              body:
+                type: json
+                data:
+                  inputs: "{{tools.inputs}}"
+
+  exposes:
+    - type: rest
+      port: 8103
+      namespace: crm-contacts-api
+      resources:
+        - path: /v1/contacts
+          name: contacts
+          description: "Contact records"
+          operations:
+            - method: GET
+              name: list
+              description: "List contacts"
+              call: "crm-contacts.list-contacts"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create
+              description: "Create contact"
+              call: "crm-contacts.create-contact"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/contacts/{contactId}
+          name: contact-by-id
+          description: "Individual contact"
+          operations:
+            - method: GET
+              name: get
+              description: "Get contact"
+              call: "crm-contacts.get-contact"
+              with:
+                contactId: "rest.contactId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: PATCH
+              name: update
+              description: "Update contact"
+              call: "crm-contacts.update-contact"
+              with:
+                contactId: "rest.contactId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: DELETE
+              name: archive
+              description: "Archive contact"
+              call: "crm-contacts.archive-contact"
+              with:
+                contactId: "rest.contactId"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/contacts/search
+          name: search
+          description: "Search contacts"
+          operations:
+            - method: POST
+              name: search
+              description: "Search contacts"
+              call: "crm-contacts.search-contacts"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9103
+      namespace: crm-contacts-mcp
+      transport: http
+      tools:
+        - name: list-contacts
+          description: "List all contacts in HubSpot CRM"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-contacts.list-contacts"
+          with:
+            limit: "tools.limit"
+            after: "tools.after"
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: get-contact
+          description: "Retrieve a contact by ID"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-contacts.get-contact"
+          with:
+            contactId: "tools.contactId"
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-contact
+          description: "Create a new contact"
+          hints:
+            readOnly: false
+          call: "crm-contacts.create-contact"
+          with:
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: update-contact
+          description: "Update an existing contact"
+          hints:
+            readOnly: false
+            idempotent: true
+          call: "crm-contacts.update-contact"
+          with:
+            contactId: "tools.contactId"
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: archive-contact
+          description: "Archive a contact"
+          hints:
+            readOnly: false
+            destructive: true
+            idempotent: true
+          call: "crm-contacts.archive-contact"
+          with:
+            contactId: "tools.contactId"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: search-contacts
+          description: "Search contacts using filters"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-contacts.search-contacts"
+          with:
+            filterGroups: "tools.filterGroups"
+            query: "tools.query"
+            limit: "tools.limit"
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: batch-read-contacts
+          description: "Read multiple contacts by IDs"
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "crm-contacts.batch-read-contacts"
+          with:
+            inputs: "tools.inputs"
+            properties: "tools.properties"
+          outputParameters:
+            - type: object
+              mapping: "$."

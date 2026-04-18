@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-subscriptions-api-subscription-structure.json",
+  "name": "Subscription",
+  "description": "A HubSpot commerce subscription record.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for the subscription.",
+      "example": "500123"
+    },
+    "properties": {
+      "type": "object",
+      "description": "The subscription's properties as key-value pairs.",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "createdAt": {
+      "type": "datetime",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "updatedAt": {
+      "type": "datetime",
+      "example": "2025-03-15T14:30:00Z"
+    },
+    "archived": {
+      "type": "boolean",
+      "example": true
+    },
+    "associations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Association"
+            },
+            "example": [
+              {
+                "id": "500123",
+                "type": "standard"
+              }
+            ]
+          },
+          "paging": {
+            "$ref": "#/components/schemas/Paging"
+          }
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    }
+  }
+}

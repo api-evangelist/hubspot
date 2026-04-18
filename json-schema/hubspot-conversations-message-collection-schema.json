@@ -1,0 +1,302 @@
+{
+  "type": "object",
+  "description": "Paginated collection of messages",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "Array of message records",
+      "example": [
+        {
+          "id": "msg_123456",
+          "type": "MESSAGE",
+          "text": "Hello, I need help with my order.",
+          "richText": "<p>Hello, I need help with my order.</p>",
+          "direction": "INCOMING",
+          "channelId": "channel_789",
+          "channelAccountId": "account_123",
+          "senders": [
+            {
+              "id": "actor_101",
+              "actorId": "actor_101",
+              "name": "John Customer",
+              "email": "john@example.com",
+              "type": "VISITOR"
+            }
+          ],
+          "recipients": [
+            {
+              "id": "actor_101",
+              "actorId": "actor_101",
+              "name": "John Customer",
+              "email": "john@example.com",
+              "type": "VISITOR"
+            }
+          ],
+          "status": {},
+          "createdAt": "2024-01-20T10:30:00Z",
+          "truncationStatus": "NOT_TRUNCATED",
+          "attachments": [
+            {
+              "id": "attach_001",
+              "type": "application/pdf",
+              "url": "https://api.hubapi.com/files/v3/files/attach_001",
+              "filename": "invoice.pdf",
+              "size": 102400
+            }
+          ]
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Represents a message within a conversation thread.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the message",
+            "example": "msg_123456"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of message",
+            "example": "MESSAGE",
+            "enum": [
+              "MESSAGE",
+              "COMMENT",
+              "WELCOME_MESSAGE"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "description": "Plain text content of the message",
+            "example": "Hello, I need help with my order."
+          },
+          "richText": {
+            "type": "string",
+            "description": "Rich text (HTML) content of the message",
+            "example": "<p>Hello, I need help with my order.</p>"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Direction of the message (incoming or outgoing)",
+            "example": "INCOMING",
+            "enum": [
+              "INCOMING",
+              "OUTGOING"
+            ]
+          },
+          "channelId": {
+            "type": "string",
+            "description": "ID of the communication channel",
+            "example": "channel_789"
+          },
+          "channelAccountId": {
+            "type": "string",
+            "description": "ID of the channel account",
+            "example": "account_123"
+          },
+          "senders": {
+            "type": "array",
+            "description": "List of message senders",
+            "example": [
+              {
+                "id": "actor_101",
+                "actorId": "actor_101",
+                "name": "John Customer",
+                "email": "john@example.com",
+                "type": "VISITOR"
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Represents a participant in a conversation (visitor, agent, or bot).",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the actor",
+                  "example": "actor_101"
+                },
+                "actorId": {
+                  "type": "string",
+                  "description": "Actor ID reference",
+                  "example": "actor_101"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Display name of the actor",
+                  "example": "John Customer"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email address of the actor",
+                  "format": "email",
+                  "example": "john@example.com"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of actor (e.g., VISITOR, AGENT, BOT)",
+                  "example": "VISITOR"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          },
+          "recipients": {
+            "type": "array",
+            "description": "List of message recipients",
+            "example": [
+              {
+                "id": "actor_101",
+                "actorId": "actor_101",
+                "name": "John Customer",
+                "email": "john@example.com",
+                "type": "VISITOR"
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Represents a participant in a conversation (visitor, agent, or bot).",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the actor",
+                  "example": "actor_101"
+                },
+                "actorId": {
+                  "type": "string",
+                  "description": "Actor ID reference",
+                  "example": "actor_101"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Display name of the actor",
+                  "example": "John Customer"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email address of the actor",
+                  "format": "email",
+                  "example": "john@example.com"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of actor (e.g., VISITOR, AGENT, BOT)",
+                  "example": "VISITOR"
+                }
+              },
+              "required": [
+                "id"
+              ]
+            }
+          },
+          "status": {
+            "type": "object",
+            "description": "Delivery status information for a message",
+            "properties": {
+              "statusType": {
+                "type": "string",
+                "description": "Current delivery status type",
+                "example": "DELIVERED",
+                "enum": [
+                  "SENT",
+                  "DELIVERED",
+                  "READ",
+                  "FAILED"
+                ]
+              }
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "ISO 8601 timestamp when the message was created",
+            "format": "date-time",
+            "example": "2024-01-20T10:30:00Z"
+          },
+          "truncationStatus": {
+            "type": "string",
+            "description": "Whether the message was truncated",
+            "example": "NOT_TRUNCATED"
+          },
+          "attachments": {
+            "type": "array",
+            "description": "Message attachments",
+            "example": [
+              {
+                "id": "attach_001",
+                "type": "application/pdf",
+                "url": "https://api.hubapi.com/files/v3/files/attach_001",
+                "filename": "invoice.pdf",
+                "size": 102400
+              }
+            ],
+            "items": {
+              "type": "object",
+              "description": "Represents a file attachment on a message.",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the attachment",
+                  "example": "attach_001"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "MIME type of the attachment",
+                  "example": "application/pdf"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "URL to access the attachment",
+                  "format": "uri",
+                  "example": "https://api.hubapi.com/files/v3/files/attach_001"
+                },
+                "filename": {
+                  "type": "string",
+                  "description": "Original filename",
+                  "example": "invoice.pdf"
+                },
+                "size": {
+                  "type": "integer",
+                  "description": "File size in bytes",
+                  "example": 102400
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "createdAt"
+        ]
+      }
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor information for retrieving the next page.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "NTI1Cg%3D%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page",
+              "example": "/conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MessageCollection"
+}

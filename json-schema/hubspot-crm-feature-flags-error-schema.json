@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "description": "Represents an error response from the API",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "Unique identifier for the request, useful for debugging",
+      "format": "uuid",
+      "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message",
+      "example": "Invalid input JSON"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "More specific error classification",
+      "example": "INVALID_PARAMETER"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Helpful links related to the error",
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of detailed error information",
+      "example": [
+        {
+          "message": "flagState is required",
+          "code": "REQUIRED_FIELD",
+          "subCategory": "MISSING_FIELD",
+          "in": "body",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information for specific validation failures",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Specific error message",
+            "example": "flagState is required"
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "REQUIRED_FIELD"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error sub-category",
+            "example": "MISSING_FIELD"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location of the error (e.g., path, body, query)",
+            "example": "body"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context for the error",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

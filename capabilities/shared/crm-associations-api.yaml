@@ -1,0 +1,202 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Associations API
+  description: "The HubSpot CRM Associations API enables you to manage relationships between CRM objects.\n\n## Overview\nAssociations represent the connections between different CRM records in HubSpot.
+    This API allows "
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: crm-associations-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot CRM Associations API enables you to manage relationships between CRM objects.\n\n## Overview\nAssociations represent the connections between different CRM records in HubSpot.
+      This API allows "
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listobjectassociations
+        method: GET
+        description: HubSpot List Associations for an Object
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createobjectassociation
+        method: PUT
+        description: HubSpot Create an Association Between Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectType}'
+      path: /{toObjectType}
+      description: '{toObjectType} operations'
+      operations:
+      - name: deleteobjectassociation
+        method: DELETE
+        description: HubSpot Delete an Association Between Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadassociations
+        method: POST
+        description: HubSpot Batch Read Associations for Multiple Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateassociations
+        method: POST
+        description: HubSpot Batch Create Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchiveassociations
+        method: POST
+        description: HubSpot Batch Archive Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: labels
+      path: /labels
+      description: labels operations
+      operations:
+      - name: listassociationlabels
+        method: GET
+        description: HubSpot List Association Labels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createassociationlabel
+        method: POST
+        description: HubSpot Create an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateassociationlabel
+        method: PUT
+        description: HubSpot Update an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteassociationlabel
+        method: DELETE
+        description: HubSpot Delete an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: definitions
+      path: /definitions
+      description: definitions operations
+      operations:
+      - name: listassociationdefinitions
+        method: GET
+        description: HubSpot List All Association Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9108
+    namespace: crm-associations-api-mcp
+    transport: http
+    tools:
+    - name: listobjectassociations
+      description: HubSpot List Associations for an Object
+      hints:
+        readOnly: true
+      call: crm-associations-api.listobjectassociations
+    - name: createobjectassociation
+      description: HubSpot Create an Association Between Objects
+      hints:
+        readOnly: false
+      call: crm-associations-api.createobjectassociation
+    - name: deleteobjectassociation
+      description: HubSpot Delete an Association Between Objects
+      hints:
+        destructive: true
+      call: crm-associations-api.deleteobjectassociation
+    - name: batchreadassociations
+      description: HubSpot Batch Read Associations for Multiple Objects
+      hints:
+        readOnly: false
+      call: crm-associations-api.batchreadassociations
+    - name: batchcreateassociations
+      description: HubSpot Batch Create Associations
+      hints:
+        readOnly: false
+      call: crm-associations-api.batchcreateassociations
+    - name: batcharchiveassociations
+      description: HubSpot Batch Archive Associations
+      hints:
+        readOnly: false
+      call: crm-associations-api.batcharchiveassociations
+    - name: listassociationlabels
+      description: HubSpot List Association Labels
+      hints:
+        readOnly: true
+      call: crm-associations-api.listassociationlabels
+    - name: createassociationlabel
+      description: HubSpot Create an Association Label
+      hints:
+        readOnly: false
+      call: crm-associations-api.createassociationlabel
+    - name: updateassociationlabel
+      description: HubSpot Update an Association Label
+      hints:
+        readOnly: false
+      call: crm-associations-api.updateassociationlabel
+    - name: deleteassociationlabel
+      description: HubSpot Delete an Association Label
+      hints:
+        destructive: true
+      call: crm-associations-api.deleteassociationlabel
+    - name: listassociationdefinitions
+      description: HubSpot List All Association Definitions
+      hints:
+        readOnly: true
+      call: crm-associations-api.listassociationdefinitions

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/commerce-payments-api-commerce-payment-collection-schema.json",
+  "title": "CommercePaymentCollection",
+  "description": "A paginated collection of commerce payments",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "description": "The list of commerce payments",
+      "items": {
+        "type": "object",
+        "description": "A commerce payment object representing a payment transaction",
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the commerce payment",
+            "example": "500123"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties of the commerce payment",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the commerce payment was created",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the commerce payment was last updated",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the commerce payment is archived",
+            "example": true
+          },
+          "archivedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the commerce payment was archived",
+            "example": "2025-03-15T14:30:00Z"
+          },
+          "associations": {
+            "type": "object",
+            "description": "Associated objects",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AssociationResult"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their value history",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/PropertyHistory"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123",
+          "properties": {
+            "key": "value"
+          },
+          "createdAt": "2025-03-15T14:30:00Z",
+          "updatedAt": "2025-03-15T14:30:00Z",
+          "archived": true,
+          "archivedAt": "2025-03-15T14:30:00Z",
+          "associations": {
+            "key": "value"
+          },
+          "propertiesWithHistory": {
+            "key": "value"
+          }
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information",
+      "properties": {
+        "next": {
+          "type": "object",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor for the next page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the next page"
+            }
+          },
+          "example": {
+            "after": "example-value",
+            "link": "https://app.hubspot.com/contacts/12345"
+          }
+        },
+        "prev": {
+          "type": "object",
+          "properties": {
+            "before": {
+              "type": "string",
+              "description": "Cursor for the previous page"
+            },
+            "link": {
+              "type": "string",
+              "description": "Link to the previous page"
+            }
+          },
+          "example": {
+            "before": "example-value",
+            "link": "https://app.hubspot.com/contacts/12345"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

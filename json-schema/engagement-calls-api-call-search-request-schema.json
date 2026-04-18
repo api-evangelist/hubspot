@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/engagement-calls-api-call-search-request-schema.json",
+  "title": "CallSearchRequest",
+  "description": "Request body for searching calls",
+  "type": "object",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "description": "Filter groups for the search (OR logic between groups)",
+      "items": {
+        "type": "object",
+        "description": "A group of filters (AND logic within group)",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "description": "The filters in this group",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "example": [
+              {
+                "propertyName": "hs_call_direction",
+                "operator": "EQ",
+                "value": "OUTBOUND",
+                "values": [
+                  {}
+                ],
+                "highValue": "example-value"
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "filters": [
+            {}
+          ]
+        }
+      ]
+    },
+    "sorts": {
+      "type": "array",
+      "description": "Sort order for results",
+      "items": {
+        "type": "object",
+        "description": "Sort option for search results",
+        "required": [
+          "propertyName"
+        ],
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to sort by",
+            "example": "hs_timestamp"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ],
+            "description": "Sort direction",
+            "default": "DESCENDING",
+            "example": "DESCENDING"
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "hs_timestamp",
+          "direction": "DESCENDING"
+        }
+      ]
+    },
+    "query": {
+      "type": "string",
+      "description": "Full-text search query",
+      "example": "discovery"
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum results to return",
+      "default": 10,
+      "maximum": 100,
+      "example": 10
+    },
+    "after": {
+      "type": "string",
+      "description": "Pagination cursor",
+      "example": "example-value"
+    }
+  }
+}

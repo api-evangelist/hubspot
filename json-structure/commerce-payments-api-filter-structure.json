@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-payments-api-filter-structure.json",
+  "name": "Filter",
+  "description": "A single filter criterion",
+  "type": "object",
+  "properties": {
+    "propertyName": {
+      "type": "string",
+      "description": "The property to filter on",
+      "example": "Example Record"
+    },
+    "operator": {
+      "type": "string",
+      "enum": [
+        "EQ",
+        "NEQ",
+        "LT",
+        "LTE",
+        "GT",
+        "GTE",
+        "BETWEEN",
+        "IN",
+        "NOT_IN",
+        "HAS_PROPERTY",
+        "NOT_HAS_PROPERTY",
+        "CONTAINS_TOKEN",
+        "NOT_CONTAINS_TOKEN"
+      ],
+      "description": "The comparison operator",
+      "example": "EQ"
+    },
+    "value": {
+      "type": "string",
+      "description": "The value to compare against",
+      "example": "example-value"
+    },
+    "values": {
+      "type": "array",
+      "description": "Values for IN/NOT_IN operators",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "highValue": {
+      "type": "string",
+      "description": "Upper bound for BETWEEN operator",
+      "example": "example-value"
+    }
+  },
+  "required": [
+    "propertyName",
+    "operator"
+  ]
+}

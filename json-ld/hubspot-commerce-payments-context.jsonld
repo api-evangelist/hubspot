@@ -1,0 +1,410 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "schema": "https://schema.org/",
+    "CommercePayment": {
+      "@id": "ns:CommercePayment",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "properties": "ns:properties",
+        "createdAt": {
+          "@id": "ns:createdAt",
+          "@type": "xsd:string"
+        },
+        "updatedAt": {
+          "@id": "ns:updatedAt",
+          "@type": "xsd:string"
+        },
+        "archived": {
+          "@id": "ns:archived",
+          "@type": "xsd:boolean"
+        },
+        "archivedAt": {
+          "@id": "ns:archivedAt",
+          "@type": "xsd:string"
+        },
+        "associations": "ns:associations",
+        "propertiesWithHistory": "ns:propertiesWithHistory"
+      }
+    },
+    "CommercePaymentInput": {
+      "@id": "ns:CommercePaymentInput",
+      "@context": {
+        "properties": "ns:properties",
+        "associations": "ns:associations"
+      }
+    },
+    "CommercePaymentPatch": {
+      "@id": "ns:CommercePaymentPatch",
+      "@context": {
+        "properties": "ns:properties"
+      }
+    },
+    "CommercePaymentCollection": {
+      "@id": "ns:CommercePaymentCollection",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchReadRequest": {
+      "@id": "ns:BatchReadRequest",
+      "@context": {
+        "inputs": "ns:inputs",
+        "properties": "ns:properties",
+        "propertiesWithHistory": "ns:propertiesWithHistory",
+        "idProperty": {
+          "@id": "ns:idProperty",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchReadInputItem": {
+      "@id": "ns:BatchReadInputItem",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchReadResponse": {
+      "@id": "ns:BatchReadResponse",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "results": "ns:results",
+        "requestedAt": {
+          "@id": "ns:requestedAt",
+          "@type": "xsd:string"
+        },
+        "startedAt": {
+          "@id": "ns:startedAt",
+          "@type": "xsd:string"
+        },
+        "completedAt": {
+          "@id": "ns:completedAt",
+          "@type": "xsd:string"
+        },
+        "numErrors": {
+          "@id": "ns:numErrors",
+          "@type": "xsd:integer"
+        },
+        "errors": "ns:errors",
+        "links": "ns:links"
+      }
+    },
+    "BatchArchiveRequest": {
+      "@id": "ns:BatchArchiveRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "BatchCreateRequest": {
+      "@id": "ns:BatchCreateRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "BatchCreateResponse": {
+      "@id": "ns:BatchCreateResponse",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "results": "ns:results",
+        "requestedAt": {
+          "@id": "ns:requestedAt",
+          "@type": "xsd:string"
+        },
+        "startedAt": {
+          "@id": "ns:startedAt",
+          "@type": "xsd:string"
+        },
+        "completedAt": {
+          "@id": "ns:completedAt",
+          "@type": "xsd:string"
+        },
+        "numErrors": {
+          "@id": "ns:numErrors",
+          "@type": "xsd:integer"
+        },
+        "errors": "ns:errors",
+        "links": "ns:links"
+      }
+    },
+    "BatchUpdateRequest": {
+      "@id": "ns:BatchUpdateRequest",
+      "@context": {
+        "inputs": "ns:inputs"
+      }
+    },
+    "BatchUpdateInputItem": {
+      "@id": "ns:BatchUpdateInputItem",
+      "@context": {
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "properties": "ns:properties",
+        "idProperty": {
+          "@id": "ns:idProperty",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "BatchUpdateResponse": {
+      "@id": "ns:BatchUpdateResponse",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "results": "ns:results",
+        "requestedAt": {
+          "@id": "ns:requestedAt",
+          "@type": "xsd:string"
+        },
+        "startedAt": {
+          "@id": "ns:startedAt",
+          "@type": "xsd:string"
+        },
+        "completedAt": {
+          "@id": "ns:completedAt",
+          "@type": "xsd:string"
+        },
+        "numErrors": {
+          "@id": "ns:numErrors",
+          "@type": "xsd:integer"
+        },
+        "errors": "ns:errors",
+        "links": "ns:links"
+      }
+    },
+    "SearchRequest": {
+      "@id": "ns:SearchRequest",
+      "@context": {
+        "query": {
+          "@id": "ns:query",
+          "@type": "xsd:string"
+        },
+        "limit": {
+          "@id": "ns:limit",
+          "@type": "xsd:integer"
+        },
+        "after": {
+          "@id": "ns:after",
+          "@type": "xsd:string"
+        },
+        "sorts": "ns:sorts",
+        "properties": "ns:properties",
+        "filterGroups": "ns:filterGroups"
+      }
+    },
+    "SearchResponse": {
+      "@id": "ns:SearchResponse",
+      "@context": {
+        "total": {
+          "@id": "ns:total",
+          "@type": "xsd:integer"
+        },
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "FilterGroup": {
+      "@id": "ns:FilterGroup",
+      "@context": {
+        "filters": "ns:filters"
+      }
+    },
+    "Filter": {
+      "@id": "ns:Filter",
+      "@context": {
+        "propertyName": {
+          "@id": "ns:propertyName",
+          "@type": "xsd:string"
+        },
+        "operator": {
+          "@id": "ns:operator",
+          "@type": "xsd:string"
+        },
+        "value": {
+          "@id": "ns:value",
+          "@type": "xsd:string"
+        },
+        "values": "ns:values",
+        "highValue": {
+          "@id": "ns:highValue",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "SortOption": {
+      "@id": "ns:SortOption",
+      "@context": {
+        "propertyName": {
+          "@id": "ns:propertyName",
+          "@type": "xsd:string"
+        },
+        "direction": {
+          "@id": "ns:direction",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "AssociationInput": {
+      "@id": "ns:AssociationInput",
+      "@context": {
+        "to": "ns:to",
+        "types": "ns:types"
+      }
+    },
+    "AssociationType": {
+      "@id": "ns:AssociationType",
+      "@context": {
+        "associationCategory": {
+          "@id": "ns:associationCategory",
+          "@type": "xsd:string"
+        },
+        "associationTypeId": {
+          "@id": "ns:associationTypeId",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "AssociationResult": {
+      "@id": "ns:AssociationResult",
+      "@context": {
+        "results": "ns:results",
+        "paging": {
+          "@id": "ns:paging",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "PropertyHistory": {
+      "@id": "ns:PropertyHistory",
+      "@context": {
+        "value": {
+          "@id": "ns:value",
+          "@type": "xsd:string"
+        },
+        "timestamp": {
+          "@id": "ns:timestamp",
+          "@type": "xsd:string"
+        },
+        "sourceType": {
+          "@id": "ns:sourceType",
+          "@type": "xsd:string"
+        },
+        "sourceId": {
+          "@id": "ns:sourceId",
+          "@type": "xsd:string"
+        },
+        "sourceLabel": {
+          "@id": "ns:sourceLabel",
+          "@type": "xsd:string"
+        },
+        "updatedByUserId": {
+          "@id": "ns:updatedByUserId",
+          "@type": "xsd:integer"
+        }
+      }
+    },
+    "Paging": {
+      "@id": "ns:Paging",
+      "@context": {
+        "next": "ns:next",
+        "prev": "ns:prev"
+      }
+    },
+    "BatchError": {
+      "@id": "ns:BatchError",
+      "@context": {
+        "status": {
+          "@id": "ns:status",
+          "@type": "xsd:string"
+        },
+        "id": {
+          "@id": "ns:id",
+          "@type": "xsd:string"
+        },
+        "category": {
+          "@id": "ns:category",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "errors": "ns:errors",
+        "context": "ns:context",
+        "links": "ns:links",
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        }
+      }
+    },
+    "Error": {
+      "@id": "ns:Error",
+      "@context": {
+        "category": {
+          "@id": "ns:category",
+          "@type": "xsd:string"
+        },
+        "correlationId": {
+          "@id": "ns:correlationId",
+          "@type": "xsd:string"
+        },
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "errors": "ns:errors",
+        "context": "ns:context",
+        "links": "ns:links"
+      }
+    },
+    "ErrorDetail": {
+      "@id": "ns:ErrorDetail",
+      "@context": {
+        "message": {
+          "@id": "ns:message",
+          "@type": "xsd:string"
+        },
+        "code": {
+          "@id": "ns:code",
+          "@type": "xsd:string"
+        },
+        "in": {
+          "@id": "ns:in",
+          "@type": "xsd:string"
+        },
+        "subCategory": {
+          "@id": "ns:subCategory",
+          "@type": "xsd:string"
+        },
+        "context": "ns:context"
+      }
+    }
+  }
+}

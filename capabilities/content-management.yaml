@@ -1,0 +1,351 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Content Management
+  description: Content creation and management workflow for blog posts, authors, pages, domains, and source code.
+  tags:
+  - HubSpot
+  - CMS
+  - Content
+  - Blogs
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - import: blog-posts-api
+    location: ./shared/blog-posts-api.yaml
+  - import: authors-api
+    location: ./shared/authors-api.yaml
+  - import: cms-pages-api
+    location: ./shared/cms-pages-api.yaml
+  - import: cms-hubdb-api
+    location: ./shared/cms-hubdb-api.yaml
+  - import: domains-api
+    location: ./shared/domains-api.yaml
+  - import: source-code-api
+    location: ./shared/source-code-api.yaml
+  exposes:
+  - type: mcp
+    port: 9091
+    namespace: content-management-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot Content Management.
+    tools:
+    - name: listblogposts
+      description: HubSpot List All Blog Posts
+      hints:
+        readOnly: true
+      call: blog-posts-api.listblogposts
+    - name: createblogpost
+      description: HubSpot Create a Blog Post
+      hints:
+        readOnly: false
+      call: blog-posts-api.createblogpost
+    - name: getblogpostbyid
+      description: HubSpot Retrieve a Blog Post
+      hints:
+        readOnly: true
+      call: blog-posts-api.getblogpostbyid
+    - name: updateblogpost
+      description: HubSpot Update a Blog Post
+      hints:
+        readOnly: false
+      call: blog-posts-api.updateblogpost
+    - name: archiveblogpost
+      description: HubSpot Archive a Blog Post
+      hints:
+        destructive: true
+      call: blog-posts-api.archiveblogpost
+    - name: scheduleblogpost
+      description: HubSpot Schedule a Blog Post
+      hints:
+        readOnly: false
+      call: blog-posts-api.scheduleblogpost
+    - name: cloneblogpost
+      description: HubSpot Clone a Blog Post
+      hints:
+        readOnly: false
+      call: blog-posts-api.cloneblogpost
+    - name: pushblogpostdraftlive
+      description: HubSpot Push Draft to Live
+      hints:
+        readOnly: false
+      call: blog-posts-api.pushblogpostdraftlive
+    - name: resetblogpostdraft
+      description: HubSpot Reset Draft to Live Version
+      hints:
+        readOnly: false
+      call: blog-posts-api.resetblogpostdraft
+    - name: getblogpostrevisions
+      description: HubSpot Get Revision History
+      hints:
+        readOnly: true
+      call: blog-posts-api.getblogpostrevisions
+    - name: restoreblogpostrevision
+      description: HubSpot Restore a Previous Version
+      hints:
+        readOnly: false
+      call: blog-posts-api.restoreblogpostrevision
+    - name: batchreadblogposts
+      description: HubSpot Read Multiple Blog Posts
+      hints:
+        readOnly: false
+      call: blog-posts-api.batchreadblogposts
+    - name: batchcreateblogposts
+      description: HubSpot Create Multiple Blog Posts
+      hints:
+        readOnly: false
+      call: blog-posts-api.batchcreateblogposts
+    - name: batchupdateblogposts
+      description: HubSpot Update Multiple Blog Posts
+      hints:
+        readOnly: false
+      call: blog-posts-api.batchupdateblogposts
+    - name: batcharchiveblogposts
+      description: HubSpot Archive Multiple Blog Posts
+      hints:
+        readOnly: false
+      call: blog-posts-api.batcharchiveblogposts
+    - name: detachblogpostfromlanguagegroup
+      description: HubSpot Detach Post from Language Group
+      hints:
+        readOnly: false
+      call: blog-posts-api.detachblogpostfromlanguagegroup
+    - name: setblogpostlanguageprimary
+      description: HubSpot Set New Primary Language
+      hints:
+        readOnly: false
+      call: blog-posts-api.setblogpostlanguageprimary
+    - name: attachblogposttolanguagegroup
+      description: HubSpot Attach Post to Language Group
+      hints:
+        readOnly: false
+      call: blog-posts-api.attachblogposttolanguagegroup
+    - name: createblogpostlanguagevariation
+      description: HubSpot Create Language Variation
+      hints:
+        readOnly: false
+      call: blog-posts-api.createblogpostlanguagevariation
+    - name: listblogauthors
+      description: HubSpot List All Blog Authors
+      hints:
+        readOnly: true
+      call: authors-api.listblogauthors
+    - name: createblogauthor
+      description: HubSpot Create a Blog Author
+      hints:
+        readOnly: false
+      call: authors-api.createblogauthor
+    - name: getblogauthorbyid
+      description: HubSpot Retrieve a Blog Author
+      hints:
+        readOnly: true
+      call: authors-api.getblogauthorbyid
+    - name: updateblogauthor
+      description: HubSpot Update a Blog Author
+      hints:
+        readOnly: false
+      call: authors-api.updateblogauthor
+    - name: archiveblogauthor
+      description: HubSpot Archive a Blog Author
+      hints:
+        destructive: true
+      call: authors-api.archiveblogauthor
+    - name: batchreadblogauthors
+      description: HubSpot Read Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchreadblogauthors
+    - name: batchcreateblogauthors
+      description: HubSpot Create Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchcreateblogauthors
+    - name: batchupdateblogauthors
+      description: HubSpot Update Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batchupdateblogauthors
+    - name: batcharchiveblogauthors
+      description: HubSpot Archive Multiple Blog Authors
+      hints:
+        readOnly: false
+      call: authors-api.batcharchiveblogauthors
+    - name: detachblogauthorfromlanguagegroup
+      description: HubSpot Detach Author from Language Group
+      hints:
+        readOnly: false
+      call: authors-api.detachblogauthorfromlanguagegroup
+    - name: setnewblogauthorlanguageprimary
+      description: HubSpot Set New Primary Language
+      hints:
+        readOnly: false
+      call: authors-api.setnewblogauthorlanguageprimary
+    - name: attachblogauthortolanguagegroup
+      description: HubSpot Attach Author to Language Group
+      hints:
+        readOnly: false
+      call: authors-api.attachblogauthortolanguagegroup
+    - name: createblogauthorlanguagevariation
+      description: HubSpot Create Language Variation
+      hints:
+        readOnly: false
+      call: authors-api.createblogauthorlanguagevariation
+    - name: listsitepages
+      description: HubSpot List Site Pages
+      hints:
+        readOnly: true
+      call: cms-pages-api.listsitepages
+    - name: createsitepage
+      description: HubSpot Create a Site Page
+      hints:
+        readOnly: false
+      call: cms-pages-api.createsitepage
+    - name: getsitepage
+      description: HubSpot Get a Site Page
+      hints:
+        readOnly: true
+      call: cms-pages-api.getsitepage
+    - name: updatesitepage
+      description: HubSpot Update a Site Page
+      hints:
+        readOnly: false
+      call: cms-pages-api.updatesitepage
+    - name: deletesitepage
+      description: HubSpot Delete a Site Page
+      hints:
+        destructive: true
+      call: cms-pages-api.deletesitepage
+    - name: publishsitepage
+      description: HubSpot Publish a Site Page
+      hints:
+        readOnly: false
+      call: cms-pages-api.publishsitepage
+    - name: listlandingpages
+      description: HubSpot List Landing Pages
+      hints:
+        readOnly: true
+      call: cms-pages-api.listlandingpages
+    - name: createlandingpage
+      description: HubSpot Create a Landing Page
+      hints:
+        readOnly: false
+      call: cms-pages-api.createlandingpage
+    - name: getlandingpage
+      description: HubSpot Get a Landing Page
+      hints:
+        readOnly: true
+      call: cms-pages-api.getlandingpage
+    - name: deletelandingpage
+      description: HubSpot Delete a Landing Page
+      hints:
+        destructive: true
+      call: cms-pages-api.deletelandingpage
+    - name: listhubdbtables
+      description: HubSpot List HubDB Tables
+      hints:
+        readOnly: true
+      call: cms-hubdb-api.listhubdbtables
+    - name: createhubdbtable
+      description: HubSpot Create a HubDB Table
+      hints:
+        readOnly: false
+      call: cms-hubdb-api.createhubdbtable
+    - name: gethubdbtable
+      description: HubSpot Get a HubDB Table
+      hints:
+        readOnly: true
+      call: cms-hubdb-api.gethubdbtable
+    - name: updatehubdbtable
+      description: HubSpot Update a HubDB Table
+      hints:
+        readOnly: false
+      call: cms-hubdb-api.updatehubdbtable
+    - name: deletehubdbtable
+      description: HubSpot Delete a HubDB Table
+      hints:
+        destructive: true
+      call: cms-hubdb-api.deletehubdbtable
+    - name: listhubdbtablerows
+      description: HubSpot List HubDB Table Rows
+      hints:
+        readOnly: true
+      call: cms-hubdb-api.listhubdbtablerows
+    - name: addhubdbtablerow
+      description: HubSpot Add a Row to a HubDB Table
+      hints:
+        readOnly: false
+      call: cms-hubdb-api.addhubdbtablerow
+    - name: gethubdbtablerow
+      description: HubSpot Get a HubDB Table Row
+      hints:
+        readOnly: true
+      call: cms-hubdb-api.gethubdbtablerow
+    - name: updatehubdbtablerow
+      description: HubSpot Update a HubDB Table Row
+      hints:
+        readOnly: false
+      call: cms-hubdb-api.updatehubdbtablerow
+    - name: deletehubdbtablerow
+      description: HubSpot Delete a HubDB Table Row
+      hints:
+        destructive: true
+      call: cms-hubdb-api.deletehubdbtablerow
+    - name: publishhubdbtabledraft
+      description: HubSpot Publish HubDB Table Draft
+      hints:
+        readOnly: false
+      call: cms-hubdb-api.publishhubdbtabledraft
+    - name: listdomains
+      description: HubSpot List All Domains
+      hints:
+        readOnly: true
+      call: domains-api.listdomains
+    - name: getdomainbyid
+      description: HubSpot Get a Domain by ID
+      hints:
+        readOnly: true
+      call: domains-api.getdomainbyid
+    - name: downloadsourcecodefile
+      description: HubSpot Download a Source Code File
+      hints:
+        readOnly: true
+      call: source-code-api.downloadsourcecodefile
+    - name: createsourcecodefile
+      description: HubSpot Create a New Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.createsourcecodefile
+    - name: upsertsourcecodefile
+      description: HubSpot Create or Update a Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.upsertsourcecodefile
+    - name: deletesourcecodefile
+      description: HubSpot Delete a Source Code File
+      hints:
+        destructive: true
+      call: source-code-api.deletesourcecodefile
+    - name: getsourcecodemetadata
+      description: HubSpot Retrieve File or Folder Metadata
+      hints:
+        readOnly: true
+      call: source-code-api.getsourcecodemetadata
+    - name: validatesourcecodefile
+      description: HubSpot Validate a Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.validatesourcecodefile
+    - name: extractzipfileasync
+      description: HubSpot Extract a Zip Archive
+      hints:
+        readOnly: false
+      call: source-code-api.extractzipfileasync
+    - name: getextractiontaskstatus
+      description: HubSpot Get Extraction Task Status
+      hints:
+        readOnly: true
+      call: source-code-api.getextractiontaskstatus

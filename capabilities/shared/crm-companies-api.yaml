@@ -1,0 +1,232 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Companies API
+  description: Company records store data about businesses and organizations. The companies endpoints allow you to manage this data and sync it between HubSpot and other systems, including creating, 
+    retrieving, upda
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: crm-companies-api
+    baseUri: https://api.hubapi.com
+    description: Company records store data about businesses and organizations. The companies endpoints allow you to manage this data and sync it between HubSpot and other systems, including creating,
+      retrieving, upda
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: companies
+      path: /companies
+      description: companies operations
+      operations:
+      - name: listcompanies
+        method: GET
+        description: HubSpot List Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcompany
+        method: POST
+        description: HubSpot Create a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcompany
+        method: GET
+        description: HubSpot Get a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecompany
+        method: PATCH
+        description: HubSpot Update a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecompany
+        method: DELETE
+        description: HubSpot Archive a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcompanies
+        method: POST
+        description: HubSpot Batch Read Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecompanies
+        method: POST
+        description: HubSpot Batch Create Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecompanies
+        method: POST
+        description: HubSpot Batch Update Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecompanies
+        method: POST
+        description: HubSpot Batch Archive Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcompanies
+        method: POST
+        description: HubSpot Search Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listcompanyassociations
+        method: GET
+        description: HubSpot List Company Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createcompanyassociation
+        method: PUT
+        description: HubSpot Create a Company Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecompanyassociation
+        method: DELETE
+        description: HubSpot Delete a Company Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9109
+    namespace: crm-companies-api-mcp
+    transport: http
+    tools:
+    - name: listcompanies
+      description: HubSpot List Companies
+      hints:
+        readOnly: true
+      call: crm-companies-api.listcompanies
+    - name: createcompany
+      description: HubSpot Create a Company
+      hints:
+        readOnly: false
+      call: crm-companies-api.createcompany
+    - name: getcompany
+      description: HubSpot Get a Company
+      hints:
+        readOnly: true
+      call: crm-companies-api.getcompany
+    - name: updatecompany
+      description: HubSpot Update a Company
+      hints:
+        readOnly: false
+      call: crm-companies-api.updatecompany
+    - name: deletecompany
+      description: HubSpot Archive a Company
+      hints:
+        destructive: true
+      call: crm-companies-api.deletecompany
+    - name: batchreadcompanies
+      description: HubSpot Batch Read Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchreadcompanies
+    - name: batchcreatecompanies
+      description: HubSpot Batch Create Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchcreatecompanies
+    - name: batchupdatecompanies
+      description: HubSpot Batch Update Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batchupdatecompanies
+    - name: batcharchivecompanies
+      description: HubSpot Batch Archive Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.batcharchivecompanies
+    - name: searchcompanies
+      description: HubSpot Search Companies
+      hints:
+        readOnly: false
+      call: crm-companies-api.searchcompanies
+    - name: listcompanyassociations
+      description: HubSpot List Company Associations
+      hints:
+        readOnly: true
+      call: crm-companies-api.listcompanyassociations
+    - name: createcompanyassociation
+      description: HubSpot Create a Company Association
+      hints:
+        readOnly: false
+      call: crm-companies-api.createcompanyassociation
+    - name: deletecompanyassociation
+      description: HubSpot Delete a Company Association
+      hints:
+        destructive: true
+      call: crm-companies-api.deletecompanyassociation

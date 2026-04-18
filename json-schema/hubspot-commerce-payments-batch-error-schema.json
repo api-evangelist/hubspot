@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "description": "An error from a batch operation",
+  "properties": {
+    "status": {
+      "type": "string",
+      "example": "active"
+    },
+    "id": {
+      "type": "string",
+      "example": "500123"
+    },
+    "category": {
+      "type": "string",
+      "example": "standard"
+    },
+    "message": {
+      "type": "string",
+      "example": "This is an example description."
+    },
+    "errors": {
+      "type": "array",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "An error code",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "The location of the error",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "A specific error subcategory",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "context": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "example": {
+        "key": "value"
+      }
+    },
+    "subCategory": {
+      "type": "string",
+      "example": "standard"
+    }
+  },
+  "required": [
+    "category",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BatchError"
+}

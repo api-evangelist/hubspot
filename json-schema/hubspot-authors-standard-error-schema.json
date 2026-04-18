@@ -1,0 +1,98 @@
+{
+  "type": "object",
+  "description": "Standard error in batch operations",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Error status code",
+      "example": "active"
+    },
+    "id": {
+      "type": "string",
+      "description": "ID of the failed item",
+      "example": "500123"
+    },
+    "category": {
+      "type": "string",
+      "description": "Error category",
+      "example": "standard"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message",
+      "example": "This is an example description."
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of detailed errors",
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "subCategory": "standard",
+          "in": "example-value",
+          "context": {
+            "key": "value"
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Specific error subcategory",
+            "example": "standard"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location where the error occurred",
+            "example": "example-value"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the error",
+            "example": {
+              "key": "value"
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional error context",
+      "example": {
+        "key": "value"
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Related links for error resolution",
+      "example": {
+        "key": "value"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "category",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StandardError"
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/custom-workflow-actions-api-input-field-schema.json",
+  "title": "InputField",
+  "description": "An input field for the action",
+  "type": "object",
+  "properties": {
+    "typeDefinition": {
+      "type": "object",
+      "description": "Definition of a field's type and configuration",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The programmatic name of the field",
+          "example": "Example Record"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "STRING",
+            "NUMBER",
+            "BOOL",
+            "DATE",
+            "DATETIME",
+            "ENUMERATION",
+            "PHONE_NUMBER",
+            "CURRENCY"
+          ],
+          "description": "The data type of the field",
+          "example": "STRING"
+        },
+        "fieldType": {
+          "type": "string",
+          "enum": [
+            "TEXT",
+            "TEXTAREA",
+            "NUMBER",
+            "SELECT",
+            "BOOLEANCHECKBOX",
+            "DATE",
+            "FILE"
+          ],
+          "description": "The UI field type for input",
+          "example": "TEXT"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the field",
+          "example": "Example Record"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the field",
+          "example": "This is an example description."
+        },
+        "options": {
+          "type": "array",
+          "description": "Options for enumeration fields",
+          "items": {
+            "$ref": "#/components/schemas/FieldOption"
+          },
+          "example": [
+            {
+              "label": "Example Record",
+              "value": "example-value",
+              "displayOrder": 100
+            }
+          ]
+        }
+      }
+    },
+    "supportedValueTypes": {
+      "type": "array",
+      "description": "The types of values that can be provided for this field",
+      "items": {
+        "type": "string",
+        "enum": [
+          "STATIC_VALUE",
+          "OBJECT_PROPERTY",
+          "OUTPUT_FROM_PREVIOUS_ACTION"
+        ]
+      },
+      "example": [
+        "STATIC_VALUE"
+      ]
+    },
+    "isRequired": {
+      "type": "boolean",
+      "description": "Whether this field is required",
+      "example": true
+    }
+  },
+  "required": [
+    "typeDefinition",
+    "supportedValueTypes"
+  ]
+}

@@ -11,52 +11,56 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Associations
-    description: Operations for managing contact associations
-  - name: Batch
-    description: Batch operations for contacts
-  - name: Contacts
-    description: Operations for managing contact records
+- name: Associations
+  description: Operations for managing contact associations
+- name: Batch
+  description: Batch operations for contacts
+- name: Contacts
+  description: Operations for managing contact records
 paths:
   /crm/v3/objects/contacts:
     get:
       operationId: listContacts
-      summary: HubSpot List contacts
+      summary: Hubspot List Contacts
       description: >-
         Returns a page of contact records. Use the limit and after parameters
         to paginate through contacts. You can also specify which properties to
         return using the properties parameter.
       tags:
-        - Contacts
+      - Contacts
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 10
-            maximum: 100
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived contacts.
-          schema:
-            type: boolean
-            default: false
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived contacts.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of contacts.
@@ -64,23 +68,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseContact'
+              examples:
+                Listcontacts200Example:
+                  summary: Default listContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id005
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: &id002
+                        key: value
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createContact
-      summary: HubSpot Create a contact
+      summary: Hubspot Create a Contact
       description: >-
         Creates a new contact record with the provided properties. The request
         body should include a properties object containing the field values
         for the contact you want to create.
       tags:
-        - Contacts
+      - Contacts
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatecontactRequestExample:
+                summary: Default createContact request
+                x-microcks-default: true
+                value:
+                  properties: &id003
+                    key: value
       responses:
         '201':
           description: Contact created successfully.
@@ -88,37 +118,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+              examples:
+                Createcontact201Example:
+                  summary: Default createContact 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/{contactId}:
     get:
       operationId: getContact
-      summary: HubSpot Get a contact
+      summary: Hubspot Get a Contact
       description: >-
         Returns a single contact record by its ID. You can specify which
         properties to return using the properties parameter.
       tags:
-        - Contacts
+      - Contacts
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact to retrieve.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived contacts.
-          schema:
-            type: boolean
-            default: false
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived contacts.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the contact record.
@@ -126,32 +173,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+              examples:
+                Getcontact200Example:
+                  summary: Default getContact 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateContact
-      summary: HubSpot Update a contact
+      summary: Hubspot Update a Contact
       description: >-
         Performs a partial update of a contact record. Only the properties
         included in the request body will be updated; other properties will
         remain unchanged.
       tags:
-        - Contacts
+      - Contacts
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact to update.
-          schema:
-            type: string
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact to update.
+        schema:
+          type: string
+        example: '500123'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatecontactRequestExample:
+                summary: Default updateContact request
+                x-microcks-default: true
+                value:
+                  properties: *id003
       responses:
         '200':
           description: Contact updated successfully.
@@ -159,28 +227,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact'
+              examples:
+                Updatecontact200Example:
+                  summary: Default updateContact 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteContact
-      summary: HubSpot Archive a contact
+      summary: Hubspot Archive a Contact
       description: >-
         Archives (soft deletes) a contact record by its ID. Archived contacts
         can be restored using the HubSpot UI or API. This does not permanently
         delete the contact from HubSpot.
       tags:
-        - Contacts
+      - Contacts
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact to archive.
-          schema:
-            type: string
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact to archive.
+        schema:
+          type: string
+        example: '500123'
       responses:
         '204':
           description: Contact archived successfully.
@@ -188,22 +271,34 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/batch/read:
     post:
       operationId: batchReadContacts
-      summary: HubSpot Batch read contacts
+      summary: Hubspot Batch Read Contacts
       description: >-
         Reads a batch of contact records by their IDs or unique property values.
         Useful for retrieving multiple contacts in a single API call instead
         of making individual requests.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadcontactsRequestExample:
+                summary: Default batchReadContacts request
+                x-microcks-default: true
+                value:
+                  properties: &id006
+                  - example-value
+                  inputs: &id007
+                  - id: '500123'
       responses:
         '200':
           description: Batch read completed successfully.
@@ -211,26 +306,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchreadcontacts200Example:
+                  summary: Default batchReadContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: &id004
+                    - id: '500123'
+                      properties: *id001
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: *id002
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/batch/create:
     post:
       operationId: batchCreateContacts
-      summary: HubSpot Batch create contacts
+      summary: Hubspot Batch Create Contacts
       description: >-
         Creates multiple contact records in a single API call. The request
         body should include an array of contact property objects. Returns
         the created contact records.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatecontactsRequestExample:
+                summary: Default batchCreateContacts request
+                x-microcks-default: true
+                value:
+                  inputs: &id008
+                  - properties: *id003
       responses:
         '201':
           description: Contacts created successfully.
@@ -238,25 +357,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchcreatecontacts201Example:
+                  summary: Default batchCreateContacts 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/batch/update:
     post:
       operationId: batchUpdateContacts
-      summary: HubSpot Batch update contacts
+      summary: Hubspot Batch Update Contacts
       description: >-
         Updates multiple contact records in a single API call. Each record
         in the request must include the contact ID and the properties to update.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatecontactsRequestExample:
+                summary: Default batchUpdateContacts request
+                x-microcks-default: true
+                value:
+                  inputs: &id009
+                  - id: '500123'
+                    properties:
+                      key: value
       responses:
         '200':
           description: Contacts updated successfully.
@@ -264,25 +403,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchupdatecontacts200Example:
+                  summary: Default batchUpdateContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/batch/archive:
     post:
       operationId: batchArchiveContacts
-      summary: HubSpot Batch archive contacts
+      summary: Hubspot Batch Archive Contacts
       description: >-
         Archives multiple contact records in a single API call by their IDs.
         Archived contacts can be restored using the HubSpot UI or API.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchivecontactsRequestExample:
+                summary: Default batchArchiveContacts request
+                x-microcks-default: true
+                value:
+                  inputs: &id010
+                  - id: '500123'
       responses:
         '204':
           description: Contacts archived successfully.
@@ -290,22 +447,41 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/search:
     post:
       operationId: searchContacts
-      summary: HubSpot Search contacts
+      summary: Hubspot Search Contacts
       description: >-
         Searches for contact records using filter groups, sorts, and other
         query parameters. Supports complex filtering with multiple filter
         groups and operators for precise record retrieval.
       tags:
-        - Contacts
+      - Contacts
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchcontactsRequestExample:
+                summary: Default searchContacts request
+                x-microcks-default: true
+                value:
+                  filterGroups: &id011
+                  - filters:
+                    - {}
+                  sorts: &id012
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties: &id013
+                  - example-value
+                  limit: 100
+                  after: example-value
       responses:
         '200':
           description: Search results returned successfully.
@@ -313,32 +489,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseContact'
+              examples:
+                Searchcontacts200Example:
+                  summary: Default searchContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id005
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}:
     get:
       operationId: listContactAssociations
-      summary: HubSpot List contact associations
+      summary: Hubspot List Contact Associations
       description: >-
         Returns all associations of a contact record to objects of a specified
         type, such as companies, deals, or tickets.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of associated object (e.g., companies, deals, tickets).
-          schema:
-            type: string
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., companies, deals, tickets).
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: List of associations returned successfully.
@@ -346,44 +535,61 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listcontactassociations200Example:
+                  summary: Default listContactAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id014
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createContactAssociation
-      summary: HubSpot Create a contact association
+      summary: Hubspot Create a Contact Association
       description: >-
         Creates an association between a contact and another CRM object record.
         The association type specifies the relationship between the objects.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of the object to associate with.
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          description: The ID of the object to associate with.
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          description: The type of association to create.
-          schema:
-            type: string
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: Association created successfully.
@@ -391,44 +597,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Association'
+              examples:
+                Createcontactassociation200Example:
+                  summary: Default createContactAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteContactAssociation
-      summary: HubSpot Delete a contact association
+      summary: Hubspot Delete a Contact Association
       description: >-
         Removes an association between a contact and another CRM object record.
         This does not delete the contact or the associated object, only the
         relationship between them.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: contactId
-          in: path
-          required: true
-          description: The ID of the contact.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of the associated object.
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          description: The ID of the associated object.
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          description: The type of association to delete.
-          schema:
-            type: string
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
       responses:
         '204':
           description: Association deleted successfully.
@@ -436,6 +656,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -450,27 +673,33 @@ components:
         id:
           type: string
           description: The unique identifier for the contact.
+          example: '500123'
         properties:
           type: object
           description: The contact's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
           description: The date and time the contact was created.
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
           description: The date and time the contact was last updated.
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
           description: Whether the contact has been archived.
+          example: true
         associations:
           type: object
           description: The contact's associations with other CRM objects.
           additionalProperties:
             $ref: '#/components/schemas/CollectionResponseAssociation'
+          example: *id002
     CollectionResponseContact:
       type: object
       description: A paginated list of contact records.
@@ -479,6 +708,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Contact'
+          example: *id005
         paging:
           $ref: '#/components/schemas/Paging'
     BatchResponseContact:
@@ -488,13 +718,16 @@ components:
         status:
           type: string
           description: The status of the batch operation.
+          example: active
         results:
           type: array
           items:
             $ref: '#/components/schemas/Contact'
+          example: *id004
         completedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
     SimplePublicObjectInput:
       type: object
       description: Input for creating or updating a CRM object.
@@ -504,6 +737,7 @@ components:
           description: The properties to set on the object.
           additionalProperties:
             type: string
+          example: *id003
     BatchReadInput:
       type: object
       description: Input for a batch read operation.
@@ -513,6 +747,7 @@ components:
           items:
             type: string
           description: The properties to return for each record.
+          example: *id006
         inputs:
           type: array
           items:
@@ -521,6 +756,7 @@ components:
               id:
                 type: string
           description: The IDs of the records to read.
+          example: *id007
     BatchCreateInput:
       type: object
       description: Input for a batch create operation.
@@ -529,6 +765,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
+          example: *id008
     BatchUpdateInput:
       type: object
       description: Input for a batch update operation.
@@ -544,6 +781,7 @@ components:
                 type: object
                 additionalProperties:
                   type: string
+          example: *id009
     BatchArchiveInput:
       type: object
       description: Input for a batch archive operation.
@@ -555,6 +793,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id010
     SearchRequest:
       type: object
       description: A search request for CRM objects.
@@ -563,6 +802,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example: *id011
         sorts:
           type: array
           items:
@@ -573,18 +813,23 @@ components:
               direction:
                 type: string
                 enum: [ASCENDING, DESCENDING]
+          example: *id012
         query:
           type: string
           description: Full-text search query string.
+          example: example-value
         properties:
           type: array
           items:
             type: string
+          example: *id013
         limit:
           type: integer
           maximum: 200
+          example: 100
         after:
           type: string
+          example: example-value
     FilterGroup:
       type: object
       description: A group of filters combined with AND logic.
@@ -593,6 +838,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
     Filter:
       type: object
       description: A single filter condition.
@@ -600,21 +849,26 @@ components:
         propertyName:
           type: string
           description: The name of the property to filter on.
+          example: Example Record
         operator:
           type: string
           enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
           description: The filter operator.
+          example: EQ
         value:
           type: string
           description: The value to compare against.
+          example: example-value
     Association:
       type: object
       description: An association between two CRM objects.
       properties:
         id:
           type: string
+          example: '500123'
         type:
           type: string
+          example: standard
     CollectionResponseAssociation:
       type: object
       description: A list of associations.
@@ -623,6 +877,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Association'
+          example: *id014
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -635,18 +890,24 @@ components:
             after:
               type: string
               description: The cursor to use to get the next page of results.
+          example:
+            after: example-value
     Error:
       type: object
       description: An error response.
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

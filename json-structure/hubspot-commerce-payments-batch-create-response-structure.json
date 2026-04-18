@@ -1,0 +1,150 @@
+{
+  "type": "object",
+  "description": "Response from a batch create operation",
+  "name": "BatchCreateResponse",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "A commerce payment object representing a payment transaction",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the commerce payment"
+          },
+          "properties": {
+            "type": "object",
+            "description": "The properties of the commerce payment"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was created"
+          },
+          "updatedAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was last updated"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the commerce payment is archived"
+          },
+          "archivedAt": {
+            "type": "datetime",
+            "description": "When the commerce payment was archived"
+          },
+          "associations": {
+            "type": "object",
+            "description": "Associated objects"
+          },
+          "propertiesWithHistory": {
+            "type": "object",
+            "description": "Properties with their value history"
+          }
+        },
+        "required": [
+          "id",
+          "properties",
+          "createdAt",
+          "updatedAt"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "datetime"
+    },
+    "startedAt": {
+      "type": "datetime"
+    },
+    "completedAt": {
+      "type": "datetime"
+    },
+    "numErrors": {
+      "type": "integer"
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "An error from a batch operation",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Detailed error information",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "description": "The error message"
+                },
+                "code": {
+                  "type": "string",
+                  "description": "An error code"
+                },
+                "in": {
+                  "type": "string",
+                  "description": "The location of the error"
+                },
+                "subCategory": {
+                  "type": "string",
+                  "description": "A specific error subcategory"
+                },
+                "context": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            }
+          },
+          "context": {
+            "type": "object"
+          },
+          "links": {
+            "type": "object"
+          },
+          "subCategory": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "message"
+        ]
+      }
+    },
+    "links": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

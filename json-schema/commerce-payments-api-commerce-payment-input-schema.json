@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/commerce-payments-api-commerce-payment-input-schema.json",
+  "title": "CommercePaymentInput",
+  "description": "Input for creating a new commerce payment",
+  "type": "object",
+  "properties": {
+    "properties": {
+      "type": "object",
+      "description": "The properties to set on the commerce payment",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "associations": {
+      "type": "array",
+      "description": "Associations to create with other objects",
+      "items": {
+        "type": "object",
+        "description": "Input for creating an association",
+        "required": [
+          "to",
+          "types"
+        ],
+        "properties": {
+          "to": {
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the object to associate with"
+              }
+            },
+            "example": {
+              "id": "500123"
+            }
+          },
+          "types": {
+            "type": "array",
+            "description": "The association types",
+            "items": {
+              "$ref": "#/components/schemas/AssociationType"
+            },
+            "example": [
+              {
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 500123
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "to": {
+            "id": {}
+          },
+          "types": [
+            {}
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "properties"
+  ]
+}

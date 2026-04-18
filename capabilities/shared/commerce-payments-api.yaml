@@ -1,0 +1,185 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Commerce Payments API
+  description: "The HubSpot Commerce Payments API enables developers to manage commerce payment objects within \nthe HubSpot CRM. This API provides comprehensive functionality for creating, reading, updating,\
+    \ \narchivi"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: commerce-payments-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Commerce Payments API enables developers to manage commerce payment objects within \nthe HubSpot CRM. This API provides comprehensive functionality for creating, reading, updating,\
+      \ \narchivi"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcommercepayments
+        method: POST
+        description: HubSpot Read a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecommercepayments
+        method: POST
+        description: HubSpot Archive a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecommercepayments
+        method: POST
+        description: HubSpot Create a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecommercepayments
+        method: POST
+        description: HubSpot Update a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: commerce_payments
+      path: /commerce_payments
+      description: commerce_payments operations
+      operations:
+      - name: listcommercepayments
+        method: GET
+        description: HubSpot List Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcommercepayment
+        method: POST
+        description: HubSpot Create a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcommercepaymentbyid
+        method: GET
+        description: HubSpot Retrieve a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecommercepaymentbyid
+        method: PATCH
+        description: HubSpot Update a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archivecommercepaymentbyid
+        method: DELETE
+        description: HubSpot Archive a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcommercepayments
+        method: POST
+        description: HubSpot Search Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9105
+    namespace: commerce-payments-api-mcp
+    transport: http
+    tools:
+    - name: batchreadcommercepayments
+      description: HubSpot Read a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchreadcommercepayments
+    - name: batcharchivecommercepayments
+      description: HubSpot Archive a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batcharchivecommercepayments
+    - name: batchcreatecommercepayments
+      description: HubSpot Create a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchcreatecommercepayments
+    - name: batchupdatecommercepayments
+      description: HubSpot Update a Batch of Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.batchupdatecommercepayments
+    - name: listcommercepayments
+      description: HubSpot List Commerce Payments
+      hints:
+        readOnly: true
+      call: commerce-payments-api.listcommercepayments
+    - name: createcommercepayment
+      description: HubSpot Create a Commerce Payment
+      hints:
+        readOnly: false
+      call: commerce-payments-api.createcommercepayment
+    - name: getcommercepaymentbyid
+      description: HubSpot Retrieve a Commerce Payment
+      hints:
+        readOnly: true
+      call: commerce-payments-api.getcommercepaymentbyid
+    - name: updatecommercepaymentbyid
+      description: HubSpot Update a Commerce Payment
+      hints:
+        readOnly: false
+      call: commerce-payments-api.updatecommercepaymentbyid
+    - name: archivecommercepaymentbyid
+      description: HubSpot Archive a Commerce Payment
+      hints:
+        destructive: true
+      call: commerce-payments-api.archivecommercepaymentbyid
+    - name: searchcommercepayments
+      description: HubSpot Search Commerce Payments
+      hints:
+        readOnly: false
+      call: commerce-payments-api.searchcommercepayments

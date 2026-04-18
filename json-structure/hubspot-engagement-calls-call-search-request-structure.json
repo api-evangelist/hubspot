@@ -1,0 +1,114 @@
+{
+  "type": "object",
+  "description": "Request body for searching calls",
+  "name": "CallSearchRequest",
+  "properties": {
+    "filterGroups": {
+      "type": "array",
+      "description": "Filter groups for the search (OR logic between groups)",
+      "items": {
+        "type": "object",
+        "description": "A group of filters (AND logic within group)",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "description": "The filters in this group",
+            "items": {
+              "type": "object",
+              "description": "A single search filter",
+              "properties": {
+                "propertyName": {
+                  "type": "string",
+                  "description": "The property to filter on"
+                },
+                "operator": {
+                  "type": "string",
+                  "description": "The filter operator",
+                  "enum": [
+                    "EQ",
+                    "NEQ",
+                    "LT",
+                    "LTE",
+                    "GT",
+                    "GTE",
+                    "BETWEEN",
+                    "IN",
+                    "NOT_IN",
+                    "HAS_PROPERTY",
+                    "NOT_HAS_PROPERTY",
+                    "CONTAINS_TOKEN",
+                    "NOT_CONTAINS_TOKEN"
+                  ]
+                },
+                "value": {
+                  "type": "string",
+                  "description": "The value to filter by"
+                },
+                "values": {
+                  "type": "array",
+                  "description": "Values for IN/NOT_IN operators",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "highValue": {
+                  "type": "string",
+                  "description": "High value for BETWEEN operator"
+                }
+              },
+              "required": [
+                "propertyName",
+                "operator"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "sorts": {
+      "type": "array",
+      "description": "Sort order for results",
+      "items": {
+        "type": "object",
+        "description": "Sort option for search results",
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to sort by"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Sort direction",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ]
+          }
+        },
+        "required": [
+          "propertyName"
+        ]
+      }
+    },
+    "query": {
+      "type": "string",
+      "description": "Full-text search query"
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limit": {
+      "type": "integer",
+      "description": "Maximum results to return"
+    },
+    "after": {
+      "type": "string",
+      "description": "Pagination cursor"
+    }
+  },
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

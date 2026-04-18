@@ -1,0 +1,155 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CMS Source Code API
+  description: "The HubSpot CMS Source Code API provides programmatic access to files in the CMS Developer File System.\nUse these endpoints to manage HTML templates, CSS stylesheets, JavaScript files,
+    modules, and ot"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: source-code-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot CMS Source Code API provides programmatic access to files in the CMS Developer File System.\nUse these endpoints to manage HTML templates, CSS stylesheets, JavaScript files,
+      modules, and ot"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: content
+      path: /content
+      description: content operations
+      operations:
+      - name: downloadsourcecodefile
+        method: GET
+        description: HubSpot Download a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsourcecodefile
+        method: POST
+        description: HubSpot Create a New Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertsourcecodefile
+        method: PUT
+        description: HubSpot Create or Update a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesourcecodefile
+        method: DELETE
+        description: HubSpot Delete a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: metadata
+      path: /metadata
+      description: metadata operations
+      operations:
+      - name: getsourcecodemetadata
+        method: GET
+        description: HubSpot Retrieve File or Folder Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: validate
+      path: /validate
+      description: validate operations
+      operations:
+      - name: validatesourcecodefile
+        method: POST
+        description: HubSpot Validate a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: async
+      path: /async
+      description: async operations
+      operations:
+      - name: extractzipfileasync
+        method: POST
+        description: HubSpot Extract a Zip Archive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: status
+      path: /status
+      description: status operations
+      operations:
+      - name: getextractiontaskstatus
+        method: GET
+        description: HubSpot Get Extraction Task Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9125
+    namespace: source-code-api-mcp
+    transport: http
+    tools:
+    - name: downloadsourcecodefile
+      description: HubSpot Download a Source Code File
+      hints:
+        readOnly: true
+      call: source-code-api.downloadsourcecodefile
+    - name: createsourcecodefile
+      description: HubSpot Create a New Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.createsourcecodefile
+    - name: upsertsourcecodefile
+      description: HubSpot Create or Update a Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.upsertsourcecodefile
+    - name: deletesourcecodefile
+      description: HubSpot Delete a Source Code File
+      hints:
+        destructive: true
+      call: source-code-api.deletesourcecodefile
+    - name: getsourcecodemetadata
+      description: HubSpot Retrieve File or Folder Metadata
+      hints:
+        readOnly: true
+      call: source-code-api.getsourcecodemetadata
+    - name: validatesourcecodefile
+      description: HubSpot Validate a Source Code File
+      hints:
+        readOnly: false
+      call: source-code-api.validatesourcecodefile
+    - name: extractzipfileasync
+      description: HubSpot Extract a Zip Archive
+      hints:
+        readOnly: false
+      call: source-code-api.extractzipfileasync
+    - name: getextractiontaskstatus
+      description: HubSpot Get Extraction Task Status
+      hints:
+        readOnly: true
+      call: source-code-api.getextractiontaskstatus

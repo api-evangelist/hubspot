@@ -1,0 +1,70 @@
+{
+  "type": "object",
+  "description": "Standard error response returned when an API request fails",
+  "name": "Error",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "High-level error category"
+    },
+    "correlationId": {
+      "type": "uuid",
+      "description": "Unique identifier for tracking and debugging the error"
+    },
+    "message": {
+      "type": "string",
+      "description": "Human-readable error message"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "Specific error subcategory for detailed classification"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error"
+    },
+    "links": {
+      "type": "object",
+      "description": "Relevant links for error resolution and documentation"
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of specific errors encountered",
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Specific error subcategory"
+          },
+          "in": {
+            "type": "string",
+            "description": "Location where the error occurred (e.g., query, path, body)"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the specific error"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

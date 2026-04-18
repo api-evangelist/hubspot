@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/commerce-payments-api-batch-read-request-schema.json",
+  "title": "BatchReadRequest",
+  "description": "Request body for batch reading commerce payments",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payment identifiers to read",
+      "items": {
+        "type": "object",
+        "description": "A single input item for batch read",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the payment to read",
+            "example": "500123"
+          }
+        }
+      },
+      "example": [
+        {
+          "id": "500123"
+        }
+      ]
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return for each payment",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "propertiesWithHistory": {
+      "type": "array",
+      "description": "Properties to return with history",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "idProperty": {
+      "type": "string",
+      "description": "The property to use as the identifier",
+      "example": "500123"
+    }
+  },
+  "required": [
+    "inputs",
+    "properties"
+  ]
+}

@@ -1,0 +1,48 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot CRM Search API
+  description: 'The CRM Search API allows you to query and filter CRM objects using a flexible search interface. You can search across contacts, companies, deals, tickets, and other object types using filter
+    groups, '
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: crm-search-api
+    baseUri: https://api.hubapi.com
+    description: 'The CRM Search API allows you to query and filter CRM objects using a flexible search interface. You can search across contacts, companies, deals, tickets, and other object types using
+      filter groups, '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcrmobjects
+        method: POST
+        description: HubSpot Search CRM Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9114
+    namespace: crm-search-api-mcp
+    transport: http
+    tools:
+    - name: searchcrmobjects
+      description: HubSpot Search CRM Objects
+      hints:
+        readOnly: false
+      call: crm-search-api.searchcrmobjects

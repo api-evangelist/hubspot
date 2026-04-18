@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-payments-api-batch-create-request-structure.json",
+  "name": "BatchCreateRequest",
+  "description": "Request body for batch creating commerce payments",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of payments to create",
+      "items": {
+        "type": "object",
+        "description": "Input for creating a new commerce payment",
+        "required": [
+          "properties"
+        ],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "description": "The properties to set on the commerce payment",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "example": {
+              "key": "value"
+            }
+          },
+          "associations": {
+            "type": "array",
+            "description": "Associations to create with other objects",
+            "items": {
+              "$ref": "#/components/schemas/AssociationInput"
+            },
+            "example": [
+              {
+                "to": {
+                  "id": {}
+                },
+                "types": [
+                  {}
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "properties": {
+            "key": "value"
+          },
+          "associations": [
+            {
+              "to": {
+                "id": {}
+              },
+              "types": [
+                {}
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

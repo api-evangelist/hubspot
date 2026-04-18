@@ -1,0 +1,38 @@
+{
+  "type": "object",
+  "description": "Input payload for batch creating or updating portal flag states",
+  "name": "BatchPortalFlagStateInput",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "List of portal flag state inputs",
+      "items": {
+        "type": "object",
+        "description": "Individual item in a batch upsert request",
+        "properties": {
+          "portalId": {
+            "type": "integer",
+            "description": "The unique identifier for the HubSpot portal (account)"
+          },
+          "flagState": {
+            "type": "string",
+            "description": "The state of a feature flag",
+            "enum": [
+              "ON",
+              "OFF",
+              "ABSENT"
+            ]
+          }
+        },
+        "required": [
+          "portalId",
+          "flagState"
+        ]
+      }
+    }
+  },
+  "required": [
+    "inputs"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

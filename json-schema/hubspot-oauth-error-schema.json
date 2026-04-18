@@ -1,0 +1,105 @@
+{
+  "type": "object",
+  "description": "Standard error response object",
+  "properties": {
+    "category": {
+      "type": "string",
+      "description": "The category of the error",
+      "example": "VALIDATION_ERROR"
+    },
+    "correlationId": {
+      "type": "string",
+      "description": "A unique identifier for tracking this error",
+      "format": "uuid",
+      "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+    },
+    "message": {
+      "type": "string",
+      "description": "A human-readable error message",
+      "example": "Invalid refresh token"
+    },
+    "subCategory": {
+      "type": "string",
+      "description": "A more specific error category",
+      "example": "INVALID_TOKEN"
+    },
+    "context": {
+      "type": "object",
+      "description": "Additional context about the error",
+      "example": {
+        "invalidToken": [
+          "The provided token is invalid or expired"
+        ]
+      }
+    },
+    "links": {
+      "type": "object",
+      "description": "Links to relevant documentation",
+      "example": {
+        "knowledge-base": "https://developers.hubspot.com/docs/api/oauth"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of specific errors",
+      "example": [
+        {
+          "message": "Invalid parameter value",
+          "code": "INVALID_PARAMETER",
+          "subCategory": "MISSING_REQUIRED_FIELD",
+          "in": "body",
+          "context": {
+            "missingFields": [
+              "client_secret"
+            ]
+          }
+        }
+      ],
+      "items": {
+        "type": "object",
+        "description": "Detailed information about a specific error",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "A human-readable error message",
+            "example": "Invalid parameter value"
+          },
+          "code": {
+            "type": "string",
+            "description": "An error code",
+            "example": "INVALID_PARAMETER"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "A specific error subcategory",
+            "example": "MISSING_REQUIRED_FIELD"
+          },
+          "in": {
+            "type": "string",
+            "description": "The location of the error (e.g., body, query, path)",
+            "example": "body"
+          },
+          "context": {
+            "type": "object",
+            "description": "Additional context about the specific error",
+            "example": {
+              "missingFields": [
+                "client_secret"
+              ]
+            }
+          }
+        },
+        "required": [
+          "message"
+        ]
+      }
+    }
+  },
+  "required": [
+    "category",
+    "correlationId",
+    "message"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Error"
+}

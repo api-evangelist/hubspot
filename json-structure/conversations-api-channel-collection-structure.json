@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/conversations-api-channel-collection-structure.json",
+  "name": "ChannelCollection",
+  "description": "Paginated collection of channels",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Represents a communication channel for conversations.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the channel",
+            "example": "channel_789"
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name of the channel",
+            "example": "Website Chat"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of channel (e.g., EMAIL, CHAT, FACEBOOK)",
+            "example": "CHAT"
+          },
+          "accountId": {
+            "type": "string",
+            "description": "Associated account ID",
+            "example": "account_123"
+          },
+          "createdAt": {
+            "type": "datetime",
+            "description": "ISO 8601 timestamp when the channel was created",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type"
+        ]
+      },
+      "description": "Array of channel records",
+      "example": [
+        {
+          "id": "channel_789",
+          "name": "Website Chat",
+          "type": "CHAT",
+          "accountId": "account_123",
+          "createdAt": "2024-01-01T00:00:00Z"
+        }
+      ]
+    },
+    "paging": {
+      "type": "object",
+      "description": "Pagination information for list responses.",
+      "properties": {
+        "next": {
+          "type": "object",
+          "description": "Pagination cursor information for retrieving the next page.",
+          "properties": {
+            "after": {
+              "type": "string",
+              "description": "Cursor token for the next page",
+              "example": "NTI1Cg%3D%3D"
+            },
+            "link": {
+              "type": "string",
+              "description": "API link to the next page",
+              "example": "/conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "results"
+  ]
+}

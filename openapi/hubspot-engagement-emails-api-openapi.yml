@@ -12,52 +12,56 @@ info:
     name: HubSpot Developer Support
     url: https://developers.hubspot.com/
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot API
+- url: https://api.hubapi.com
+  description: HubSpot API
 security:
-  - oauth2: []
+- oauth2: []
 tags:
-  - name: Associations
-    description: Operations for managing email engagement associations
-  - name: Batch
-    description: Batch operations for email engagements
-  - name: Emails
-    description: Operations for managing email engagement records
+- name: Associations
+  description: Operations for managing email engagement associations
+- name: Batch
+  description: Batch operations for email engagements
+- name: Emails
+  description: Operations for managing email engagement records
 paths:
   /crm/v3/objects/emails:
     get:
       operationId: listEmailEngagements
-      summary: HubSpot List email engagements
+      summary: Hubspot List Email Engagements
       description: >-
         Returns a page of email engagement records. Use the limit and after
         parameters to paginate through email engagements. You can also specify
         which properties to return using the properties parameter.
       tags:
-        - Emails
+      - Emails
       parameters:
-        - name: limit
-          in: query
-          description: The maximum number of results to return per page.
-          schema:
-            type: integer
-            default: 10
-            maximum: 100
-        - name: after
-          in: query
-          description: The cursor for pagination to get the next page of results.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived email engagements.
-          schema:
-            type: boolean
-            default: false
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived email engagements.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with a list of email engagements.
@@ -65,24 +69,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseEmailEngagement'
+              examples:
+                Listemailengagements200Example:
+                  summary: Default listEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id005
+                    - id: '500123'
+                      properties: &id001
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: &id002
+                        key: value
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     post:
       operationId: createEmailEngagement
-      summary: HubSpot Create an email engagement
+      summary: Hubspot Create an Email Engagement
       description: >-
         Creates a new email engagement record with the provided properties.
         Common email engagement properties include hs_email_subject,
         hs_email_text, hs_email_html, hs_email_status, hs_email_direction
         (INCOMING or OUTGOING), and hs_timestamp.
       tags:
-        - Emails
+      - Emails
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreateemailengagementRequestExample:
+                summary: Default createEmailEngagement request
+                x-microcks-default: true
+                value:
+                  properties: &id003
+                    key: value
       responses:
         '201':
           description: Email engagement created successfully.
@@ -90,37 +120,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmailEngagement'
+              examples:
+                Createemailengagement201Example:
+                  summary: Default createEmailEngagement 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/{emailId}:
     get:
       operationId: getEmailEngagement
-      summary: HubSpot Get an email engagement
+      summary: Hubspot Get an Email Engagement
       description: >-
         Returns a single email engagement record by its ID. You can specify
         which properties to return using the properties parameter.
       tags:
-        - Emails
+      - Emails
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          description: The ID of the email engagement to retrieve.
-          schema:
-            type: string
-        - name: properties
-          in: query
-          description: A comma-separated list of property names to return.
-          schema:
-            type: string
-        - name: archived
-          in: query
-          description: Whether to return archived email engagements.
-          schema:
-            type: boolean
-            default: false
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to retrieve.
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived email engagements.
+        schema:
+          type: boolean
+          default: false
+        example: false
       responses:
         '200':
           description: Successful response with the email engagement record.
@@ -128,31 +175,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmailEngagement'
+              examples:
+                Getemailengagement200Example:
+                  summary: Default getEmailEngagement 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateEmailEngagement
-      summary: HubSpot Update an email engagement
+      summary: Hubspot Update an Email Engagement
       description: >-
         Performs a partial update of an email engagement record. Only the
         properties included in the request body will be updated.
       tags:
-        - Emails
+      - Emails
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          description: The ID of the email engagement to update.
-          schema:
-            type: string
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to update.
+        schema:
+          type: string
+        example: jsmith@example.com
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdateemailengagementRequestExample:
+                summary: Default updateEmailEngagement request
+                x-microcks-default: true
+                value:
+                  properties: *id003
       responses:
         '200':
           description: Email engagement updated successfully.
@@ -160,27 +228,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EmailEngagement'
+              examples:
+                Updateemailengagement200Example:
+                  summary: Default updateEmailEngagement 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties: *id001
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations: *id002
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteEmailEngagement
-      summary: HubSpot Archive an email engagement
+      summary: Hubspot Archive an Email Engagement
       description: >-
         Archives (soft deletes) an email engagement record by its ID.
         Archived email engagements can be restored using the HubSpot UI or API.
       tags:
-        - Emails
+      - Emails
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          description: The ID of the email engagement to archive.
-          schema:
-            type: string
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement to archive.
+        schema:
+          type: string
+        example: jsmith@example.com
       responses:
         '204':
           description: Email engagement archived successfully.
@@ -188,21 +271,33 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/batch/read:
     post:
       operationId: batchReadEmailEngagements
-      summary: HubSpot Batch read email engagements
+      summary: Hubspot Batch Read Email Engagements
       description: >-
         Reads a batch of email engagement records by their IDs. Useful for
         retrieving multiple email engagements in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreademailengagementsRequestExample:
+                summary: Default batchReadEmailEngagements request
+                x-microcks-default: true
+                value:
+                  properties: &id006
+                  - example-value
+                  inputs: &id007
+                  - id: '500123'
       responses:
         '200':
           description: Batch read completed successfully.
@@ -210,23 +305,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchreademailengagements200Example:
+                  summary: Default batchReadEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: &id004
+                    - id: '500123'
+                      properties: *id001
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations: *id002
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/batch/create:
     post:
       operationId: batchCreateEmailEngagements
-      summary: HubSpot Batch create email engagements
+      summary: Hubspot Batch Create Email Engagements
       description: Creates multiple email engagement records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreateemailengagementsRequestExample:
+                summary: Default batchCreateEmailEngagements request
+                x-microcks-default: true
+                value:
+                  inputs: &id008
+                  - properties: *id003
       responses:
         '201':
           description: Email engagements created successfully.
@@ -234,23 +353,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchcreateemailengagements201Example:
+                  summary: Default batchCreateEmailEngagements 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/batch/update:
     post:
       operationId: batchUpdateEmailEngagements
-      summary: HubSpot Batch update email engagements
+      summary: Hubspot Batch Update Email Engagements
       description: Updates multiple email engagement records in a single API call.
       tags:
-        - Batch
+      - Batch
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdateemailengagementsRequestExample:
+                summary: Default batchUpdateEmailEngagements request
+                x-microcks-default: true
+                value:
+                  inputs: &id009
+                  - id: '500123'
+                    properties:
+                      key: value
       responses:
         '200':
           description: Email engagements updated successfully.
@@ -258,25 +397,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchupdateemailengagements200Example:
+                  summary: Default batchUpdateEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results: *id004
+                    completedAt: '2025-03-15T14:30:00Z'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/search:
     post:
       operationId: searchEmailEngagements
-      summary: HubSpot Search email engagements
+      summary: Hubspot Search Email Engagements
       description: >-
         Searches for email engagement records using filter groups, sorts, and
         other query parameters.
       tags:
-        - Emails
+      - Emails
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchemailengagementsRequestExample:
+                summary: Default searchEmailEngagements request
+                x-microcks-default: true
+                value:
+                  filterGroups: &id010
+                  - filters:
+                    - {}
+                  sorts: &id011
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties: &id012
+                  - example-value
+                  limit: 100
+                  after: example-value
       responses:
         '200':
           description: Search results returned successfully.
@@ -284,32 +450,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseEmailEngagement'
+              examples:
+                Searchemailengagements200Example:
+                  summary: Default searchEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    results: *id005
+                    paging:
+                      next: {}
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/{emailId}/associations/{toObjectType}:
     get:
       operationId: listEmailEngagementAssociations
-      summary: HubSpot List email engagement associations
+      summary: Hubspot List Email Engagement Associations
       description: >-
         Returns all associations of an email engagement record to objects of
         a specified type, such as contacts, companies, or deals.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          description: The ID of the email engagement.
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          description: The type of associated object.
-          schema:
-            type: string
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement.
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: List of associations returned successfully.
@@ -317,40 +496,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listemailengagementassociations200Example:
+                  summary: Default listEmailEngagementAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results: &id013
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /crm/v3/objects/emails/{emailId}/associations/{toObjectType}/{toObjectId}/{associationType}:
     put:
       operationId: createEmailEngagementAssociation
-      summary: HubSpot Create an email engagement association
+      summary: Hubspot Create an Email Engagement Association
       description: >-
         Creates an association between an email engagement record and another
         CRM object.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
       responses:
         '200':
           description: Association created successfully.
@@ -358,39 +554,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Association'
+              examples:
+                Createemailengagementassociation200Example:
+                  summary: Default createEmailEngagementAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     delete:
       operationId: deleteEmailEngagementAssociation
-      summary: HubSpot Delete an email engagement association
+      summary: Hubspot Delete an Email Engagement Association
       description: >-
         Removes an association between an email engagement record and another
         CRM object.
       tags:
-        - Associations
+      - Associations
       parameters:
-        - name: emailId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectType
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: toObjectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: associationType
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
       responses:
         '204':
           description: Association deleted successfully.
@@ -398,6 +608,9 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     oauth2:
@@ -412,23 +625,29 @@ components:
         id:
           type: string
           description: The unique identifier for the email engagement.
+          example: '500123'
         properties:
           type: object
           description: The email engagement's properties as key-value pairs.
           additionalProperties:
             type: string
+          example: *id001
         createdAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         updatedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
         archived:
           type: boolean
+          example: true
         associations:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/CollectionResponseAssociation'
+          example: *id002
     CollectionResponseEmailEngagement:
       type: object
       properties:
@@ -436,6 +655,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EmailEngagement'
+          example: *id005
         paging:
           $ref: '#/components/schemas/Paging'
     BatchResponseEmailEngagement:
@@ -443,13 +663,16 @@ components:
       properties:
         status:
           type: string
+          example: active
         results:
           type: array
           items:
             $ref: '#/components/schemas/EmailEngagement'
+          example: *id004
         completedAt:
           type: string
           format: date-time
+          example: '2025-03-15T14:30:00Z'
     SimplePublicObjectInput:
       type: object
       properties:
@@ -457,6 +680,7 @@ components:
           type: object
           additionalProperties:
             type: string
+          example: *id003
     BatchReadInput:
       type: object
       properties:
@@ -464,6 +688,7 @@ components:
           type: array
           items:
             type: string
+          example: *id006
         inputs:
           type: array
           items:
@@ -471,6 +696,7 @@ components:
             properties:
               id:
                 type: string
+          example: *id007
     BatchCreateInput:
       type: object
       properties:
@@ -478,6 +704,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
+          example: *id008
     BatchUpdateInput:
       type: object
       properties:
@@ -492,6 +719,7 @@ components:
                 type: object
                 additionalProperties:
                   type: string
+          example: *id009
     SearchRequest:
       type: object
       properties:
@@ -499,6 +727,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilterGroup'
+          example: *id010
         sorts:
           type: array
           items:
@@ -509,17 +738,22 @@ components:
               direction:
                 type: string
                 enum: [ASCENDING, DESCENDING]
+          example: *id011
         query:
           type: string
+          example: example-value
         properties:
           type: array
           items:
             type: string
+          example: *id012
         limit:
           type: integer
           maximum: 200
+          example: 100
         after:
           type: string
+          example: example-value
     FilterGroup:
       type: object
       properties:
@@ -527,23 +761,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
     Filter:
       type: object
       properties:
         propertyName:
           type: string
+          example: Example Record
         operator:
           type: string
           enum: [EQ, NEQ, LT, LTE, GT, GTE, BETWEEN, IN, NOT_IN, HAS_PROPERTY, NOT_HAS_PROPERTY, CONTAINS_TOKEN, NOT_CONTAINS_TOKEN]
+          example: EQ
         value:
           type: string
+          example: example-value
     Association:
       type: object
       properties:
         id:
           type: string
+          example: '500123'
         type:
           type: string
+          example: standard
     CollectionResponseAssociation:
       type: object
       properties:
@@ -551,6 +794,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Association'
+          example: *id013
         paging:
           $ref: '#/components/schemas/Paging'
     Paging:
@@ -561,17 +805,23 @@ components:
           properties:
             after:
               type: string
+          example:
+            after: example-value
     Error:
       type: object
       properties:
         status:
           type: string
+          example: active
         message:
           type: string
+          example: This is an example description.
         correlationId:
           type: string
+          example: '500123'
         category:
           type: string
+          example: standard
   responses:
     Unauthorized:
       description: Authentication credentials are missing or invalid.

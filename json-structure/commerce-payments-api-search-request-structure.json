@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/commerce-payments-api-search-request-structure.json",
+  "name": "SearchRequest",
+  "description": "Request body for searching commerce payments",
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Search query string",
+      "example": "example-value"
+    },
+    "limit": {
+      "type": "int32",
+      "description": "Maximum number of results",
+      "default": 10,
+      "example": 10
+    },
+    "after": {
+      "type": "string",
+      "description": "Pagination cursor",
+      "example": "example-value"
+    },
+    "sorts": {
+      "type": "array",
+      "description": "Sort order for results",
+      "items": {
+        "type": "object",
+        "description": "A sort option for ordering results",
+        "required": [
+          "propertyName",
+          "direction"
+        ],
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to sort by",
+            "example": "Example Record"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "ASCENDING",
+              "DESCENDING"
+            ],
+            "description": "The sort direction",
+            "example": "ASCENDING"
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "Example Record",
+          "direction": "ASCENDING"
+        }
+      ]
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "filterGroups": {
+      "type": "array",
+      "description": "Filter groups for the search",
+      "items": {
+        "type": "object",
+        "description": "A group of filters combined with AND logic",
+        "required": [
+          "filters"
+        ],
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "example": [
+              {
+                "propertyName": "Example Record",
+                "operator": "EQ",
+                "value": "example-value",
+                "values": [
+                  {}
+                ],
+                "highValue": "example-value"
+              }
+            ]
+          }
+        }
+      },
+      "example": [
+        {
+          "filters": [
+            {}
+          ]
+        }
+      ]
+    }
+  }
+}

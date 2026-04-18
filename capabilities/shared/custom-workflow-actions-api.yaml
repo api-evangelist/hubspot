@@ -1,0 +1,250 @@
+naftiko: 1.0.0-alpha1
+info:
+  label: HubSpot Custom Workflow Actions API
+  description: "The HubSpot Custom Workflow Actions API enables developers to create, manage, and extend workflow \nautomation capabilities within HubSpot. This API allows you to define custom actions that
+    can be \nuse"
+  tags:
+  - HubSpot
+  - API
+  created: '2026-04-18'
+  modified: '2026-04-18'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: custom-workflow-actions-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Custom Workflow Actions API enables developers to create, manage, and extend workflow \nautomation capabilities within HubSpot. This API allows you to define custom actions
+      that can be \nuse"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: complete
+      path: /complete
+      description: complete operations
+      operations:
+      - name: completecallback
+        method: POST
+        description: HubSpot Complete a Single Callback
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: batchcompletecallbacks
+        method: POST
+        description: HubSpot Complete Multiple Callbacks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: actions
+      path: /actions
+      description: actions operations
+      operations:
+      - name: listactiondefinitions
+        method: GET
+        description: HubSpot List Action Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createactiondefinition
+        method: POST
+        description: HubSpot Create an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{appId}'
+      path: /{appId}
+      description: '{appId} operations'
+      operations:
+      - name: getactiondefinitionbyid
+        method: GET
+        description: HubSpot Retrieve an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateactiondefinitionbyid
+        method: PATCH
+        description: HubSpot Update an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archiveactiondefinitionbyid
+        method: DELETE
+        description: HubSpot Archive an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: functions
+      path: /functions
+      description: functions operations
+      operations:
+      - name: listactionfunctions
+        method: GET
+        description: HubSpot List Action Functions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getactionfunctionbytype
+        method: GET
+        description: HubSpot Retrieve Function by Type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertactionfunction
+        method: PUT
+        description: HubSpot Create or Update a Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteactionfunctionbytype
+        method: DELETE
+        description: HubSpot Delete a Function by Type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{functionType}'
+      path: /{functionType}
+      description: '{functionType} operations'
+      operations:
+      - name: getactionfunctionbyid
+        method: GET
+        description: HubSpot Retrieve a Specific Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteactionfunctionbyid
+        method: DELETE
+        description: HubSpot Delete a Specific Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: revisions
+      path: /revisions
+      description: revisions operations
+      operations:
+      - name: listactiondefinitionrevisions
+        method: GET
+        description: HubSpot List Definition Revisions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getactiondefinitionrevisionbyid
+        method: GET
+        description: HubSpot Retrieve a Specific Revision
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: mcp
+    port: 9116
+    namespace: custom-workflow-actions-api-mcp
+    transport: http
+    tools:
+    - name: completecallback
+      description: HubSpot Complete a Single Callback
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.completecallback
+    - name: batchcompletecallbacks
+      description: HubSpot Complete Multiple Callbacks
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.batchcompletecallbacks
+    - name: listactiondefinitions
+      description: HubSpot List Action Definitions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactiondefinitions
+    - name: createactiondefinition
+      description: HubSpot Create an Action Definition
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.createactiondefinition
+    - name: getactiondefinitionbyid
+      description: HubSpot Retrieve an Action Definition
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactiondefinitionbyid
+    - name: updateactiondefinitionbyid
+      description: HubSpot Update an Action Definition
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.updateactiondefinitionbyid
+    - name: archiveactiondefinitionbyid
+      description: HubSpot Archive an Action Definition
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.archiveactiondefinitionbyid
+    - name: listactionfunctions
+      description: HubSpot List Action Functions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactionfunctions
+    - name: getactionfunctionbytype
+      description: HubSpot Retrieve Function by Type
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactionfunctionbytype
+    - name: upsertactionfunction
+      description: HubSpot Create or Update a Function
+      hints:
+        readOnly: false
+      call: custom-workflow-actions-api.upsertactionfunction
+    - name: deleteactionfunctionbytype
+      description: HubSpot Delete a Function by Type
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.deleteactionfunctionbytype
+    - name: getactionfunctionbyid
+      description: HubSpot Retrieve a Specific Function
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactionfunctionbyid
+    - name: deleteactionfunctionbyid
+      description: HubSpot Delete a Specific Function
+      hints:
+        destructive: true
+      call: custom-workflow-actions-api.deleteactionfunctionbyid
+    - name: listactiondefinitionrevisions
+      description: HubSpot List Definition Revisions
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.listactiondefinitionrevisions
+    - name: getactiondefinitionrevisionbyid
+      description: HubSpot Retrieve a Specific Revision
+      hints:
+        readOnly: true
+      call: custom-workflow-actions-api.getactiondefinitionrevisionbyid

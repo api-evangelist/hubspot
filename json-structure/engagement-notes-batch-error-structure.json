@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-notes-batch-error-structure.json",
+  "name": "BatchError",
+  "description": "Error information for a batch operation item",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The error status",
+      "example": "error"
+    },
+    "category": {
+      "type": "string",
+      "description": "The error category",
+      "example": "VALIDATION_ERROR"
+    },
+    "message": {
+      "type": "string",
+      "description": "The error message",
+      "example": "Property value is invalid"
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "example": {
+        "key": "value"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "Detailed error information",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message",
+            "example": "This is an example description."
+          },
+          "code": {
+            "type": "string",
+            "description": "Error code",
+            "example": "example-value"
+          },
+          "in": {
+            "type": "string",
+            "description": "Field where error occurred",
+            "example": "example-value"
+          },
+          "subCategory": {
+            "type": "string",
+            "description": "Error subcategory",
+            "example": "standard"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "key": "value"
+            }
+          }
+        }
+      },
+      "example": [
+        {
+          "message": "This is an example description.",
+          "code": "example-value",
+          "in": "example-value",
+          "subCategory": "standard",
+          "context": {
+            "key": "value"
+          }
+        }
+      ]
+    }
+  }
+}

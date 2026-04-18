@@ -1,0 +1,175 @@
+{
+  "type": "object",
+  "description": "Response from batch association operations",
+  "name": "BatchAssociationResponse",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Status of the batch operation",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "CANCELED",
+        "COMPLETE"
+      ]
+    },
+    "results": {
+      "type": "array",
+      "description": "Successfully processed associations",
+      "items": {
+        "type": "object",
+        "description": "Result of an association query",
+        "properties": {
+          "from": {
+            "type": "object",
+            "description": "Reference to a CRM object by ID",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "ID of the object"
+              }
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "description": "Associated objects",
+            "items": {
+              "type": "object",
+              "description": "Represents an association between two CRM objects",
+              "properties": {
+                "toObjectId": {
+                  "type": "string",
+                  "description": "ID of the target object"
+                },
+                "associationTypes": {
+                  "type": "array",
+                  "description": "Types of associations between the objects",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "toObjectId",
+                "associationTypes"
+              ]
+            }
+          },
+          "paging": {
+            "type": "object",
+            "description": "Pagination information",
+            "properties": {
+              "next": {
+                "type": "object",
+                "description": "Pagination cursor for next page",
+                "properties": {
+                  "after": {
+                    "type": "string",
+                    "description": "Cursor token for the next page"
+                  },
+                  "link": {
+                    "type": "string",
+                    "description": "Link to the next page"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "from",
+          "to"
+        ]
+      }
+    },
+    "requestedAt": {
+      "type": "datetime",
+      "description": "When the batch was requested"
+    },
+    "startedAt": {
+      "type": "datetime",
+      "description": "When processing started"
+    },
+    "completedAt": {
+      "type": "datetime",
+      "description": "When processing completed"
+    },
+    "numErrors": {
+      "type": "integer",
+      "description": "Number of errors encountered"
+    },
+    "errors": {
+      "type": "array",
+      "description": "List of errors",
+      "items": {
+        "type": "object",
+        "description": "Standard error in batch operations",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "Details about a specific error",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "subCategory": {
+                  "type": "string"
+                },
+                "in": {
+                  "type": "string"
+                },
+                "context": {
+                  "type": "object"
+                }
+              },
+              "required": [
+                "message"
+              ]
+            }
+          },
+          "context": {
+            "type": "object"
+          },
+          "links": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "status",
+          "category",
+          "message"
+        ]
+      }
+    },
+    "links": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "status",
+    "results",
+    "startedAt",
+    "completedAt"
+  ],
+  "$schema": "https://json-structure.org/draft/2020-12/schema"
+}

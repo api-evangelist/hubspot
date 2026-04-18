@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-calls-api-association-input-structure.json",
+  "name": "AssociationInput",
+  "description": "Association to create with another object",
+  "type": "object",
+  "properties": {
+    "to": {
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the object to associate with",
+          "example": "101"
+        }
+      },
+      "example": {
+        "id": "101"
+      }
+    },
+    "types": {
+      "type": "array",
+      "description": "The association types",
+      "items": {
+        "type": "object",
+        "description": "Type of association",
+        "required": [
+          "associationCategory",
+          "associationTypeId"
+        ],
+        "properties": {
+          "associationCategory": {
+            "type": "string",
+            "enum": [
+              "HUBSPOT_DEFINED",
+              "USER_DEFINED",
+              "INTEGRATOR_DEFINED"
+            ],
+            "description": "The category of association",
+            "example": "HUBSPOT_DEFINED"
+          },
+          "associationTypeId": {
+            "type": "int32",
+            "description": "The association type ID",
+            "example": 194
+          }
+        }
+      },
+      "example": [
+        {
+          "associationCategory": "HUBSPOT_DEFINED",
+          "associationTypeId": 194
+        }
+      ]
+    }
+  },
+  "required": [
+    "to",
+    "types"
+  ]
+}

@@ -14,23 +14,23 @@ info:
     marketing: FREE
     cms: FREE
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 tags:
-  - name: File Content
-    description: Operations for downloading, creating, updating, and deleting source code files
-  - name: File Extraction
-    description: Operations for extracting zip archives in the developer file system
-  - name: File Metadata
-    description: Operations for retrieving file and folder metadata
-  - name: File Validation
-    description: Operations for validating source code files
+- name: File Content
+  description: Operations for downloading, creating, updating, and deleting source code files
+- name: File Extraction
+  description: Operations for extracting zip archives in the developer file system
+- name: File Metadata
+  description: Operations for retrieving file and folder metadata
+- name: File Validation
+  description: Operations for validating source code files
 paths:
   /cms/v3/source-code/{environment}/content/{path}:
     get:
       tags:
-        - File Content
-      summary: HubSpot Download a source code file
+      - File Content
+      summary: Hubspot Download a Source Code File
       description: |
         Downloads the byte contents of a file at the specified path in the specified environment.
         Use 'draft' for unpublished changes or 'published' for live content.
@@ -41,8 +41,10 @@ paths:
           def result = "FileContentSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
       responses:
         '200':
           description: Successfully downloaded file content
@@ -75,16 +77,16 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
       x-hubspot-rate-limit-exemptions:
-        - ten-secondly
+      - ten-secondly
     put:
       tags:
-        - File Content
-      summary: HubSpot Create or update a source code file
+      - File Content
+      summary: Hubspot Create or Update a Source Code File
       description: |
         Creates a new file or updates an existing file at the specified path in the specified environment.
         This upsert operation accepts multipart/form-data content type with the file as the payload.
@@ -95,8 +97,10 @@ paths:
           def result = "AssetFileMetadataSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
       requestBody:
         description: The file content to upload
         required: true
@@ -120,16 +124,16 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
       x-hubspot-rate-limit-exemptions:
-        - ten-secondly
+      - ten-secondly
     post:
       tags:
-        - File Content
-      summary: HubSpot Create a new source code file
+      - File Content
+      summary: Hubspot Create a New Source Code File
       description: |
         Creates a new file at the specified path in the specified environment.
         Returns an error if a file already exists at the path. For upsert behavior, use PUT instead.
@@ -141,8 +145,10 @@ paths:
           def result = "AssetFileMetadataSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
       requestBody:
         description: The file content to upload
         required: true
@@ -166,16 +172,16 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
       x-hubspot-rate-limit-exemptions:
-        - ten-secondly
+      - ten-secondly
     delete:
       tags:
-        - File Content
-      summary: HubSpot Delete a source code file
+      - File Content
+      summary: Hubspot Delete a Source Code File
       description: |
         Permanently deletes a file at the specified path in the specified environment.
         This action cannot be undone.
@@ -186,25 +192,27 @@ paths:
           def result = "NoContentExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
       responses:
         '204':
           description: File successfully deleted
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
       x-hubspot-rate-limit-exemptions:
-        - ten-secondly
+      - ten-secondly
   /cms/v3/source-code/{environment}/metadata/{path}:
     get:
       tags:
-        - File Metadata
-      summary: HubSpot Retrieve file or folder metadata
+      - File Metadata
+      summary: Hubspot Retrieve File or Folder Metadata
       description: |
         Retrieves metadata for a file or folder at the specified path in the specified environment.
         For folders, includes a list of child files and subfolders.
@@ -215,9 +223,12 @@ paths:
           def result = "AssetFileMetadataSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
-        - $ref: '#/components/parameters/PropertiesQuery'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
+      - $ref: '#/components/parameters/PropertiesQuery'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved metadata
@@ -233,17 +244,17 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
       x-hubspot-rate-limit-exemptions:
-        - ten-secondly
+      - ten-secondly
   /cms/v3/source-code/{environment}/validate/{path}:
     post:
       tags:
-        - File Validation
-      summary: HubSpot Validate a source code file
+      - File Validation
+      summary: Hubspot Validate a Source Code File
       description: |
         Validates the source code file at the specified path for syntax errors, 
         HubL compatibility, and other issues. Returns validation results without modifying the file.
@@ -254,8 +265,10 @@ paths:
           def result = "ValidationSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/EnvironmentPath'
-        - $ref: '#/components/parameters/FilePathPath'
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
       requestBody:
         description: Optional file content to validate instead of the existing file
         required: false
@@ -281,15 +294,15 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
   /cms/v3/source-code/extract/async:
     post:
       tags:
-        - File Extraction
-      summary: HubSpot Extract a zip archive
+      - File Extraction
+      summary: Hubspot Extract a Zip Archive
       description: |
         Initiates asynchronous extraction of a zip file in the developer file system.
         Returns a task ID that can be used to check extraction status via the status endpoint.
@@ -322,15 +335,15 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
   /cms/v3/source-code/extract/async/tasks/{taskId}/status:
     get:
       tags:
-        - File Extraction
-      summary: HubSpot Get extraction task status
+      - File Extraction
+      summary: Hubspot Get Extraction Task Status
       description: |
         Retrieves the current status of an asynchronous zip file extraction task.
         Poll this endpoint to determine when extraction is complete.
@@ -341,7 +354,8 @@ paths:
           def result = "ActionResponseSuccessExample"
           return result
       parameters:
-        - $ref: '#/components/parameters/TaskIdPath'
+      - $ref: '#/components/parameters/TaskIdPath'
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved task status
@@ -357,10 +371,10 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       security:
-        - privateApps:
-            - content
-        - oauth2:
-            - content
+      - privateApps:
+        - content
+      - oauth2:
+        - content
 components:
   parameters:
     EnvironmentPath:
@@ -371,8 +385,8 @@ components:
       schema:
         type: string
         enum:
-          - draft
-          - published
+        - draft
+        - published
       example: draft
     FilePathPath:
       name: path
@@ -405,11 +419,11 @@ components:
       type: object
       description: Metadata for a file or folder in the CMS Developer File System
       required:
-        - id
-        - name
-        - folder
-        - createdAt
-        - updatedAt
+      - id
+      - name
+      - folder
+      - createdAt
+      - updatedAt
       properties:
         id:
           type: string
@@ -429,9 +443,9 @@ components:
           items:
             type: string
           example:
-            - "header.html"
-            - "footer.html"
-            - "sidebar.html"
+          - "header.html"
+          - "footer.html"
+          - "sidebar.html"
         hash:
           type: string
           description: Content hash for change detection
@@ -455,17 +469,18 @@ components:
       type: object
       description: Request body for file upload operations
       required:
-        - file
+      - file
       properties:
         file:
           type: string
           format: binary
           description: The file content to upload
+          example: example-value
     FileExtractRequest:
       type: object
       description: Request body for zip file extraction
       required:
-        - path
+      - path
       properties:
         path:
           type: string
@@ -475,7 +490,7 @@ components:
       type: object
       description: Locator for an asynchronous task
       required:
-        - id
+      - id
       properties:
         id:
           type: string
@@ -492,18 +507,18 @@ components:
       type: object
       description: Response for asynchronous action status
       required:
-        - status
-        - startedAt
-        - completedAt
+      - status
+      - startedAt
+      - completedAt
       properties:
         status:
           type: string
           description: Current status of the action
           enum:
-            - PENDING
-            - PROCESSING
-            - CANCELED
-            - COMPLETE
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
           example: COMPLETE
         requestedAt:
           type: string
@@ -525,11 +540,13 @@ components:
           description: Related links
           additionalProperties:
             type: string
+          example:
+            key: value
     ValidationResult:
       type: object
       description: Result of file validation
       required:
-        - valid
+      - valid
       properties:
         valid:
           type: boolean
@@ -540,17 +557,26 @@ components:
           description: List of validation errors (if any)
           items:
             $ref: '#/components/schemas/ValidationError'
+          example:
+          - message: "Syntax error: unexpected end of template"
+            line: 42
+            column: 15
+            category: "HUBL_SYNTAX"
         warnings:
           type: array
           description: List of validation warnings (if any)
           items:
             $ref: '#/components/schemas/ValidationWarning'
+          example:
+          - message: "Deprecated function 'blog_recent_posts' used"
+            line: 28
+            suggestion: "Use 'blog_posts' function instead"
     ValidationError:
       type: object
       description: A validation error
       required:
-        - message
-        - line
+      - message
+      - line
       properties:
         message:
           type: string
@@ -572,7 +598,7 @@ components:
       type: object
       description: A validation warning
       required:
-        - message
+      - message
       properties:
         message:
           type: string
@@ -590,9 +616,9 @@ components:
       type: object
       description: Standard error response
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
       properties:
         category:
           type: string
@@ -610,6 +636,7 @@ components:
         subCategory:
           type: string
           description: Specific error subcategory
+          example: standard
         context:
           type: object
           description: Additional error context
@@ -619,10 +646,10 @@ components:
               type: string
           example:
             missingScopes:
-              - scope1
-              - scope2
+            - scope1
+            - scope2
             invalidPropertyName:
-              - propertyValue
+            - propertyValue
         links:
           type: object
           description: Links to relevant documentation
@@ -635,11 +662,20 @@ components:
           description: Detailed error information
           items:
             $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: "Required property 'path' is missing"
+            code: "MISSING_REQUIRED_PROPERTY"
+            subCategory: standard
+            in: "body"
+            context: &id001
+              missingScopes:
+              - scope1
+              - scope2
     ErrorDetail:
       type: object
       description: Detailed error information
       required:
-        - message
+      - message
       properties:
         message:
           type: string
@@ -652,6 +688,7 @@ components:
         subCategory:
           type: string
           description: Error subcategory
+          example: standard
         in:
           type: string
           description: Location of the error
@@ -663,10 +700,7 @@ components:
             type: array
             items:
               type: string
-          example:
-            missingScopes:
-              - scope1
-              - scope2
+          example: *id001
   responses:
     ErrorResponse:
       description: An error occurred
@@ -698,9 +732,9 @@ components:
         name: "blog"
         folder: true
         children:
-          - "post.html"
-          - "listing.html"
-          - "author.html"
+        - "post.html"
+        - "listing.html"
+        - "author.html"
         createdAt: 1705312200000
         updatedAt: 1705398600000
     FileContentSuccessExample:
@@ -789,14 +823,14 @@ components:
       value:
         valid: false
         errors:
-          - message: "Syntax error: unexpected end of template"
-            line: 42
-            column: 15
-            category: "HUBL_SYNTAX"
+        - message: "Syntax error: unexpected end of template"
+          line: 42
+          column: 15
+          category: "HUBL_SYNTAX"
         warnings:
-          - message: "Deprecated function 'blog_recent_posts' used"
-            line: 28
-            suggestion: "Use 'blog_posts' function instead"
+        - message: "Deprecated function 'blog_recent_posts' used"
+          line: 28
+          suggestion: "Use 'blog_posts' function instead"
     ValidationErrorResponseExample:
       summary: Validation error response
       description: Example error response for invalid input
@@ -806,8 +840,8 @@ components:
         message: "Invalid input (details will vary based on the error)"
         context:
           missingScopes:
-            - scope1
-            - scope2
+          - scope1
+          - scope2
         links:
           knowledge-base: "https://www.hubspot.com/products/service/knowledge-base"
     NotFoundErrorExample:

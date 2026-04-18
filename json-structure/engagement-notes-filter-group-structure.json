@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-structure/engagement-notes-filter-group-structure.json",
+  "name": "FilterGroup",
+  "description": "A group of filters (AND logic within group)",
+  "type": "object",
+  "properties": {
+    "filters": {
+      "type": "array",
+      "description": "The filters in this group",
+      "items": {
+        "type": "object",
+        "description": "A single search filter",
+        "required": [
+          "propertyName",
+          "operator"
+        ],
+        "properties": {
+          "propertyName": {
+            "type": "string",
+            "description": "The property to filter on",
+            "example": "hubspot_owner_id"
+          },
+          "operator": {
+            "type": "string",
+            "description": "The filter operator",
+            "enum": [
+              "EQ",
+              "NEQ",
+              "LT",
+              "LTE",
+              "GT",
+              "GTE",
+              "BETWEEN",
+              "IN",
+              "NOT_IN",
+              "HAS_PROPERTY",
+              "NOT_HAS_PROPERTY",
+              "CONTAINS_TOKEN",
+              "NOT_CONTAINS_TOKEN"
+            ],
+            "example": "EQ"
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to filter by",
+            "example": "12345"
+          },
+          "values": {
+            "type": "array",
+            "description": "Values for IN/NOT_IN operators",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "example-value"
+            ]
+          },
+          "highValue": {
+            "type": "string",
+            "description": "High value for BETWEEN operator",
+            "example": "example-value"
+          }
+        }
+      },
+      "example": [
+        {
+          "propertyName": "hubspot_owner_id",
+          "operator": "EQ",
+          "value": "12345",
+          "values": [
+            {}
+          ],
+          "highValue": "example-value"
+        }
+      ]
+    }
+  }
+}

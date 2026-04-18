@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/json-schema/engagement-notes-batch-read-notes-request-schema.json",
+  "title": "BatchReadNotesRequest",
+  "description": "Request body for batch reading notes",
+  "type": "object",
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "Array of note identifiers",
+      "items": {
+        "type": "object",
+        "description": "Input for reading a single item in a batch",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The note identifier",
+            "example": "1024"
+          }
+        }
+      },
+      "maxItems": 100,
+      "example": [
+        {
+          "id": "1024"
+        }
+      ]
+    },
+    "properties": {
+      "type": "array",
+      "description": "Properties to return",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "propertiesWithHistory": {
+      "type": "array",
+      "description": "Properties to return with history",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example-value"
+      ]
+    },
+    "idProperty": {
+      "type": "string",
+      "description": "The property to use as the identifier",
+      "example": "500123"
+    }
+  },
+  "required": [
+    "inputs"
+  ]
+}

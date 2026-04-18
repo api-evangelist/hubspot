@@ -20,14 +20,14 @@ info:
     url: https://opensource.org/licenses/MIT
 
 servers:
-  - url: https://api.hubapi.com
-    description: HubSpot Production API Server
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
 
 tags:
-  - name: Event Instances
-    description: Retrieve and query event completion data from CRM objects
-  - name: Event Types
-    description: Discover and retrieve available event type definitions
+- name: Event Instances
+  description: Retrieve and query event completion data from CRM objects
+- name: Event Types
+  description: Discover and retrieve available event type definitions
 
 components:
   securitySchemes:
@@ -48,28 +48,35 @@ components:
         id:
           type: string
           description: Unique identifier for the event instance
+          example: '500123'
         eventType:
           type: string
           description: The type of event that occurred
+          example: standard
         objectId:
           type: string
           description: The ID of the CRM object associated with this event
+          example: '500123'
         objectType:
           type: string
           description: The type of CRM object (e.g., contact, company, deal)
+          example: standard
         occurredAt:
           type: string
           format: date-time
           description: ISO 8601 timestamp when the event occurred
+          example: '2025-03-15T14:30:00Z'
         properties:
           type: object
           additionalProperties:
             type: string
           description: Additional properties associated with the event
+          example: &id001
+            key: value
       required:
-        - id
-        - eventType
-        - occurredAt
+      - id
+      - eventType
+      - occurredAt
 
     EventInstanceCollection:
       type: object
@@ -80,10 +87,17 @@ components:
           items:
             $ref: '#/components/schemas/EventInstance'
           description: Array of event instances
+          example:
+          - id: '500123'
+            eventType: standard
+            objectId: '500123'
+            objectType: standard
+            occurredAt: '2025-03-15T14:30:00Z'
+            properties: *id001
         paging:
           $ref: '#/components/schemas/Paging'
       required:
-        - results
+      - results
 
     EventTypeCollection:
       type: object
@@ -94,8 +108,10 @@ components:
           items:
             type: string
           description: List of available event type names
+          example:
+          - standard
       required:
-        - eventTypes
+      - eventTypes
 
     Paging:
       type: object
@@ -113,10 +129,12 @@ components:
         after:
           type: string
           description: Cursor token for the next page
+          example: example-value
         link:
           type: string
           description: API link to the next page of results
 
+          example: https://app.hubspot.com/contacts/12345
     PagingPrevious:
       type: object
       description: Pagination cursor for retrieving the previous page of results
@@ -124,10 +142,12 @@ components:
         before:
           type: string
           description: Cursor token for the previous page
+          example: example-value
         link:
           type: string
           description: API link to the previous page of results
 
+          example: https://app.hubspot.com/contacts/12345
     Error:
       type: object
       description: Standard error response returned when an API request fails
@@ -135,16 +155,20 @@ components:
         category:
           type: string
           description: High-level error category
+          example: standard
         correlationId:
           type: string
           format: uuid
           description: Unique identifier for tracking and debugging the error
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
           description: Human-readable error message
+          example: This is an example description.
         subCategory:
           type: string
           description: Specific error subcategory for detailed classification
+          example: standard
         context:
           type: object
           additionalProperties:
@@ -152,20 +176,31 @@ components:
             items:
               type: string
           description: Additional context about the error
+          example:
+            key: value
         links:
           type: object
           additionalProperties:
             type: string
           description: Relevant links for error resolution and documentation
+          example:
+            key: value
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorDetail'
           description: List of specific errors encountered
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
       required:
-        - category
-        - correlationId
-        - message
+      - category
+      - correlationId
+      - message
 
     ErrorDetail:
       type: object
@@ -174,15 +209,19 @@ components:
         message:
           type: string
           description: Human-readable error message
+          example: This is an example description.
         code:
           type: string
           description: Machine-readable error code
+          example: example-value
         subCategory:
           type: string
           description: Specific error subcategory
+          example: standard
         in:
           type: string
           description: Location where the error occurred (e.g., query, path, body)
+          example: example-value
         context:
           type: object
           additionalProperties:
@@ -190,30 +229,32 @@ components:
             items:
               type: string
           description: Additional context about the specific error
+          example:
+            key: value
       required:
-        - message
+      - message
 
   examples:
     EventInstanceCollectionExample:
       summary: Successful retrieval of event instances
       value:
         results:
-          - id: "evt_12345"
-            eventType: "page_view"
-            objectId: "123456"
-            objectType: "contact"
-            occurredAt: "2024-01-15T10:30:00Z"
-            properties:
-              page_url: "https://example.com/pricing"
-              duration: "45"
-          - id: "evt_12346"
-            eventType: "form_submission"
-            objectId: "123456"
-            objectType: "contact"
-            occurredAt: "2024-01-15T10:35:00Z"
-            properties:
-              form_name: "Contact Us"
-              submission_id: "sub_789"
+        - id: "evt_12345"
+          eventType: "page_view"
+          objectId: "123456"
+          objectType: "contact"
+          occurredAt: "2024-01-15T10:30:00Z"
+          properties:
+            page_url: "https://example.com/pricing"
+            duration: "45"
+        - id: "evt_12346"
+          eventType: "form_submission"
+          objectId: "123456"
+          objectType: "contact"
+          occurredAt: "2024-01-15T10:35:00Z"
+          properties:
+            form_name: "Contact Us"
+            submission_id: "sub_789"
         paging:
           next:
             after: "NTI1Cg%3D%3D"
@@ -223,11 +264,11 @@ components:
       summary: Successful retrieval of event types
       value:
         eventTypes:
-          - "page_view"
-          - "form_submission"
-          - "email_open"
-          - "email_click"
-          - "meeting_booked"
+        - "page_view"
+        - "form_submission"
+        - "email_open"
+        - "email_click"
+        - "meeting_booked"
 
     ErrorExample:
       summary: Validation error response
@@ -238,13 +279,13 @@ components:
         subCategory: "INVALID_PARAMETER"
         context:
           invalidFields:
-            - "objectType"
+          - "objectType"
         links:
           documentation: "https://developers.hubspot.com/docs/api/events"
         errors:
-          - message: "objectType must be a valid CRM object type"
-            code: "INVALID_OBJECT_TYPE"
-            in: "query"
+        - message: "objectType must be a valid CRM object type"
+          code: "INVALID_OBJECT_TYPE"
+          in: "query"
 
   responses:
     ErrorResponse:
@@ -261,9 +302,9 @@ paths:
   /events/v3/events:
     get:
       tags:
-        - Event Instances
+      - Event Instances
       operationId: getEventInstances
-      summary: HubSpot Retrieve Event Instances
+      summary: Hubspot Retrieve Event Instances
       description: |
         Retrieve instances of event completion data from your HubSpot account. 
         Use this endpoint to query events associated with specific CRM objects, 
@@ -274,69 +315,70 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - analytics.read
+      - OAuth2:
+        - analytics.read
       parameters:
-        - name: objectType
-          in: query
-          schema:
-            type: string
-            enum:
-              - contact
-              - company
-              - deal
-              - ticket
-          description: The type of CRM object to filter event instances on
-          example: contact
-        - name: objectId
-          in: query
-          schema:
-            type: string
-          description: The ID of the CRM object to filter events. Requires objectType parameter.
-          example: "123456"
-        - name: eventType
-          in: query
-          schema:
-            type: string
-          description: Filter by specific event type name
-          example: page_view
-        - name: occurredAfter
-          in: query
-          schema:
-            type: string
-            format: date-time
-          description: Filter for events that occurred after this ISO 8601 datetime
-          example: "2024-01-01T00:00:00Z"
-        - name: occurredBefore
-          in: query
-          schema:
-            type: string
-            format: date-time
-          description: Filter for events that occurred before this ISO 8601 datetime
-          example: "2024-12-31T23:59:59Z"
-        - name: sort
-          in: query
-          schema:
-            type: string
-            enum:
-              - ASCENDING
-              - DESCENDING
-          description: Sort direction based on event timestamp
-          example: DESCENDING
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-            maximum: 100
-            default: 20
-          description: Maximum number of results per page (1-100)
-          example: 20
-        - name: after
-          in: query
-          schema:
-            type: string
-          description: Pagination cursor for the next page of results
+      - name: objectType
+        in: query
+        schema:
+          type: string
+          enum:
+          - contact
+          - company
+          - deal
+          - ticket
+        description: The type of CRM object to filter event instances on
+        example: contact
+      - name: objectId
+        in: query
+        schema:
+          type: string
+        description: The ID of the CRM object to filter events. Requires objectType parameter.
+        example: "123456"
+      - name: eventType
+        in: query
+        schema:
+          type: string
+        description: Filter by specific event type name
+        example: page_view
+      - name: occurredAfter
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Filter for events that occurred after this ISO 8601 datetime
+        example: "2024-01-01T00:00:00Z"
+      - name: occurredBefore
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: Filter for events that occurred before this ISO 8601 datetime
+        example: "2024-12-31T23:59:59Z"
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - ASCENDING
+          - DESCENDING
+        description: Sort direction based on event timestamp
+        example: DESCENDING
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page (1-100)
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page of results
+        example: example-value
       responses:
         '200':
           description: Successfully retrieved event instances
@@ -357,9 +399,9 @@ paths:
   /events/v3/events/event-types:
     get:
       tags:
-        - Event Types
+      - Event Types
       operationId: getEventTypes
-      summary: HubSpot Retrieve Available Event Types
+      summary: Hubspot Retrieve Available Event Types
       description: |
         Retrieve a list of all available event types in your HubSpot account. 
         Use this endpoint to discover what event types exist before querying 
@@ -370,8 +412,8 @@ paths:
         dispatcherRules: |
           return "Success"
       security:
-        - OAuth2:
-            - analytics.read
+      - OAuth2:
+        - analytics.read
       responses:
         '200':
           description: Successfully retrieved event types
