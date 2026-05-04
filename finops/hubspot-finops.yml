@@ -1,0 +1,58 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: HubSpot
+providerId: hubspot
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - FinOps
+  - FOCUS
+  - CRM
+description: 'FOCUS-aligned FinOps for HubSpot: subscription per-Hub plus seat and contact-tier add-ons.'
+sources:
+  - https://www.hubspot.com/pricing/marketing
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: HubSpot, Inc.
+serviceCategory: CRM and Marketing Automation
+billingModel:
+  pricingCategory: Subscription + Tier
+  billingFrequency: Monthly or Annual
+  billingCurrency: USD
+focusColumns:
+  ServiceName: HubSpot
+  ServiceCategory: CRM and Marketing Automation
+  ProviderName: HubSpot
+  PublisherName: HubSpot, Inc.
+  BillingCurrency: USD
+meters:
+  - name: marketing_contacts
+    unit: contact
+    aggregation: max
+  - name: paid_seats
+    unit: seat-month
+    aggregation: max
+    dimensions:
+      - hub
+      - tier
+  - name: operations_workflow_actions
+    unit: action
+    aggregation: sum
+  - name: ai_credits
+    unit: credit
+    aggregation: sum
+principles:
+  - name: Visibility
+    description: Use Account Activity and Marketing Contact reporting weekly.
+  - name: Allocation
+    description: Tag contacts with cost-center properties; report cost-per-MQL by team.
+  - name: Optimization
+    description: Mark non-marketing contacts as 'Non-Marketing' to avoid contact-tier overages.
+  - name: Accountability
+    description: Cap contact growth via lifecycle stage automation; quarterly seat audit.

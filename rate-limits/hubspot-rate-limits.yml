@@ -1,0 +1,54 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: HubSpot
+providerId: hubspot
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - CRM
+description: HubSpot REST API rate limits per app per portal. Limits scale with tier; Enterprise has higher
+  daily caps.
+sources:
+  - https://www.hubspot.com/pricing/marketing
+  - https://developers.hubspot.com/docs/api/usage-details
+headers:
+  dailyLimit: X-HubSpot-RateLimit-Daily
+  dailyRemaining: X-HubSpot-RateLimit-Daily-Remaining
+  secondLimit: X-HubSpot-RateLimit-Secondly
+  secondRemaining: X-HubSpot-RateLimit-Secondly-Remaining
+responseCodes:
+  throttled: 429
+limits:
+  - name: Free / Starter
+    scope: app/portal
+    metric: requests_per_day
+    limit: 250000
+    timeFrame: day
+  - name: Free / Starter (burst)
+    scope: app/portal
+    metric: requests_per_10s
+    limit: 100
+    timeFrame: 10 seconds
+  - name: Professional / Enterprise
+    scope: app/portal
+    metric: requests_per_day
+    limit: 500000
+    timeFrame: day
+  - name: Professional / Enterprise (burst)
+    scope: app/portal
+    metric: requests_per_10s
+    limit: 150
+    timeFrame: 10 seconds
+  - name: Search API
+    scope: app/portal
+    metric: requests_per_second
+    limit: 4
+    timeFrame: second
+  - name: Batch endpoints
+    scope: app/portal
+    metric: objects_per_request
+    limit: 100
+    timeFrame: request
