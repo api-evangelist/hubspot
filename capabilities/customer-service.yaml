@@ -1,70 +1,803 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "HubSpot Customer Service"
-  description: "Unified workflow for service agents to manage support tickets, conversations, threads, messages, and CRM associations. Combines ticket management with conversation channels for complete customer service operations."
+  label: HubSpot Customer Service
+  description: Unified workflow for service agents to manage support tickets, conversations, threads, messages, and CRM associations.
+    Combines ticket management with conversation channels for complete customer service operations.
   tags:
-    - HubSpot
-    - Service
-    - Support
-    - Tickets
-    - Conversations
-  created: "2026-04-18"
-  modified: "2026-04-18"
-
+  - HubSpot
+  - Service
+  - Support
+  - Tickets
+  - Conversations
+  created: '2026-04-18'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
-
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-    - import: crm-tickets
-      location: ./shared/crm-tickets.yaml
-    - import: conversations
-      location: ./shared/conversations-api.yaml
-    - import: crm-contacts
-      location: ./shared/crm-contacts.yaml
-    - import: crm-associations
-      location: ./shared/crm-associations.yaml
-
+  - type: http
+    namespace: crm-tickets
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Tickets API for managing support ticket records.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tickets
+      path: /crm/v3/objects/tickets
+      description: Ticket records
+      operations:
+      - name: list-tickets
+        method: GET
+        description: List all tickets
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Maximum results per page
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Pagination cursor
+        - name: properties
+          in: query
+          type: string
+          required: false
+          description: Properties to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-ticket
+        method: POST
+        description: Create a ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+    - name: ticket-by-id
+      path: /crm/v3/objects/tickets/{ticketId}
+      description: Individual ticket
+      operations:
+      - name: get-ticket
+        method: GET
+        description: Get a ticket by ID
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          required: true
+          description: Ticket ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-ticket
+        method: PATCH
+        description: Update a ticket
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          required: true
+          description: Ticket ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+      - name: archive-ticket
+        method: DELETE
+        description: Archive a ticket
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          required: true
+          description: Ticket ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /crm/v3/objects/tickets/search
+      description: Search tickets
+      operations:
+      - name: search-tickets
+        method: POST
+        description: Search tickets with filters
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            filterGroups: '{{tools.filterGroups}}'
+            query: '{{tools.query}}'
+            limit: '{{tools.limit}}'
+            properties: '{{tools.properties}}'
+  - type: http
+    namespace: conversations-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Conversations API enables you to manage conversation threads, \nmessages, and inboxes programmatically.\
+      \ Use this API to query existing \nconversations, send messages, manage thread assignmen"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: inboxes
+      path: /inboxes
+      description: inboxes operations
+      operations:
+      - name: listinboxes
+        method: GET
+        description: HubSpot List All Inboxes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getinboxbyid
+        method: GET
+        description: HubSpot Retrieve an Inbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: threads
+      path: /threads
+      description: threads operations
+      operations:
+      - name: listthreads
+        method: GET
+        description: HubSpot List Conversation Threads
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getthreadbyid
+        method: GET
+        description: HubSpot Retrieve a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatethread
+        method: PATCH
+        description: HubSpot Update a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archivethread
+        method: DELETE
+        description: HubSpot Archive a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages
+      path: /messages
+      description: messages operations
+      operations:
+      - name: listthreadmessages
+        method: GET
+        description: HubSpot List Thread Messages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: sendmessage
+        method: POST
+        description: HubSpot Send a Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getmessagebyid
+        method: GET
+        description: HubSpot Retrieve a Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: channels
+      path: /channels
+      description: channels operations
+      operations:
+      - name: listchannels
+        method: GET
+        description: HubSpot List Channels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: actors
+      path: /actors
+      description: actors operations
+      operations:
+      - name: listactors
+        method: GET
+        description: HubSpot List Actors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getactorbyid
+        method: GET
+        description: HubSpot Retrieve an Actor
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-contacts
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Contacts API for managing contact records.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: contacts
+      path: /crm/v3/objects/contacts
+      description: Contact records
+      operations:
+      - name: list-contacts
+        method: GET
+        description: List all contacts
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Maximum results per page
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Pagination cursor
+        - name: properties
+          in: query
+          type: string
+          required: false
+          description: Comma-separated properties to return
+        - name: archived
+          in: query
+          type: boolean
+          required: false
+          description: Return archived contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-contact
+        method: POST
+        description: Create a contact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+    - name: contact-by-id
+      path: /crm/v3/objects/contacts/{contactId}
+      description: Individual contact
+      operations:
+      - name: get-contact
+        method: GET
+        description: Get a contact by ID
+        inputParameters:
+        - name: contactId
+          in: path
+          type: string
+          required: true
+          description: Contact ID
+        - name: properties
+          in: query
+          type: string
+          required: false
+          description: Properties to return
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-contact
+        method: PATCH
+        description: Update a contact
+        inputParameters:
+        - name: contactId
+          in: path
+          type: string
+          required: true
+          description: Contact ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+      - name: archive-contact
+        method: DELETE
+        description: Archive a contact
+        inputParameters:
+        - name: contactId
+          in: path
+          type: string
+          required: true
+          description: Contact ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /crm/v3/objects/contacts/search
+      description: Search contacts
+      operations:
+      - name: search-contacts
+        method: POST
+        description: Search contacts with filters
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            filterGroups: '{{tools.filterGroups}}'
+            query: '{{tools.query}}'
+            limit: '{{tools.limit}}'
+            properties: '{{tools.properties}}'
+    - name: batch-read
+      path: /crm/v3/objects/contacts/batch/read
+      description: Batch read contacts
+      operations:
+      - name: batch-read-contacts
+        method: POST
+        description: Read multiple contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+            properties: '{{tools.properties}}'
+    - name: batch-create
+      path: /crm/v3/objects/contacts/batch/create
+      description: Batch create contacts
+      operations:
+      - name: batch-create-contacts
+        method: POST
+        description: Create multiple contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+    - name: batch-archive
+      path: /crm/v3/objects/contacts/batch/archive
+      description: Batch archive contacts
+      operations:
+      - name: batch-archive-contacts
+        method: POST
+        description: Archive multiple contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+  - type: http
+    namespace: crm-associations
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Associations API for managing relationships between CRM objects.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: object-associations
+      path: /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}
+      description: Object associations
+      operations:
+      - name: list-associations
+        method: GET
+        description: List associations for an object
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: fromObjectId
+          in: path
+          type: string
+          required: true
+          description: Source object ID
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-association
+        method: PUT
+        description: Create an association between objects
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: fromObjectId
+          in: path
+          type: string
+          required: true
+          description: Source object ID
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            to: '{{tools.to}}'
+            types: '{{tools.types}}'
+    - name: batch-read
+      path: /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/read
+      description: Batch read associations
+      operations:
+      - name: batch-read-associations
+        method: POST
+        description: Read associations for multiple objects
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+    - name: batch-create
+      path: /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/create
+      description: Batch create associations
+      operations:
+      - name: batch-create-associations
+        method: POST
+        description: Create multiple associations
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+    - name: definitions
+      path: /crm/v4/associations/definitions
+      description: Association definitions
+      operations:
+      - name: list-definitions
+        method: GET
+        description: List all association definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: labels
+      path: /crm/v4/associations/{fromObjectType}/{toObjectType}/labels
+      description: Association labels
+      operations:
+      - name: list-labels
+        method: GET
+        description: List association labels
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-label
+        method: POST
+        description: Create an association label
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          required: true
+          description: Source object type
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+          description: Target object type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            label: '{{tools.label}}'
+            name: '{{tools.name}}'
   exposes:
-    - type: rest
-      port: 8082
-      namespace: customer-service-api
-      description: "Unified REST API for customer service ticket management, conversations, and contact resolution."
-      resources:
-        - path: /v1/tickets
-          name: tickets
-          description: "Support tickets"
-          operations:
-            - { method: GET, name: list-tickets, description: "List tickets", call: "crm-tickets.list-tickets", outputParameters: [{ type: object, mapping: "$." }] }
-            - { method: POST, name: create-ticket, description: "Create ticket", call: "crm-tickets.create-ticket", outputParameters: [{ type: object, mapping: "$." }] }
-        - path: /v1/tickets/{ticketId}
-          name: ticket-by-id
-          description: "Individual ticket"
-          operations:
-            - { method: GET, name: get-ticket, description: "Get ticket", call: "crm-tickets.get-ticket", with: { ticketId: "rest.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
-            - { method: PATCH, name: update-ticket, description: "Update ticket", call: "crm-tickets.update-ticket", with: { ticketId: "rest.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - path: /v1/contacts/{contactId}
-          name: contact-by-id
-          description: "Contact lookup"
-          operations:
-            - { method: GET, name: get-contact, description: "Get contact", call: "crm-contacts.get-contact", with: { contactId: "rest.contactId" }, outputParameters: [{ type: object, mapping: "$." }] }
-
-    - type: mcp
-      port: 9092
-      namespace: customer-service-mcp
-      transport: http
-      description: "MCP server for AI-assisted customer service, ticket resolution, and conversation management."
-      tools:
-        - { name: list-tickets, description: "List all support tickets", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.list-tickets", with: { limit: "tools.limit", after: "tools.after", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: get-ticket, description: "Get a support ticket by ID", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.get-ticket", with: { ticketId: "tools.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: create-ticket, description: "Create a new support ticket", hints: { readOnly: false }, call: "crm-tickets.create-ticket", with: { properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: update-ticket, description: "Update a support ticket", hints: { readOnly: false, idempotent: true }, call: "crm-tickets.update-ticket", with: { ticketId: "tools.ticketId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: archive-ticket, description: "Archive a support ticket", hints: { readOnly: false, destructive: true, idempotent: true }, call: "crm-tickets.archive-ticket", with: { ticketId: "tools.ticketId" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: search-tickets, description: "Search tickets with filters", hints: { readOnly: true, idempotent: true }, call: "crm-tickets.search-tickets", with: { filterGroups: "tools.filterGroups", query: "tools.query", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: get-contact, description: "Look up a contact for ticket context", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.get-contact", with: { contactId: "tools.contactId", properties: "tools.properties" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: search-contacts, description: "Search contacts to find the customer", hints: { readOnly: true, idempotent: true }, call: "crm-contacts.search-contacts", with: { filterGroups: "tools.filterGroups", query: "tools.query" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: list-associations, description: "List associations for a CRM object", hints: { readOnly: true, idempotent: true }, call: "crm-associations.list-associations", with: { fromObjectType: "tools.fromObjectType", fromObjectId: "tools.fromObjectId", toObjectType: "tools.toObjectType" }, outputParameters: [{ type: object, mapping: "$." }] }
-        - { name: create-association, description: "Associate a ticket with a contact or company", hints: { readOnly: false, idempotent: true }, call: "crm-associations.create-association", with: { fromObjectType: "tools.fromObjectType", fromObjectId: "tools.fromObjectId", toObjectType: "tools.toObjectType", to: "tools.to", types: "tools.types" }, outputParameters: [{ type: object, mapping: "$." }] }
+  - type: rest
+    port: 8082
+    namespace: customer-service-api
+    description: Unified REST API for customer service ticket management, conversations, and contact resolution.
+    resources:
+    - path: /v1/tickets
+      name: tickets
+      description: Support tickets
+      operations:
+      - method: GET
+        name: list-tickets
+        description: List tickets
+        call: crm-tickets.list-tickets
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-ticket
+        description: Create ticket
+        call: crm-tickets.create-ticket
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tickets/{ticketId}
+      name: ticket-by-id
+      description: Individual ticket
+      operations:
+      - method: GET
+        name: get-ticket
+        description: Get ticket
+        call: crm-tickets.get-ticket
+        with:
+          ticketId: rest.ticketId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: update-ticket
+        description: Update ticket
+        call: crm-tickets.update-ticket
+        with:
+          ticketId: rest.ticketId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/contacts/{contactId}
+      name: contact-by-id
+      description: Contact lookup
+      operations:
+      - method: GET
+        name: get-contact
+        description: Get contact
+        call: crm-contacts.get-contact
+        with:
+          contactId: rest.contactId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9092
+    namespace: customer-service-mcp
+    transport: http
+    description: MCP server for AI-assisted customer service, ticket resolution, and conversation management.
+    tools:
+    - name: list-tickets
+      description: List all support tickets
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-tickets.list-tickets
+      with:
+        limit: tools.limit
+        after: tools.after
+        properties: tools.properties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-ticket
+      description: Get a support ticket by ID
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-tickets.get-ticket
+      with:
+        ticketId: tools.ticketId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-ticket
+      description: Create a new support ticket
+      hints:
+        readOnly: false
+      call: crm-tickets.create-ticket
+      with:
+        properties: tools.properties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-ticket
+      description: Update a support ticket
+      hints:
+        readOnly: false
+        idempotent: true
+      call: crm-tickets.update-ticket
+      with:
+        ticketId: tools.ticketId
+        properties: tools.properties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: archive-ticket
+      description: Archive a support ticket
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: crm-tickets.archive-ticket
+      with:
+        ticketId: tools.ticketId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-tickets
+      description: Search tickets with filters
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-tickets.search-tickets
+      with:
+        filterGroups: tools.filterGroups
+        query: tools.query
+        properties: tools.properties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-contact
+      description: Look up a contact for ticket context
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-contacts.get-contact
+      with:
+        contactId: tools.contactId
+        properties: tools.properties
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: search-contacts
+      description: Search contacts to find the customer
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-contacts.search-contacts
+      with:
+        filterGroups: tools.filterGroups
+        query: tools.query
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-associations
+      description: List associations for a CRM object
+      hints:
+        readOnly: true
+        idempotent: true
+      call: crm-associations.list-associations
+      with:
+        fromObjectType: tools.fromObjectType
+        fromObjectId: tools.fromObjectId
+        toObjectType: tools.toObjectType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-association
+      description: Associate a ticket with a contact or company
+      hints:
+        readOnly: false
+        idempotent: true
+      call: crm-associations.create-association
+      with:
+        fromObjectType: tools.fromObjectType
+        fromObjectId: tools.fromObjectId
+        toObjectType: tools.toObjectType
+        to: tools.to
+        types: tools.types
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,4 +1,4 @@
-naftiko: 1.0.0-alpha1
+naftiko: 1.0.0-alpha2
 info:
   label: HubSpot Commerce Operations
   description: Commerce workflow for managing payments and subscriptions.
@@ -8,17 +8,239 @@ info:
   - Payments
   - Subscriptions
   created: '2026-04-18'
-  modified: '2026-04-18'
+  modified: '2026-05-06'
 binds:
 - namespace: env
   keys:
     HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-  - import: commerce-payments-api
-    location: ./shared/commerce-payments-api.yaml
-  - import: commerce-subscriptions-api
-    location: ./shared/commerce-subscriptions-api.yaml
+  - type: http
+    namespace: commerce-payments-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Commerce Payments API enables developers to manage commerce payment objects within \nthe HubSpot\
+      \ CRM. This API provides comprehensive functionality for creating, reading, updating, \narchivi"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcommercepayments
+        method: POST
+        description: HubSpot Read a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecommercepayments
+        method: POST
+        description: HubSpot Archive a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecommercepayments
+        method: POST
+        description: HubSpot Create a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecommercepayments
+        method: POST
+        description: HubSpot Update a Batch of Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: commerce_payments
+      path: /commerce_payments
+      description: commerce_payments operations
+      operations:
+      - name: listcommercepayments
+        method: GET
+        description: HubSpot List Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcommercepayment
+        method: POST
+        description: HubSpot Create a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcommercepaymentbyid
+        method: GET
+        description: HubSpot Retrieve a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecommercepaymentbyid
+        method: PATCH
+        description: HubSpot Update a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archivecommercepaymentbyid
+        method: DELETE
+        description: HubSpot Archive a Commerce Payment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcommercepayments
+        method: POST
+        description: HubSpot Search Commerce Payments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: commerce-subscriptions-api
+    baseUri: https://api.hubapi.com
+    description: The subscriptions API allows you to retrieve data about recurring subscription records in HubSpot Commerce.
+      Subscriptions are created when a customer purchases a recurring product through HubSpot paym
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: subscriptions
+      path: /subscriptions
+      description: subscriptions operations
+      operations:
+      - name: listsubscriptions
+        method: GET
+        description: HubSpot List Subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsubscription
+        method: POST
+        description: HubSpot Create a Subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsubscription
+        method: GET
+        description: HubSpot Get a Subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatesubscription
+        method: PATCH
+        description: HubSpot Update a Subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesubscription
+        method: DELETE
+        description: HubSpot Archive a Subscription
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadsubscriptions
+        method: POST
+        description: HubSpot Batch Read Subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatesubscriptions
+        method: POST
+        description: HubSpot Batch Create Subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatesubscriptions
+        method: POST
+        description: HubSpot Batch Update Subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchsubscriptions
+        method: POST
+        description: HubSpot Search Subscriptions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listsubscriptionassociations
+        method: GET
+        description: HubSpot List Subscription Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
   - type: mcp
     port: 9094

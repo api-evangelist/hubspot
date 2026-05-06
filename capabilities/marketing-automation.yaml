@@ -1,4 +1,4 @@
-naftiko: 1.0.0-alpha1
+naftiko: 1.0.0-alpha2
 info:
   label: HubSpot Marketing Automation
   description: Marketing automation workflow combining email campaigns and analytics events.
@@ -8,17 +8,121 @@ info:
   - Email
   - Analytics
   created: '2026-04-18'
-  modified: '2026-04-18'
+  modified: '2026-05-06'
 binds:
 - namespace: env
   keys:
     HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-  - import: marketing-emal-api
-    location: ./shared/marketing-emal-api.yaml
-  - import: analytics-events-api
-    location: ./shared/analytics-events-api.yaml
+  - type: http
+    namespace: marketing-emal-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot Marketing Transactional Email API enables you to send transactional emails and manage SMTP tokens.
+
+
+      Use this API to:
+
+      - Create and manage SMTP API tokens for sending transactional emails
+
+      - '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: smtp-tokens
+      path: /smtp-tokens
+      description: smtp-tokens operations
+      operations:
+      - name: listsmtptokens
+        method: GET
+        description: HubSpot List All SMTP Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsmtptoken
+        method: POST
+        description: HubSpot Create an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsmtptokenbyid
+        method: GET
+        description: HubSpot Get an SMTP Token by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesmtptoken
+        method: DELETE
+        description: HubSpot Delete an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: password-reset
+      path: /password-reset
+      description: password-reset operations
+      operations:
+      - name: resetsmtptokenpassword
+        method: POST
+        description: HubSpot Reset SMTP Token Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: send
+      path: /send
+      description: send operations
+      operations:
+      - name: sendtransactionalemail
+        method: POST
+        description: HubSpot Send a Transactional Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: analytics-events-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account.\
+      \ Use this API to query event instances associated with \nCRM objects, filter by event types, and"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: events
+      path: /events
+      description: events operations
+      operations:
+      - name: geteventinstances
+        method: GET
+        description: HubSpot Retrieve Event Instances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: event-types
+      path: /event-types
+      description: event-types operations
+      operations:
+      - name: geteventtypes
+        method: GET
+        description: HubSpot Retrieve Available Event Types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
   - type: mcp
     port: 9092

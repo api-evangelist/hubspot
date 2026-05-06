@@ -1,68 +1,458 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "HubSpot Developer Platform"
-  description: "Unified workflow for developers to manage custom workflow actions, feature flags, CMS source code, and OAuth authentication. Combines automation, deployment, and auth APIs for HubSpot platform development."
+  label: HubSpot Developer Platform
+  description: Unified workflow for developers to manage custom workflow actions, feature flags, CMS source code, and OAuth
+    authentication. Combines automation, deployment, and auth APIs for HubSpot platform development.
   tags:
-    - HubSpot
-    - Developer
-    - Platform
-    - Automation
-    - OAuth
-  created: "2026-04-18"
-  modified: "2026-04-18"
-
+  - HubSpot
+  - Developer
+  - Platform
+  - Automation
+  - OAuth
+  created: '2026-04-18'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
-      HUBSPOT_API_KEY: HUBSPOT_API_KEY
-
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
 capability:
   consumes:
-    - import: custom-workflow-actions
-      location: ./shared/custom-workflow-actions-api.yaml
-    - import: feature-flags
-      location: ./shared/crm-feature-flags-api.yaml
-    - import: source-code
-      location: ./shared/source-code-api.yaml
-    - import: oauth
-      location: ./shared/oauth-api.yaml
+  - type: http
+    namespace: custom-workflow-actions-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Custom Workflow Actions API enables developers to create, manage, and extend workflow \nautomation\
+      \ capabilities within HubSpot. This API allows you to define custom actions that can be \nuse"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: complete
+      path: /complete
+      description: complete operations
+      operations:
+      - name: completecallback
+        method: POST
+        description: HubSpot Complete a Single Callback
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: batchcompletecallbacks
+        method: POST
+        description: HubSpot Complete Multiple Callbacks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: actions
+      path: /actions
+      description: actions operations
+      operations:
+      - name: listactiondefinitions
+        method: GET
+        description: HubSpot List Action Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createactiondefinition
+        method: POST
+        description: HubSpot Create an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{appId}'
+      path: /{appId}
+      description: '{appId} operations'
+      operations:
+      - name: getactiondefinitionbyid
+        method: GET
+        description: HubSpot Retrieve an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateactiondefinitionbyid
+        method: PATCH
+        description: HubSpot Update an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archiveactiondefinitionbyid
+        method: DELETE
+        description: HubSpot Archive an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: functions
+      path: /functions
+      description: functions operations
+      operations:
+      - name: listactionfunctions
+        method: GET
+        description: HubSpot List Action Functions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getactionfunctionbytype
+        method: GET
+        description: HubSpot Retrieve Function by Type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertactionfunction
+        method: PUT
+        description: HubSpot Create or Update a Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteactionfunctionbytype
+        method: DELETE
+        description: HubSpot Delete a Function by Type
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{functionType}'
+      path: /{functionType}
+      description: '{functionType} operations'
+      operations:
+      - name: getactionfunctionbyid
+        method: GET
+        description: HubSpot Retrieve a Specific Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteactionfunctionbyid
+        method: DELETE
+        description: HubSpot Delete a Specific Function
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: revisions
+      path: /revisions
+      description: revisions operations
+      operations:
+      - name: listactiondefinitionrevisions
+        method: GET
+        description: HubSpot List Definition Revisions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getactiondefinitionrevisionbyid
+        method: GET
+        description: HubSpot Retrieve a Specific Revision
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-feature-flags-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CRM Feature Flags API allows you to manage feature flags for your HubSpot applications.
 
+
+      ## Overview
+
+      Feature flags enable you to control feature rollouts at both the application and portal'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: flags
+      path: /flags
+      description: flags operations
+      operations:
+      - name: getapplicationfeatureflag
+        method: GET
+        description: HubSpot Retrieve a Feature Flag Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertapplicationfeatureflag
+        method: PUT
+        description: HubSpot Create or Update a Feature Flag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteapplicationfeatureflag
+        method: DELETE
+        description: HubSpot Delete a Feature Flag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: portals
+      path: /portals
+      description: portals operations
+      operations:
+      - name: listportalflagstates
+        method: GET
+        description: HubSpot List Portal Flag States
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getportalflagstate
+        method: GET
+        description: HubSpot Retrieve a Portal Flag State
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: setportalflagstate
+        method: PUT
+        description: HubSpot Set a Portal Flag State
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteportalflagstate
+        method: DELETE
+        description: HubSpot Delete a Portal Flag State
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: upsert
+      path: /upsert
+      description: upsert operations
+      operations:
+      - name: batchupsertportalflagstates
+        method: POST
+        description: HubSpot Batch Create or Update Portal Flag States
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: delete
+      path: /delete
+      description: delete operations
+      operations:
+      - name: batchdeleteportalflagstates
+        method: POST
+        description: HubSpot Batch Delete Portal Flag States
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: source-code-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CMS Source Code API provides programmatic access to files in the CMS Developer File System.
+
+      Use these endpoints to manage HTML templates, CSS stylesheets, JavaScript files, modules, and ot'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: content
+      path: /content
+      description: content operations
+      operations:
+      - name: downloadsourcecodefile
+        method: GET
+        description: HubSpot Download a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsourcecodefile
+        method: POST
+        description: HubSpot Create a New Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertsourcecodefile
+        method: PUT
+        description: HubSpot Create or Update a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesourcecodefile
+        method: DELETE
+        description: HubSpot Delete a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: metadata
+      path: /metadata
+      description: metadata operations
+      operations:
+      - name: getsourcecodemetadata
+        method: GET
+        description: HubSpot Retrieve File or Folder Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: validate
+      path: /validate
+      description: validate operations
+      operations:
+      - name: validatesourcecodefile
+        method: POST
+        description: HubSpot Validate a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: async
+      path: /async
+      description: async operations
+      operations:
+      - name: extractzipfileasync
+        method: POST
+        description: HubSpot Extract a Zip Archive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: status
+      path: /status
+      description: status operations
+      operations:
+      - name: getextractiontaskstatus
+        method: GET
+        description: HubSpot Get Extraction Task Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: oauth-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot OAuth API enables secure authentication and authorization for accessing HubSpot resources.
+
+      Use these endpoints to manage OAuth tokens, refresh access tokens, and retrieve token metadata fo'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: access-tokens
+      path: /access-tokens
+      description: access-tokens operations
+      operations:
+      - name: getaccesstokenmetadata
+        method: GET
+        description: HubSpot Retrieve Access Token Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: refresh-tokens
+      path: /refresh-tokens
+      description: refresh-tokens operations
+      operations:
+      - name: getrefreshtokenmetadata
+        method: GET
+        description: HubSpot Retrieve Refresh Token Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: revokerefreshtoken
+        method: DELETE
+        description: HubSpot Revoke a Refresh Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: token
+      path: /token
+      description: token operations
+      operations:
+      - name: createorrefreshaccesstoken
+        method: POST
+        description: HubSpot Create or Refresh an Access Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8083
-      namespace: developer-platform-api
-      description: "Unified REST API for HubSpot platform development, workflow customization, and deployment."
-      resources:
-        - path: /v1/access-tokens/{token}
-          name: access-token
-          description: "OAuth token metadata"
-          operations:
-            - method: GET
-              name: get-token-metadata
-              description: "Get access token metadata"
-              call: "oauth.getAccessTokenMetadata"
-              with:
-                token: "rest.token"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9093
-      namespace: developer-platform-mcp
-      transport: http
-      description: "MCP server for AI-assisted HubSpot platform development, workflow automation, and feature management."
-      tools:
-        - name: get-access-token-metadata
-          description: "Retrieve metadata for an OAuth access token"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "oauth.getAccessTokenMetadata"
-          with:
-            token: "tools.token"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8083
+    namespace: developer-platform-api
+    description: Unified REST API for HubSpot platform development, workflow customization, and deployment.
+    resources:
+    - path: /v1/access-tokens/{token}
+      name: access-token
+      description: OAuth token metadata
+      operations:
+      - method: GET
+        name: get-token-metadata
+        description: Get access token metadata
+        call: oauth.getAccessTokenMetadata
+        with:
+          token: rest.token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9093
+    namespace: developer-platform-mcp
+    transport: http
+    description: MCP server for AI-assisted HubSpot platform development, workflow automation, and feature management.
+    tools:
+    - name: get-access-token-metadata
+      description: Retrieve metadata for an OAuth access token
+      hints:
+        readOnly: true
+        idempotent: true
+      call: oauth.getAccessTokenMetadata
+      with:
+        token: tools.token
+      outputParameters:
+      - type: object
+        mapping: $.

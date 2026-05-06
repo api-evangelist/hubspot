@@ -1,4 +1,4 @@
-naftiko: 1.0.0-alpha1
+naftiko: 1.0.0-alpha2
 info:
   label: HubSpot CRM Management
   description: Unified CRM workflow for managing contacts, companies, deals, tickets, and their associations.
@@ -8,27 +8,824 @@ info:
   - Sales
   - Contacts
   created: '2026-04-18'
-  modified: '2026-04-18'
+  modified: '2026-05-06'
 binds:
 - namespace: env
   keys:
     HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-  - import: crm-contacts-api
-    location: ./shared/crm-contacts-api.yaml
-  - import: crm-companies-api
-    location: ./shared/crm-companies-api.yaml
-  - import: crm-deals-api
-    location: ./shared/crm-deals-api.yaml
-  - import: crm-tickets-api
-    location: ./shared/crm-tickets-api.yaml
-  - import: crm-associations-api
-    location: ./shared/crm-associations-api.yaml
-  - import: crm-search-api
-    location: ./shared/crm-search-api.yaml
-  - import: crm-lists-api
-    location: ./shared/crm-lists-api.yaml
+  - type: http
+    namespace: crm-contacts-api
+    baseUri: https://api.hubapi.com
+    description: Contact records store information about individuals. The contacts endpoints allow you to manage contact data
+      and sync it between HubSpot and other systems. You can create, retrieve, update, and delete
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: contacts
+      path: /contacts
+      description: contacts operations
+      operations:
+      - name: listcontacts
+        method: GET
+        description: HubSpot List Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcontact
+        method: POST
+        description: HubSpot Create a Contact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcontact
+        method: GET
+        description: HubSpot Get a Contact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecontact
+        method: PATCH
+        description: HubSpot Update a Contact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecontact
+        method: DELETE
+        description: HubSpot Archive a Contact
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcontacts
+        method: POST
+        description: HubSpot Batch Read Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecontacts
+        method: POST
+        description: HubSpot Batch Create Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecontacts
+        method: POST
+        description: HubSpot Batch Update Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecontacts
+        method: POST
+        description: HubSpot Batch Archive Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcontacts
+        method: POST
+        description: HubSpot Search Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listcontactassociations
+        method: GET
+        description: HubSpot List Contact Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createcontactassociation
+        method: PUT
+        description: HubSpot Create a Contact Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecontactassociation
+        method: DELETE
+        description: HubSpot Delete a Contact Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-companies-api
+    baseUri: https://api.hubapi.com
+    description: Company records store data about businesses and organizations. The companies endpoints allow you to manage
+      this data and sync it between HubSpot and other systems, including creating, retrieving, upda
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: companies
+      path: /companies
+      description: companies operations
+      operations:
+      - name: listcompanies
+        method: GET
+        description: HubSpot List Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcompany
+        method: POST
+        description: HubSpot Create a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcompany
+        method: GET
+        description: HubSpot Get a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecompany
+        method: PATCH
+        description: HubSpot Update a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecompany
+        method: DELETE
+        description: HubSpot Archive a Company
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcompanies
+        method: POST
+        description: HubSpot Batch Read Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecompanies
+        method: POST
+        description: HubSpot Batch Create Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecompanies
+        method: POST
+        description: HubSpot Batch Update Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecompanies
+        method: POST
+        description: HubSpot Batch Archive Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcompanies
+        method: POST
+        description: HubSpot Search Companies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listcompanyassociations
+        method: GET
+        description: HubSpot List Company Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createcompanyassociation
+        method: PUT
+        description: HubSpot Create a Company Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletecompanyassociation
+        method: DELETE
+        description: HubSpot Delete a Company Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-deals-api
+    baseUri: https://api.hubapi.com
+    description: A deal stores data about an ongoing transaction or sales opportunity. The deals endpoints allow you to manage
+      deal records and sync data between HubSpot and other systems, supporting the full lifecycl
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: deals
+      path: /deals
+      description: deals operations
+      operations:
+      - name: listdeals
+        method: GET
+        description: HubSpot List Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdeal
+        method: POST
+        description: HubSpot Create a Deal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getdeal
+        method: GET
+        description: HubSpot Get a Deal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatedeal
+        method: PATCH
+        description: HubSpot Update a Deal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletedeal
+        method: DELETE
+        description: HubSpot Archive a Deal
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreaddeals
+        method: POST
+        description: HubSpot Batch Read Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatedeals
+        method: POST
+        description: HubSpot Batch Create Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatedeals
+        method: POST
+        description: HubSpot Batch Update Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivedeals
+        method: POST
+        description: HubSpot Batch Archive Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchdeals
+        method: POST
+        description: HubSpot Search Deals
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listdealassociations
+        method: GET
+        description: HubSpot List Deal Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createdealassociation
+        method: PUT
+        description: HubSpot Create a Deal Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletedealassociation
+        method: DELETE
+        description: HubSpot Delete a Deal Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-tickets-api
+    baseUri: https://api.hubapi.com
+    description: Tickets represent customer requests for help and are tracked through support pipelines until resolved. The
+      tickets endpoints allow you to create, manage, and retrieve customer support ticket records a
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tickets
+      path: /tickets
+      description: tickets operations
+      operations:
+      - name: listtickets
+        method: GET
+        description: HubSpot List Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createticket
+        method: POST
+        description: HubSpot Create a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getticket
+        method: GET
+        description: HubSpot Get a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateticket
+        method: PATCH
+        description: HubSpot Update a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteticket
+        method: DELETE
+        description: HubSpot Archive a Ticket
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadtickets
+        method: POST
+        description: HubSpot Batch Read Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatetickets
+        method: POST
+        description: HubSpot Batch Create Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatetickets
+        method: POST
+        description: HubSpot Batch Update Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivetickets
+        method: POST
+        description: HubSpot Batch Archive Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchtickets
+        method: POST
+        description: HubSpot Search Tickets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listticketassociations
+        method: GET
+        description: HubSpot List Ticket Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createticketassociation
+        method: PUT
+        description: HubSpot Create a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteticketassociation
+        method: DELETE
+        description: HubSpot Delete a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-associations-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CRM Associations API enables you to manage relationships between CRM objects.
+
+
+      ## Overview
+
+      Associations represent the connections between different CRM records in HubSpot. This API allows '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listobjectassociations
+        method: GET
+        description: HubSpot List Associations for an Object
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createobjectassociation
+        method: PUT
+        description: HubSpot Create an Association Between Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectType}'
+      path: /{toObjectType}
+      description: '{toObjectType} operations'
+      operations:
+      - name: deleteobjectassociation
+        method: DELETE
+        description: HubSpot Delete an Association Between Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadassociations
+        method: POST
+        description: HubSpot Batch Read Associations for Multiple Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateassociations
+        method: POST
+        description: HubSpot Batch Create Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchiveassociations
+        method: POST
+        description: HubSpot Batch Archive Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: labels
+      path: /labels
+      description: labels operations
+      operations:
+      - name: listassociationlabels
+        method: GET
+        description: HubSpot List Association Labels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createassociationlabel
+        method: POST
+        description: HubSpot Create an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateassociationlabel
+        method: PUT
+        description: HubSpot Update an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteassociationlabel
+        method: DELETE
+        description: HubSpot Delete an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: definitions
+      path: /definitions
+      description: definitions operations
+      operations:
+      - name: listassociationdefinitions
+        method: GET
+        description: HubSpot List All Association Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-search-api
+    baseUri: https://api.hubapi.com
+    description: 'The CRM Search API allows you to query and filter CRM objects using a flexible search interface. You can
+      search across contacts, companies, deals, tickets, and other object types using filter groups, '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcrmobjects
+        method: POST
+        description: HubSpot Search CRM Objects
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: crm-lists-api
+    baseUri: https://api.hubapi.com
+    description: The Lists API allows you to create and manage lists of CRM records based on static membership or dynamic
+      filter criteria. Lists can be used to segment contacts, companies, and other CRM objects for ma
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: lists
+      path: /lists
+      description: lists operations
+      operations:
+      - name: listlists
+        method: GET
+        description: HubSpot List All Lists
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createlist
+        method: POST
+        description: HubSpot Create a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getlist
+        method: GET
+        description: HubSpot Get a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletelist
+        method: DELETE
+        description: HubSpot Delete a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: memberships
+      path: /memberships
+      description: memberships operations
+      operations:
+      - name: getlistmemberships
+        method: GET
+        description: HubSpot Get List Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: add
+      path: /add
+      description: add operations
+      operations:
+      - name: addlistmembers
+        method: PUT
+        description: HubSpot Add Members to a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: remove
+      path: /remove
+      description: remove operations
+      operations:
+      - name: removelistmembers
+        method: PUT
+        description: HubSpot Remove Members from a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
   - type: mcp
     port: 9090

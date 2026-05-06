@@ -1,291 +1,881 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "HubSpot Content And Marketing"
-  description: "Unified workflow for marketing managers to manage blog content, authors, landing pages, site pages, domains, analytics events, and transactional email. Combines CMS and marketing APIs into a single content operations interface."
+  label: HubSpot Content And Marketing
+  description: Unified workflow for marketing managers to manage blog content, authors, landing pages, site pages, domains,
+    analytics events, and transactional email. Combines CMS and marketing APIs into a single content operations interface.
   tags:
-    - HubSpot
-    - Marketing
-    - Content
-    - CMS
-    - Blog
-    - Analytics
-  created: "2026-04-18"
-  modified: "2026-04-18"
-
+  - HubSpot
+  - Marketing
+  - Content
+  - CMS
+  - Blog
+  - Analytics
+  created: '2026-04-18'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
-
+- namespace: env
+  keys:
+    HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-    - import: blog-posts
-      location: ./shared/blog-posts.yaml
-    - import: blog-authors
-      location: ./shared/blog-authors.yaml
-    - import: analytics-events
-      location: ./shared/analytics-events.yaml
-    - import: cms-pages
-      location: ./shared/cms-pages-api.yaml
-    - import: domains
-      location: ./shared/domains-api.yaml
-    - import: marketing-email
-      location: ./shared/marketing-emal-api.yaml
+  - type: http
+    namespace: blog-posts
+    baseUri: https://api.hubapi.com
+    description: HubSpot Blog Posts API for creating, publishing, and managing blog content.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: posts
+      path: /cms/v3/blogs/posts
+      description: Blog post management
+      operations:
+      - name: list-blog-posts
+        method: GET
+        description: List all blog posts
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Maximum results per page
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Pagination cursor
+        - name: archived
+          in: query
+          type: boolean
+          required: false
+          description: Whether to return archived posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-blog-post
+        method: POST
+        description: Create a new blog post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            contentGroupId: '{{tools.contentGroupId}}'
+            postBody: '{{tools.postBody}}'
+    - name: post-by-id
+      path: /cms/v3/blogs/posts/{objectId}
+      description: Individual blog post operations
+      operations:
+      - name: get-blog-post
+        method: GET
+        description: Retrieve a blog post by ID
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog post ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-blog-post
+        method: PATCH
+        description: Update a blog post
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog post ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            postBody: '{{tools.postBody}}'
+      - name: archive-blog-post
+        method: DELETE
+        description: Archive a blog post
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog post ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: schedule
+      path: /cms/v3/blogs/posts/schedule
+      description: Blog post scheduling
+      operations:
+      - name: schedule-blog-post
+        method: POST
+        description: Schedule a blog post for publication
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            id: '{{tools.id}}'
+            publishDate: '{{tools.publishDate}}'
+    - name: clone
+      path: /cms/v3/blogs/posts/clone
+      description: Blog post cloning
+      operations:
+      - name: clone-blog-post
+        method: POST
+        description: Clone a blog post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            id: '{{tools.id}}'
+    - name: push-live
+      path: /cms/v3/blogs/posts/{objectId}/draft/push-live
+      description: Push draft to live
+      operations:
+      - name: push-blog-post-live
+        method: POST
+        description: Push draft to live version
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog post ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: revisions
+      path: /cms/v3/blogs/posts/{objectId}/revisions
+      description: Blog post revision history
+      operations:
+      - name: get-blog-post-revisions
+        method: GET
+        description: Get revision history for a blog post
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog post ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: blog-authors
+    baseUri: https://api.hubapi.com
+    description: HubSpot Blog Authors API for managing blog author profiles.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: authors
+      path: /cms/v3/blogs/authors
+      description: Blog author profiles
+      operations:
+      - name: list-blog-authors
+        method: GET
+        description: List all blog authors
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Maximum number of results per page
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Pagination cursor
+        - name: archived
+          in: query
+          type: boolean
+          required: false
+          description: Whether to return archived authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-blog-author
+        method: POST
+        description: Create a new blog author
+        inputParameters: []
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            slug: '{{tools.slug}}'
+            email: '{{tools.email}}'
+            bio: '{{tools.bio}}'
+    - name: author-by-id
+      path: /cms/v3/blogs/authors/{objectId}
+      description: Individual blog author operations
+      operations:
+      - name: get-blog-author
+        method: GET
+        description: Retrieve a blog author by ID
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog author ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-blog-author
+        method: PATCH
+        description: Update a blog author
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog author ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            bio: '{{tools.bio}}'
+      - name: archive-blog-author
+        method: DELETE
+        description: Archive a blog author
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          required: true
+          description: The blog author ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: batch-read
+      path: /cms/v3/blogs/authors/batch/read
+      description: Batch read blog authors
+      operations:
+      - name: batch-read-blog-authors
+        method: POST
+        description: Read multiple blog authors by IDs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+    - name: batch-create
+      path: /cms/v3/blogs/authors/batch/create
+      description: Batch create blog authors
+      operations:
+      - name: batch-create-blog-authors
+        method: POST
+        description: Create multiple blog authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+    - name: batch-archive
+      path: /cms/v3/blogs/authors/batch/archive
+      description: Batch archive blog authors
+      operations:
+      - name: batch-archive-blog-authors
+        method: POST
+        description: Archive multiple blog authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            inputs: '{{tools.inputs}}'
+  - type: http
+    namespace: analytics-events
+    baseUri: https://api.hubapi.com
+    description: HubSpot Analytics Events API for retrieving event completion data from CRM objects.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: event-instances
+      path: /events/v3/events
+      description: Event instances for CRM objects
+      operations:
+      - name: get-event-instances
+        method: GET
+        description: Retrieve instances of event completion data
+        inputParameters:
+        - name: objectType
+          in: query
+          type: string
+          required: false
+          description: The type of CRM object to filter on
+        - name: objectId
+          in: query
+          type: string
+          required: false
+          description: The ID of the CRM object to filter events
+        - name: eventType
+          in: query
+          type: string
+          required: false
+          description: Filter by specific event type name
+        - name: occurredAfter
+          in: query
+          type: string
+          required: false
+          description: Filter for events after this ISO 8601 datetime
+        - name: occurredBefore
+          in: query
+          type: string
+          required: false
+          description: Filter for events before this ISO 8601 datetime
+        - name: sort
+          in: query
+          type: string
+          required: false
+          description: Sort direction based on event timestamp
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Maximum number of results per page
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Pagination cursor for the next page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: event-types
+      path: /events/v3/events/event-types
+      description: Available event type definitions
+      operations:
+      - name: get-event-types
+        method: GET
+        description: Retrieve available event types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: cms-pages-api
+    baseUri: https://api.hubapi.com
+    description: The CMS Pages API provides endpoints for creating and managing site pages and landing pages hosted on HubSpot.
+      You can create, retrieve, update, publish, and delete both site pages and landing pages p
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: site-pages
+      path: /site-pages
+      description: site-pages operations
+      operations:
+      - name: listsitepages
+        method: GET
+        description: HubSpot List Site Pages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsitepage
+        method: POST
+        description: HubSpot Create a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsitepage
+        method: GET
+        description: HubSpot Get a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatesitepage
+        method: PATCH
+        description: HubSpot Update a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesitepage
+        method: DELETE
+        description: HubSpot Delete a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: push-live
+      path: /push-live
+      description: push-live operations
+      operations:
+      - name: publishsitepage
+        method: POST
+        description: HubSpot Publish a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: landing-pages
+      path: /landing-pages
+      description: landing-pages operations
+      operations:
+      - name: listlandingpages
+        method: GET
+        description: HubSpot List Landing Pages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createlandingpage
+        method: POST
+        description: HubSpot Create a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getlandingpage
+        method: GET
+        description: HubSpot Get a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletelandingpage
+        method: DELETE
+        description: HubSpot Delete a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: domains-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CMS Domains API allows you to retrieve information about domains connected to a HubSpot CMS
+      site.
 
+
+      Use this API to:
+
+      - List all domains connected to your HubSpot account
+
+      - Get detailed info'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: domains
+      path: /domains
+      description: domains operations
+      operations:
+      - name: listdomains
+        method: GET
+        description: HubSpot List All Domains
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getdomainbyid
+        method: GET
+        description: HubSpot Get a Domain by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: marketing-emal-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot Marketing Transactional Email API enables you to send transactional emails and manage SMTP tokens.
+
+
+      Use this API to:
+
+      - Create and manage SMTP API tokens for sending transactional emails
+
+      - '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: smtp-tokens
+      path: /smtp-tokens
+      description: smtp-tokens operations
+      operations:
+      - name: listsmtptokens
+        method: GET
+        description: HubSpot List All SMTP Tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsmtptoken
+        method: POST
+        description: HubSpot Create an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsmtptokenbyid
+        method: GET
+        description: HubSpot Get an SMTP Token by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesmtptoken
+        method: DELETE
+        description: HubSpot Delete an SMTP Token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: password-reset
+      path: /password-reset
+      description: password-reset operations
+      operations:
+      - name: resetsmtptokenpassword
+        method: POST
+        description: HubSpot Reset SMTP Token Password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: send
+      path: /send
+      description: send operations
+      operations:
+      - name: sendtransactionalemail
+        method: POST
+        description: HubSpot Send a Transactional Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
-    - type: rest
-      port: 8080
-      namespace: content-marketing-api
-      description: "Unified REST API for content creation, publishing, and marketing analytics."
-      resources:
-        - path: /v1/blog-posts
-          name: blog-posts
-          description: "Blog post management"
-          operations:
-            - method: GET
-              name: list-blog-posts
-              description: "List all blog posts"
-              call: "blog-posts.list-blog-posts"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-blog-post
-              description: "Create a blog post"
-              call: "blog-posts.create-blog-post"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/blog-posts/{objectId}
-          name: blog-post-by-id
-          description: "Individual blog post"
-          operations:
-            - method: GET
-              name: get-blog-post
-              description: "Get a blog post"
-              call: "blog-posts.get-blog-post"
-              with:
-                objectId: "rest.objectId"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: PATCH
-              name: update-blog-post
-              description: "Update a blog post"
-              call: "blog-posts.update-blog-post"
-              with:
-                objectId: "rest.objectId"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: DELETE
-              name: archive-blog-post
-              description: "Archive a blog post"
-              call: "blog-posts.archive-blog-post"
-              with:
-                objectId: "rest.objectId"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/blog-authors
-          name: blog-authors
-          description: "Blog author management"
-          operations:
-            - method: GET
-              name: list-blog-authors
-              description: "List all blog authors"
-              call: "blog-authors.list-blog-authors"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/events
-          name: events
-          description: "Analytics events"
-          operations:
-            - method: GET
-              name: list-events
-              description: "Retrieve analytics events"
-              call: "analytics-events.get-event-instances"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/event-types
-          name: event-types
-          description: "Event type definitions"
-          operations:
-            - method: GET
-              name: list-event-types
-              description: "List available event types"
-              call: "analytics-events.get-event-types"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: content-marketing-mcp
-      transport: http
-      description: "MCP server for AI-assisted content creation, blog management, and marketing analytics."
-      tools:
-        - name: list-blog-posts
-          description: "List all blog posts in HubSpot"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "blog-posts.list-blog-posts"
-          with:
-            limit: "tools.limit"
-            after: "tools.after"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-blog-post
-          description: "Get a specific blog post by ID"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "blog-posts.get-blog-post"
-          with:
-            objectId: "tools.objectId"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: create-blog-post
-          description: "Create a new blog post"
-          hints:
-            readOnly: false
-          call: "blog-posts.create-blog-post"
-          with:
-            name: "tools.name"
-            contentGroupId: "tools.contentGroupId"
-            postBody: "tools.postBody"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: update-blog-post
-          description: "Update an existing blog post"
-          hints:
-            readOnly: false
-            idempotent: true
-          call: "blog-posts.update-blog-post"
-          with:
-            objectId: "tools.objectId"
-            name: "tools.name"
-            postBody: "tools.postBody"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: schedule-blog-post
-          description: "Schedule a blog post for publication"
-          hints:
-            readOnly: false
-          call: "blog-posts.schedule-blog-post"
-          with:
-            id: "tools.id"
-            publishDate: "tools.publishDate"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: clone-blog-post
-          description: "Clone an existing blog post"
-          hints:
-            readOnly: false
-          call: "blog-posts.clone-blog-post"
-          with:
-            id: "tools.id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: push-blog-post-live
-          description: "Push a draft blog post to live"
-          hints:
-            readOnly: false
-          call: "blog-posts.push-blog-post-live"
-          with:
-            objectId: "tools.objectId"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-blog-authors
-          description: "List all blog authors"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "blog-authors.list-blog-authors"
-          with:
-            limit: "tools.limit"
-            after: "tools.after"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-blog-author
-          description: "Get a blog author by ID"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "blog-authors.get-blog-author"
-          with:
-            objectId: "tools.objectId"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: create-blog-author
-          description: "Create a new blog author"
-          hints:
-            readOnly: false
-          call: "blog-authors.create-blog-author"
-          with:
-            name: "tools.name"
-            email: "tools.email"
-            bio: "tools.bio"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-analytics-events
-          description: "Retrieve analytics event data for CRM objects"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "analytics-events.get-event-instances"
-          with:
-            objectType: "tools.objectType"
-            objectId: "tools.objectId"
-            eventType: "tools.eventType"
-            occurredAfter: "tools.occurredAfter"
-            occurredBefore: "tools.occurredBefore"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-event-types
-          description: "List available analytics event types"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "analytics-events.get-event-types"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: archive-blog-post
-          description: "Archive a blog post"
-          hints:
-            readOnly: false
-            destructive: true
-            idempotent: true
-          call: "blog-posts.archive-blog-post"
-          with:
-            objectId: "tools.objectId"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-blog-post-revisions
-          description: "Get revision history for a blog post"
-          hints:
-            readOnly: true
-            idempotent: true
-          call: "blog-posts.get-blog-post-revisions"
-          with:
-            objectId: "tools.objectId"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: content-marketing-api
+    description: Unified REST API for content creation, publishing, and marketing analytics.
+    resources:
+    - path: /v1/blog-posts
+      name: blog-posts
+      description: Blog post management
+      operations:
+      - method: GET
+        name: list-blog-posts
+        description: List all blog posts
+        call: blog-posts.list-blog-posts
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-blog-post
+        description: Create a blog post
+        call: blog-posts.create-blog-post
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/blog-posts/{objectId}
+      name: blog-post-by-id
+      description: Individual blog post
+      operations:
+      - method: GET
+        name: get-blog-post
+        description: Get a blog post
+        call: blog-posts.get-blog-post
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: update-blog-post
+        description: Update a blog post
+        call: blog-posts.update-blog-post
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: archive-blog-post
+        description: Archive a blog post
+        call: blog-posts.archive-blog-post
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/blog-authors
+      name: blog-authors
+      description: Blog author management
+      operations:
+      - method: GET
+        name: list-blog-authors
+        description: List all blog authors
+        call: blog-authors.list-blog-authors
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/events
+      name: events
+      description: Analytics events
+      operations:
+      - method: GET
+        name: list-events
+        description: Retrieve analytics events
+        call: analytics-events.get-event-instances
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/event-types
+      name: event-types
+      description: Event type definitions
+      operations:
+      - method: GET
+        name: list-event-types
+        description: List available event types
+        call: analytics-events.get-event-types
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: content-marketing-mcp
+    transport: http
+    description: MCP server for AI-assisted content creation, blog management, and marketing analytics.
+    tools:
+    - name: list-blog-posts
+      description: List all blog posts in HubSpot
+      hints:
+        readOnly: true
+        idempotent: true
+      call: blog-posts.list-blog-posts
+      with:
+        limit: tools.limit
+        after: tools.after
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-blog-post
+      description: Get a specific blog post by ID
+      hints:
+        readOnly: true
+        idempotent: true
+      call: blog-posts.get-blog-post
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-blog-post
+      description: Create a new blog post
+      hints:
+        readOnly: false
+      call: blog-posts.create-blog-post
+      with:
+        name: tools.name
+        contentGroupId: tools.contentGroupId
+        postBody: tools.postBody
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-blog-post
+      description: Update an existing blog post
+      hints:
+        readOnly: false
+        idempotent: true
+      call: blog-posts.update-blog-post
+      with:
+        objectId: tools.objectId
+        name: tools.name
+        postBody: tools.postBody
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: schedule-blog-post
+      description: Schedule a blog post for publication
+      hints:
+        readOnly: false
+      call: blog-posts.schedule-blog-post
+      with:
+        id: tools.id
+        publishDate: tools.publishDate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: clone-blog-post
+      description: Clone an existing blog post
+      hints:
+        readOnly: false
+      call: blog-posts.clone-blog-post
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: push-blog-post-live
+      description: Push a draft blog post to live
+      hints:
+        readOnly: false
+      call: blog-posts.push-blog-post-live
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-blog-authors
+      description: List all blog authors
+      hints:
+        readOnly: true
+        idempotent: true
+      call: blog-authors.list-blog-authors
+      with:
+        limit: tools.limit
+        after: tools.after
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-blog-author
+      description: Get a blog author by ID
+      hints:
+        readOnly: true
+        idempotent: true
+      call: blog-authors.get-blog-author
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-blog-author
+      description: Create a new blog author
+      hints:
+        readOnly: false
+      call: blog-authors.create-blog-author
+      with:
+        name: tools.name
+        email: tools.email
+        bio: tools.bio
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-analytics-events
+      description: Retrieve analytics event data for CRM objects
+      hints:
+        readOnly: true
+        idempotent: true
+      call: analytics-events.get-event-instances
+      with:
+        objectType: tools.objectType
+        objectId: tools.objectId
+        eventType: tools.eventType
+        occurredAfter: tools.occurredAfter
+        occurredBefore: tools.occurredBefore
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-event-types
+      description: List available analytics event types
+      hints:
+        readOnly: true
+        idempotent: true
+      call: analytics-events.get-event-types
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: archive-blog-post
+      description: Archive a blog post
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: blog-posts.archive-blog-post
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-blog-post-revisions
+      description: Get revision history for a blog post
+      hints:
+        readOnly: true
+        idempotent: true
+      call: blog-posts.get-blog-post-revisions
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.

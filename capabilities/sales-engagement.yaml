@@ -1,4 +1,4 @@
-naftiko: 1.0.0-alpha1
+naftiko: 1.0.0-alpha2
 info:
   label: HubSpot Sales Engagement
   description: Sales activity tracking workflow for calls, emails, meetings, tasks, and notes.
@@ -8,23 +8,641 @@ info:
   - Engagements
   - Activities
   created: '2026-04-18'
-  modified: '2026-04-18'
+  modified: '2026-05-06'
 binds:
 - namespace: env
   keys:
     HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-  - import: engagement-calls-api
-    location: ./shared/engagement-calls-api.yaml
-  - import: engagement-emails-api
-    location: ./shared/engagement-emails-api.yaml
-  - import: engagement-meetings-api
-    location: ./shared/engagement-meetings-api.yaml
-  - import: engagement-tasks-api
-    location: ./shared/engagement-tasks-api.yaml
-  - import: engagement-notes
-    location: ./shared/engagement-notes.yaml
+  - type: http
+    namespace: engagement-calls-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CRM Engagement Calls API enables you to manage call engagements within your HubSpot CRM.
+
+
+      Use this API to:
+
+      - Create, read, update, and delete call records
+
+      - Perform batch operations on mul'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: calls
+      path: /calls
+      description: calls operations
+      operations:
+      - name: listcalls
+        method: GET
+        description: HubSpot List All Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createcall
+        method: POST
+        description: HubSpot Create a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getcallbyid
+        method: GET
+        description: HubSpot Get a Call by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatecall
+        method: PATCH
+        description: HubSpot Update a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archivecall
+        method: DELETE
+        description: HubSpot Archive a Call
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatecalls
+        method: POST
+        description: HubSpot Create a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadcalls
+        method: POST
+        description: HubSpot Read a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatecalls
+        method: POST
+        description: HubSpot Update a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchivecalls
+        method: POST
+        description: HubSpot Archive a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchcalls
+        method: POST
+        description: HubSpot Search Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: gdpr-delete
+      path: /gdpr-delete
+      description: gdpr-delete operations
+      operations:
+      - name: gdprdeletecall
+        method: POST
+        description: HubSpot Permanently Delete a Call for GDPR Compliance
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: engagement-emails-api
+    baseUri: https://api.hubapi.com
+    description: 'The emails engagement API allows you to log and manage email activity records on CRM records in HubSpot.
+      You can create email engagement records to track sent emails, associate them with contacts and '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: emails
+      path: /emails
+      description: emails operations
+      operations:
+      - name: listemailengagements
+        method: GET
+        description: HubSpot List Email Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createemailengagement
+        method: POST
+        description: HubSpot Create an Email Engagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getemailengagement
+        method: GET
+        description: HubSpot Get an Email Engagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateemailengagement
+        method: PATCH
+        description: HubSpot Update an Email Engagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteemailengagement
+        method: DELETE
+        description: HubSpot Archive an Email Engagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreademailengagements
+        method: POST
+        description: HubSpot Batch Read Email Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateemailengagements
+        method: POST
+        description: HubSpot Batch Create Email Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdateemailengagements
+        method: POST
+        description: HubSpot Batch Update Email Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchemailengagements
+        method: POST
+        description: HubSpot Search Email Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listemailengagementassociations
+        method: GET
+        description: HubSpot List Email Engagement Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createemailengagementassociation
+        method: PUT
+        description: HubSpot Create an Email Engagement Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteemailengagementassociation
+        method: DELETE
+        description: HubSpot Delete an Email Engagement Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: engagement-meetings-api
+    baseUri: https://api.hubapi.com
+    description: The meetings endpoints allow you to log and manage meeting engagement records in HubSpot CRM. You can create
+      meeting records, associate them with contacts and companies, and retrieve meeting details a
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: meetings
+      path: /meetings
+      description: meetings operations
+      operations:
+      - name: listmeetings
+        method: GET
+        description: HubSpot List Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createmeeting
+        method: POST
+        description: HubSpot Create a Meeting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getmeeting
+        method: GET
+        description: HubSpot Get a Meeting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatemeeting
+        method: PATCH
+        description: HubSpot Update a Meeting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletemeeting
+        method: DELETE
+        description: HubSpot Archive a Meeting
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadmeetings
+        method: POST
+        description: HubSpot Batch Read Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatemeetings
+        method: POST
+        description: HubSpot Batch Create Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatemeetings
+        method: POST
+        description: HubSpot Batch Update Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchmeetings
+        method: POST
+        description: HubSpot Search Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listmeetingassociations
+        method: GET
+        description: HubSpot List Meeting Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createmeetingassociation
+        method: PUT
+        description: HubSpot Create a Meeting Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletemeetingassociation
+        method: DELETE
+        description: HubSpot Delete a Meeting Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: engagement-tasks-api
+    baseUri: https://api.hubapi.com
+    description: 'The tasks endpoints allow you to create and manage task engagement records in HubSpot CRM. Tasks represent
+      to-do items that can be assigned to users and associated with contacts, companies, and deals '
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tasks
+      path: /tasks
+      description: tasks operations
+      operations:
+      - name: listtasks
+        method: GET
+        description: HubSpot List Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createtask
+        method: POST
+        description: HubSpot Create a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: gettask
+        method: GET
+        description: HubSpot Get a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatetask
+        method: PATCH
+        description: HubSpot Update a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletetask
+        method: DELETE
+        description: HubSpot Archive a Task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadtasks
+        method: POST
+        description: HubSpot Batch Read Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreatetasks
+        method: POST
+        description: HubSpot Batch Create Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdatetasks
+        method: POST
+        description: HubSpot Batch Update Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: search
+      path: /search
+      description: search operations
+      operations:
+      - name: searchtasks
+        method: POST
+        description: HubSpot Search Tasks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: associations
+      path: /associations
+      description: associations operations
+      operations:
+      - name: listtaskassociations
+        method: GET
+        description: HubSpot List Task Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: '{toObjectId}'
+      path: /{toObjectId}
+      description: '{toObjectId} operations'
+      operations:
+      - name: createtaskassociation
+        method: PUT
+        description: HubSpot Create a Task Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletetaskassociation
+        method: DELETE
+        description: HubSpot Delete a Task Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: engagement-notes
+    baseUri: https://api.hubapi.com
+    description: HubSpot Engagement Notes API.
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: notes
+      path: /crm/v3/objects/notes
+      description: Note records
+      operations:
+      - name: list-notes
+        method: GET
+        description: List all notes
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          required: false
+          description: Max results
+        - name: after
+          in: query
+          type: string
+          required: false
+          description: Cursor
+        - name: properties
+          in: query
+          type: string
+          required: false
+          description: Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-note
+        method: POST
+        description: Create a note
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+    - name: note-by-id
+      path: /crm/v3/objects/notes/{noteId}
+      description: Individual note
+      operations:
+      - name: get-note
+        method: GET
+        description: Get a note
+        inputParameters:
+        - name: noteId
+          in: path
+          type: string
+          required: true
+          description: Note ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-note
+        method: PATCH
+        description: Update a note
+        inputParameters:
+        - name: noteId
+          in: path
+          type: string
+          required: true
+          description: Note ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            properties: '{{tools.properties}}'
+      - name: archive-note
+        method: DELETE
+        description: Archive a note
+        inputParameters:
+        - name: noteId
+          in: path
+          type: string
+          required: true
+          description: Note ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
   - type: mcp
     port: 9093

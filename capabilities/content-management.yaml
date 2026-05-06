@@ -1,4 +1,4 @@
-naftiko: 1.0.0-alpha1
+naftiko: 1.0.0-alpha2
 info:
   label: HubSpot Content Management
   description: Content creation and management workflow for blog posts, authors, pages, domains, and source code.
@@ -8,25 +8,723 @@ info:
   - Content
   - Blogs
   created: '2026-04-18'
-  modified: '2026-04-18'
+  modified: '2026-05-06'
 binds:
 - namespace: env
   keys:
     HUBSPOT_ACCESS_TOKEN: HUBSPOT_ACCESS_TOKEN
 capability:
   consumes:
-  - import: blog-posts-api
-    location: ./shared/blog-posts-api.yaml
-  - import: authors-api
-    location: ./shared/authors-api.yaml
-  - import: cms-pages-api
-    location: ./shared/cms-pages-api.yaml
-  - import: cms-hubdb-api
-    location: ./shared/cms-hubdb-api.yaml
-  - import: domains-api
-    location: ./shared/domains-api.yaml
-  - import: source-code-api
-    location: ./shared/source-code-api.yaml
+  - type: http
+    namespace: blog-posts-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Blog Posts API enables you to manage blog posts programmatically. \nCreate, update, publish,\
+      \ and schedule blog posts, manage drafts and revisions, \nhandle multi-language content, and perfor"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: posts
+      path: /posts
+      description: posts operations
+      operations:
+      - name: listblogposts
+        method: GET
+        description: HubSpot List All Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createblogpost
+        method: POST
+        description: HubSpot Create a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getblogpostbyid
+        method: GET
+        description: HubSpot Retrieve a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateblogpost
+        method: PATCH
+        description: HubSpot Update a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archiveblogpost
+        method: DELETE
+        description: HubSpot Archive a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: schedule
+      path: /schedule
+      description: schedule operations
+      operations:
+      - name: scheduleblogpost
+        method: POST
+        description: HubSpot Schedule a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: clone
+      path: /clone
+      description: clone operations
+      operations:
+      - name: cloneblogpost
+        method: POST
+        description: HubSpot Clone a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: push-live
+      path: /push-live
+      description: push-live operations
+      operations:
+      - name: pushblogpostdraftlive
+        method: POST
+        description: HubSpot Push Draft to Live
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: reset
+      path: /reset
+      description: reset operations
+      operations:
+      - name: resetblogpostdraft
+        method: POST
+        description: HubSpot Reset Draft to Live Version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: revisions
+      path: /revisions
+      description: revisions operations
+      operations:
+      - name: getblogpostrevisions
+        method: GET
+        description: HubSpot Get Revision History
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: restore
+      path: /restore
+      description: restore operations
+      operations:
+      - name: restoreblogpostrevision
+        method: POST
+        description: HubSpot Restore a Previous Version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadblogposts
+        method: POST
+        description: HubSpot Read Multiple Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateblogposts
+        method: POST
+        description: HubSpot Create Multiple Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdateblogposts
+        method: POST
+        description: HubSpot Update Multiple Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchiveblogposts
+        method: POST
+        description: HubSpot Archive Multiple Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: detach-from-lang-group
+      path: /detach-from-lang-group
+      description: detach-from-lang-group operations
+      operations:
+      - name: detachblogpostfromlanguagegroup
+        method: POST
+        description: HubSpot Detach Post from Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: set-new-lang-primary
+      path: /set-new-lang-primary
+      description: set-new-lang-primary operations
+      operations:
+      - name: setblogpostlanguageprimary
+        method: PUT
+        description: HubSpot Set New Primary Language
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: attach-to-lang-group
+      path: /attach-to-lang-group
+      description: attach-to-lang-group operations
+      operations:
+      - name: attachblogposttolanguagegroup
+        method: POST
+        description: HubSpot Attach Post to Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create-language-variation
+      path: /create-language-variation
+      description: create-language-variation operations
+      operations:
+      - name: createblogpostlanguagevariation
+        method: POST
+        description: HubSpot Create Language Variation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: authors-api
+    baseUri: https://api.hubapi.com
+    description: "The HubSpot Blog Authors API enables you to manage author information for your \nblog posts. Create, update,\
+      \ retrieve, and delete blog author profiles, manage \nmulti-language author groups, and perform"
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: authors
+      path: /authors
+      description: authors operations
+      operations:
+      - name: listblogauthors
+        method: GET
+        description: HubSpot List All Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createblogauthor
+        method: POST
+        description: HubSpot Create a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getblogauthorbyid
+        method: GET
+        description: HubSpot Retrieve a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateblogauthor
+        method: PATCH
+        description: HubSpot Update a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: archiveblogauthor
+        method: DELETE
+        description: HubSpot Archive a Blog Author
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: read
+      path: /read
+      description: read operations
+      operations:
+      - name: batchreadblogauthors
+        method: POST
+        description: HubSpot Read Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create
+      path: /create
+      description: create operations
+      operations:
+      - name: batchcreateblogauthors
+        method: POST
+        description: HubSpot Create Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: update
+      path: /update
+      description: update operations
+      operations:
+      - name: batchupdateblogauthors
+        method: POST
+        description: HubSpot Update Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: archive
+      path: /archive
+      description: archive operations
+      operations:
+      - name: batcharchiveblogauthors
+        method: POST
+        description: HubSpot Archive Multiple Blog Authors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: detach-from-lang-group
+      path: /detach-from-lang-group
+      description: detach-from-lang-group operations
+      operations:
+      - name: detachblogauthorfromlanguagegroup
+        method: POST
+        description: HubSpot Detach Author from Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: set-new-lang-primary
+      path: /set-new-lang-primary
+      description: set-new-lang-primary operations
+      operations:
+      - name: setnewblogauthorlanguageprimary
+        method: PUT
+        description: HubSpot Set New Primary Language
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: attach-to-lang-group
+      path: /attach-to-lang-group
+      description: attach-to-lang-group operations
+      operations:
+      - name: attachblogauthortolanguagegroup
+        method: POST
+        description: HubSpot Attach Author to Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: create-language-variation
+      path: /create-language-variation
+      description: create-language-variation operations
+      operations:
+      - name: createblogauthorlanguagevariation
+        method: POST
+        description: HubSpot Create Language Variation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: cms-pages-api
+    baseUri: https://api.hubapi.com
+    description: The CMS Pages API provides endpoints for creating and managing site pages and landing pages hosted on HubSpot.
+      You can create, retrieve, update, publish, and delete both site pages and landing pages p
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: site-pages
+      path: /site-pages
+      description: site-pages operations
+      operations:
+      - name: listsitepages
+        method: GET
+        description: HubSpot List Site Pages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsitepage
+        method: POST
+        description: HubSpot Create a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getsitepage
+        method: GET
+        description: HubSpot Get a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatesitepage
+        method: PATCH
+        description: HubSpot Update a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesitepage
+        method: DELETE
+        description: HubSpot Delete a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: push-live
+      path: /push-live
+      description: push-live operations
+      operations:
+      - name: publishsitepage
+        method: POST
+        description: HubSpot Publish a Site Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: landing-pages
+      path: /landing-pages
+      description: landing-pages operations
+      operations:
+      - name: listlandingpages
+        method: GET
+        description: HubSpot List Landing Pages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createlandingpage
+        method: POST
+        description: HubSpot Create a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getlandingpage
+        method: GET
+        description: HubSpot Get a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletelandingpage
+        method: DELETE
+        description: HubSpot Delete a Landing Page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: cms-hubdb-api
+    baseUri: https://api.hubapi.com
+    description: The HubDB API allows you to create, update, and delete HubDB data tables and their rows. HubDB tables can
+      be used as data sources for dynamic CMS pages and are available in both draft and published ve
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: tables
+      path: /tables
+      description: tables operations
+      operations:
+      - name: listhubdbtables
+        method: GET
+        description: HubSpot List HubDB Tables
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createhubdbtable
+        method: POST
+        description: HubSpot Create a HubDB Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: gethubdbtable
+        method: GET
+        description: HubSpot Get a HubDB Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatehubdbtable
+        method: PUT
+        description: HubSpot Update a HubDB Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletehubdbtable
+        method: DELETE
+        description: HubSpot Delete a HubDB Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: rows
+      path: /rows
+      description: rows operations
+      operations:
+      - name: listhubdbtablerows
+        method: GET
+        description: HubSpot List HubDB Table Rows
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: addhubdbtablerow
+        method: POST
+        description: HubSpot Add a Row to a HubDB Table
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: gethubdbtablerow
+        method: GET
+        description: HubSpot Get a HubDB Table Row
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatehubdbtablerow
+        method: PATCH
+        description: HubSpot Update a HubDB Table Row
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletehubdbtablerow
+        method: DELETE
+        description: HubSpot Delete a HubDB Table Row
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: push-live
+      path: /push-live
+      description: push-live operations
+      operations:
+      - name: publishhubdbtabledraft
+        method: POST
+        description: HubSpot Publish HubDB Table Draft
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: domains-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CMS Domains API allows you to retrieve information about domains connected to a HubSpot CMS
+      site.
+
+
+      Use this API to:
+
+      - List all domains connected to your HubSpot account
+
+      - Get detailed info'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: domains
+      path: /domains
+      description: domains operations
+      operations:
+      - name: listdomains
+        method: GET
+        description: HubSpot List All Domains
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: getdomainbyid
+        method: GET
+        description: HubSpot Get a Domain by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  - type: http
+    namespace: source-code-api
+    baseUri: https://api.hubapi.com
+    description: 'The HubSpot CMS Source Code API provides programmatic access to files in the CMS Developer File System.
+
+      Use these endpoints to manage HTML templates, CSS stylesheets, JavaScript files, modules, and ot'
+    authentication:
+      type: bearer
+      token: '{{HUBSPOT_ACCESS_TOKEN}}'
+    resources:
+    - name: content
+      path: /content
+      description: content operations
+      operations:
+      - name: downloadsourcecodefile
+        method: GET
+        description: HubSpot Download a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createsourcecodefile
+        method: POST
+        description: HubSpot Create a New Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertsourcecodefile
+        method: PUT
+        description: HubSpot Create or Update a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletesourcecodefile
+        method: DELETE
+        description: HubSpot Delete a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: metadata
+      path: /metadata
+      description: metadata operations
+      operations:
+      - name: getsourcecodemetadata
+        method: GET
+        description: HubSpot Retrieve File or Folder Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: validate
+      path: /validate
+      description: validate operations
+      operations:
+      - name: validatesourcecodefile
+        method: POST
+        description: HubSpot Validate a Source Code File
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: async
+      path: /async
+      description: async operations
+      operations:
+      - name: extractzipfileasync
+        method: POST
+        description: HubSpot Extract a Zip Archive
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: status
+      path: /status
+      description: status operations
+      operations:
+      - name: getextractiontaskstatus
+        method: GET
+        description: HubSpot Get Extraction Task Status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
   exposes:
   - type: mcp
     port: 9091
