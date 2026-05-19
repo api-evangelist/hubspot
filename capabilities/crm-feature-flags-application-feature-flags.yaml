@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Feature Flags API — Application Feature Flags
+  description: 'HubSpot CRM Feature Flags API — Application Feature Flags. 3 operations. Lead operation: Hubspot Retrieve
+    a Feature Flag Configuration. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Application Feature Flags
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-feature-flags-application-feature-flags
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Feature Flags API — Application Feature Flags business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: feature-flags-v3-appId-flags-flagName
+      path: /feature-flags/v3/{appId}/flags/{flagName}
+      operations:
+      - name: getapplicationfeatureflag
+        method: GET
+        description: Hubspot Retrieve a Feature Flag Configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: upsertapplicationfeatureflag
+        method: PUT
+        description: Hubspot Create or Update a Feature Flag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteapplicationfeatureflag
+        method: DELETE
+        description: Hubspot Delete a Feature Flag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: apikey
+      key: hapikey
+      value: '{{env.HUBSPOT_API_KEY}}'
+      placement: query
+  exposes:
+  - type: rest
+    namespace: crm-feature-flags-application-feature-flags-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Feature Flags API — Application Feature Flags. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/feature-flags/v3/{appid}/flags/{flagname}
+      name: feature-flags-v3-appid-flags-flagname
+      description: REST surface for feature-flags-v3-appId-flags-flagName.
+      operations:
+      - method: GET
+        name: getapplicationfeatureflag
+        description: Hubspot Retrieve a Feature Flag Configuration
+        call: crm-feature-flags-application-feature-flags.getapplicationfeatureflag
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: upsertapplicationfeatureflag
+        description: Hubspot Create or Update a Feature Flag
+        call: crm-feature-flags-application-feature-flags.upsertapplicationfeatureflag
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteapplicationfeatureflag
+        description: Hubspot Delete a Feature Flag
+        call: crm-feature-flags-application-feature-flags.deleteapplicationfeatureflag
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-feature-flags-application-feature-flags-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Feature Flags API — Application Feature Flags. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-retrieve-feature-flag-configuration
+      description: Hubspot Retrieve a Feature Flag Configuration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-feature-flags-application-feature-flags.getapplicationfeatureflag
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-update-feature-flag
+      description: Hubspot Create or Update a Feature Flag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: crm-feature-flags-application-feature-flags.upsertapplicationfeatureflag
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-delete-feature-flag
+      description: Hubspot Delete a Feature Flag
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: crm-feature-flags-application-feature-flags.deleteapplicationfeatureflag
+      outputParameters:
+      - type: object
+        mapping: $.

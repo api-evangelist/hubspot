@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Marketing Transactional Email API — Single Send
+  description: 'HubSpot Marketing Transactional Email API — Single Send. 1 operations. Lead operation: Hubspot Send a Transactional
+    Email. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Single Send
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: marketing-emal-single-send
+    baseUri: https://api.hubapi.com
+    description: HubSpot Marketing Transactional Email API — Single Send business capability. Self-contained, no shared references.
+    resources:
+    - name: marketing-v3-transactional-single-email-send
+      path: /marketing/v3/transactional/single-email/send
+      operations:
+      - name: sendtransactionalemail
+        method: POST
+        description: Hubspot Send a Transactional Email
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: marketing-emal-single-send-rest
+    port: 8080
+    description: REST adapter for HubSpot Marketing Transactional Email API — Single Send. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/marketing/v3/transactional/single-email/send
+      name: marketing-v3-transactional-single-email-send
+      description: REST surface for marketing-v3-transactional-single-email-send.
+      operations:
+      - method: POST
+        name: sendtransactionalemail
+        description: Hubspot Send a Transactional Email
+        call: marketing-emal-single-send.sendtransactionalemail
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: marketing-emal-single-send-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Marketing Transactional Email API — Single Send. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-send-transactional-email
+      description: Hubspot Send a Transactional Email
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: marketing-emal-single-send.sendtransactionalemail
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

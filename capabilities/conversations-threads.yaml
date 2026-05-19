@@ -1,0 +1,246 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Conversations API — Threads
+  description: 'HubSpot Conversations API — Threads. 4 operations. Lead operation: Hubspot List Conversation Threads. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Threads
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: conversations-threads
+    baseUri: https://api.hubapi.com
+    description: HubSpot Conversations API — Threads business capability. Self-contained, no shared references.
+    resources:
+    - name: conversations-v3-conversations-threads
+      path: /conversations/v3/conversations/threads
+      operations:
+      - name: listthreads
+        method: GET
+        description: Hubspot List Conversation Threads
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: inboxId
+          in: query
+          type: string
+          description: Filter threads by inbox ID
+        - name: associatedContactId
+          in: query
+          type: string
+          description: Filter threads by associated CRM contact ID
+        - name: status
+          in: query
+          type: string
+          description: Filter threads by status
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of results per page
+        - name: after
+          in: query
+          type: string
+          description: Pagination cursor for the next page
+        - name: sort
+          in: query
+          type: string
+          description: Property to sort results by
+    - name: conversations-v3-conversations-threads-threadId
+      path: /conversations/v3/conversations/threads/{threadId}
+      operations:
+      - name: getthreadbyid
+        method: GET
+        description: Hubspot Retrieve a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: threadId
+          in: path
+          type: string
+          description: The unique identifier of the thread to retrieve
+          required: true
+        - name: archived
+          in: query
+          type: boolean
+          description: Set to true to retrieve archived threads
+        - name: property
+          in: query
+          type: string
+          description: Specific property to return in the response
+        - name: association
+          in: query
+          type: string
+          description: Include associated objects in the response
+      - name: updatethread
+        method: PATCH
+        description: Hubspot Update a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: threadId
+          in: path
+          type: string
+          description: The unique identifier of the thread to update
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: archivethread
+        method: DELETE
+        description: Hubspot Archive a Thread
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: threadId
+          in: path
+          type: string
+          description: The unique identifier of the thread to archive
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: conversations-threads-rest
+    port: 8080
+    description: REST adapter for HubSpot Conversations API — Threads. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/conversations/v3/conversations/threads
+      name: conversations-v3-conversations-threads
+      description: REST surface for conversations-v3-conversations-threads.
+      operations:
+      - method: GET
+        name: listthreads
+        description: Hubspot List Conversation Threads
+        call: conversations-threads.listthreads
+        with:
+          inboxId: rest.inboxId
+          associatedContactId: rest.associatedContactId
+          status: rest.status
+          limit: rest.limit
+          after: rest.after
+          sort: rest.sort
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/conversations/v3/conversations/threads/{threadid}
+      name: conversations-v3-conversations-threads-threadid
+      description: REST surface for conversations-v3-conversations-threads-threadId.
+      operations:
+      - method: GET
+        name: getthreadbyid
+        description: Hubspot Retrieve a Thread
+        call: conversations-threads.getthreadbyid
+        with:
+          threadId: rest.threadId
+          archived: rest.archived
+          property: rest.property
+          association: rest.association
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updatethread
+        description: Hubspot Update a Thread
+        call: conversations-threads.updatethread
+        with:
+          threadId: rest.threadId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: archivethread
+        description: Hubspot Archive a Thread
+        call: conversations-threads.archivethread
+        with:
+          threadId: rest.threadId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: conversations-threads-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Conversations API — Threads. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-list-conversation-threads
+      description: Hubspot List Conversation Threads
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-threads.listthreads
+      with:
+        inboxId: tools.inboxId
+        associatedContactId: tools.associatedContactId
+        status: tools.status
+        limit: tools.limit
+        after: tools.after
+        sort: tools.sort
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-retrieve-thread
+      description: Hubspot Retrieve a Thread
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-threads.getthreadbyid
+      with:
+        threadId: tools.threadId
+        archived: tools.archived
+        property: tools.property
+        association: tools.association
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-thread
+      description: Hubspot Update a Thread
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: conversations-threads.updatethread
+      with:
+        threadId: tools.threadId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-archive-thread
+      description: Hubspot Archive a Thread
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: conversations-threads.archivethread
+      with:
+        threadId: tools.threadId
+      outputParameters:
+      - type: object
+        mapping: $.

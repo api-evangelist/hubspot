@@ -1,0 +1,164 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Engagement Meetings API — Batch
+  description: 'HubSpot Engagement Meetings API — Batch. 3 operations. Lead operation: Hubspot Batch Create Meetings. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Batch
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-meetings-batch
+    baseUri: https://api.hubapi.com
+    description: HubSpot Engagement Meetings API — Batch business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-meetings-batch-create
+      path: /crm/v3/objects/meetings/batch/create
+      operations:
+      - name: batchcreatemeetings
+        method: POST
+        description: Hubspot Batch Create Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-meetings-batch-read
+      path: /crm/v3/objects/meetings/batch/read
+      operations:
+      - name: batchreadmeetings
+        method: POST
+        description: Hubspot Batch Read Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-meetings-batch-update
+      path: /crm/v3/objects/meetings/batch/update
+      operations:
+      - name: batchupdatemeetings
+        method: POST
+        description: Hubspot Batch Update Meetings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: engagement-meetings-batch-rest
+    port: 8080
+    description: REST adapter for HubSpot Engagement Meetings API — Batch. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/meetings/batch/create
+      name: crm-v3-objects-meetings-batch-create
+      description: REST surface for crm-v3-objects-meetings-batch-create.
+      operations:
+      - method: POST
+        name: batchcreatemeetings
+        description: Hubspot Batch Create Meetings
+        call: engagement-meetings-batch.batchcreatemeetings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/meetings/batch/read
+      name: crm-v3-objects-meetings-batch-read
+      description: REST surface for crm-v3-objects-meetings-batch-read.
+      operations:
+      - method: POST
+        name: batchreadmeetings
+        description: Hubspot Batch Read Meetings
+        call: engagement-meetings-batch.batchreadmeetings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/meetings/batch/update
+      name: crm-v3-objects-meetings-batch-update
+      description: REST surface for crm-v3-objects-meetings-batch-update.
+      operations:
+      - method: POST
+        name: batchupdatemeetings
+        description: Hubspot Batch Update Meetings
+        call: engagement-meetings-batch.batchupdatemeetings
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: engagement-meetings-batch-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Engagement Meetings API — Batch. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-batch-create-meetings
+      description: Hubspot Batch Create Meetings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-meetings-batch.batchcreatemeetings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-batch-read-meetings
+      description: Hubspot Batch Read Meetings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-meetings-batch.batchreadmeetings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-batch-update-meetings
+      description: Hubspot Batch Update Meetings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-meetings-batch.batchupdatemeetings
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Engagement Notes API — Batch Operations
+  description: 'HubSpot CRM Engagement Notes API — Batch Operations. 4 operations. Lead operation: Hubspot Archive a Batch
+    of Notes. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Batch Operations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-notes-batch-operations
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Engagement Notes API — Batch Operations business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-notes-batch-archive
+      path: /crm/v3/objects/notes/batch/archive
+      operations:
+      - name: batcharchivenotes
+        method: POST
+        description: Hubspot Archive a Batch of Notes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-notes-batch-create
+      path: /crm/v3/objects/notes/batch/create
+      operations:
+      - name: batchcreatenotes
+        method: POST
+        description: Hubspot Create a Batch of Notes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-notes-batch-read
+      path: /crm/v3/objects/notes/batch/read
+      operations:
+      - name: batchreadnotes
+        method: POST
+        description: Hubspot Read a Batch of Notes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-notes-batch-update
+      path: /crm/v3/objects/notes/batch/update
+      operations:
+      - name: batchupdatenotes
+        method: POST
+        description: Hubspot Update a Batch of Notes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: engagement-notes-batch-operations-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Engagement Notes API — Batch Operations. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/notes/batch/archive
+      name: crm-v3-objects-notes-batch-archive
+      description: REST surface for crm-v3-objects-notes-batch-archive.
+      operations:
+      - method: POST
+        name: batcharchivenotes
+        description: Hubspot Archive a Batch of Notes
+        call: engagement-notes-batch-operations.batcharchivenotes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/notes/batch/create
+      name: crm-v3-objects-notes-batch-create
+      description: REST surface for crm-v3-objects-notes-batch-create.
+      operations:
+      - method: POST
+        name: batchcreatenotes
+        description: Hubspot Create a Batch of Notes
+        call: engagement-notes-batch-operations.batchcreatenotes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/notes/batch/read
+      name: crm-v3-objects-notes-batch-read
+      description: REST surface for crm-v3-objects-notes-batch-read.
+      operations:
+      - method: POST
+        name: batchreadnotes
+        description: Hubspot Read a Batch of Notes
+        call: engagement-notes-batch-operations.batchreadnotes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/notes/batch/update
+      name: crm-v3-objects-notes-batch-update
+      description: REST surface for crm-v3-objects-notes-batch-update.
+      operations:
+      - method: POST
+        name: batchupdatenotes
+        description: Hubspot Update a Batch of Notes
+        call: engagement-notes-batch-operations.batchupdatenotes
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: engagement-notes-batch-operations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Engagement Notes API — Batch Operations. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: hubspot-archive-batch-notes
+      description: Hubspot Archive a Batch of Notes
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-notes-batch-operations.batcharchivenotes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-batch-notes
+      description: Hubspot Create a Batch of Notes
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-notes-batch-operations.batchcreatenotes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-read-batch-notes
+      description: Hubspot Read a Batch of Notes
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-notes-batch-operations.batchreadnotes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-batch-notes
+      description: Hubspot Update a Batch of Notes
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-notes-batch-operations.batchupdatenotes
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

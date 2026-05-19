@@ -1,0 +1,249 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Associations API — Association Label Management
+  description: 'HubSpot CRM Associations API — Association Label Management. 4 operations. Lead operation: Hubspot List Association
+    Labels. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Association Label Management
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-associations-association-label-management
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Associations API — Association Label Management business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: crm-v4-associations-fromObjectType-toObjectType-labels
+      path: /crm/v4/associations/{fromObjectType}/{toObjectType}/labels
+      operations:
+      - name: listassociationlabels
+        method: GET
+        description: Hubspot List Association Labels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          description: Source object type
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: Target object type
+          required: true
+      - name: createassociationlabel
+        method: POST
+        description: Hubspot Create an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          description: Source object type
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: Target object type
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v4-associations-fromObjectType-toObjectType-labels-associationTypeId
+      path: /crm/v4/associations/{fromObjectType}/{toObjectType}/labels/{associationTypeId}
+      operations:
+      - name: updateassociationlabel
+        method: PUT
+        description: Hubspot Update an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          description: Source object type
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: Target object type
+          required: true
+        - name: associationTypeId
+          in: path
+          type: integer
+          description: Association type ID to update
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deleteassociationlabel
+        method: DELETE
+        description: Hubspot Delete an Association Label
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fromObjectType
+          in: path
+          type: string
+          description: Source object type
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: Target object type
+          required: true
+        - name: associationTypeId
+          in: path
+          type: integer
+          description: Association type ID to delete
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-associations-association-label-management-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Associations API — Association Label Management. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/crm/v4/associations/{fromobjecttype}/{toobjecttype}/labels
+      name: crm-v4-associations-fromobjecttype-toobjecttype-labels
+      description: REST surface for crm-v4-associations-fromObjectType-toObjectType-labels.
+      operations:
+      - method: GET
+        name: listassociationlabels
+        description: Hubspot List Association Labels
+        call: crm-associations-association-label-management.listassociationlabels
+        with:
+          fromObjectType: rest.fromObjectType
+          toObjectType: rest.toObjectType
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createassociationlabel
+        description: Hubspot Create an Association Label
+        call: crm-associations-association-label-management.createassociationlabel
+        with:
+          fromObjectType: rest.fromObjectType
+          toObjectType: rest.toObjectType
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v4/associations/{fromobjecttype}/{toobjecttype}/labels/{associationtypeid}
+      name: crm-v4-associations-fromobjecttype-toobjecttype-labels-associationtypeid
+      description: REST surface for crm-v4-associations-fromObjectType-toObjectType-labels-associationTypeId.
+      operations:
+      - method: PUT
+        name: updateassociationlabel
+        description: Hubspot Update an Association Label
+        call: crm-associations-association-label-management.updateassociationlabel
+        with:
+          fromObjectType: rest.fromObjectType
+          toObjectType: rest.toObjectType
+          associationTypeId: rest.associationTypeId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteassociationlabel
+        description: Hubspot Delete an Association Label
+        call: crm-associations-association-label-management.deleteassociationlabel
+        with:
+          fromObjectType: rest.fromObjectType
+          toObjectType: rest.toObjectType
+          associationTypeId: rest.associationTypeId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-associations-association-label-management-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Associations API — Association Label Management. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-list-association-labels
+      description: Hubspot List Association Labels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-associations-association-label-management.listassociationlabels
+      with:
+        fromObjectType: tools.fromObjectType
+        toObjectType: tools.toObjectType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-association-label
+      description: Hubspot Create an Association Label
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-associations-association-label-management.createassociationlabel
+      with:
+        fromObjectType: tools.fromObjectType
+        toObjectType: tools.toObjectType
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-association-label
+      description: Hubspot Update an Association Label
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: crm-associations-association-label-management.updateassociationlabel
+      with:
+        fromObjectType: tools.fromObjectType
+        toObjectType: tools.toObjectType
+        associationTypeId: tools.associationTypeId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-delete-association-label
+      description: Hubspot Delete an Association Label
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: crm-associations-association-label-management.deleteassociationlabel
+      with:
+        fromObjectType: tools.fromObjectType
+        toObjectType: tools.toObjectType
+        associationTypeId: tools.associationTypeId
+      outputParameters:
+      - type: object
+        mapping: $.

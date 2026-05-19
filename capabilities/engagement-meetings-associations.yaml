@@ -1,0 +1,198 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Engagement Meetings API — Associations
+  description: 'HubSpot Engagement Meetings API — Associations. 3 operations. Lead operation: Hubspot List Meeting Associations.
+    Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Associations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-meetings-associations
+    baseUri: https://api.hubapi.com
+    description: HubSpot Engagement Meetings API — Associations business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-meetings-meetingId-associations-toObjectType
+      path: /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}
+      operations:
+      - name: listmeetingassociations
+        method: GET
+        description: Hubspot List Meeting Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: meetingId
+          in: path
+          type: string
+          description: The ID of the meeting.
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: The type of associated object.
+          required: true
+    - name: crm-v3-objects-meetings-meetingId-associations-toObjectType-toObjectId-associati
+      path: /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}/{toObjectId}/{associationType}
+      operations:
+      - name: createmeetingassociation
+        method: PUT
+        description: Hubspot Create a Meeting Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: meetingId
+          in: path
+          type: string
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+        - name: toObjectId
+          in: path
+          type: string
+          required: true
+        - name: associationType
+          in: path
+          type: string
+          required: true
+      - name: deletemeetingassociation
+        method: DELETE
+        description: Hubspot Delete a Meeting Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: meetingId
+          in: path
+          type: string
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          required: true
+        - name: toObjectId
+          in: path
+          type: string
+          required: true
+        - name: associationType
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: engagement-meetings-associations-rest
+    port: 8080
+    description: REST adapter for HubSpot Engagement Meetings API — Associations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/meetings/{meetingid}/associations/{toobjecttype}
+      name: crm-v3-objects-meetings-meetingid-associations-toobjecttype
+      description: REST surface for crm-v3-objects-meetings-meetingId-associations-toObjectType.
+      operations:
+      - method: GET
+        name: listmeetingassociations
+        description: Hubspot List Meeting Associations
+        call: engagement-meetings-associations.listmeetingassociations
+        with:
+          meetingId: rest.meetingId
+          toObjectType: rest.toObjectType
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/meetings/{meetingid}/associations/{toobjecttype}/{toobjectid}/{associationtype}
+      name: crm-v3-objects-meetings-meetingid-associations-toobjecttype-toobjectid-associati
+      description: REST surface for crm-v3-objects-meetings-meetingId-associations-toObjectType-toObjectId-associati.
+      operations:
+      - method: PUT
+        name: createmeetingassociation
+        description: Hubspot Create a Meeting Association
+        call: engagement-meetings-associations.createmeetingassociation
+        with:
+          meetingId: rest.meetingId
+          toObjectType: rest.toObjectType
+          toObjectId: rest.toObjectId
+          associationType: rest.associationType
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletemeetingassociation
+        description: Hubspot Delete a Meeting Association
+        call: engagement-meetings-associations.deletemeetingassociation
+        with:
+          meetingId: rest.meetingId
+          toObjectType: rest.toObjectType
+          toObjectId: rest.toObjectId
+          associationType: rest.associationType
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: engagement-meetings-associations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Engagement Meetings API — Associations. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: hubspot-list-meeting-associations
+      description: Hubspot List Meeting Associations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: engagement-meetings-associations.listmeetingassociations
+      with:
+        meetingId: tools.meetingId
+        toObjectType: tools.toObjectType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-meeting-association
+      description: Hubspot Create a Meeting Association
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: engagement-meetings-associations.createmeetingassociation
+      with:
+        meetingId: tools.meetingId
+        toObjectType: tools.toObjectType
+        toObjectId: tools.toObjectId
+        associationType: tools.associationType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-delete-meeting-association
+      description: Hubspot Delete a Meeting Association
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: engagement-meetings-associations.deletemeetingassociation
+      with:
+        meetingId: tools.meetingId
+        toObjectType: tools.toObjectType
+        toObjectId: tools.toObjectId
+        associationType: tools.associationType
+      outputParameters:
+      - type: object
+        mapping: $.

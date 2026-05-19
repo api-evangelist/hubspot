@@ -1,0 +1,67 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot OAuth API — Access Tokens
+  description: 'HubSpot OAuth API — Access Tokens. 1 operations. Lead operation: Hubspot Retrieve Access Token Metadata. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Access Tokens
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: oauth-access-tokens
+    baseUri: https://api.hubapi.com
+    description: HubSpot OAuth API — Access Tokens business capability. Self-contained, no shared references.
+    resources:
+    - name: oauth-v1-access-tokens-token
+      path: /oauth/v1/access-tokens/{token}
+      operations:
+      - name: getaccesstokenmetadata
+        method: GET
+        description: Hubspot Retrieve Access Token Metadata
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: oauth-access-tokens-rest
+    port: 8080
+    description: REST adapter for HubSpot OAuth API — Access Tokens. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/oauth/v1/access-tokens/{token}
+      name: oauth-v1-access-tokens-token
+      description: REST surface for oauth-v1-access-tokens-token.
+      operations:
+      - method: GET
+        name: getaccesstokenmetadata
+        description: Hubspot Retrieve Access Token Metadata
+        call: oauth-access-tokens.getaccesstokenmetadata
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: oauth-access-tokens-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot OAuth API — Access Tokens. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-retrieve-access-token-metadata
+      description: Hubspot Retrieve Access Token Metadata
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: oauth-access-tokens.getaccesstokenmetadata
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Contacts API — Batch
+  description: 'HubSpot CRM Contacts API — Batch. 4 operations. Lead operation: Hubspot Batch Archive Contacts. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Batch
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-contacts-batch
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Contacts API — Batch business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-contacts-batch-archive
+      path: /crm/v3/objects/contacts/batch/archive
+      operations:
+      - name: batcharchivecontacts
+        method: POST
+        description: Hubspot Batch Archive Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-contacts-batch-create
+      path: /crm/v3/objects/contacts/batch/create
+      operations:
+      - name: batchcreatecontacts
+        method: POST
+        description: Hubspot Batch Create Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-contacts-batch-read
+      path: /crm/v3/objects/contacts/batch/read
+      operations:
+      - name: batchreadcontacts
+        method: POST
+        description: Hubspot Batch Read Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-contacts-batch-update
+      path: /crm/v3/objects/contacts/batch/update
+      operations:
+      - name: batchupdatecontacts
+        method: POST
+        description: Hubspot Batch Update Contacts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-contacts-batch-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Contacts API — Batch. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/contacts/batch/archive
+      name: crm-v3-objects-contacts-batch-archive
+      description: REST surface for crm-v3-objects-contacts-batch-archive.
+      operations:
+      - method: POST
+        name: batcharchivecontacts
+        description: Hubspot Batch Archive Contacts
+        call: crm-contacts-batch.batcharchivecontacts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/contacts/batch/create
+      name: crm-v3-objects-contacts-batch-create
+      description: REST surface for crm-v3-objects-contacts-batch-create.
+      operations:
+      - method: POST
+        name: batchcreatecontacts
+        description: Hubspot Batch Create Contacts
+        call: crm-contacts-batch.batchcreatecontacts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/contacts/batch/read
+      name: crm-v3-objects-contacts-batch-read
+      description: REST surface for crm-v3-objects-contacts-batch-read.
+      operations:
+      - method: POST
+        name: batchreadcontacts
+        description: Hubspot Batch Read Contacts
+        call: crm-contacts-batch.batchreadcontacts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/contacts/batch/update
+      name: crm-v3-objects-contacts-batch-update
+      description: REST surface for crm-v3-objects-contacts-batch-update.
+      operations:
+      - method: POST
+        name: batchupdatecontacts
+        description: Hubspot Batch Update Contacts
+        call: crm-contacts-batch.batchupdatecontacts
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-contacts-batch-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Contacts API — Batch. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-batch-archive-contacts
+      description: Hubspot Batch Archive Contacts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-contacts-batch.batcharchivecontacts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-batch-create-contacts
+      description: Hubspot Batch Create Contacts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-contacts-batch.batchcreatecontacts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-batch-read-contacts
+      description: Hubspot Batch Read Contacts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-contacts-batch.batchreadcontacts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-batch-update-contacts
+      description: Hubspot Batch Update Contacts
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-contacts-batch.batchupdatecontacts
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

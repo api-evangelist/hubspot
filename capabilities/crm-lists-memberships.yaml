@@ -1,0 +1,190 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Lists API — Memberships
+  description: 'HubSpot CRM Lists API — Memberships. 3 operations. Lead operation: Hubspot Get List Members. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Memberships
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-lists-memberships
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Lists API — Memberships business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-lists-listId-memberships
+      path: /crm/v3/lists/{listId}/memberships
+      operations:
+      - name: getlistmemberships
+        method: GET
+        description: Hubspot Get List Members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: listId
+          in: path
+          type: string
+          description: The ID of the list.
+          required: true
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of results to return per page.
+        - name: after
+          in: query
+          type: string
+          description: The cursor for pagination to get the next page of results.
+    - name: crm-v3-lists-listId-memberships-add
+      path: /crm/v3/lists/{listId}/memberships/add
+      operations:
+      - name: addlistmembers
+        method: PUT
+        description: Hubspot Add Members to a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: listId
+          in: path
+          type: string
+          description: The ID of the static list to add members to.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-lists-listId-memberships-remove
+      path: /crm/v3/lists/{listId}/memberships/remove
+      operations:
+      - name: removelistmembers
+        method: PUT
+        description: Hubspot Remove Members From a List
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: listId
+          in: path
+          type: string
+          description: The ID of the static list to remove members from.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-lists-memberships-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Lists API — Memberships. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/lists/{listid}/memberships
+      name: crm-v3-lists-listid-memberships
+      description: REST surface for crm-v3-lists-listId-memberships.
+      operations:
+      - method: GET
+        name: getlistmemberships
+        description: Hubspot Get List Members
+        call: crm-lists-memberships.getlistmemberships
+        with:
+          listId: rest.listId
+          limit: rest.limit
+          after: rest.after
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/lists/{listid}/memberships/add
+      name: crm-v3-lists-listid-memberships-add
+      description: REST surface for crm-v3-lists-listId-memberships-add.
+      operations:
+      - method: PUT
+        name: addlistmembers
+        description: Hubspot Add Members to a List
+        call: crm-lists-memberships.addlistmembers
+        with:
+          listId: rest.listId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/lists/{listid}/memberships/remove
+      name: crm-v3-lists-listid-memberships-remove
+      description: REST surface for crm-v3-lists-listId-memberships-remove.
+      operations:
+      - method: PUT
+        name: removelistmembers
+        description: Hubspot Remove Members From a List
+        call: crm-lists-memberships.removelistmembers
+        with:
+          listId: rest.listId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-lists-memberships-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Lists API — Memberships. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-get-list-members
+      description: Hubspot Get List Members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-lists-memberships.getlistmemberships
+      with:
+        listId: tools.listId
+        limit: tools.limit
+        after: tools.after
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-add-members-list
+      description: Hubspot Add Members to a List
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: crm-lists-memberships.addlistmembers
+      with:
+        listId: tools.listId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-remove-members-list
+      description: Hubspot Remove Members From a List
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: crm-lists-memberships.removelistmembers
+      with:
+        listId: tools.listId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Custom Workflow Actions API — Workflow Callbacks
+  description: 'HubSpot Custom Workflow Actions API — Workflow Callbacks. 2 operations. Lead operation: Hubspot Complete Multiple
+    Callbacks. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Workflow Callbacks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: custom-workflow-actions-workflow-callbacks
+    baseUri: https://api.hubapi.com
+    description: HubSpot Custom Workflow Actions API — Workflow Callbacks business capability. Self-contained, no shared references.
+    resources:
+    - name: automation-v4-actions-callbacks-complete
+      path: /automation/v4/actions/callbacks/complete
+      operations:
+      - name: batchcompletecallbacks
+        method: POST
+        description: Hubspot Complete Multiple Callbacks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: automation-v4-actions-callbacks-callbackId-complete
+      path: /automation/v4/actions/callbacks/{callbackId}/complete
+      operations:
+      - name: completecallback
+        method: POST
+        description: Hubspot Complete a Single Callback
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: custom-workflow-actions-workflow-callbacks-rest
+    port: 8080
+    description: REST adapter for HubSpot Custom Workflow Actions API — Workflow Callbacks. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/automation/v4/actions/callbacks/complete
+      name: automation-v4-actions-callbacks-complete
+      description: REST surface for automation-v4-actions-callbacks-complete.
+      operations:
+      - method: POST
+        name: batchcompletecallbacks
+        description: Hubspot Complete Multiple Callbacks
+        call: custom-workflow-actions-workflow-callbacks.batchcompletecallbacks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/automation/v4/actions/callbacks/{callbackid}/complete
+      name: automation-v4-actions-callbacks-callbackid-complete
+      description: REST surface for automation-v4-actions-callbacks-callbackId-complete.
+      operations:
+      - method: POST
+        name: completecallback
+        description: Hubspot Complete a Single Callback
+        call: custom-workflow-actions-workflow-callbacks.completecallback
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: custom-workflow-actions-workflow-callbacks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Custom Workflow Actions API — Workflow Callbacks. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-complete-multiple-callbacks
+      description: Hubspot Complete Multiple Callbacks
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: custom-workflow-actions-workflow-callbacks.batchcompletecallbacks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-complete-single-callback
+      description: Hubspot Complete a Single Callback
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: custom-workflow-actions-workflow-callbacks.completecallback
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

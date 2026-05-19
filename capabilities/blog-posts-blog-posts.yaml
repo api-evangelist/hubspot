@@ -1,0 +1,275 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Blog Posts API — Blog Posts
+  description: 'HubSpot Blog Posts API — Blog Posts. 5 operations. Lead operation: Hubspot List All Blog Posts. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Blog Posts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: blog-posts-blog-posts
+    baseUri: https://api.hubapi.com
+    description: HubSpot Blog Posts API — Blog Posts business capability. Self-contained, no shared references.
+    resources:
+    - name: cms-v3-blogs-posts
+      path: /cms/v3/blogs/posts
+      operations:
+      - name: listblogposts
+        method: GET
+        description: Hubspot List All Blog Posts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of results per page
+        - name: after
+          in: query
+          type: string
+          description: Pagination cursor for the next page
+        - name: sort
+          in: query
+          type: array
+          description: Properties to sort by
+        - name: archived
+          in: query
+          type: boolean
+          description: Whether to return archived posts
+        - name: property
+          in: query
+          type: string
+          description: Specific property to return
+      - name: createblogpost
+        method: POST
+        description: Hubspot Create a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cms-v3-blogs-posts-objectId
+      path: /cms/v3/blogs/posts/{objectId}
+      operations:
+      - name: getblogpostbyid
+        method: GET
+        description: Hubspot Retrieve a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+        - name: archived
+          in: query
+          type: boolean
+          description: Whether to return archived posts
+        - name: property
+          in: query
+          type: string
+          description: Specific property to return
+      - name: updateblogpost
+        method: PATCH
+        description: Hubspot Update a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+        - name: archived
+          in: query
+          type: boolean
+          description: Whether to update archived posts
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: archiveblogpost
+        method: DELETE
+        description: Hubspot Archive a Blog Post
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: blog-posts-blog-posts-rest
+    port: 8080
+    description: REST adapter for HubSpot Blog Posts API — Blog Posts. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/cms/v3/blogs/posts
+      name: cms-v3-blogs-posts
+      description: REST surface for cms-v3-blogs-posts.
+      operations:
+      - method: GET
+        name: listblogposts
+        description: Hubspot List All Blog Posts
+        call: blog-posts-blog-posts.listblogposts
+        with:
+          limit: rest.limit
+          after: rest.after
+          sort: rest.sort
+          archived: rest.archived
+          property: rest.property
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createblogpost
+        description: Hubspot Create a Blog Post
+        call: blog-posts-blog-posts.createblogpost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/posts/{objectid}
+      name: cms-v3-blogs-posts-objectid
+      description: REST surface for cms-v3-blogs-posts-objectId.
+      operations:
+      - method: GET
+        name: getblogpostbyid
+        description: Hubspot Retrieve a Blog Post
+        call: blog-posts-blog-posts.getblogpostbyid
+        with:
+          objectId: rest.objectId
+          archived: rest.archived
+          property: rest.property
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateblogpost
+        description: Hubspot Update a Blog Post
+        call: blog-posts-blog-posts.updateblogpost
+        with:
+          objectId: rest.objectId
+          archived: rest.archived
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: archiveblogpost
+        description: Hubspot Archive a Blog Post
+        call: blog-posts-blog-posts.archiveblogpost
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: blog-posts-blog-posts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Blog Posts API — Blog Posts. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-list-all-blog-posts
+      description: Hubspot List All Blog Posts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: blog-posts-blog-posts.listblogposts
+      with:
+        limit: tools.limit
+        after: tools.after
+        sort: tools.sort
+        archived: tools.archived
+        property: tools.property
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-blog-post
+      description: Hubspot Create a Blog Post
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: blog-posts-blog-posts.createblogpost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-retrieve-blog-post
+      description: Hubspot Retrieve a Blog Post
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: blog-posts-blog-posts.getblogpostbyid
+      with:
+        objectId: tools.objectId
+        archived: tools.archived
+        property: tools.property
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-blog-post
+      description: Hubspot Update a Blog Post
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: blog-posts-blog-posts.updateblogpost
+      with:
+        objectId: tools.objectId
+        archived: tools.archived
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-archive-blog-post
+      description: Hubspot Archive a Blog Post
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: blog-posts-blog-posts.archiveblogpost
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.

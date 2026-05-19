@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Engagement Calls API — Batch Operations
+  description: 'HubSpot CRM Engagement Calls API — Batch Operations. 4 operations. Lead operation: Hubspot Archive a Batch
+    of Calls. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Batch Operations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: engagement-calls-batch-operations
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Engagement Calls API — Batch Operations business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-calls-batch-archive
+      path: /crm/v3/objects/calls/batch/archive
+      operations:
+      - name: batcharchivecalls
+        method: POST
+        description: Hubspot Archive a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-calls-batch-create
+      path: /crm/v3/objects/calls/batch/create
+      operations:
+      - name: batchcreatecalls
+        method: POST
+        description: Hubspot Create a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-calls-batch-read
+      path: /crm/v3/objects/calls/batch/read
+      operations:
+      - name: batchreadcalls
+        method: POST
+        description: Hubspot Read a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: crm-v3-objects-calls-batch-update
+      path: /crm/v3/objects/calls/batch/update
+      operations:
+      - name: batchupdatecalls
+        method: POST
+        description: Hubspot Update a Batch of Calls
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: engagement-calls-batch-operations-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Engagement Calls API — Batch Operations. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/calls/batch/archive
+      name: crm-v3-objects-calls-batch-archive
+      description: REST surface for crm-v3-objects-calls-batch-archive.
+      operations:
+      - method: POST
+        name: batcharchivecalls
+        description: Hubspot Archive a Batch of Calls
+        call: engagement-calls-batch-operations.batcharchivecalls
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/calls/batch/create
+      name: crm-v3-objects-calls-batch-create
+      description: REST surface for crm-v3-objects-calls-batch-create.
+      operations:
+      - method: POST
+        name: batchcreatecalls
+        description: Hubspot Create a Batch of Calls
+        call: engagement-calls-batch-operations.batchcreatecalls
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/calls/batch/read
+      name: crm-v3-objects-calls-batch-read
+      description: REST surface for crm-v3-objects-calls-batch-read.
+      operations:
+      - method: POST
+        name: batchreadcalls
+        description: Hubspot Read a Batch of Calls
+        call: engagement-calls-batch-operations.batchreadcalls
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/calls/batch/update
+      name: crm-v3-objects-calls-batch-update
+      description: REST surface for crm-v3-objects-calls-batch-update.
+      operations:
+      - method: POST
+        name: batchupdatecalls
+        description: Hubspot Update a Batch of Calls
+        call: engagement-calls-batch-operations.batchupdatecalls
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: engagement-calls-batch-operations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Engagement Calls API — Batch Operations. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: hubspot-archive-batch-calls
+      description: Hubspot Archive a Batch of Calls
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-calls-batch-operations.batcharchivecalls
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-batch-calls
+      description: Hubspot Create a Batch of Calls
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-calls-batch-operations.batchcreatecalls
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-read-batch-calls
+      description: Hubspot Read a Batch of Calls
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-calls-batch-operations.batchreadcalls
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-batch-calls
+      description: Hubspot Update a Batch of Calls
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: engagement-calls-batch-operations.batchupdatecalls
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

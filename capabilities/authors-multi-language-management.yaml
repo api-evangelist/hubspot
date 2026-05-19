@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Blog Authors API — Multi-Language Management
+  description: 'HubSpot Blog Authors API — Multi-Language Management. 4 operations. Lead operation: Hubspot Attach Author
+    to Language Group. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Multi-Language Management
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: authors-multi-language-management
+    baseUri: https://api.hubapi.com
+    description: HubSpot Blog Authors API — Multi-Language Management business capability. Self-contained, no shared references.
+    resources:
+    - name: cms-v3-blogs-authors-multi-language-attach-to-lang-group
+      path: /cms/v3/blogs/authors/multi-language/attach-to-lang-group
+      operations:
+      - name: attachblogauthortolanguagegroup
+        method: POST
+        description: Hubspot Attach Author to Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cms-v3-blogs-authors-multi-language-create-language-variation
+      path: /cms/v3/blogs/authors/multi-language/create-language-variation
+      operations:
+      - name: createblogauthorlanguagevariation
+        method: POST
+        description: Hubspot Create Language Variation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cms-v3-blogs-authors-multi-language-detach-from-lang-group
+      path: /cms/v3/blogs/authors/multi-language/detach-from-lang-group
+      operations:
+      - name: detachblogauthorfromlanguagegroup
+        method: POST
+        description: Hubspot Detach Author From Language Group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: cms-v3-blogs-authors-multi-language-set-new-lang-primary
+      path: /cms/v3/blogs/authors/multi-language/set-new-lang-primary
+      operations:
+      - name: setnewblogauthorlanguageprimary
+        method: PUT
+        description: Hubspot Set New Primary Language
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: authors-multi-language-management-rest
+    port: 8080
+    description: REST adapter for HubSpot Blog Authors API — Multi-Language Management. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/cms/v3/blogs/authors/multi-language/attach-to-lang-group
+      name: cms-v3-blogs-authors-multi-language-attach-to-lang-group
+      description: REST surface for cms-v3-blogs-authors-multi-language-attach-to-lang-group.
+      operations:
+      - method: POST
+        name: attachblogauthortolanguagegroup
+        description: Hubspot Attach Author to Language Group
+        call: authors-multi-language-management.attachblogauthortolanguagegroup
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/authors/multi-language/create-language-variation
+      name: cms-v3-blogs-authors-multi-language-create-language-variation
+      description: REST surface for cms-v3-blogs-authors-multi-language-create-language-variation.
+      operations:
+      - method: POST
+        name: createblogauthorlanguagevariation
+        description: Hubspot Create Language Variation
+        call: authors-multi-language-management.createblogauthorlanguagevariation
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/authors/multi-language/detach-from-lang-group
+      name: cms-v3-blogs-authors-multi-language-detach-from-lang-group
+      description: REST surface for cms-v3-blogs-authors-multi-language-detach-from-lang-group.
+      operations:
+      - method: POST
+        name: detachblogauthorfromlanguagegroup
+        description: Hubspot Detach Author From Language Group
+        call: authors-multi-language-management.detachblogauthorfromlanguagegroup
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/authors/multi-language/set-new-lang-primary
+      name: cms-v3-blogs-authors-multi-language-set-new-lang-primary
+      description: REST surface for cms-v3-blogs-authors-multi-language-set-new-lang-primary.
+      operations:
+      - method: PUT
+        name: setnewblogauthorlanguageprimary
+        description: Hubspot Set New Primary Language
+        call: authors-multi-language-management.setnewblogauthorlanguageprimary
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: authors-multi-language-management-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Blog Authors API — Multi-Language Management. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: hubspot-attach-author-language-group
+      description: Hubspot Attach Author to Language Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: authors-multi-language-management.attachblogauthortolanguagegroup
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-language-variation
+      description: Hubspot Create Language Variation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: authors-multi-language-management.createblogauthorlanguagevariation
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-detach-author-language-group
+      description: Hubspot Detach Author From Language Group
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: authors-multi-language-management.detachblogauthorfromlanguagegroup
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-set-new-primary-language
+      description: Hubspot Set New Primary Language
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: authors-multi-language-management.setnewblogauthorlanguageprimary
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

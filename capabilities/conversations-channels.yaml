@@ -1,0 +1,85 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Conversations API — Channels
+  description: 'HubSpot Conversations API — Channels. 1 operations. Lead operation: Hubspot List Channels. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Channels
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: conversations-channels
+    baseUri: https://api.hubapi.com
+    description: HubSpot Conversations API — Channels business capability. Self-contained, no shared references.
+    resources:
+    - name: conversations-v3-conversations-channels
+      path: /conversations/v3/conversations/channels
+      operations:
+      - name: listchannels
+        method: GET
+        description: Hubspot List Channels
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of channels per page
+        - name: after
+          in: query
+          type: string
+          description: Pagination cursor for the next page
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: conversations-channels-rest
+    port: 8080
+    description: REST adapter for HubSpot Conversations API — Channels. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/conversations/v3/conversations/channels
+      name: conversations-v3-conversations-channels
+      description: REST surface for conversations-v3-conversations-channels.
+      operations:
+      - method: GET
+        name: listchannels
+        description: Hubspot List Channels
+        call: conversations-channels.listchannels
+        with:
+          limit: rest.limit
+          after: rest.after
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: conversations-channels-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Conversations API — Channels. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-list-channels
+      description: Hubspot List Channels
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: conversations-channels.listchannels
+      with:
+        limit: tools.limit
+        after: tools.after
+      outputParameters:
+      - type: object
+        mapping: $.

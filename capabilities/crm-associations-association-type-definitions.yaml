@@ -1,0 +1,71 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Associations API — Association Type Definitions
+  description: 'HubSpot CRM Associations API — Association Type Definitions. 1 operations. Lead operation: Hubspot List All
+    Association Definitions. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Association Type Definitions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-associations-association-type-definitions
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Associations API — Association Type Definitions business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: crm-v4-associations-definitions
+      path: /crm/v4/associations/definitions
+      operations:
+      - name: listassociationdefinitions
+        method: GET
+        description: Hubspot List All Association Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-associations-association-type-definitions-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Associations API — Association Type Definitions. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/crm/v4/associations/definitions
+      name: crm-v4-associations-definitions
+      description: REST surface for crm-v4-associations-definitions.
+      operations:
+      - method: GET
+        name: listassociationdefinitions
+        description: Hubspot List All Association Definitions
+        call: crm-associations-association-type-definitions.listassociationdefinitions
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-associations-association-type-definitions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Associations API — Association Type Definitions. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-list-all-association-definitions
+      description: Hubspot List All Association Definitions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-associations-association-type-definitions.listassociationdefinitions
+      outputParameters:
+      - type: object
+        mapping: $.

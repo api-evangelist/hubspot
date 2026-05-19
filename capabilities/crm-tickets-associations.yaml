@@ -1,0 +1,206 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot CRM Tickets API — Associations
+  description: 'HubSpot CRM Tickets API — Associations. 3 operations. Lead operation: Hubspot List Ticket Associations. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Associations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-tickets-associations
+    baseUri: https://api.hubapi.com
+    description: HubSpot CRM Tickets API — Associations business capability. Self-contained, no shared references.
+    resources:
+    - name: crm-v3-objects-tickets-ticketId-associations-toObjectType
+      path: /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}
+      operations:
+      - name: listticketassociations
+        method: GET
+        description: Hubspot List Ticket Associations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          description: The ID of the ticket.
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: The type of associated object (e.g., contacts, companies, deals).
+          required: true
+    - name: crm-v3-objects-tickets-ticketId-associations-toObjectType-toObjectId-association
+      path: /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}/{toObjectId}/{associationType}
+      operations:
+      - name: createticketassociation
+        method: PUT
+        description: Hubspot Create a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          description: The ID of the ticket.
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: The type of the object to associate with.
+          required: true
+        - name: toObjectId
+          in: path
+          type: string
+          description: The ID of the object to associate with.
+          required: true
+        - name: associationType
+          in: path
+          type: string
+          description: The type of association to create.
+          required: true
+      - name: deleteticketassociation
+        method: DELETE
+        description: Hubspot Delete a Ticket Association
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ticketId
+          in: path
+          type: string
+          description: The ID of the ticket.
+          required: true
+        - name: toObjectType
+          in: path
+          type: string
+          description: The type of the associated object.
+          required: true
+        - name: toObjectId
+          in: path
+          type: string
+          description: The ID of the associated object.
+          required: true
+        - name: associationType
+          in: path
+          type: string
+          description: The type of association to delete.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-tickets-associations-rest
+    port: 8080
+    description: REST adapter for HubSpot CRM Tickets API — Associations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/crm/v3/objects/tickets/{ticketid}/associations/{toobjecttype}
+      name: crm-v3-objects-tickets-ticketid-associations-toobjecttype
+      description: REST surface for crm-v3-objects-tickets-ticketId-associations-toObjectType.
+      operations:
+      - method: GET
+        name: listticketassociations
+        description: Hubspot List Ticket Associations
+        call: crm-tickets-associations.listticketassociations
+        with:
+          ticketId: rest.ticketId
+          toObjectType: rest.toObjectType
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/crm/v3/objects/tickets/{ticketid}/associations/{toobjecttype}/{toobjectid}/{associationtype}
+      name: crm-v3-objects-tickets-ticketid-associations-toobjecttype-toobjectid-association
+      description: REST surface for crm-v3-objects-tickets-ticketId-associations-toObjectType-toObjectId-association.
+      operations:
+      - method: PUT
+        name: createticketassociation
+        description: Hubspot Create a Ticket Association
+        call: crm-tickets-associations.createticketassociation
+        with:
+          ticketId: rest.ticketId
+          toObjectType: rest.toObjectType
+          toObjectId: rest.toObjectId
+          associationType: rest.associationType
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteticketassociation
+        description: Hubspot Delete a Ticket Association
+        call: crm-tickets-associations.deleteticketassociation
+        with:
+          ticketId: rest.ticketId
+          toObjectType: rest.toObjectType
+          toObjectId: rest.toObjectId
+          associationType: rest.associationType
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-tickets-associations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot CRM Tickets API — Associations. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: hubspot-list-ticket-associations
+      description: Hubspot List Ticket Associations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-tickets-associations.listticketassociations
+      with:
+        ticketId: tools.ticketId
+        toObjectType: tools.toObjectType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-ticket-association
+      description: Hubspot Create a Ticket Association
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: crm-tickets-associations.createticketassociation
+      with:
+        ticketId: tools.ticketId
+        toObjectType: tools.toObjectType
+        toObjectId: tools.toObjectId
+        associationType: tools.associationType
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-delete-ticket-association
+      description: Hubspot Delete a Ticket Association
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: crm-tickets-associations.deleteticketassociation
+      with:
+        ticketId: tools.ticketId
+        toObjectType: tools.toObjectType
+        toObjectId: tools.toObjectId
+        associationType: tools.associationType
+      outputParameters:
+      - type: object
+        mapping: $.

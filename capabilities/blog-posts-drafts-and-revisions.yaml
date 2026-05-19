@@ -1,0 +1,225 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Blog Posts API — Drafts and Revisions
+  description: 'HubSpot Blog Posts API — Drafts and Revisions. 4 operations. Lead operation: Hubspot Push Draft to Live. Self-contained
+    Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Drafts and Revisions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: blog-posts-drafts-and-revisions
+    baseUri: https://api.hubapi.com
+    description: HubSpot Blog Posts API — Drafts and Revisions business capability. Self-contained, no shared references.
+    resources:
+    - name: cms-v3-blogs-posts-objectId-draft-push-live
+      path: /cms/v3/blogs/posts/{objectId}/draft/push-live
+      operations:
+      - name: pushblogpostdraftlive
+        method: POST
+        description: Hubspot Push Draft to Live
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+    - name: cms-v3-blogs-posts-objectId-draft-reset
+      path: /cms/v3/blogs/posts/{objectId}/draft/reset
+      operations:
+      - name: resetblogpostdraft
+        method: POST
+        description: Hubspot Reset Draft to Live Version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+    - name: cms-v3-blogs-posts-objectId-revisions
+      path: /cms/v3/blogs/posts/{objectId}/revisions
+      operations:
+      - name: getblogpostrevisions
+        method: GET
+        description: Hubspot Get Revision History
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+        - name: limit
+          in: query
+          type: integer
+          description: Maximum number of revisions to return
+        - name: after
+          in: query
+          type: string
+          description: Pagination cursor
+    - name: cms-v3-blogs-posts-objectId-revisions-revisionId-restore
+      path: /cms/v3/blogs/posts/{objectId}/revisions/{revisionId}/restore
+      operations:
+      - name: restoreblogpostrevision
+        method: POST
+        description: Hubspot Restore a Previous Version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: objectId
+          in: path
+          type: string
+          description: The unique identifier of the blog post
+          required: true
+        - name: revisionId
+          in: path
+          type: string
+          description: The revision ID to restore
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: blog-posts-drafts-and-revisions-rest
+    port: 8080
+    description: REST adapter for HubSpot Blog Posts API — Drafts and Revisions. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/cms/v3/blogs/posts/{objectid}/draft/push-live
+      name: cms-v3-blogs-posts-objectid-draft-push-live
+      description: REST surface for cms-v3-blogs-posts-objectId-draft-push-live.
+      operations:
+      - method: POST
+        name: pushblogpostdraftlive
+        description: Hubspot Push Draft to Live
+        call: blog-posts-drafts-and-revisions.pushblogpostdraftlive
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/posts/{objectid}/draft/reset
+      name: cms-v3-blogs-posts-objectid-draft-reset
+      description: REST surface for cms-v3-blogs-posts-objectId-draft-reset.
+      operations:
+      - method: POST
+        name: resetblogpostdraft
+        description: Hubspot Reset Draft to Live Version
+        call: blog-posts-drafts-and-revisions.resetblogpostdraft
+        with:
+          objectId: rest.objectId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/posts/{objectid}/revisions
+      name: cms-v3-blogs-posts-objectid-revisions
+      description: REST surface for cms-v3-blogs-posts-objectId-revisions.
+      operations:
+      - method: GET
+        name: getblogpostrevisions
+        description: Hubspot Get Revision History
+        call: blog-posts-drafts-and-revisions.getblogpostrevisions
+        with:
+          objectId: rest.objectId
+          limit: rest.limit
+          after: rest.after
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cms/v3/blogs/posts/{objectid}/revisions/{revisionid}/restore
+      name: cms-v3-blogs-posts-objectid-revisions-revisionid-restore
+      description: REST surface for cms-v3-blogs-posts-objectId-revisions-revisionId-restore.
+      operations:
+      - method: POST
+        name: restoreblogpostrevision
+        description: Hubspot Restore a Previous Version
+        call: blog-posts-drafts-and-revisions.restoreblogpostrevision
+        with:
+          objectId: rest.objectId
+          revisionId: rest.revisionId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: blog-posts-drafts-and-revisions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Blog Posts API — Drafts and Revisions. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: hubspot-push-draft-live
+      description: Hubspot Push Draft to Live
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: blog-posts-drafts-and-revisions.pushblogpostdraftlive
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-reset-draft-live-version
+      description: Hubspot Reset Draft to Live Version
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: blog-posts-drafts-and-revisions.resetblogpostdraft
+      with:
+        objectId: tools.objectId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-get-revision-history
+      description: Hubspot Get Revision History
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: blog-posts-drafts-and-revisions.getblogpostrevisions
+      with:
+        objectId: tools.objectId
+        limit: tools.limit
+        after: tools.after
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-restore-previous-version
+      description: Hubspot Restore a Previous Version
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: blog-posts-drafts-and-revisions.restoreblogpostrevision
+      with:
+        objectId: tools.objectId
+        revisionId: tools.revisionId
+      outputParameters:
+      - type: object
+        mapping: $.

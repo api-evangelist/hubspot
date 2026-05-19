@@ -1,0 +1,197 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: HubSpot Custom Workflow Actions API — Action Definitions
+  description: 'HubSpot Custom Workflow Actions API — Action Definitions. 5 operations. Lead operation: Hubspot List Action
+    Definitions. Self-contained Naftiko capability covering one Hubspot business surface.'
+  tags:
+  - Hubspot
+  - Action Definitions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    HUBSPOT_API_KEY: HUBSPOT_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: custom-workflow-actions-action-definitions
+    baseUri: https://api.hubapi.com
+    description: HubSpot Custom Workflow Actions API — Action Definitions business capability. Self-contained, no shared references.
+    resources:
+    - name: automation-v4-actions-appId
+      path: /automation/v4/actions/{appId}
+      operations:
+      - name: listactiondefinitions
+        method: GET
+        description: Hubspot List Action Definitions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createactiondefinition
+        method: POST
+        description: Hubspot Create an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: automation-v4-actions-appId-definitionId
+      path: /automation/v4/actions/{appId}/{definitionId}
+      operations:
+      - name: getactiondefinitionbyid
+        method: GET
+        description: Hubspot Retrieve an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateactiondefinitionbyid
+        method: PATCH
+        description: Hubspot Update an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: archiveactiondefinitionbyid
+        method: DELETE
+        description: Hubspot Archive an Action Definition
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.HUBSPOT_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: custom-workflow-actions-action-definitions-rest
+    port: 8080
+    description: REST adapter for HubSpot Custom Workflow Actions API — Action Definitions. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/automation/v4/actions/{appid}
+      name: automation-v4-actions-appid
+      description: REST surface for automation-v4-actions-appId.
+      operations:
+      - method: GET
+        name: listactiondefinitions
+        description: Hubspot List Action Definitions
+        call: custom-workflow-actions-action-definitions.listactiondefinitions
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createactiondefinition
+        description: Hubspot Create an Action Definition
+        call: custom-workflow-actions-action-definitions.createactiondefinition
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/automation/v4/actions/{appid}/{definitionid}
+      name: automation-v4-actions-appid-definitionid
+      description: REST surface for automation-v4-actions-appId-definitionId.
+      operations:
+      - method: GET
+        name: getactiondefinitionbyid
+        description: Hubspot Retrieve an Action Definition
+        call: custom-workflow-actions-action-definitions.getactiondefinitionbyid
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateactiondefinitionbyid
+        description: Hubspot Update an Action Definition
+        call: custom-workflow-actions-action-definitions.updateactiondefinitionbyid
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: archiveactiondefinitionbyid
+        description: Hubspot Archive an Action Definition
+        call: custom-workflow-actions-action-definitions.archiveactiondefinitionbyid
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: custom-workflow-actions-action-definitions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for HubSpot Custom Workflow Actions API — Action Definitions. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: hubspot-list-action-definitions
+      description: Hubspot List Action Definitions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: custom-workflow-actions-action-definitions.listactiondefinitions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-create-action-definition
+      description: Hubspot Create an Action Definition
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: custom-workflow-actions-action-definitions.createactiondefinition
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-retrieve-action-definition
+      description: Hubspot Retrieve an Action Definition
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: custom-workflow-actions-action-definitions.getactiondefinitionbyid
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-update-action-definition
+      description: Hubspot Update an Action Definition
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: custom-workflow-actions-action-definitions.updateactiondefinitionbyid
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: hubspot-archive-action-definition
+      description: Hubspot Archive an Action Definition
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: custom-workflow-actions-action-definitions.archiveactiondefinitionbyid
+      outputParameters:
+      - type: object
+        mapping: $.
