@@ -1,0 +1,103 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Search and Add to a List
+  summary: Search CRM objects with a filter, then add the matches to a static list.
+  description: >-
+    Builds a targeted segment in HubSpot CRM. The workflow runs a search against
+    a CRM object type using a single property filter, captures the matching
+    record ID, and then adds that record to a static list by its ID. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmSearchApi
+  url: ../openapi/hubspot-crm-search-api-openapi.yml
+  type: openapi
+- name: hubspotCrmListsApi
+  url: ../openapi/hubspot-crm-lists-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: search-and-add-to-list
+  summary: Search CRM objects by a property filter and add a match to a static list.
+  description: >-
+    Searches the supplied CRM object type for a record matching a property
+    filter, then adds the matched record to the supplied static list.
+  inputs:
+    type: object
+    required:
+    - objectType
+    - filterProperty
+    - filterValue
+    - listId
+    properties:
+      objectType:
+        type: string
+        description: >-
+          The CRM object type to search (e.g. contacts, companies, deals,
+          tickets).
+      filterProperty:
+        type: string
+        description: The property name to filter the search on (e.g. email).
+      filterValue:
+        type: string
+        description: The value the filter property must equal.
+      listId:
+        type: string
+        description: The ID of the static list to add the matched record to.
+      filterOperator:
+        type: string
+        description: The filter operator to apply against the property value.
+        default: EQ
+  steps:
+  - stepId: searchObjects
+    description: >-
+      Search the supplied CRM object type for records where the filter property
+      matches the supplied value.
+    operationId: searchCRMObjects
+    parameters:
+    - name: objectType
+      in: path
+      value: $inputs.objectType
+    requestBody:
+      contentType: application/json
+      payload:
+        filterGroups:
+        - filters:
+          - propertyName: $inputs.filterProperty
+            operator: $inputs.filterOperator
+            value: $inputs.filterValue
+        limit: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      total: $response.body#/total
+      matchedRecordId: $response.body#/results/0/id
+    onSuccess:
+    - name: matchesFound
+      type: goto
+      stepId: addToList
+      criteria:
+      - context: $response.body
+        condition: $.results.length > 0
+        type: jsonpath
+  - stepId: addToList
+    description: >-
+      Add the matched record to the supplied static list by its record ID.
+    operationId: addListMembers
+    parameters:
+    - name: listId
+      in: path
+      value: $inputs.listId
+    requestBody:
+      contentType: application/json
+      payload:
+        recordIdsToAdd:
+        - $steps.searchObjects.outputs.matchedRecordId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      recordIdsAdded: $response.body#/recordIdsAdded
+      recordIdsAlreadyMember: $response.body#/recordIdsAlreadyMember
+  outputs:
+    matchedRecordId: $steps.searchObjects.outputs.matchedRecordId
+    recordIdsAdded: $steps.addToList.outputs.recordIdsAdded

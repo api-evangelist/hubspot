@@ -1,0 +1,90 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Triage Tasks
+  summary: List tasks then update a task's status and priority.
+  description: >-
+    A queue-grooming pattern for the HubSpot task engagement object. The
+    workflow lists the current tasks, picks the first task in the queue, and
+    updates its status and priority — for example bumping a stale task to HIGH
+    priority or marking it COMPLETED — then reads the task back to confirm the
+    new values stuck. Every step spells out its request inline so the flow can
+    be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementTasksApi
+  url: ../openapi/hubspot-engagement-tasks-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: triage-tasks
+  summary: List tasks then update a task's status and priority.
+  description: >-
+    Lists tasks, selects the first task returned, updates its status and
+    priority, and reads the task back to confirm the change.
+  inputs:
+    type: object
+    required:
+    - hsTaskStatus
+    - hsTaskPriority
+    properties:
+      limit:
+        type: integer
+        description: Maximum number of tasks to return when listing.
+        default: 10
+      hsTaskStatus:
+        type: string
+        description: The new task status to set, e.g. COMPLETED or WAITING (hs_task_status).
+      hsTaskPriority:
+        type: string
+        description: The new task priority to set, e.g. LOW, MEDIUM, or HIGH (hs_task_priority).
+  steps:
+  - stepId: listTasks
+    description: >-
+      List the current tasks, returning at most the supplied limit so a task can
+      be selected for triage.
+    operationId: listTasks
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskId: $response.body#/results/0/id
+      tasks: $response.body#/results
+  - stepId: updateTask
+    description: >-
+      Update the selected task's status and priority to triage it within the
+      queue.
+    operationId: updateTask
+    parameters:
+    - name: taskId
+      in: path
+      value: $steps.listTasks.outputs.taskId
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_task_status: $inputs.hsTaskStatus
+          hs_task_priority: $inputs.hsTaskPriority
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskId: $response.body#/id
+      updatedAt: $response.body#/updatedAt
+  - stepId: confirmTask
+    description: >-
+      Read the updated task back by id to confirm the new status and priority
+      persisted.
+    operationId: getTask
+    parameters:
+    - name: taskId
+      in: path
+      value: $steps.updateTask.outputs.taskId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    taskId: $steps.updateTask.outputs.taskId
+    updatedAt: $steps.updateTask.outputs.updatedAt

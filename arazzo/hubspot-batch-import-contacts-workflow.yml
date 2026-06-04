@@ -1,0 +1,80 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Batch Import Contacts
+  summary: Batch-create a set of contacts then batch-read them back to verify.
+  description: >-
+    Loads a list of contacts into HubSpot CRM in a single call and confirms the
+    import succeeded. The workflow batch-creates the supplied contact records,
+    collects the new contact IDs, and then batch-reads those same IDs to verify
+    the records were persisted. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmContactsApi
+  url: ../openapi/hubspot-crm-contacts-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: batch-import-contacts
+  summary: Batch-create contacts then batch-read them back to verify.
+  description: >-
+    Creates a batch of contacts from the supplied inputs array and then reads
+    the created records back by their IDs to confirm the import.
+  inputs:
+    type: object
+    required:
+    - contacts
+    properties:
+      contacts:
+        type: array
+        description: >-
+          The array of contact inputs to create. Each item is an object with a
+          properties map of contact field name/value pairs.
+        items:
+          type: object
+          properties:
+            properties:
+              type: object
+      readProperties:
+        type: array
+        description: The property names to return when verifying the created contacts.
+        items:
+          type: string
+        default:
+        - email
+        - firstname
+        - lastname
+  steps:
+  - stepId: batchCreate
+    description: >-
+      Create the supplied contacts in a single batch call and capture the
+      results array of created records.
+    operationId: batchCreateContacts
+    requestBody:
+      contentType: application/json
+      payload:
+        inputs: $inputs.contacts
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      createdResults: $response.body#/results
+      firstCreatedId: $response.body#/results/0/id
+  - stepId: batchVerify
+    description: >-
+      Read the freshly created contacts back by their IDs to verify the batch
+      import persisted the records.
+    operationId: batchReadContacts
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.readProperties
+        inputs:
+        - id: $steps.batchCreate.outputs.firstCreatedId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      verifiedResults: $response.body#/results
+      verifiedStatus: $response.body#/status
+  outputs:
+    createdResults: $steps.batchCreate.outputs.createdResults
+    verifiedResults: $steps.batchVerify.outputs.verifiedResults

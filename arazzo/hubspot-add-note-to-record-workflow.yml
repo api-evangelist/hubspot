@@ -1,0 +1,85 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Add a Note to a Record
+  summary: Create a note engagement and associate it to a CRM record.
+  description: >-
+    A general-purpose annotation pattern. The workflow creates a note
+    engagement in the HubSpot CRM with the supplied note body and an
+    hs_timestamp, associating it inline to a target CRM record — a contact,
+    company, deal, or ticket — so the note appears on that record's timeline.
+    Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementNotesApi
+  url: ../openapi/hubspot-engagement-notes-openapi.yml
+  type: openapi
+workflows:
+- workflowId: add-note-to-record
+  summary: Create a note engagement and associate it to a CRM record.
+  description: >-
+    Creates a note engagement with the supplied body and an inline association
+    to the target record, then reads the note back to confirm it persisted.
+  inputs:
+    type: object
+    required:
+    - hsNoteBody
+    - hsTimestamp
+    - recordId
+    properties:
+      hsNoteBody:
+        type: string
+        description: The text content of the note (hs_note_body).
+      hsTimestamp:
+        type: string
+        description: ISO 8601 timestamp for the note (hs_timestamp).
+      hubspotOwnerId:
+        type: string
+        description: The id of the HubSpot owner of the note (hubspot_owner_id).
+      recordId:
+        type: string
+        description: The ID of the CRM record to associate the note with.
+      associationTypeId:
+        type: integer
+        description: The HUBSPOT_DEFINED association type id linking the note to the record.
+        default: 202
+  steps:
+  - stepId: createNote
+    description: >-
+      Create the note engagement with the supplied body and an inline
+      association to the target CRM record.
+    operationId: createNote
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_note_body: $inputs.hsNoteBody
+          hs_timestamp: $inputs.hsTimestamp
+          hubspot_owner_id: $inputs.hubspotOwnerId
+        associations:
+        - to:
+            id: $inputs.recordId
+          types:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: $inputs.associationTypeId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      noteId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  - stepId: confirmNote
+    description: >-
+      Read the created note back by id to confirm the engagement persisted.
+    operationId: getNoteById
+    parameters:
+    - name: noteId
+      in: path
+      value: $steps.createNote.outputs.noteId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      noteId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    noteId: $steps.createNote.outputs.noteId
+    createdAt: $steps.createNote.outputs.createdAt

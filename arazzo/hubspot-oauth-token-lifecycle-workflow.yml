@@ -1,0 +1,100 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot OAuth Token Lifecycle
+  summary: Exchange an authorization code for tokens, refresh the access token, then read its metadata.
+  description: >-
+    A complete OAuth token lifecycle flow. The workflow exchanges an
+    authorization code for an access and refresh token pair, then uses the
+    returned refresh token to obtain a fresh access token, and finally retrieves
+    metadata for the new access token to confirm its scopes and expiry. The token
+    endpoint is form-encoded; the metadata endpoint is a path lookup. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: oauthApi
+  url: ../openapi/hubspot-oauth-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: oauth-token-lifecycle
+  summary: Exchange a code for tokens, refresh, then inspect the access token metadata.
+  description: >-
+    Performs the authorization_code grant to obtain initial tokens, performs the
+    refresh_token grant to rotate the access token, and reads the resulting
+    access token's metadata.
+  inputs:
+    type: object
+    required:
+    - clientId
+    - clientSecret
+    - code
+    - redirectUri
+    properties:
+      clientId:
+        type: string
+        description: The OAuth application client ID.
+      clientSecret:
+        type: string
+        description: The OAuth application client secret.
+      code:
+        type: string
+        description: The authorization code returned to the redirect URI.
+      redirectUri:
+        type: string
+        description: The redirect URI registered with the application.
+  steps:
+  - stepId: exchangeCode
+    description: >-
+      Exchange the authorization code for an access token and refresh token
+      using the authorization_code grant.
+    operationId: createOrRefreshAccessToken
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        grant_type: authorization_code
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+        redirect_uri: $inputs.redirectUri
+        code: $inputs.code
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+      refreshToken: $response.body#/refresh_token
+  - stepId: refreshToken
+    description: >-
+      Use the refresh token from the initial exchange to obtain a fresh access
+      token via the refresh_token grant.
+    operationId: createOrRefreshAccessToken
+    requestBody:
+      contentType: application/x-www-form-urlencoded
+      payload:
+        grant_type: refresh_token
+        client_id: $inputs.clientId
+        client_secret: $inputs.clientSecret
+        refresh_token: $steps.exchangeCode.outputs.refreshToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accessToken: $response.body#/access_token
+      refreshToken: $response.body#/refresh_token
+  - stepId: getTokenInfo
+    description: >-
+      Retrieve metadata for the refreshed access token to confirm its granted
+      scopes and time-to-expiry.
+    operationId: getAccessTokenMetadata
+    parameters:
+    - name: token
+      in: path
+      value: $steps.refreshToken.outputs.accessToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      hubId: $response.body#/hub_id
+      scopes: $response.body#/scopes
+      expiresIn: $response.body#/expires_in
+  outputs:
+    accessToken: $steps.refreshToken.outputs.accessToken
+    refreshToken: $steps.refreshToken.outputs.refreshToken
+    scopes: $steps.getTokenInfo.outputs.scopes
+    expiresIn: $steps.getTokenInfo.outputs.expiresIn

@@ -1,0 +1,159 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Publish a Blog Post
+  summary: Resolve or create a blog author, create a blog post, then publish or schedule it.
+  description: >-
+    A complete CMS blog authoring flow. The workflow first looks for an existing
+    blog author and creates one when none is found, then drafts a new blog post
+    attributed to that author. Depending on whether a future publish date is
+    supplied, the draft is either scheduled for a specific time or pushed live
+    immediately. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: authorsApi
+  url: ../openapi/hubspot-authors-api-openapi.yml
+  type: openapi
+- name: blogPostsApi
+  url: ../openapi/hubspot-blog-posts-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: publish-blog-post
+  summary: Create or reuse an author, draft a blog post, then schedule or publish it.
+  description: >-
+    Lists blog authors to find a match by display name, creates the author when
+    none exists, drafts a blog post that references the resolved author, and then
+    branches to either schedule the post for a future date or push the draft live.
+  inputs:
+    type: object
+    required:
+    - authorName
+    - postName
+    - contentGroupId
+    properties:
+      authorName:
+        type: string
+        description: The display name of the blog author to find or create.
+      authorEmail:
+        type: string
+        description: The email address to assign when creating a new author.
+      postName:
+        type: string
+        description: The internal name/title of the blog post to create.
+      postBody:
+        type: string
+        description: The HTML content of the blog post body.
+      contentGroupId:
+        type: string
+        description: The ID of the blog (content group) this post belongs to.
+      publishDate:
+        type: string
+        description: Optional ISO 8601 date-time to schedule publication; omit to publish immediately.
+  steps:
+  - stepId: findAuthor
+    description: >-
+      List blog authors and capture the first result so the post can be
+      attributed to an existing author when one already exists.
+    operationId: listBlogAuthors
+    parameters:
+    - name: limit
+      in: query
+      value: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      existingAuthorId: $response.body#/results/0/id
+    onSuccess:
+    - name: authorExists
+      type: goto
+      stepId: createPost
+      criteria:
+      - context: $response.body
+        condition: $.results.length > 0
+        type: jsonpath
+    - name: authorMissing
+      type: goto
+      stepId: createAuthor
+      criteria:
+      - context: $response.body
+        condition: $.results.length == 0
+        type: jsonpath
+  - stepId: createAuthor
+    description: >-
+      Create a new blog author profile when no existing author was found, using
+      the supplied display name and email address.
+    operationId: createBlogAuthor
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.authorName
+        email: $inputs.authorEmail
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      authorId: $response.body#/id
+  - stepId: createPost
+    description: >-
+      Create a draft blog post attributed to the resolved author and assigned to
+      the supplied blog content group.
+    operationId: createBlogPost
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.postName
+        postBody: $inputs.postBody
+        contentGroupId: $inputs.contentGroupId
+        blogAuthorId: $steps.createAuthor.outputs.authorId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      postId: $response.body#/id
+    onSuccess:
+    - name: scheduleRequested
+      type: goto
+      stepId: schedulePost
+      criteria:
+      - context: $inputs
+        condition: $.publishDate != null
+        type: jsonpath
+    - name: publishNow
+      type: goto
+      stepId: pushLive
+      criteria:
+      - context: $inputs
+        condition: $.publishDate == null
+        type: jsonpath
+  - stepId: schedulePost
+    description: >-
+      Schedule the newly created blog post for publication at the supplied
+      future date and time.
+    operationId: scheduleBlogPost
+    requestBody:
+      contentType: application/json
+      payload:
+        id: $steps.createPost.outputs.postId
+        publishDate: $inputs.publishDate
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      scheduledPostId: $steps.createPost.outputs.postId
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: pushLive
+    description: >-
+      Push the draft version of the blog post live so it becomes publicly
+      visible immediately.
+    operationId: pushBlogPostDraftLive
+    parameters:
+    - name: objectId
+      in: path
+      value: $steps.createPost.outputs.postId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      publishedPostId: $steps.createPost.outputs.postId
+  outputs:
+    postId: $steps.createPost.outputs.postId
+    scheduledPostId: $steps.schedulePost.outputs.scheduledPostId
+    publishedPostId: $steps.pushLive.outputs.publishedPostId

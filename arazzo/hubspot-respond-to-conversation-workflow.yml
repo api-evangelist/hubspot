@@ -1,0 +1,111 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Respond to a Conversation
+  summary: List conversation threads, retrieve one, then send a reply message.
+  description: >-
+    An inbox-triage and reply pattern for the HubSpot conversations inbox. The
+    workflow lists open conversation threads, picks the first thread, retrieves
+    its full record to confirm channel and participant context, and then sends a
+    reply message back to that thread through the conversations channel. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotConversationsApi
+  url: ../openapi/hubspot-conversations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: respond-to-conversation
+  summary: List threads, retrieve one, and send a reply message.
+  description: >-
+    Lists conversation threads filtered by status, retrieves the first matching
+    thread, and sends a reply message to it on behalf of the supplied sender
+    actor.
+  inputs:
+    type: object
+    required:
+    - text
+    - senderActorId
+    properties:
+      status:
+        type: string
+        description: Thread status to filter the listing by, e.g. OPEN or CLOSED.
+        default: OPEN
+      limit:
+        type: integer
+        description: Maximum number of threads to return.
+        default: 10
+      messageText:
+        type: string
+        description: Plain text body of the reply message.
+      text:
+        type: string
+        description: Plain text content of the message to send.
+      senderActorId:
+        type: string
+        description: Actor ID of the sender (agent) replying to the thread.
+      channelId:
+        type: string
+        description: The channel to send the reply on.
+      channelAccountId:
+        type: string
+        description: The channel account to use when sending the reply.
+  steps:
+  - stepId: listThreads
+    description: >-
+      List conversation threads filtered by status, returning at most the
+      supplied limit so a thread can be selected for reply.
+    operationId: listThreads
+    parameters:
+    - name: status
+      in: query
+      value: $inputs.status
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      threadId: $response.body#/results/0/id
+      threads: $response.body#/results
+  - stepId: getThread
+    description: >-
+      Retrieve the first listed thread in full to confirm its channel and
+      participant context before replying.
+    operationId: getThreadById
+    parameters:
+    - name: threadId
+      in: path
+      value: $steps.listThreads.outputs.threadId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      threadId: $response.body#/id
+      status: $response.body#/status
+      originalChannelId: $response.body#/originalChannelId
+      originalChannelAccountId: $response.body#/originalChannelAccountId
+  - stepId: sendReply
+    description: >-
+      Send a reply message to the retrieved thread on behalf of the sender
+      actor through the conversations channel.
+    operationId: sendMessage
+    parameters:
+    - name: threadId
+      in: path
+      value: $steps.getThread.outputs.threadId
+    requestBody:
+      contentType: application/json
+      payload:
+        type: MESSAGE
+        text: $inputs.text
+        senderActorId: $inputs.senderActorId
+        channelId: $inputs.channelId
+        channelAccountId: $inputs.channelAccountId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      messageId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  outputs:
+    threadId: $steps.getThread.outputs.threadId
+    messageId: $steps.sendReply.outputs.messageId

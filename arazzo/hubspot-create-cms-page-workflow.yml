@@ -1,0 +1,87 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Create and Publish a CMS Page
+  summary: Create a CMS site page in draft, then publish its draft live.
+  description: >-
+    A two-step CMS page authoring flow. The workflow creates a new site page in
+    draft state with the supplied content and SEO settings, then pushes the draft
+    live so the page becomes publicly accessible at its URL. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: cmsPagesApi
+  url: ../openapi/hubspot-cms-pages-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-cms-page
+  summary: Create a draft site page and publish it live.
+  description: >-
+    Creates a site page in draft state, captures its identifier, and publishes
+    the draft so the page is live and publicly accessible.
+  inputs:
+    type: object
+    required:
+    - name
+    - slug
+    - domain
+    properties:
+      name:
+        type: string
+        description: The internal name of the site page.
+      htmlTitle:
+        type: string
+        description: The HTML title tag content for the page.
+      slug:
+        type: string
+        description: The URL slug for the page.
+      domain:
+        type: string
+        description: The domain the page will be published under.
+      metaDescription:
+        type: string
+        description: The meta description for SEO.
+      language:
+        type: string
+        description: The language code for the page (e.g. en).
+      templatePath:
+        type: string
+        description: The path to the template used to render the page.
+  steps:
+  - stepId: createPage
+    description: >-
+      Create a new site page in draft state using the supplied content, slug,
+      domain, and SEO settings.
+    operationId: createSitePage
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        htmlTitle: $inputs.htmlTitle
+        slug: $inputs.slug
+        domain: $inputs.domain
+        metaDescription: $inputs.metaDescription
+        language: $inputs.language
+        templatePath: $inputs.templatePath
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      pageId: $response.body#/id
+      state: $response.body#/state
+  - stepId: publishPage
+    description: >-
+      Push the draft version of the page live, making all pending content
+      changes publicly accessible at the page URL.
+    operationId: publishSitePage
+    parameters:
+    - name: objectId
+      in: path
+      value: $steps.createPage.outputs.pageId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      publishedPageId: $response.body#/id
+      url: $response.body#/url
+  outputs:
+    pageId: $steps.createPage.outputs.pageId
+    url: $steps.publishPage.outputs.url

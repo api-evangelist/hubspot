@@ -1,0 +1,95 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Log a Call on a Contact
+  summary: Create a call engagement and associate it to a contact in a single flow.
+  description: >-
+    A common sales and service logging pattern. The workflow creates a call
+    engagement in the HubSpot CRM with the supplied call properties — title,
+    body, duration, direction, and an hs_timestamp marking when the call took
+    place — and associates that call to a contact in the same request body so
+    the activity shows up on the contact timeline. Every step spells out its
+    request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementCallsApi
+  url: ../openapi/hubspot-engagement-calls-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: log-call-on-contact
+  summary: Create a call engagement and associate it to a contact.
+  description: >-
+    Creates a call engagement with the supplied properties and an inline
+    association to the target contact, then reads the created call back to
+    confirm it persisted.
+  inputs:
+    type: object
+    required:
+    - hsTimestamp
+    - contactId
+    properties:
+      hsCallTitle:
+        type: string
+        description: The title of the call (hs_call_title).
+      hsCallBody:
+        type: string
+        description: Notes or summary of the call (hs_call_body).
+      hsCallDuration:
+        type: string
+        description: The duration of the call in milliseconds (hs_call_duration).
+      hsCallDirection:
+        type: string
+        description: The call direction, INBOUND or OUTBOUND (hs_call_direction).
+      hsTimestamp:
+        type: string
+        description: ISO 8601 timestamp marking when the call occurred (hs_timestamp).
+      contactId:
+        type: string
+        description: The ID of the contact to associate the call with.
+      associationTypeId:
+        type: integer
+        description: The HUBSPOT_DEFINED association type id linking a call to a contact.
+        default: 194
+  steps:
+  - stepId: createCall
+    description: >-
+      Create the call engagement with the supplied properties and an inline
+      association to the contact so it appears on the contact record.
+    operationId: createCall
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_call_title: $inputs.hsCallTitle
+          hs_call_body: $inputs.hsCallBody
+          hs_call_duration: $inputs.hsCallDuration
+          hs_call_direction: $inputs.hsCallDirection
+          hs_timestamp: $inputs.hsTimestamp
+        associations:
+        - to:
+            id: $inputs.contactId
+          types:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: $inputs.associationTypeId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      callId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  - stepId: confirmCall
+    description: >-
+      Read the created call back by id to confirm the engagement persisted
+      with the supplied properties.
+    operationId: getCallById
+    parameters:
+    - name: callId
+      in: path
+      value: $steps.createCall.outputs.callId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      callId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    callId: $steps.createCall.outputs.callId
+    createdAt: $steps.createCall.outputs.createdAt

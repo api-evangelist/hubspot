@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Advance a Deal Stage
+  summary: Find a deal by name and move it to a new pipeline stage.
+  description: >-
+    Progresses a deal through a HubSpot sales pipeline. The workflow searches
+    the deals object for a record whose dealname matches the supplied value,
+    captures its ID, and then patches the deal to set a new dealstage. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmDealsApi
+  url: ../openapi/hubspot-crm-deals-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: advance-deal-stage
+  summary: Search a deal by name and update its dealstage property.
+  description: >-
+    Resolves a deal by matching the dealname property, then performs a partial
+    update that sets the dealstage to the supplied value.
+  inputs:
+    type: object
+    required:
+    - dealname
+    - dealstage
+    properties:
+      dealname:
+        type: string
+        description: The dealname value used to locate the deal to advance.
+      dealstage:
+        type: string
+        description: The internal ID of the pipeline stage to move the deal to.
+  steps:
+  - stepId: findDeal
+    description: >-
+      Search the deals object for a record whose dealname equals the supplied
+      value, returning at most one match.
+    operationId: searchDeals
+    requestBody:
+      contentType: application/json
+      payload:
+        filterGroups:
+        - filters:
+          - propertyName: dealname
+            operator: EQ
+            value: $inputs.dealname
+        properties:
+        - dealname
+        - dealstage
+        - pipeline
+        limit: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedDealId: $response.body#/results/0/id
+    onSuccess:
+    - name: dealFound
+      type: goto
+      stepId: advanceStage
+      criteria:
+      - context: $response.body
+        condition: $.results.length > 0
+        type: jsonpath
+  - stepId: advanceStage
+    description: >-
+      Patch the matched deal to set its dealstage to the supplied pipeline
+      stage. Only the dealstage property is changed.
+    operationId: updateDeal
+    parameters:
+    - name: dealId
+      in: path
+      value: $steps.findDeal.outputs.matchedDealId
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          dealstage: $inputs.dealstage
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      dealId: $response.body#/id
+      updatedAt: $response.body#/updatedAt
+  outputs:
+    dealId: $steps.advanceStage.outputs.dealId
+    updatedAt: $steps.advanceStage.outputs.updatedAt

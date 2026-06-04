@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot List and Read Commerce Payments
+  summary: List commerce payments, then retrieve the full record for the first payment.
+  description: >-
+    A commerce payments read flow. The workflow retrieves a paginated list of
+    commerce payments with the requested properties, captures the identifier of
+    the first payment in the result set, and then reads that single payment in
+    full detail. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: commercePaymentsApi
+  url: ../openapi/hubspot-commerce-payments-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: list-payments
+  summary: List commerce payments and read the first payment in detail.
+  description: >-
+    Lists commerce payments, captures the first result's ID, and retrieves that
+    payment record by ID with the requested properties.
+  inputs:
+    type: object
+    properties:
+      limit:
+        type: integer
+        description: The maximum number of payments to return in the list page.
+      properties:
+        type: string
+        description: A comma-separated list of property names to return on each payment.
+      after:
+        type: string
+        description: A pagination cursor for fetching the next page of payments.
+  steps:
+  - stepId: listPayments
+    description: >-
+      Retrieve a paginated list of commerce payments and capture the first
+      payment's identifier for a detailed read.
+    operationId: listCommercePayments
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    - name: properties
+      in: query
+      value: $inputs.properties
+    - name: after
+      in: query
+      value: $inputs.after
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      firstPaymentId: $response.body#/results/0/id
+      paging: $response.body#/paging
+  - stepId: getPayment
+    description: >-
+      Retrieve the first commerce payment from the list in full detail using its
+      ID and the requested properties.
+    operationId: getCommercePaymentById
+    parameters:
+    - name: commercePaymentId
+      in: path
+      value: $steps.listPayments.outputs.firstPaymentId
+    - name: properties
+      in: query
+      value: $inputs.properties
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      paymentId: $response.body#/id
+      paymentProperties: $response.body#/properties
+  outputs:
+    firstPaymentId: $steps.listPayments.outputs.firstPaymentId
+    paymentId: $steps.getPayment.outputs.paymentId
+    paymentProperties: $steps.getPayment.outputs.paymentProperties

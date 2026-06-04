@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Manage a Commerce Subscription
+  summary: Retrieve a commerce subscription, then update its properties or archive it.
+  description: >-
+    A commerce subscription lifecycle flow. The workflow retrieves a single
+    subscription record by its ID and then branches based on the requested
+    action: it either performs a partial property update on the subscription or
+    archives (cancels) it. Every step spells out its request inline so the flow
+    can be read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: subscriptionsApi
+  url: ../openapi/hubspot-commerce-subscriptions-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: manage-subscription
+  summary: Read a subscription and either update its properties or archive it.
+  description: >-
+    Fetches a subscription by ID, then either patches the supplied properties
+    onto the record or archives the subscription depending on the cancel flag.
+  inputs:
+    type: object
+    required:
+    - subscriptionId
+    properties:
+      subscriptionId:
+        type: string
+        description: The ID of the subscription to retrieve and manage.
+      cancel:
+        type: boolean
+        description: When true, archive (cancel) the subscription instead of updating it.
+      properties:
+        type: object
+        description: A map of property name/value pairs to write when updating the subscription.
+  steps:
+  - stepId: getSubscription
+    description: >-
+      Retrieve the subscription record by its ID to confirm it exists before
+      updating or archiving it.
+    operationId: getSubscription
+    parameters:
+    - name: subscriptionId
+      in: path
+      value: $inputs.subscriptionId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      subscriptionId: $response.body#/id
+    onSuccess:
+    - name: cancelRequested
+      type: goto
+      stepId: archiveSubscription
+      criteria:
+      - context: $inputs
+        condition: $.cancel == true
+        type: jsonpath
+    - name: updateRequested
+      type: goto
+      stepId: updateSubscription
+      criteria:
+      - context: $inputs
+        condition: $.cancel != true
+        type: jsonpath
+  - stepId: updateSubscription
+    description: >-
+      Perform a partial update of the subscription, writing only the supplied
+      properties and leaving all others unchanged.
+    operationId: updateSubscription
+    parameters:
+    - name: subscriptionId
+      in: path
+      value: $inputs.subscriptionId
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.properties
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      updatedSubscriptionId: $response.body#/id
+      updatedAt: $response.body#/updatedAt
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: archiveSubscription
+    description: >-
+      Archive (soft delete) the subscription record, cancelling it.
+    operationId: deleteSubscription
+    parameters:
+    - name: subscriptionId
+      in: path
+      value: $inputs.subscriptionId
+    successCriteria:
+    - condition: $statusCode == 204
+    outputs:
+      archivedSubscriptionId: $inputs.subscriptionId
+  outputs:
+    subscriptionId: $steps.getSubscription.outputs.subscriptionId
+    updatedSubscriptionId: $steps.updateSubscription.outputs.updatedSubscriptionId
+    archivedSubscriptionId: $steps.archiveSubscription.outputs.archivedSubscriptionId

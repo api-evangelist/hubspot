@@ -1,0 +1,105 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Associate Two CRM Records
+  summary: Create an association between two CRM objects, then list it back to verify.
+  description: >-
+    Establishes and confirms a relationship between any two HubSpot CRM records
+    using the v4 associations API. The workflow creates an association from a
+    source object to a target object using the supplied association type, and
+    then lists the source object's associations to the target object type to
+    verify the link was written. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmAssociationsApi
+  url: ../openapi/hubspot-crm-associations-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: associate-records
+  summary: Create an association between two CRM objects and list it back.
+  description: >-
+    Creates a typed association from a source CRM object to a target CRM object,
+    then reads the source object's associations to confirm the relationship.
+  inputs:
+    type: object
+    required:
+    - fromObjectType
+    - fromObjectId
+    - toObjectType
+    - toObjectId
+    - associationTypeId
+    properties:
+      fromObjectType:
+        type: string
+        description: The type of the source object (e.g. contacts, companies, deals).
+      fromObjectId:
+        type: string
+        description: The ID of the source object.
+      toObjectType:
+        type: string
+        description: The type of the target object.
+      toObjectId:
+        type: string
+        description: The ID of the target object.
+      associationTypeId:
+        type: integer
+        description: The HubSpot association type ID describing the relationship.
+      associationCategory:
+        type: string
+        description: The category of the association type.
+        default: HUBSPOT_DEFINED
+  steps:
+  - stepId: createAssociation
+    description: >-
+      Create a typed association from the source object to the target object
+      using the supplied association category and type ID.
+    operationId: createObjectAssociation
+    parameters:
+    - name: fromObjectType
+      in: path
+      value: $inputs.fromObjectType
+    - name: fromObjectId
+      in: path
+      value: $inputs.fromObjectId
+    - name: toObjectType
+      in: path
+      value: $inputs.toObjectType
+    requestBody:
+      contentType: application/json
+      payload:
+        to:
+          id: $inputs.toObjectId
+        types:
+        - associationCategory: $inputs.associationCategory
+          associationTypeId: $inputs.associationTypeId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      fromId: $response.body#/from/id
+      associatedTo: $response.body#/to
+  - stepId: listAssociations
+    description: >-
+      List the source object's associations to the target object type to verify
+      the association was created.
+    operationId: listObjectAssociations
+    parameters:
+    - name: fromObjectType
+      in: path
+      value: $inputs.fromObjectType
+    - name: fromObjectId
+      in: path
+      value: $inputs.fromObjectId
+    - name: toObjectType
+      in: path
+      value: $inputs.toObjectType
+    - name: limit
+      in: query
+      value: 100
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      associatedTo: $response.body#/to
+  outputs:
+    fromId: $steps.createAssociation.outputs.fromId
+    associatedTo: $steps.listAssociations.outputs.associatedTo

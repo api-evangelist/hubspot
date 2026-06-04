@@ -1,0 +1,111 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Upsert a Contact
+  summary: Find a contact by email and update it if it exists, otherwise create it.
+  description: >-
+    One of the most common HubSpot CRM integration patterns. The workflow
+    searches the contacts object for an existing record whose email property
+    matches the supplied value, and then branches: when a match is found it
+    patches the existing contact, and when no match is found it creates a new
+    contact. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmContactsApi
+  url: ../openapi/hubspot-crm-contacts-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: upsert-contact
+  summary: Upsert a single HubSpot contact by matching on the email property.
+  description: >-
+    Looks for an existing contact whose email property equals the supplied
+    value, and either updates the matched contact or creates a new one with the
+    provided properties.
+  inputs:
+    type: object
+    required:
+    - email
+    - properties
+    properties:
+      email:
+        type: string
+        description: The email address used to detect an existing contact.
+      properties:
+        type: object
+        description: The map of contact property name/value pairs to write.
+  steps:
+  - stepId: findContact
+    description: >-
+      Search the contacts object for an existing record where the email
+      property equals the supplied email, returning at most one match.
+    operationId: searchContacts
+    requestBody:
+      contentType: application/json
+      payload:
+        filterGroups:
+        - filters:
+          - propertyName: email
+            operator: EQ
+            value: $inputs.email
+        properties:
+        - email
+        - firstname
+        - lastname
+        limit: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedContactId: $response.body#/results/0/id
+    onSuccess:
+    - name: contactExists
+      type: goto
+      stepId: updateExisting
+      criteria:
+      - context: $response.body
+        condition: $.results.length > 0
+        type: jsonpath
+    - name: contactMissing
+      type: goto
+      stepId: createNew
+      criteria:
+      - context: $response.body
+        condition: $.results.length == 0
+        type: jsonpath
+  - stepId: updateExisting
+    description: >-
+      Patch the matched contact with the supplied properties. Only the
+      properties provided are changed; all other properties are left intact.
+    operationId: updateContact
+    parameters:
+    - name: contactId
+      in: path
+      value: $steps.findContact.outputs.matchedContactId
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.properties
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactId: $response.body#/id
+      updatedAt: $response.body#/updatedAt
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: createNew
+    description: >-
+      Create a new contact with the supplied properties when no existing
+      contact matched the email value.
+    operationId: createContact
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.properties
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      contactId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  outputs:
+    contactId: $steps.updateExisting.outputs.contactId
+    createdContactId: $steps.createNew.outputs.contactId

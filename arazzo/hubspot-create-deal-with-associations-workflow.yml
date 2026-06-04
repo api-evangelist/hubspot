@@ -1,0 +1,106 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Create a Deal With Associations
+  summary: Create a deal and associate it to an existing contact and company.
+  description: >-
+    Opens a new deal in HubSpot CRM and wires it to the people and accounts it
+    belongs to. The workflow creates the deal record from the supplied
+    properties and then writes a deal-to-contact association followed by a
+    deal-to-company association. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmDealsApi
+  url: ../openapi/hubspot-crm-deals-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-deal-with-associations
+  summary: Create a deal and associate it to a contact and a company.
+  description: >-
+    Creates a deal from the supplied property map and then associates it to an
+    existing contact record and an existing company record.
+  inputs:
+    type: object
+    required:
+    - dealProperties
+    - contactId
+    - companyId
+    properties:
+      dealProperties:
+        type: object
+        description: The map of deal property name/value pairs to write.
+      contactId:
+        type: string
+        description: The ID of the contact to associate with the deal.
+      companyId:
+        type: string
+        description: The ID of the company to associate with the deal.
+      contactAssociationType:
+        type: string
+        description: The association type linking the deal to the contact.
+        default: contact
+      companyAssociationType:
+        type: string
+        description: The association type linking the deal to the company.
+        default: company
+  steps:
+  - stepId: createDeal
+    description: >-
+      Create the deal record using the supplied deal properties such as
+      dealname, amount, pipeline, and dealstage.
+    operationId: createDeal
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.dealProperties
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      dealId: $response.body#/id
+  - stepId: associateDealToContact
+    description: >-
+      Associate the new deal with the supplied contact record.
+    operationId: createDealAssociation
+    parameters:
+    - name: dealId
+      in: path
+      value: $steps.createDeal.outputs.dealId
+    - name: toObjectType
+      in: path
+      value: contacts
+    - name: toObjectId
+      in: path
+      value: $inputs.contactId
+    - name: associationType
+      in: path
+      value: $inputs.contactAssociationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactAssociationId: $response.body#/id
+  - stepId: associateDealToCompany
+    description: >-
+      Associate the new deal with the supplied company record.
+    operationId: createDealAssociation
+    parameters:
+    - name: dealId
+      in: path
+      value: $steps.createDeal.outputs.dealId
+    - name: toObjectType
+      in: path
+      value: companies
+    - name: toObjectId
+      in: path
+      value: $inputs.companyId
+    - name: associationType
+      in: path
+      value: $inputs.companyAssociationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      companyAssociationId: $response.body#/id
+  outputs:
+    dealId: $steps.createDeal.outputs.dealId
+    contactAssociationId: $steps.associateDealToContact.outputs.contactAssociationId
+    companyAssociationId: $steps.associateDealToCompany.outputs.companyAssociationId

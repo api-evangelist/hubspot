@@ -1,0 +1,92 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Manage a HubDB Table
+  summary: Create a HubDB table, add a row to its draft, then publish the table.
+  description: >-
+    A end-to-end HubDB provisioning flow. The workflow creates a new HubDB table
+    with the supplied column definitions, adds a single row to the table's draft
+    version, and then publishes the table draft so both the schema and the new
+    row become live for CMS page use. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubdbApi
+  url: ../openapi/hubspot-cms-hubdb-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: manage-hubdb-table
+  summary: Provision a HubDB table, seed it with a row, and publish it live.
+  description: >-
+    Creates a draft HubDB table, captures its identifier, adds a row to the
+    draft, and publishes the table draft so the structure and row are live.
+  inputs:
+    type: object
+    required:
+    - name
+    - label
+    - columns
+    - values
+    properties:
+      name:
+        type: string
+        description: The internal name of the HubDB table (used in API references).
+      label:
+        type: string
+        description: The human-friendly label for the HubDB table.
+      columns:
+        type: array
+        description: The column definitions for the table (name, label, type).
+      values:
+        type: object
+        description: A map of column name to value for the row being added.
+  steps:
+  - stepId: createTable
+    description: >-
+      Create a new HubDB table in draft state using the supplied name, label,
+      and column definitions.
+    operationId: createHubDBTable
+    requestBody:
+      contentType: application/json
+      payload:
+        name: $inputs.name
+        label: $inputs.label
+        columns: $inputs.columns
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      tableId: $response.body#/id
+  - stepId: addRow
+    description: >-
+      Add a single row to the draft version of the newly created table using the
+      supplied column values.
+    operationId: addHubDBTableRow
+    parameters:
+    - name: tableIdOrName
+      in: path
+      value: $steps.createTable.outputs.tableId
+    requestBody:
+      contentType: application/json
+      payload:
+        values: $inputs.values
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      rowId: $response.body#/id
+  - stepId: publishTable
+    description: >-
+      Publish the table draft so the new schema and row become live and
+      available for CMS pages.
+    operationId: publishHubDBTableDraft
+    parameters:
+    - name: tableIdOrName
+      in: path
+      value: $steps.createTable.outputs.tableId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      publishedAt: $response.body#/publishedAt
+  outputs:
+    tableId: $steps.createTable.outputs.tableId
+    rowId: $steps.addRow.outputs.rowId
+    publishedAt: $steps.publishTable.outputs.publishedAt

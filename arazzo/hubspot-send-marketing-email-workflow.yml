@@ -1,0 +1,95 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Send a Transactional Marketing Email
+  summary: Create an SMTP token for a campaign, read it back, then send a transactional email.
+  description: >-
+    A transactional marketing email flow built on the HubSpot marketing email
+    (single-send) API. The workflow provisions an SMTP API token for a named
+    campaign, reads the token back to confirm its campaign association, and then
+    sends a single transactional email from a pre-defined template to the
+    recipient. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: marketingEmailApi
+  url: ../openapi/hubspot-marketing-emal-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: send-marketing-email
+  summary: Provision an SMTP token, verify it, then send a transactional email.
+  description: >-
+    Creates an SMTP token for the supplied campaign, retrieves the token by ID to
+    confirm its configuration, and sends a transactional email using a pre-defined
+    template to the recipient.
+  inputs:
+    type: object
+    required:
+    - campaignName
+    - emailId
+    - to
+    properties:
+      campaignName:
+        type: string
+        description: The name for the email campaign associated with the SMTP token.
+      createContact:
+        type: boolean
+        description: Whether sending an email creates a contact if one does not exist.
+      emailId:
+        type: integer
+        description: The ID of the transactional email template to send.
+      to:
+        type: string
+        description: The recipient email address.
+      customProperties:
+        type: object
+        description: Custom template variables for personalizing the email.
+  steps:
+  - stepId: createToken
+    description: >-
+      Create an SMTP API token for the supplied campaign so transactional emails
+      can be sent under it.
+    operationId: createSmtpToken
+    requestBody:
+      contentType: application/json
+      payload:
+        campaignName: $inputs.campaignName
+        createContact: $inputs.createContact
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      tokenId: $response.body#/id
+      password: $response.body#/password
+  - stepId: getToken
+    description: >-
+      Retrieve the newly created SMTP token by its ID to confirm its campaign
+      association before sending.
+    operationId: getSmtpTokenById
+    parameters:
+    - name: tokenId
+      in: path
+      value: $steps.createToken.outputs.tokenId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      emailCampaignId: $response.body#/emailCampaignId
+  - stepId: sendEmail
+    description: >-
+      Send a single transactional email to the recipient using the pre-defined
+      template and supplied personalization properties.
+    operationId: sendTransactionalEmail
+    requestBody:
+      contentType: application/json
+      payload:
+        emailId: $inputs.emailId
+        message:
+          to: $inputs.to
+        customProperties: $inputs.customProperties
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      statusId: $response.body#/statusId
+  outputs:
+    tokenId: $steps.createToken.outputs.tokenId
+    status: $steps.sendEmail.outputs.status
+    statusId: $steps.sendEmail.outputs.statusId

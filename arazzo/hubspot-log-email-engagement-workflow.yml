@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Log an Email Engagement
+  summary: Create an email engagement and associate it to a contact.
+  description: >-
+    A communication-logging pattern. The workflow records an email engagement in
+    the HubSpot CRM with the supplied subject, text, status, and direction
+    (INCOMING or OUTGOING) along with an hs_timestamp, then associates the email
+    to a contact so the correspondence is captured on the contact timeline.
+    Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementEmailsApi
+  url: ../openapi/hubspot-engagement-emails-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: log-email-engagement
+  summary: Create an email engagement and associate it to a contact.
+  description: >-
+    Creates an email engagement with the supplied properties, then associates
+    the new email to the target contact and reads it back to confirm it
+    persisted.
+  inputs:
+    type: object
+    required:
+    - hsEmailSubject
+    - hsTimestamp
+    - contactId
+    properties:
+      hsEmailSubject:
+        type: string
+        description: The subject line of the email (hs_email_subject).
+      hsEmailText:
+        type: string
+        description: The plain text body of the email (hs_email_text).
+      hsEmailHtml:
+        type: string
+        description: The HTML body of the email (hs_email_html).
+      hsEmailStatus:
+        type: string
+        description: The send status of the email, e.g. SENT (hs_email_status).
+      hsEmailDirection:
+        type: string
+        description: The email direction, INCOMING or OUTGOING (hs_email_direction).
+        default: OUTGOING
+      hsTimestamp:
+        type: string
+        description: ISO 8601 timestamp marking when the email was sent (hs_timestamp).
+      contactId:
+        type: string
+        description: The ID of the contact to associate the email with.
+      associationType:
+        type: string
+        description: The association type id linking the email to the contact.
+        default: "198"
+  steps:
+  - stepId: createEmail
+    description: >-
+      Create the email engagement with the supplied subject, body, status,
+      direction, and timestamp.
+    operationId: createEmailEngagement
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_email_subject: $inputs.hsEmailSubject
+          hs_email_text: $inputs.hsEmailText
+          hs_email_html: $inputs.hsEmailHtml
+          hs_email_status: $inputs.hsEmailStatus
+          hs_email_direction: $inputs.hsEmailDirection
+          hs_timestamp: $inputs.hsTimestamp
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      emailId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  - stepId: associateToContact
+    description: >-
+      Associate the newly created email engagement to the target contact so it
+      appears on the contact timeline.
+    operationId: createEmailEngagementAssociation
+    parameters:
+    - name: emailId
+      in: path
+      value: $steps.createEmail.outputs.emailId
+    - name: toObjectType
+      in: path
+      value: contacts
+    - name: toObjectId
+      in: path
+      value: $inputs.contactId
+    - name: associationType
+      in: path
+      value: $inputs.associationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      association: $response.body
+  - stepId: confirmEmail
+    description: >-
+      Read the created email engagement back by id to confirm it persisted.
+    operationId: getEmailEngagement
+    parameters:
+    - name: emailId
+      in: path
+      value: $steps.createEmail.outputs.emailId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      emailId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    emailId: $steps.createEmail.outputs.emailId
+    createdAt: $steps.createEmail.outputs.createdAt

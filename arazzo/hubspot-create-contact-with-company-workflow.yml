@@ -1,0 +1,93 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Create a Contact With a Company
+  summary: Create a contact, create a company, and associate the two records.
+  description: >-
+    Stands up a new contact and a new company in HubSpot CRM and links them
+    together so the contact appears under the company. The workflow creates the
+    contact record, creates the company record, and then writes the
+    contact-to-company association using the supplied association type. Every
+    step spells out its request inline so the flow can be read and executed
+    without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmContactsApi
+  url: ../openapi/hubspot-crm-contacts-api-openapi.yml
+  type: openapi
+- name: hubspotCrmCompaniesApi
+  url: ../openapi/hubspot-crm-companies-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-contact-with-company
+  summary: Create a contact and a company, then associate them.
+  description: >-
+    Creates a contact and a company from the supplied property maps and then
+    establishes a contact-to-company association between the two new records.
+  inputs:
+    type: object
+    required:
+    - contactProperties
+    - companyProperties
+    properties:
+      contactProperties:
+        type: object
+        description: The map of contact property name/value pairs to write.
+      companyProperties:
+        type: object
+        description: The map of company property name/value pairs to write.
+      associationType:
+        type: string
+        description: The association type linking the contact to the company.
+        default: company
+  steps:
+  - stepId: createContact
+    description: >-
+      Create the contact record using the supplied contact properties.
+    operationId: createContact
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.contactProperties
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      contactId: $response.body#/id
+  - stepId: createCompany
+    description: >-
+      Create the company record using the supplied company properties.
+    operationId: createCompany
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.companyProperties
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      companyId: $response.body#/id
+  - stepId: associateContactToCompany
+    description: >-
+      Associate the new contact with the new company so the contact appears
+      under the company record.
+    operationId: createContactAssociation
+    parameters:
+    - name: contactId
+      in: path
+      value: $steps.createContact.outputs.contactId
+    - name: toObjectType
+      in: path
+      value: companies
+    - name: toObjectId
+      in: path
+      value: $steps.createCompany.outputs.companyId
+    - name: associationType
+      in: path
+      value: $inputs.associationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      associationId: $response.body#/id
+      associationType: $response.body#/type
+  outputs:
+    contactId: $steps.createContact.outputs.contactId
+    companyId: $steps.createCompany.outputs.companyId
+    associationId: $steps.associateContactToCompany.outputs.associationId

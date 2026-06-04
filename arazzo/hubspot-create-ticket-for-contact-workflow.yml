@@ -1,0 +1,112 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Create a Ticket For a Contact
+  summary: Find a contact by email, create a support ticket, and associate them.
+  description: >-
+    Logs a support ticket against the right person in HubSpot CRM. The workflow
+    searches the contacts object for a record matching the supplied email,
+    creates a ticket from the supplied properties, and then writes a
+    ticket-to-contact association. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmContactsApi
+  url: ../openapi/hubspot-crm-contacts-api-openapi.yml
+  type: openapi
+- name: hubspotCrmTicketsApi
+  url: ../openapi/hubspot-crm-tickets-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-ticket-for-contact
+  summary: Resolve a contact by email, create a ticket, and associate them.
+  description: >-
+    Finds a contact by email, creates a ticket from the supplied property map,
+    and associates the ticket to the resolved contact.
+  inputs:
+    type: object
+    required:
+    - email
+    - ticketProperties
+    properties:
+      email:
+        type: string
+        description: The email address used to locate the contact.
+      ticketProperties:
+        type: object
+        description: >-
+          The map of ticket property name/value pairs to write, such as
+          subject, content, hs_pipeline, hs_pipeline_stage, and
+          hs_ticket_priority.
+      associationType:
+        type: string
+        description: The association type linking the ticket to the contact.
+        default: contact
+  steps:
+  - stepId: findContact
+    description: >-
+      Search the contacts object for a record whose email property equals the
+      supplied email, returning at most one match.
+    operationId: searchContacts
+    requestBody:
+      contentType: application/json
+      payload:
+        filterGroups:
+        - filters:
+          - propertyName: email
+            operator: EQ
+            value: $inputs.email
+        properties:
+        - email
+        limit: 1
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      matchedContactId: $response.body#/results/0/id
+    onSuccess:
+    - name: contactFound
+      type: goto
+      stepId: createTicket
+      criteria:
+      - context: $response.body
+        condition: $.results.length > 0
+        type: jsonpath
+  - stepId: createTicket
+    description: >-
+      Create the ticket record using the supplied ticket properties.
+    operationId: createTicket
+    requestBody:
+      contentType: application/json
+      payload:
+        properties: $inputs.ticketProperties
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      ticketId: $response.body#/id
+  - stepId: associateTicketToContact
+    description: >-
+      Associate the new ticket with the resolved contact so the ticket appears
+      on the contact timeline.
+    operationId: createTicketAssociation
+    parameters:
+    - name: ticketId
+      in: path
+      value: $steps.createTicket.outputs.ticketId
+    - name: toObjectType
+      in: path
+      value: contacts
+    - name: toObjectId
+      in: path
+      value: $steps.findContact.outputs.matchedContactId
+    - name: associationType
+      in: path
+      value: $inputs.associationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      associationId: $response.body#/id
+      associationType: $response.body#/type
+  outputs:
+    contactId: $steps.findContact.outputs.matchedContactId
+    ticketId: $steps.createTicket.outputs.ticketId
+    associationId: $steps.associateTicketToContact.outputs.associationId

@@ -1,0 +1,86 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Query Behavioral Analytics Events
+  summary: Discover available analytics event types, then query event instances for a CRM object.
+  description: >-
+    A behavioral analytics read flow. The HubSpot Analytics Events API exposes
+    event completion data rather than an event-capture endpoint, so this workflow
+    first discovers the available event types in the account and then queries
+    event instances for a specific CRM object, optionally filtered by event type
+    and time window. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: analyticsEventsApi
+  url: ../openapi/hubspot-analytics-events-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: capture-analytics-event
+  summary: Discover event types, then read event instances for a CRM object.
+  description: >-
+    Retrieves the list of available event types in the account and then queries
+    event instances associated with the supplied CRM object, filtered by event
+    type and an optional occurred-after timestamp.
+  inputs:
+    type: object
+    required:
+    - objectType
+    - objectId
+    properties:
+      objectType:
+        type: string
+        description: The CRM object type to filter events on (contact, company, deal, ticket).
+      objectId:
+        type: string
+        description: The ID of the CRM object to filter event instances for.
+      eventType:
+        type: string
+        description: An optional event type name to filter instances by.
+      occurredAfter:
+        type: string
+        description: An optional ISO 8601 datetime; only events after this are returned.
+      limit:
+        type: integer
+        description: The maximum number of event instances to return (1-100).
+  steps:
+  - stepId: listEventTypes
+    description: >-
+      Retrieve the list of available event type names in the account so the
+      instance query can be validated against a known type.
+    operationId: getEventTypes
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      eventTypes: $response.body#/eventTypes
+  - stepId: queryEventInstances
+    description: >-
+      Query event instances associated with the supplied CRM object, filtered by
+      event type and occurrence window.
+    operationId: getEventInstances
+    parameters:
+    - name: objectType
+      in: query
+      value: $inputs.objectType
+    - name: objectId
+      in: query
+      value: $inputs.objectId
+    - name: eventType
+      in: query
+      value: $inputs.eventType
+    - name: occurredAfter
+      in: query
+      value: $inputs.occurredAfter
+    - name: sort
+      in: query
+      value: DESCENDING
+    - name: limit
+      in: query
+      value: $inputs.limit
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      events: $response.body#/results
+      paging: $response.body#/paging
+  outputs:
+    eventTypes: $steps.listEventTypes.outputs.eventTypes
+    events: $steps.queryEventInstances.outputs.events

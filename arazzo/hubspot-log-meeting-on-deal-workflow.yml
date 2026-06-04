@@ -1,0 +1,106 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Log a Meeting on a Deal
+  summary: Create a meeting engagement and associate it to a deal.
+  description: >-
+    A pipeline activity-logging pattern. The workflow creates a meeting
+    engagement in the HubSpot CRM with the supplied meeting properties — title,
+    body, start and end times — and then attaches that meeting to a deal through
+    the meeting association endpoint so the meeting surfaces on the deal record.
+    Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementMeetingsApi
+  url: ../openapi/hubspot-engagement-meetings-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: log-meeting-on-deal
+  summary: Create a meeting engagement and associate it to a deal.
+  description: >-
+    Creates a meeting engagement with the supplied properties, then associates
+    the new meeting to the target deal and reads the meeting back to confirm it
+    persisted.
+  inputs:
+    type: object
+    required:
+    - hsMeetingTitle
+    - hsMeetingStartTime
+    - dealId
+    properties:
+      hsMeetingTitle:
+        type: string
+        description: The title of the meeting (hs_meeting_title).
+      hsMeetingBody:
+        type: string
+        description: Notes or agenda for the meeting (hs_meeting_body).
+      hsMeetingStartTime:
+        type: string
+        description: ISO 8601 meeting start time (hs_meeting_start_time).
+      hsMeetingEndTime:
+        type: string
+        description: ISO 8601 meeting end time (hs_meeting_end_time).
+      dealId:
+        type: string
+        description: The ID of the deal to associate the meeting with.
+      associationType:
+        type: string
+        description: The association type id linking the meeting to the deal.
+        default: "212"
+  steps:
+  - stepId: createMeeting
+    description: >-
+      Create the meeting engagement with the supplied title, body, and start and
+      end times.
+    operationId: createMeeting
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_meeting_title: $inputs.hsMeetingTitle
+          hs_meeting_body: $inputs.hsMeetingBody
+          hs_meeting_start_time: $inputs.hsMeetingStartTime
+          hs_meeting_end_time: $inputs.hsMeetingEndTime
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      meetingId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  - stepId: associateToDeal
+    description: >-
+      Associate the newly created meeting to the target deal so it appears on
+      the deal timeline.
+    operationId: createMeetingAssociation
+    parameters:
+    - name: meetingId
+      in: path
+      value: $steps.createMeeting.outputs.meetingId
+    - name: toObjectType
+      in: path
+      value: deals
+    - name: toObjectId
+      in: path
+      value: $inputs.dealId
+    - name: associationType
+      in: path
+      value: $inputs.associationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      association: $response.body
+  - stepId: confirmMeeting
+    description: >-
+      Read the created meeting back by id to confirm the engagement persisted.
+    operationId: getMeeting
+    parameters:
+    - name: meetingId
+      in: path
+      value: $steps.createMeeting.outputs.meetingId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      meetingId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    meetingId: $steps.createMeeting.outputs.meetingId
+    createdAt: $steps.createMeeting.outputs.createdAt

@@ -1,0 +1,121 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Create a Follow-up Task
+  summary: Create a task engagement with a due date and associate it to a record.
+  description: >-
+    A reminder-and-follow-up pattern. The workflow creates a task engagement in
+    the HubSpot CRM with the supplied subject, body, status, priority, and an
+    hs_timestamp that serves as the task due date, then associates the task to a
+    CRM record so the reminder is attached to the right contact, company, or
+    deal. Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotEngagementTasksApi
+  url: ../openapi/hubspot-engagement-tasks-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: create-followup-task
+  summary: Create a task engagement with a due date and associate it to a record.
+  description: >-
+    Creates a task engagement with the supplied properties and due date, then
+    associates the new task to the target record and reads it back to confirm
+    it persisted.
+  inputs:
+    type: object
+    required:
+    - hsTaskSubject
+    - hsTimestamp
+    - recordId
+    properties:
+      hsTaskSubject:
+        type: string
+        description: The subject line of the task (hs_task_subject).
+      hsTaskBody:
+        type: string
+        description: The body or notes of the task (hs_task_body).
+      hsTaskStatus:
+        type: string
+        description: The task status, e.g. NOT_STARTED or COMPLETED (hs_task_status).
+        default: NOT_STARTED
+      hsTaskPriority:
+        type: string
+        description: The task priority, e.g. LOW, MEDIUM, or HIGH (hs_task_priority).
+        default: MEDIUM
+      hsTaskType:
+        type: string
+        description: The type of task, e.g. TODO, CALL, or EMAIL (hs_task_type).
+      hsTimestamp:
+        type: string
+        description: ISO 8601 due date for the task (hs_timestamp).
+      recordId:
+        type: string
+        description: The ID of the CRM record to associate the task with.
+      toObjectType:
+        type: string
+        description: The object type to associate the task with, e.g. contacts or deals.
+        default: contacts
+      associationType:
+        type: string
+        description: The association type id linking the task to the record.
+        default: "204"
+  steps:
+  - stepId: createTask
+    description: >-
+      Create the task engagement with the supplied subject, body, status,
+      priority, type, and a due date carried in hs_timestamp.
+    operationId: createTask
+    requestBody:
+      contentType: application/json
+      payload:
+        properties:
+          hs_task_subject: $inputs.hsTaskSubject
+          hs_task_body: $inputs.hsTaskBody
+          hs_task_status: $inputs.hsTaskStatus
+          hs_task_priority: $inputs.hsTaskPriority
+          hs_task_type: $inputs.hsTaskType
+          hs_timestamp: $inputs.hsTimestamp
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      taskId: $response.body#/id
+      createdAt: $response.body#/createdAt
+  - stepId: associateToRecord
+    description: >-
+      Associate the newly created task to the target CRM record so the reminder
+      appears on that record.
+    operationId: createTaskAssociation
+    parameters:
+    - name: taskId
+      in: path
+      value: $steps.createTask.outputs.taskId
+    - name: toObjectType
+      in: path
+      value: $inputs.toObjectType
+    - name: toObjectId
+      in: path
+      value: $inputs.recordId
+    - name: associationType
+      in: path
+      value: $inputs.associationType
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      association: $response.body
+  - stepId: confirmTask
+    description: >-
+      Read the created task back by id to confirm the engagement persisted with
+      the supplied due date.
+    operationId: getTask
+    parameters:
+    - name: taskId
+      in: path
+      value: $steps.createTask.outputs.taskId
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      taskId: $response.body#/id
+      properties: $response.body#/properties
+  outputs:
+    taskId: $steps.createTask.outputs.taskId
+    createdAt: $steps.createTask.outputs.createdAt
