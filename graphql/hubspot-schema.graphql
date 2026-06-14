@@ -1,0 +1,1011 @@
+"""
+HubSpot Conceptual GraphQL Schema
+Derived from the HubSpot REST API data model (OpenAPI specifications).
+HubSpot does not currently expose a public GraphQL endpoint.
+This SDL represents the CRM, CMS, Commerce, and Marketing data model.
+"""
+
+# ---------------------------------------------------------------------------
+# Scalars
+# ---------------------------------------------------------------------------
+
+scalar DateTime
+scalar JSON
+
+# ---------------------------------------------------------------------------
+# Enums
+# ---------------------------------------------------------------------------
+
+enum AssociationCategory {
+  HUBSPOT_DEFINED
+  USER_DEFINED
+  INTEGRATOR_DEFINED
+}
+
+enum FilterOperator {
+  EQ
+  NEQ
+  LT
+  LTE
+  GT
+  GTE
+  BETWEEN
+  IN
+  NOT_IN
+  HAS_PROPERTY
+  NOT_HAS_PROPERTY
+  CONTAINS_TOKEN
+  NOT_CONTAINS_TOKEN
+}
+
+enum SortDirection {
+  ASCENDING
+  DESCENDING
+}
+
+enum PropertyType {
+  STRING
+  NUMBER
+  DATE
+  DATETIME
+  ENUMERATION
+  BOOL
+  PHONE_NUMBER
+  CURRENCY
+  OBJECT_COORDINATES
+}
+
+enum PropertyFieldType {
+  TEXT
+  TEXTAREA
+  DATE
+  FILE
+  NUMBER
+  SELECT
+  RADIO
+  CHECKBOX
+  BOOLEANCHECKBOX
+  CALCULATION_EQUATION
+  SCORE
+  PHONE_NUMBER
+  HTML
+}
+
+enum TicketStatus {
+  OPEN
+  CLOSED
+}
+
+enum DealStage {
+  APPOINTMENT_SCHEDULED
+  QUALIFIED_TO_BUY
+  PRESENTATION_SCHEDULED
+  DECISION_MAKER_BOUGHT_IN
+  CONTRACT_SENT
+  CLOSED_WON
+  CLOSED_LOST
+}
+
+enum ObjectType {
+  CONTACT
+  COMPANY
+  DEAL
+  TICKET
+  PRODUCT
+  LINE_ITEM
+  QUOTE
+  CALL
+  EMAIL
+  MEETING
+  NOTE
+  TASK
+  CUSTOM_OBJECT
+}
+
+# ---------------------------------------------------------------------------
+# Shared / utility types
+# ---------------------------------------------------------------------------
+
+"""A page cursor for offset-based pagination."""
+type PagingNext {
+  after: String
+  link: String
+}
+
+type PagingPrevious {
+  before: String
+  link: String
+}
+
+type Paging {
+  next: PagingNext
+  prev: PagingPrevious
+}
+
+type ErrorDetail {
+  message: String!
+  in: String
+  code: String
+  subCategory: String
+  context: JSON
+}
+
+type StandardError {
+  status: String!
+  id: String
+  category: String!
+  subCategory: String
+  message: String!
+  errors: [ErrorDetail!]
+  context: JSON
+  links: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Properties & PropertyGroups
+# ---------------------------------------------------------------------------
+
+type PropertyOption {
+  label: String!
+  value: String!
+  description: String
+  displayOrder: Int
+  hidden: Boolean!
+}
+
+type PropertyModificationMetadata {
+  archivable: Boolean!
+  readOnlyDefinition: Boolean!
+  readOnlyValue: Boolean!
+}
+
+"""A single CRM object property definition."""
+type Property {
+  name: String!
+  label: String!
+  type: PropertyType!
+  fieldType: PropertyFieldType!
+  description: String
+  groupName: String!
+  options: [PropertyOption!]!
+  displayOrder: Int
+  calculated: Boolean!
+  externalOptions: Boolean!
+  hasUniqueValue: Boolean!
+  hidden: Boolean!
+  hubspotDefined: Boolean
+  showCurrencySymbol: Boolean
+  modificationMetadata: PropertyModificationMetadata
+  formField: Boolean!
+  createdAt: DateTime
+  updatedAt: DateTime
+  archived: Boolean!
+  archivedAt: DateTime
+}
+
+type PropertyGroup {
+  name: String!
+  label: String!
+  displayOrder: Int!
+  archived: Boolean!
+  properties: [Property!]
+}
+
+# ---------------------------------------------------------------------------
+# Owners & Teams
+# ---------------------------------------------------------------------------
+
+type Team {
+  id: String!
+  name: String!
+  primary: Boolean
+}
+
+type Owner {
+  id: String!
+  email: String
+  firstName: String
+  lastName: String
+  userId: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  teams: [Team!]
+}
+
+# ---------------------------------------------------------------------------
+# Associations
+# ---------------------------------------------------------------------------
+
+type AssociationType {
+  category: AssociationCategory!
+  typeId: Int!
+  label: String
+}
+
+type Association {
+  toObjectId: String!
+  associationTypes: [AssociationType!]!
+}
+
+type AssociationDefinition {
+  typeId: Int!
+  category: AssociationCategory!
+  label: String
+}
+
+# ---------------------------------------------------------------------------
+# Contact
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Contact record."""
+type ContactProperties {
+  firstname: String
+  lastname: String
+  email: String
+  phone: String
+  company: String
+  website: String
+  lifecyclestage: String
+  hs_lead_status: String
+  jobtitle: String
+  city: String
+  state: String
+  country: String
+  zip: String
+  address: String
+  mobilephone: String
+  hs_email_optout: Boolean
+  hs_marketable_status: Boolean
+  createdate: DateTime
+  lastmodifieddate: DateTime
+  hs_object_id: String
+  hubspot_owner_id: String
+  notes_last_contacted: DateTime
+  notes_last_updated: DateTime
+  notes_next_activity_date: DateTime
+  num_contacted_notes: Int
+  num_notes: Int
+}
+
+type Contact {
+  id: String!
+  properties: ContactProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+  associations: ContactAssociations
+}
+
+type ContactAssociations {
+  companies: [Company!]
+  deals: [Deal!]
+  tickets: [Ticket!]
+}
+
+type ContactCollection {
+  results: [Contact!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Company
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Company record."""
+type CompanyProperties {
+  name: String
+  domain: String
+  website: String
+  phone: String
+  industry: String
+  type: String
+  city: String
+  state: String
+  country: String
+  zip: String
+  address: String
+  address2: String
+  numberofemployees: Int
+  annualrevenue: Float
+  lifecyclestage: String
+  hs_lead_status: String
+  description: String
+  founded_year: String
+  linkedin_company_page: String
+  twitterhandle: String
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_object_id: String
+  hubspot_owner_id: String
+}
+
+type Company {
+  id: String!
+  properties: CompanyProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+  associations: CompanyAssociations
+}
+
+type CompanyAssociations {
+  contacts: [Contact!]
+  deals: [Deal!]
+  tickets: [Ticket!]
+}
+
+type CompanyCollection {
+  results: [Company!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Deal
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Deal record."""
+type DealProperties {
+  dealname: String
+  amount: Float
+  dealstage: String
+  pipeline: String
+  closedate: DateTime
+  hubspot_owner_id: String
+  hs_object_id: String
+  hs_priority: String
+  dealtype: String
+  description: String
+  num_associated_contacts: Int
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_closed_amount: Float
+  hs_deal_amount_calculation_preference: String
+  hs_is_closed: Boolean
+  hs_is_closed_won: Boolean
+}
+
+type Deal {
+  id: String!
+  properties: DealProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+  associations: DealAssociations
+}
+
+type DealAssociations {
+  contacts: [Contact!]
+  companies: [Company!]
+  lineItems: [LineItem!]
+  quotes: [Quote!]
+}
+
+type DealCollection {
+  results: [Deal!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Ticket
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Ticket record."""
+type TicketProperties {
+  subject: String
+  content: String
+  hs_pipeline: String
+  hs_pipeline_stage: String
+  hs_ticket_priority: String
+  hs_ticket_category: String
+  hubspot_owner_id: String
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_object_id: String
+  closed_date: DateTime
+  source_type: String
+}
+
+type Ticket {
+  id: String!
+  properties: TicketProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+  associations: TicketAssociations
+}
+
+type TicketAssociations {
+  contacts: [Contact!]
+  companies: [Company!]
+}
+
+type TicketCollection {
+  results: [Ticket!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Product
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Product record."""
+type ProductProperties {
+  name: String!
+  description: String
+  price: Float
+  hs_sku: String
+  hs_cost_of_goods_sold: Float
+  hs_recurring_billing_period: String
+  hs_billing_start_date: DateTime
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_object_id: String
+  hubspot_owner_id: String
+}
+
+type Product {
+  id: String!
+  properties: ProductProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+}
+
+type ProductCollection {
+  results: [Product!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# LineItem
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Line Item record."""
+type LineItemProperties {
+  name: String
+  quantity: Float
+  price: Float
+  amount: Float
+  discount: Float
+  hs_product_id: String
+  hs_sku: String
+  hs_billing_start_date: DateTime
+  hs_recurring_billing_period: String
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_object_id: String
+  hs_position_on_quote: Int
+}
+
+type LineItem {
+  id: String!
+  properties: LineItemProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+}
+
+type LineItemCollection {
+  results: [LineItem!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Quote
+# ---------------------------------------------------------------------------
+
+"""Standard properties for a HubSpot Quote record."""
+type QuoteProperties {
+  hs_title: String
+  hs_status: String
+  hs_expiration_date: DateTime
+  hs_public_url_key: String
+  hs_esign_enabled: Boolean
+  hs_payment_enabled: Boolean
+  hs_currency: String
+  hs_sender_firstname: String
+  hs_sender_lastname: String
+  hs_sender_email: String
+  hs_sender_company_name: String
+  hs_comment: String
+  createdate: DateTime
+  hs_lastmodifieddate: DateTime
+  hs_object_id: String
+  hubspot_owner_id: String
+}
+
+type Quote {
+  id: String!
+  properties: QuoteProperties!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+  associations: QuoteAssociations
+}
+
+type QuoteAssociations {
+  lineItems: [LineItem!]
+  deals: [Deal!]
+  contacts: [Contact!]
+  companies: [Company!]
+}
+
+type QuoteCollection {
+  results: [Quote!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Pipeline & Stage
+# ---------------------------------------------------------------------------
+
+type PipelineStage {
+  id: String!
+  label: String!
+  displayOrder: Int!
+  metadata: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+}
+
+type Pipeline {
+  id: String!
+  label: String!
+  displayOrder: Int!
+  stages: [PipelineStage!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  archivedAt: DateTime
+}
+
+type PipelineCollection {
+  results: [Pipeline!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# List (CRM Lists)
+# ---------------------------------------------------------------------------
+
+type ListFilterBranch {
+  filterBranchType: String
+  filters: [JSON!]
+  filterBranches: [ListFilterBranch!]
+}
+
+type CRMList {
+  listId: String!
+  name: String!
+  objectTypeId: String!
+  processingType: String!
+  listVersion: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+  filterBranch: ListFilterBranch
+  membershipsUpdatedAt: DateTime
+}
+
+type CRMListCollection {
+  lists: [CRMList!]!
+  paging: Paging
+}
+
+# ---------------------------------------------------------------------------
+# Engagement (Note, Call, Task, Meeting, Email Activity)
+# ---------------------------------------------------------------------------
+
+type EngagementMetadata {
+  body: String
+  subject: String
+  status: String
+  forObjectType: String
+  startTime: DateTime
+  endTime: DateTime
+  durationMilliseconds: Int
+  recordingUrl: String
+  disposition: String
+  toNumber: String
+  fromNumber: String
+}
+
+type Engagement {
+  id: String!
+  type: String!
+  ownerId: String
+  timestamp: DateTime
+  active: Boolean
+  metadata: EngagementMetadata
+  associations: EngagementAssociations
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EngagementAssociations {
+  contactIds: [String!]
+  companyIds: [String!]
+  dealIds: [String!]
+  ownerIds: [String!]
+}
+
+# ---------------------------------------------------------------------------
+# Email Marketing
+# ---------------------------------------------------------------------------
+
+type MarketingEmail {
+  id: String!
+  name: String!
+  subject: String
+  fromName: String
+  fromEmail: String
+  state: String
+  publishDate: DateTime
+  updatedAt: DateTime
+  stats: EmailStats
+}
+
+type EmailStats {
+  sent: Int
+  open: Int
+  click: Int
+  reply: Int
+  bounce: Int
+  unsubscribed: Int
+  spamreport: Int
+}
+
+# ---------------------------------------------------------------------------
+# Form
+# ---------------------------------------------------------------------------
+
+type FormField {
+  name: String!
+  label: String
+  type: String
+  fieldType: String
+  required: Boolean
+  hidden: Boolean
+  defaultValue: String
+  placeholder: String
+}
+
+type FormFieldGroup {
+  fields: [FormField!]!
+  richText: String
+  default: Boolean
+}
+
+type Form {
+  id: String!
+  name: String!
+  action: String
+  method: String
+  cssClass: String
+  submitText: String
+  followUpId: String
+  notifyRecipients: [String!]
+  formFieldGroups: [FormFieldGroup!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+}
+
+# ---------------------------------------------------------------------------
+# Landing Page & Blog Post (CMS)
+# ---------------------------------------------------------------------------
+
+type ContentTranslation {
+  language: String!
+  id: String!
+  state: String
+}
+
+type Page {
+  id: String!
+  name: String!
+  slug: String
+  url: String
+  htmlTitle: String
+  metaDescription: String
+  state: String
+  publishDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  language: String
+  translations: [ContentTranslation!]
+  domain: String
+  campaign: String
+  authorName: String
+}
+
+type BlogPost {
+  id: String!
+  name: String!
+  slug: String
+  url: String
+  htmlTitle: String
+  metaDescription: String
+  postBody: String
+  state: String
+  publishDate: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+  language: String
+  blogAuthorId: String
+  blogAuthor: BlogAuthor
+  tagIds: [String!]
+  campaign: String
+}
+
+type BlogAuthor {
+  id: String!
+  name: String!
+  email: String
+  bio: String
+  website: String
+  twitterHandle: String
+  avatar: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  archived: Boolean!
+}
+
+# ---------------------------------------------------------------------------
+# Workflow
+# ---------------------------------------------------------------------------
+
+type WorkflowAction {
+  type: String!
+  actionId: String
+  filters: [JSON!]
+  metadata: JSON
+}
+
+type Workflow {
+  id: String!
+  name: String!
+  type: String
+  enabled: Boolean!
+  insertedAt: DateTime
+  updatedAt: DateTime
+  actions: [WorkflowAction!]
+  contactListIds: JSON
+}
+
+# ---------------------------------------------------------------------------
+# Sequence
+# ---------------------------------------------------------------------------
+
+type SequenceStep {
+  stepOrder: Int!
+  type: String
+  delayMillis: Int
+  taskTypeId: String
+  subject: String
+  body: String
+}
+
+type Sequence {
+  id: String!
+  name: String!
+  active: Boolean!
+  ownerId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  steps: [SequenceStep!]
+}
+
+# ---------------------------------------------------------------------------
+# Domain (CMS)
+# ---------------------------------------------------------------------------
+
+type Domain {
+  id: String!
+  domain: String!
+  isResolving: Boolean
+  isPrimaryBlogPost: Boolean
+  isPrimaryEmail: Boolean
+  isPrimaryLandingPage: Boolean
+  isPrimarySitePage: Boolean
+  isSslEnabled: Boolean
+  isUsedForBlogPost: Boolean
+  isUsedForEmail: Boolean
+  isUsedForLandingPage: Boolean
+  isUsedForSitePage: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+# ---------------------------------------------------------------------------
+# Search input types
+# ---------------------------------------------------------------------------
+
+input FilterInput {
+  propertyName: String!
+  operator: FilterOperator!
+  value: String
+  values: [String!]
+  highValue: String
+}
+
+input FilterGroupInput {
+  filters: [FilterInput!]!
+}
+
+input SortInput {
+  propertyName: String!
+  direction: SortDirection!
+}
+
+input SearchInput {
+  filterGroups: [FilterGroupInput!]
+  sorts: [SortInput!]
+  query: String
+  properties: [String!]
+  limit: Int
+  after: String
+}
+
+# ---------------------------------------------------------------------------
+# Root Query
+# ---------------------------------------------------------------------------
+
+type Query {
+  # CRM Objects
+  contact(id: String!): Contact
+  contacts(search: SearchInput): ContactCollection!
+
+  company(id: String!): Company
+  companies(search: SearchInput): CompanyCollection!
+
+  deal(id: String!): Deal
+  deals(search: SearchInput): DealCollection!
+
+  ticket(id: String!): Ticket
+  tickets(search: SearchInput): TicketCollection!
+
+  product(id: String!): Product
+  products(limit: Int, after: String): ProductCollection!
+
+  lineItem(id: String!): LineItem
+  lineItems(limit: Int, after: String): LineItemCollection!
+
+  quote(id: String!): Quote
+  quotes(limit: Int, after: String): QuoteCollection!
+
+  # Pipelines
+  pipeline(objectType: ObjectType!, pipelineId: String!): Pipeline
+  pipelines(objectType: ObjectType!): PipelineCollection!
+
+  # Properties
+  properties(objectType: ObjectType!): [Property!]!
+  property(objectType: ObjectType!, propertyName: String!): Property
+  propertyGroups(objectType: ObjectType!): [PropertyGroup!]!
+
+  # Owners
+  owner(id: String!): Owner
+  owners(email: String, limit: Int, after: String): [Owner!]!
+
+  # Lists
+  list(listId: String!): CRMList
+  lists(objectTypeId: String, limit: Int, after: String): CRMListCollection!
+
+  # CMS
+  domain(id: String!): Domain
+  domains(limit: Int, after: String): [Domain!]!
+
+  blogPost(id: String!): BlogPost
+  blogPosts(limit: Int, after: String): [BlogPost!]!
+
+  blogAuthor(id: String!): BlogAuthor
+  blogAuthors(limit: Int, after: String): [BlogAuthor!]!
+
+  page(id: String!): Page
+  pages(limit: Int, after: String): [Page!]!
+
+  # Marketing
+  form(id: String!): Form
+  forms(limit: Int, after: String): [Form!]!
+
+  marketingEmail(id: String!): MarketingEmail
+  marketingEmails(limit: Int, after: String): [MarketingEmail!]!
+
+  # Automation
+  workflow(id: String!): Workflow
+  workflows(limit: Int, after: String): [Workflow!]!
+
+  sequence(id: String!): Sequence
+  sequences(limit: Int, after: String): [Sequence!]!
+}
+
+# ---------------------------------------------------------------------------
+# Root Mutation
+# ---------------------------------------------------------------------------
+
+input ContactInput {
+  properties: JSON!
+  associations: [AssociationInput!]
+}
+
+input CompanyInput {
+  properties: JSON!
+  associations: [AssociationInput!]
+}
+
+input DealInput {
+  properties: JSON!
+  associations: [AssociationInput!]
+}
+
+input TicketInput {
+  properties: JSON!
+  associations: [AssociationInput!]
+}
+
+input AssociationInput {
+  to: ObjectReferenceInput!
+  types: [AssociationTypeInput!]!
+}
+
+input ObjectReferenceInput {
+  id: String!
+}
+
+input AssociationTypeInput {
+  associationCategory: AssociationCategory!
+  associationTypeId: Int!
+}
+
+type Mutation {
+  # Contacts
+  createContact(input: ContactInput!): Contact!
+  updateContact(id: String!, properties: JSON!): Contact!
+  deleteContact(id: String!): Boolean!
+
+  # Companies
+  createCompany(input: CompanyInput!): Company!
+  updateCompany(id: String!, properties: JSON!): Company!
+  deleteCompany(id: String!): Boolean!
+
+  # Deals
+  createDeal(input: DealInput!): Deal!
+  updateDeal(id: String!, properties: JSON!): Deal!
+  deleteDeal(id: String!): Boolean!
+
+  # Tickets
+  createTicket(input: TicketInput!): Ticket!
+  updateTicket(id: String!, properties: JSON!): Ticket!
+  deleteTicket(id: String!): Boolean!
+
+  # Associations
+  createAssociation(
+    fromObjectType: ObjectType!
+    fromObjectId: String!
+    toObjectType: ObjectType!
+    toObjectId: String!
+    associationTypes: [AssociationTypeInput!]!
+  ): Association!
+
+  deleteAssociation(
+    fromObjectType: ObjectType!
+    fromObjectId: String!
+    toObjectType: ObjectType!
+    toObjectId: String!
+  ): Boolean!
+
+  # List membership
+  addToList(listId: String!, recordIds: [String!]!): Boolean!
+  removeFromList(listId: String!, recordIds: [String!]!): Boolean!
+}
