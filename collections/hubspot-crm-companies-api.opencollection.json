@@ -1,0 +1,339 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Companies API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Companies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived companies."
+              }
+            ]
+          },
+          "docs": "Returns a page of company records. Use the limit and after parameters to paginate through companies. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new company record with the provided properties. The request body should include a properties object containing the field values for the company you want to create."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived companies."
+              }
+            ]
+          },
+          "docs": "Returns a single company record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a company record. Only the properties included in the request body will be updated; other properties will remain unchanged."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a company record by its ID. Archived companies can be restored using the HubSpot UI or API. This does not permanently delete the company from HubSpot."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for company records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of company records by their IDs or unique property values. Useful for retrieving multiple companies in a single API call instead of making individual requests."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple company records in a single API call. The request body should include an array of company property objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple company records in a single API call. Each record in the request must include the company ID and the properties to update."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Archive Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/batch/archive",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Archives multiple company records in a single API call by their IDs. Archived companies can be restored using the HubSpot UI or API."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Company Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object (e.g., contacts, deals, tickets)."
+              }
+            ]
+          },
+          "docs": "Returns all associations of a company record to objects of a specified type, such as contacts, deals, or tickets."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Company Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the object to associate with."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the object to associate with."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to create."
+              }
+            ]
+          },
+          "docs": "Creates an association between a company and another CRM object record. The association type specifies the relationship between the objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Company Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/companies/:companyId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "companyId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the company."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the associated object."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the associated object."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to delete."
+              }
+            ]
+          },
+          "docs": "Removes an association between a company and another CRM object record. This does not delete the company or the associated object, only the relationship between them."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

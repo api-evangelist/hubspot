@@ -1,0 +1,533 @@
+{
+  "info": {
+    "_postman_id": "c704938f-1d26-4ca0-a28c-088ff4f0c991",
+    "name": "HubSpot CMS Domains API",
+    "description": "The HubSpot CMS Domains API allows you to retrieve information about domains connected to a HubSpot CMS site.\n\nUse this API to:\n- List all domains connected to your HubSpot account\n- Get detailed information about a specific domain by ID\n- Filter domains by creation or update dates\n- Check domain configuration status including SSL and DNS settings\n\nDomains can be used for blog posts, site pages, landing pages, emails, and knowledge base articles.\n\n\nContact Support:\n Name: HubSpot Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:00:54.000Z",
+    "updatedAt": "2026-06-05T15:00:54.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c704938f-1d26-4ca0-a28c-088ff4f0c991"
+  },
+  "item": [
+    {
+      "name": "cms",
+      "item": [
+        {
+          "name": "v3",
+          "item": [
+            {
+              "name": "domains",
+              "item": [
+                {
+                  "name": "{domainId}",
+                  "item": [
+                    {
+                      "name": "Hubspot Get a Domain by Id",
+                      "id": "0e836904-e739-48da-bc7c-a3801b19b0c6",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "cms.domains.read cms.domains.write",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.hubapi.com/oauth/v1/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://app.hubspot.com/oauth/authorize",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cms/v3/domains/:domainId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cms",
+                            "v3",
+                            "domains",
+                            ":domainId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "fb14e6c7-badb-41f7-ae6c-b8dcf7e49939",
+                              "key": "domainId",
+                              "value": "<string>",
+                              "description": "(Required) The unique identifier of the domain"
+                            }
+                          ]
+                        },
+                        "description": "Returns detailed information about a single domain identified by its unique ID.\nThe response includes configuration status, SSL settings, and usage information.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "ca10b3a6-ddff-443f-85e4-13b21a0bf26c",
+                          "name": "Successfully retrieved the domain",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/cms/v3/domains/:domainId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "cms",
+                                "v3",
+                                "domains",
+                                ":domainId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "domainId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"isResolving\": \"<boolean>\",\n  \"isUsedForBlogPost\": \"<boolean>\",\n  \"isUsedForSitePage\": \"<boolean>\",\n  \"isUsedForLandingPage\": \"<boolean>\",\n  \"isUsedForEmail\": \"<boolean>\",\n  \"isUsedForKnowledge\": \"<boolean>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"isManuallyMarkedAsResolving\": \"<boolean>\",\n  \"isSslEnabled\": \"<boolean>\",\n  \"isSslOnly\": \"<boolean>\",\n  \"isPrimaryBlogPost\": \"<boolean>\",\n  \"isPrimarySitePage\": \"<boolean>\",\n  \"isPrimaryLandingPage\": \"<boolean>\",\n  \"isPrimaryEmail\": \"<boolean>\",\n  \"isPrimaryKnowledge\": \"<boolean>\",\n  \"expectedCname\": \"<string>\",\n  \"redirectTo\": \"<string>\",\n  \"secondaryToDomain\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:00:55.000Z",
+                          "updatedAt": "2026-06-05T15:00:55.000Z",
+                          "uid": "35240-ca10b3a6-ddff-443f-85e4-13b21a0bf26c"
+                        },
+                        {
+                          "id": "77ae9d4e-cf4f-424e-9c9b-d4d163cafd7a",
+                          "name": "An error occurred",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/cms/v3/domains/:domainId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "cms",
+                                "v3",
+                                "domains",
+                                ":domainId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "domainId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"consectetur_4\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"dolored_\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"ex_2db\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"veniam_4a2\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"Ut_8_\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"Lorem_a0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dolor_9e2\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ex1e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"adbe\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"in_57b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:00:55.000Z",
+                          "updatedAt": "2026-06-05T15:00:55.000Z",
+                          "uid": "35240-77ae9d4e-cf4f-424e-9c9b-d4d163cafd7a"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:00:55.000Z",
+                      "updatedAt": "2026-06-05T15:00:55.000Z",
+                      "uid": "35240-0e836904-e739-48da-bc7c-a3801b19b0c6"
+                    }
+                  ],
+                  "id": "6036b945-e9e5-4d0d-be1c-77779fd9a580",
+                  "createdAt": "2026-06-05T15:00:55.000Z",
+                  "updatedAt": "2026-06-05T15:00:55.000Z",
+                  "uid": "35240-6036b945-e9e5-4d0d-be1c-77779fd9a580"
+                },
+                {
+                  "name": "Hubspot List All Domains",
+                  "id": "a4761077-2a66-49d6-a6bb-ec966040b730",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "cms.domains.read cms.domains.write",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.hubapi.com/oauth/v1/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://app.hubspot.com/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/cms/v3/domains/?createdAt=<dateTime>&createdAfter=<dateTime>&createdBefore=<dateTime>&updatedAt=<dateTime>&updatedAfter=<dateTime>&updatedBefore=<dateTime>&sort=<string>&sort=<string>&after=<string>&limit=10&archived=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "cms",
+                        "v3",
+                        "domains",
+                        ""
+                      ],
+                      "query": [
+                        {
+                          "description": "Only return domains created at this exact date and time",
+                          "key": "createdAt",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Only return domains created after this date and time",
+                          "key": "createdAfter",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Only return domains created before this date and time",
+                          "key": "createdBefore",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Only return domains updated at this exact date and time",
+                          "key": "updatedAt",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Only return domains updated after this date and time",
+                          "key": "updatedAfter",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Only return domains updated before this date and time",
+                          "key": "updatedBefore",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Properties to sort by, with optional direction prefix (- for descending)",
+                          "key": "sort",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Properties to sort by, with optional direction prefix (- for descending)",
+                          "key": "sort",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The paging cursor token from a previous response for pagination",
+                          "key": "after",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Maximum number of results per page (default 10, max 100)",
+                          "key": "limit",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Whether to return only archived domains",
+                          "key": "archived",
+                          "value": "false"
+                        }
+                      ]
+                    },
+                    "description": "Returns all existing domains that have been created and connected to the HubSpot account.\nResults can be filtered by creation or update date and paginated using cursor-based pagination.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "be841138-9202-47cb-83e7-9277cf46379b",
+                      "name": "Successfully retrieved the list of domains",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cms/v3/domains/?createdAt=<dateTime>&createdAfter=<dateTime>&createdBefore=<dateTime>&updatedAt=<dateTime>&updatedAfter=<dateTime>&updatedBefore=<dateTime>&sort=<string>&after=<string>&limit=10&archived=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cms",
+                            "v3",
+                            "domains",
+                            ""
+                          ],
+                          "query": [
+                            {
+                              "description": "Only return domains created at this exact date and time",
+                              "key": "createdAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains created after this date and time",
+                              "key": "createdAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains created before this date and time",
+                              "key": "createdBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated at this exact date and time",
+                              "key": "updatedAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated after this date and time",
+                              "key": "updatedAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated before this date and time",
+                              "key": "updatedBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Properties to sort by, with optional direction prefix (- for descending)",
+                              "key": "sort",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The paging cursor token from a previous response for pagination",
+                              "key": "after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Maximum number of results per page (default 10, max 100)",
+                              "key": "limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Whether to return only archived domains",
+                              "key": "archived",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total\": \"<integer>\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"isResolving\": \"<boolean>\",\n      \"isUsedForBlogPost\": \"<boolean>\",\n      \"isUsedForSitePage\": \"<boolean>\",\n      \"isUsedForLandingPage\": \"<boolean>\",\n      \"isUsedForEmail\": \"<boolean>\",\n      \"isUsedForKnowledge\": \"<boolean>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"isManuallyMarkedAsResolving\": \"<boolean>\",\n      \"isSslEnabled\": \"<boolean>\",\n      \"isSslOnly\": \"<boolean>\",\n      \"isPrimaryBlogPost\": \"<boolean>\",\n      \"isPrimarySitePage\": \"<boolean>\",\n      \"isPrimaryLandingPage\": \"<boolean>\",\n      \"isPrimaryEmail\": \"<boolean>\",\n      \"isPrimaryKnowledge\": \"<boolean>\",\n      \"expectedCname\": \"<string>\",\n      \"redirectTo\": \"<string>\",\n      \"secondaryToDomain\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"isResolving\": \"<boolean>\",\n      \"isUsedForBlogPost\": \"<boolean>\",\n      \"isUsedForSitePage\": \"<boolean>\",\n      \"isUsedForLandingPage\": \"<boolean>\",\n      \"isUsedForEmail\": \"<boolean>\",\n      \"isUsedForKnowledge\": \"<boolean>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"isManuallyMarkedAsResolving\": \"<boolean>\",\n      \"isSslEnabled\": \"<boolean>\",\n      \"isSslOnly\": \"<boolean>\",\n      \"isPrimaryBlogPost\": \"<boolean>\",\n      \"isPrimarySitePage\": \"<boolean>\",\n      \"isPrimaryLandingPage\": \"<boolean>\",\n      \"isPrimaryEmail\": \"<boolean>\",\n      \"isPrimaryKnowledge\": \"<boolean>\",\n      \"expectedCname\": \"<string>\",\n      \"redirectTo\": \"<string>\",\n      \"secondaryToDomain\": \"<string>\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"<string>\",\n      \"link\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:00:55.000Z",
+                      "updatedAt": "2026-06-05T15:00:55.000Z",
+                      "uid": "35240-be841138-9202-47cb-83e7-9277cf46379b"
+                    },
+                    {
+                      "id": "943b54c1-7831-40af-89e4-7e8e35154b1c",
+                      "name": "An error occurred",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/cms/v3/domains/?createdAt=<dateTime>&createdAfter=<dateTime>&createdBefore=<dateTime>&updatedAt=<dateTime>&updatedAfter=<dateTime>&updatedBefore=<dateTime>&sort=<string>&after=<string>&limit=10&archived=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "cms",
+                            "v3",
+                            "domains",
+                            ""
+                          ],
+                          "query": [
+                            {
+                              "description": "Only return domains created at this exact date and time",
+                              "key": "createdAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains created after this date and time",
+                              "key": "createdAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains created before this date and time",
+                              "key": "createdBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated at this exact date and time",
+                              "key": "updatedAt",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated after this date and time",
+                              "key": "updatedAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Only return domains updated before this date and time",
+                              "key": "updatedBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Properties to sort by, with optional direction prefix (- for descending)",
+                              "key": "sort",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The paging cursor token from a previous response for pagination",
+                              "key": "after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Maximum number of results per page (default 10, max 100)",
+                              "key": "limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Whether to return only archived domains",
+                              "key": "archived",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"consectetur_4\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"dolored_\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"ex_2db\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"veniam_4a2\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"Ut_8_\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"Lorem_a0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"dolor_9e2\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ex1e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"adbe\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"in_57b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:00:55.000Z",
+                      "updatedAt": "2026-06-05T15:00:55.000Z",
+                      "uid": "35240-943b54c1-7831-40af-89e4-7e8e35154b1c"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:00:55.000Z",
+                  "updatedAt": "2026-06-05T15:00:55.000Z",
+                  "uid": "35240-a4761077-2a66-49d6-a6bb-ec966040b730"
+                }
+              ],
+              "id": "abce37b5-5df9-4b52-810b-ebbb7b628859",
+              "createdAt": "2026-06-05T15:00:55.000Z",
+              "updatedAt": "2026-06-05T15:00:55.000Z",
+              "uid": "35240-abce37b5-5df9-4b52-810b-ebbb7b628859"
+            }
+          ],
+          "id": "4caea3df-be8f-4011-a9af-df380a69a58b",
+          "createdAt": "2026-06-05T15:00:55.000Z",
+          "updatedAt": "2026-06-05T15:00:55.000Z",
+          "uid": "35240-4caea3df-be8f-4011-a9af-df380a69a58b"
+        }
+      ],
+      "id": "5c936419-46a0-4d7f-a2ed-33a8c9ad3480",
+      "createdAt": "2026-06-05T15:00:55.000Z",
+      "updatedAt": "2026-06-05T15:00:55.000Z",
+      "uid": "35240-5c936419-46a0-4d7f-a2ed-33a8c9ad3480"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hubapi.com"
+    }
+  ]
+}

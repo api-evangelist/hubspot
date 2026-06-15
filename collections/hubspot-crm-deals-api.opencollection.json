@@ -1,0 +1,339 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Deals API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deals",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived deals."
+              }
+            ]
+          },
+          "docs": "Returns a page of deal records. Use the limit and after parameters to paginate through deals. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new deal record with the provided properties. The request body should include a properties object containing the field values for the deal you want to create, including dealname, amount, and pipeline stage."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived deals."
+              }
+            ]
+          },
+          "docs": "Returns a single deal record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a deal record. Only the properties included in the request body will be updated; other properties will remain unchanged."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Deal",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a deal record by its ID. Archived deals can be restored using the HubSpot UI or API. This does not permanently delete the deal from HubSpot."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for deal records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of deal records by their IDs or unique property values. Useful for retrieving multiple deals in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple deal records in a single API call. The request body should include an array of deal property objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple deal records in a single API call. Each record in the request must include the deal ID and the properties to update."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Archive Deals",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/batch/archive",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Archives multiple deal records in a single API call by their IDs. Archived deals can be restored using the HubSpot UI or API."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Deal Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object (e.g., contacts, companies)."
+              }
+            ]
+          },
+          "docs": "Returns all associations of a deal record to objects of a specified type, such as contacts, companies, or tickets."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Deal Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the object to associate with."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the object to associate with."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to create."
+              }
+            ]
+          },
+          "docs": "Creates an association between a deal and another CRM object record. The association type specifies the relationship between the objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Deal Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/deals/:dealId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "dealId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the deal."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the associated object."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the associated object."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to delete."
+              }
+            ]
+          },
+          "docs": "Removes an association between a deal and another CRM object record. This does not delete the deal or the associated object, only the relationship between them."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

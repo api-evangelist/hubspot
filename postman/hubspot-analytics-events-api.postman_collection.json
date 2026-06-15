@@ -1,0 +1,694 @@
+{
+  "info": {
+    "_postman_id": "716b3798-a298-4051-a3b8-7fefff76d7f8",
+    "name": "HubSpot Analytics Events API",
+    "description": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:01:40.000Z",
+    "updatedAt": "2026-06-05T15:01:40.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-716b3798-a298-4051-a3b8-7fefff76d7f8"
+  },
+  "item": [
+    {
+      "name": "events",
+      "item": [
+        {
+          "name": "v3",
+          "item": [
+            {
+              "name": "events",
+              "item": [
+                {
+                  "name": "event-types",
+                  "item": [
+                    {
+                      "name": "Hubspot Retrieve Available Event Types",
+                      "id": "e99978e6-daa0-408c-9cf5-7656d25de70e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "analytics.read",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.hubapi.com/oauth/v1/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://app.hubspot.com/oauth/authorize",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/events/v3/events/event-types",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "events",
+                            "v3",
+                            "events",
+                            "event-types"
+                          ]
+                        },
+                        "description": "Retrieve a list of all available event types in your HubSpot account. \nUse this endpoint to discover what event types exist before querying \nfor specific event instances. This helps build dynamic filtering interfaces\nand validate event type parameters.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "66b35314-5339-4a85-9903-5495df0d3ac4",
+                          "name": "Successfully retrieved event types",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/events/v3/events/event-types",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "events",
+                                "v3",
+                                "events",
+                                "event-types"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"eventTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:41.000Z",
+                          "updatedAt": "2026-06-05T15:01:41.000Z",
+                          "uid": "35240-66b35314-5339-4a85-9903-5495df0d3ac4"
+                        },
+                        {
+                          "id": "36e972b9-3b34-403f-b705-d146c0f9e854",
+                          "name": "An error occurred while processing the request",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/events/v3/events/event-types",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "events",
+                                "v3",
+                                "events",
+                                "event-types"
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"aute_0_3\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"proidentdc\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ut_c0c\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"consequatda\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"non6b9\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"cupidatat9c7\": \"<string>\",\n    \"aliqua3e5\": \"<string>\",\n    \"officia_74\": \"<string>\",\n    \"aliquae\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"laboris_c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nullafd\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"exercitation1\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"non_2b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"quis0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"quis_e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:41.000Z",
+                          "updatedAt": "2026-06-05T15:01:41.000Z",
+                          "uid": "35240-36e972b9-3b34-403f-b705-d146c0f9e854"
+                        },
+                        {
+                          "id": "bf04a911-9591-48df-bb9d-7c27bc0e75dc",
+                          "name": "An error occurred while processing the request",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/events/v3/events/event-types",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "events",
+                                "v3",
+                                "events",
+                                "event-types"
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"aute_0_3\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"proidentdc\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ut_c0c\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"consequatda\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"non6b9\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"cupidatat9c7\": \"<string>\",\n    \"aliqua3e5\": \"<string>\",\n    \"officia_74\": \"<string>\",\n    \"aliquae\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"laboris_c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nullafd\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"exercitation1\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"non_2b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"quis0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"quis_e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:41.000Z",
+                          "updatedAt": "2026-06-05T15:01:41.000Z",
+                          "uid": "35240-bf04a911-9591-48df-bb9d-7c27bc0e75dc"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:41.000Z",
+                      "updatedAt": "2026-06-05T15:01:41.000Z",
+                      "uid": "35240-e99978e6-daa0-408c-9cf5-7656d25de70e"
+                    }
+                  ],
+                  "id": "8af6c425-e75c-4111-9f6f-825cd15eec3a",
+                  "createdAt": "2026-06-05T15:01:41.000Z",
+                  "updatedAt": "2026-06-05T15:01:41.000Z",
+                  "uid": "35240-8af6c425-e75c-4111-9f6f-825cd15eec3a"
+                },
+                {
+                  "name": "Hubspot Retrieve Event Instances",
+                  "id": "704f6e5e-9ad0-4997-871a-121489f5665f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "analytics.read",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://api.hubapi.com/oauth/v1/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://app.hubspot.com/oauth/authorize",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/events/v3/events?objectType=company&objectId=<string>&eventType=<string>&occurredAfter=<dateTime>&occurredBefore=<dateTime>&sort=ASCENDING&limit=20&after=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "events",
+                        "v3",
+                        "events"
+                      ],
+                      "query": [
+                        {
+                          "description": "The type of CRM object to filter event instances on",
+                          "key": "objectType",
+                          "value": "company"
+                        },
+                        {
+                          "description": "The ID of the CRM object to filter events. Requires objectType parameter.",
+                          "key": "objectId",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter by specific event type name",
+                          "key": "eventType",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Filter for events that occurred after this ISO 8601 datetime",
+                          "key": "occurredAfter",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Filter for events that occurred before this ISO 8601 datetime",
+                          "key": "occurredBefore",
+                          "value": "<dateTime>"
+                        },
+                        {
+                          "description": "Sort direction based on event timestamp",
+                          "key": "sort",
+                          "value": "ASCENDING"
+                        },
+                        {
+                          "description": "Maximum number of results per page (1-100)",
+                          "key": "limit",
+                          "value": "20"
+                        },
+                        {
+                          "description": "Pagination cursor for the next page of results",
+                          "key": "after",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve instances of event completion data from your HubSpot account. \nUse this endpoint to query events associated with specific CRM objects, \nfilter by event type and date range, and paginate through large result sets. \nThis is useful for analyzing user engagement and tracking conversion funnels.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "c0d8b317-e8ec-4efe-99d1-2e33662ee33c",
+                      "name": "Successfully retrieved event instances",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/events/v3/events?objectType=company&objectId=<string>&eventType=<string>&occurredAfter=<dateTime>&occurredBefore=<dateTime>&sort=ASCENDING&limit=20&after=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "events",
+                            "v3",
+                            "events"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of CRM object to filter event instances on",
+                              "key": "objectType",
+                              "value": "company"
+                            },
+                            {
+                              "description": "The ID of the CRM object to filter events. Requires objectType parameter.",
+                              "key": "objectId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by specific event type name",
+                              "key": "eventType",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter for events that occurred after this ISO 8601 datetime",
+                              "key": "occurredAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Filter for events that occurred before this ISO 8601 datetime",
+                              "key": "occurredBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Sort direction based on event timestamp",
+                              "key": "sort",
+                              "value": "ASCENDING"
+                            },
+                            {
+                              "description": "Maximum number of results per page (1-100)",
+                              "key": "limit",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Pagination cursor for the next page of results",
+                              "key": "after",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"eventType\": \"<string>\",\n      \"occurredAt\": \"<dateTime>\",\n      \"objectId\": \"<string>\",\n      \"objectType\": \"<string>\",\n      \"properties\": {\n        \"deserunt__b\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"eventType\": \"<string>\",\n      \"occurredAt\": \"<dateTime>\",\n      \"objectId\": \"<string>\",\n      \"objectType\": \"<string>\",\n      \"properties\": {\n        \"consectetur_4\": \"<string>\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"<string>\",\n      \"link\": \"<string>\"\n    },\n    \"prev\": {\n      \"before\": \"<string>\",\n      \"link\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-06-05T15:01:41.000Z",
+                      "updatedAt": "2026-06-05T15:01:41.000Z",
+                      "uid": "35240-c0d8b317-e8ec-4efe-99d1-2e33662ee33c"
+                    },
+                    {
+                      "id": "137fc4f2-d9c5-495f-b552-2385e888ed03",
+                      "name": "An error occurred while processing the request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/events/v3/events?objectType=company&objectId=<string>&eventType=<string>&occurredAfter=<dateTime>&occurredBefore=<dateTime>&sort=ASCENDING&limit=20&after=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "events",
+                            "v3",
+                            "events"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of CRM object to filter event instances on",
+                              "key": "objectType",
+                              "value": "company"
+                            },
+                            {
+                              "description": "The ID of the CRM object to filter events. Requires objectType parameter.",
+                              "key": "objectId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by specific event type name",
+                              "key": "eventType",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter for events that occurred after this ISO 8601 datetime",
+                              "key": "occurredAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Filter for events that occurred before this ISO 8601 datetime",
+                              "key": "occurredBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Sort direction based on event timestamp",
+                              "key": "sort",
+                              "value": "ASCENDING"
+                            },
+                            {
+                              "description": "Maximum number of results per page (1-100)",
+                              "key": "limit",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Pagination cursor for the next page of results",
+                              "key": "after",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"aute_0_3\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"proidentdc\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ut_c0c\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"consequatda\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"non6b9\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"cupidatat9c7\": \"<string>\",\n    \"aliqua3e5\": \"<string>\",\n    \"officia_74\": \"<string>\",\n    \"aliquae\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"laboris_c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nullafd\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"exercitation1\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"non_2b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"quis0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"quis_e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:41.000Z",
+                      "updatedAt": "2026-06-05T15:01:41.000Z",
+                      "uid": "35240-137fc4f2-d9c5-495f-b552-2385e888ed03"
+                    },
+                    {
+                      "id": "de4e5fd2-7272-433c-b1a3-530b01f6ab66",
+                      "name": "An error occurred while processing the request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/events/v3/events?objectType=company&objectId=<string>&eventType=<string>&occurredAfter=<dateTime>&occurredBefore=<dateTime>&sort=ASCENDING&limit=20&after=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "events",
+                            "v3",
+                            "events"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of CRM object to filter event instances on",
+                              "key": "objectType",
+                              "value": "company"
+                            },
+                            {
+                              "description": "The ID of the CRM object to filter events. Requires objectType parameter.",
+                              "key": "objectId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by specific event type name",
+                              "key": "eventType",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter for events that occurred after this ISO 8601 datetime",
+                              "key": "occurredAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Filter for events that occurred before this ISO 8601 datetime",
+                              "key": "occurredBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Sort direction based on event timestamp",
+                              "key": "sort",
+                              "value": "ASCENDING"
+                            },
+                            {
+                              "description": "Maximum number of results per page (1-100)",
+                              "key": "limit",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Pagination cursor for the next page of results",
+                              "key": "after",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"aute_0_3\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"proidentdc\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ut_c0c\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"consequatda\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"non6b9\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"cupidatat9c7\": \"<string>\",\n    \"aliqua3e5\": \"<string>\",\n    \"officia_74\": \"<string>\",\n    \"aliquae\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"laboris_c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nullafd\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"exercitation1\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"non_2b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"quis0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"quis_e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:41.000Z",
+                      "updatedAt": "2026-06-05T15:01:41.000Z",
+                      "uid": "35240-de4e5fd2-7272-433c-b1a3-530b01f6ab66"
+                    },
+                    {
+                      "id": "69e38f00-58d5-4c36-8d2d-20761bd52ac6",
+                      "name": "An error occurred while processing the request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/events/v3/events?objectType=company&objectId=<string>&eventType=<string>&occurredAfter=<dateTime>&occurredBefore=<dateTime>&sort=ASCENDING&limit=20&after=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "events",
+                            "v3",
+                            "events"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of CRM object to filter event instances on",
+                              "key": "objectType",
+                              "value": "company"
+                            },
+                            {
+                              "description": "The ID of the CRM object to filter events. Requires objectType parameter.",
+                              "key": "objectId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter by specific event type name",
+                              "key": "eventType",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Filter for events that occurred after this ISO 8601 datetime",
+                              "key": "occurredAfter",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Filter for events that occurred before this ISO 8601 datetime",
+                              "key": "occurredBefore",
+                              "value": "<dateTime>"
+                            },
+                            {
+                              "description": "Sort direction based on event timestamp",
+                              "key": "sort",
+                              "value": "ASCENDING"
+                            },
+                            {
+                              "description": "Maximum number of results per page (1-100)",
+                              "key": "limit",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Pagination cursor for the next page of results",
+                              "key": "after",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"aute_0_3\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"proidentdc\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"ut_c0c\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"consequatda\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"non6b9\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"cupidatat9c7\": \"<string>\",\n    \"aliqua3e5\": \"<string>\",\n    \"officia_74\": \"<string>\",\n    \"aliquae\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"laboris_c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nullafd\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"exercitation1\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"non_2b\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"quis0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"quis_e\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:41.000Z",
+                      "updatedAt": "2026-06-05T15:01:41.000Z",
+                      "uid": "35240-69e38f00-58d5-4c36-8d2d-20761bd52ac6"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:01:41.000Z",
+                  "updatedAt": "2026-06-05T15:01:41.000Z",
+                  "uid": "35240-704f6e5e-9ad0-4997-871a-121489f5665f"
+                }
+              ],
+              "id": "f26f16b6-4334-44fc-9d00-828356f530fa",
+              "createdAt": "2026-06-05T15:01:41.000Z",
+              "updatedAt": "2026-06-05T15:01:41.000Z",
+              "uid": "35240-f26f16b6-4334-44fc-9d00-828356f530fa"
+            }
+          ],
+          "id": "71b24a55-e1f2-4383-bfab-2efabdafd451",
+          "createdAt": "2026-06-05T15:01:41.000Z",
+          "updatedAt": "2026-06-05T15:01:41.000Z",
+          "uid": "35240-71b24a55-e1f2-4383-bfab-2efabdafd451"
+        }
+      ],
+      "id": "38a2e17c-0273-4bcd-a9ea-ce6bc3144e04",
+      "createdAt": "2026-06-05T15:01:41.000Z",
+      "updatedAt": "2026-06-05T15:01:41.000Z",
+      "uid": "35240-38a2e17c-0273-4bcd-a9ea-ce6bc3144e04"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hubapi.com"
+    }
+  ]
+}

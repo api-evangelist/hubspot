@@ -1,0 +1,128 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot OAuth API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Access Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve Access Token Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/oauth/v1/access-tokens/:token",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "token",
+                "value": "CKDZpunPLhICAQEYs-gDIIGOBii1hQIyGQAf3xBKEgsYjYMJVvlHEz9tFHAwSq1TQAM40s0D",
+                "type": "path",
+                "description": "The OAuth access token to retrieve metadata for"
+              }
+            ]
+          },
+          "docs": "Retrieves metadata for a specific OAuth access token, including associated scopes,\nexpiration time, and the user and hub information linked to the token.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Refresh Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve Refresh Token Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/oauth/v1/refresh-tokens/:token",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "params": [
+              {
+                "name": "token",
+                "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a",
+                "type": "path",
+                "description": "The OAuth refresh token"
+              }
+            ]
+          },
+          "docs": "Retrieves metadata for a specific OAuth refresh token, including the associated\nclient, user, and hub information.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Revoke a Refresh Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/oauth/v1/refresh-tokens/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a",
+                "type": "path",
+                "description": "The OAuth refresh token"
+              }
+            ]
+          },
+          "docs": "Revokes a specific OAuth refresh token, invalidating it and any associated access tokens.\nUse this endpoint when a user logs out or when you need to terminate a session.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Token Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Create or Refresh an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/oauth/v1/token",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "name": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            }
+          },
+          "docs": "Exchanges an authorization code for an access token or refreshes an existing access token\nusing a refresh token. This endpoint supports multiple grant types including authorization_code\nand refresh_token flows.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

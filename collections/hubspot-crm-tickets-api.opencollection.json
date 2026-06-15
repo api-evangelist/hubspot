@@ -1,0 +1,339 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Tickets API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tickets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived tickets."
+              }
+            ]
+          },
+          "docs": "Returns a page of ticket records. Use the limit and after parameters to paginate through tickets. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new ticket record with the provided properties. The request body should include a properties object containing field values such as subject, content, hs_ticket_priority, and hs_pipeline_stage."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived tickets."
+              }
+            ]
+          },
+          "docs": "Returns a single ticket record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a ticket record. Only the properties included in the request body will be updated; other properties will remain unchanged."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Ticket",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a ticket record by its ID. Archived tickets can be restored using the HubSpot UI or API."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for ticket records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of ticket records by their IDs or unique property values. Useful for retrieving multiple tickets in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple ticket records in a single API call. The request body should include an array of ticket property objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple ticket records in a single API call. Each record in the request must include the ticket ID and the properties to update."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Archive Tickets",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/batch/archive",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Archives multiple ticket records in a single API call by their IDs. Archived tickets can be restored using the HubSpot UI or API."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Ticket Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object (e.g., contacts, companies, deals)."
+              }
+            ]
+          },
+          "docs": "Returns all associations of a ticket record to objects of a specified type, such as contacts, companies, or deals."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Ticket Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the object to associate with."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the object to associate with."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to create."
+              }
+            ]
+          },
+          "docs": "Creates an association between a ticket and another CRM object record. The association type specifies the relationship between the objects."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Ticket Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/tickets/:ticketId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "ticketId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the ticket."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of the associated object."
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the associated object."
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of association to delete."
+              }
+            ]
+          },
+          "docs": "Removes an association between a ticket and another CRM object record. This does not delete the ticket or the associated object, only the relationship between them."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

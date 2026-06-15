@@ -1,0 +1,359 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Feature Flags API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Application Feature Flags",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Feature Flag Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Retrieves the configuration for a specific feature flag associated with an application.\nReturns the flag name, default state, and any override state configured.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create or Update a Feature Flag",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Creates or updates a feature flag configuration for an application.\nSet the default state that will apply to all portals unless overridden.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Feature Flag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Deletes a feature flag from an application.\nThis will also remove all portal-level flag state overrides associated with this flag.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Portal Flag States",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Portal Flag States",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Maximum number of results to return per page"
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "Pagination cursor for fetching the next page of results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Retrieves a paginated list of portal (account) flag states for a specific feature flag.\nReturns all portals that have an explicit flag state override set.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Portal Flag State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals/:portalId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              },
+              {
+                "name": "portalId",
+                "value": "98765432",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot portal (account)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Retrieves the flag state for a specific portal (account).\nReturns the current flag state override for the specified portal.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Set a Portal Flag State",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals/:portalId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              },
+              {
+                "name": "portalId",
+                "value": "98765432",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot portal (account)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Sets the flag state override for a specific portal (account).\nThis overrides the application-level default state for this portal only.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Portal Flag State",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals/:portalId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              },
+              {
+                "name": "portalId",
+                "value": "98765432",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot portal (account)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Removes the flag state override for a specific portal (account).\nThe portal will revert to using the application-level default flag state.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch Portal Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Create or Update Portal Flag States",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals/batch/upsert",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Sets flag states for multiple portals (accounts) in a single request.\nEfficiently enables or disables features for multiple accounts at once.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Delete Portal Flag States",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/feature-flags/v3/:appId/flags/:flagName/portals/batch/delete",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier for the HubSpot application"
+              },
+              {
+                "name": "flagName",
+                "value": "new-dashboard-feature",
+                "type": "path",
+                "description": "The name of the feature flag"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "hapikey",
+              "value": "{{hapikey}}",
+              "placement": "query"
+            }
+          },
+          "docs": "Removes flag state overrides for multiple portals (accounts) in a single request.\nAll specified portals will revert to using the application-level default flag state.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

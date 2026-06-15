@@ -1,0 +1,2542 @@
+{
+  "info": {
+    "_postman_id": "11da03dd-c75d-45a9-ae03-464d188505e5",
+    "name": "HubSpot CRM Engagement Notes API",
+    "description": "The HubSpot CRM Engagement Notes API enables you to manage note engagements within your HubSpot CRM.\n\nUse this API to:\n- Create, read, update, and delete note records\n- Perform batch operations on multiple notes\n- Search for notes using filters and queries\n- Associate notes with contacts, companies, deals, and other CRM objects\n- Manage note properties and track note history\n- Handle GDPR-compliant data purging\n\nNote engagements represent text notes logged in your CRM and can be associated with any CRM record.\n\n\nContact Support:\n Name: HubSpot Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:01:46.000Z",
+    "updatedAt": "2026-06-05T15:01:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-11da03dd-c75d-45a9-ae03-464d188505e5"
+  },
+  "item": [
+    {
+      "name": "crm",
+      "item": [
+        {
+          "name": "v3",
+          "item": [
+            {
+              "name": "objects",
+              "item": [
+                {
+                  "name": "notes",
+                  "item": [
+                    {
+                      "name": "{noteId}",
+                      "item": [
+                        {
+                          "name": "Hubspot Get a Note by Id",
+                          "id": "90ae97cd-08b1-47eb-981c-cb04a43ccfab",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.hubapi.com/oauth/v1/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://app.hubspot.com/oauth/authorize",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId?properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes",
+                                ":noteId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Comma-separated list of properties to return",
+                                  "key": "properties",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of properties to return with history",
+                                  "key": "propertiesWithHistory",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of association types to retrieve",
+                                  "key": "associations",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Whether to include archived notes",
+                                  "key": "archived",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "bf507f13-1d90-4133-8577-57c990b74c9f",
+                                  "key": "noteId",
+                                  "value": "<string>",
+                                  "description": "(Required) The unique identifier of the note"
+                                }
+                              ]
+                            },
+                            "description": "Retrieves a single note engagement by its unique identifier.\nOptionally include specific properties, property history, and associations.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "7768422b-008e-4ccb-a29d-2df18f142088",
+                              "name": "Successfully retrieved the note",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId?properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Comma-separated list of properties to return",
+                                      "key": "properties",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Comma-separated list of properties to return with history",
+                                      "key": "propertiesWithHistory",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Comma-separated list of association types to retrieve",
+                                      "key": "associations",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Whether to include archived notes",
+                                      "key": "archived",
+                                      "value": "false"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"properties\": {\n    \"Duis_da5\": \"<string>\",\n    \"esse3c5\": \"<string>\"\n  },\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"archived\": \"<boolean>\",\n  \"propertiesWithHistory\": {\n    \"reprehenderit_c4\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ],\n    \"do39\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ]\n  },\n  \"archivedAt\": \"<dateTime>\"\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-7768422b-008e-4ccb-a29d-2df18f142088"
+                            },
+                            {
+                              "id": "5e9d8f4f-1ff5-45a2-8229-829c22210a43",
+                              "name": "An error occurred",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId?properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Comma-separated list of properties to return",
+                                      "key": "properties",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Comma-separated list of properties to return with history",
+                                      "key": "propertiesWithHistory",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Comma-separated list of association types to retrieve",
+                                      "key": "associations",
+                                      "value": "<string>,<string>"
+                                    },
+                                    {
+                                      "description": "Whether to include archived notes",
+                                      "key": "archived",
+                                      "value": "false"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-5e9d8f4f-1ff5-45a2-8229-829c22210a43"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-90ae97cd-08b1-47eb-981c-cb04a43ccfab"
+                        },
+                        {
+                          "name": "Hubspot Update a Note",
+                          "id": "23d6ad25-c04d-4a6b-9012-a3c183e92f4d",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.hubapi.com/oauth/v1/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://app.hubspot.com/oauth/authorize",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"properties\": {\n    \"amet_14\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes",
+                                ":noteId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "ee57498c-aa90-401c-9b2b-2e4ad81a8e71",
+                                  "key": "noteId",
+                                  "value": "<string>",
+                                  "description": "(Required) The unique identifier of the note"
+                                }
+                              ]
+                            },
+                            "description": "Updates an existing note engagement with new property values.\nOnly the properties specified in the request body will be updated.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "95897df8-07cc-4f8c-b36b-f1169cd5a39f",
+                              "name": "Successfully updated the note",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"properties\": {\n    \"amet_14\": \"<string>\"\n  }\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"properties\": {\n    \"Duis_da5\": \"<string>\",\n    \"esse3c5\": \"<string>\"\n  },\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"archived\": \"<boolean>\",\n  \"propertiesWithHistory\": {\n    \"reprehenderit_c4\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ],\n    \"do39\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ]\n  },\n  \"archivedAt\": \"<dateTime>\"\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-95897df8-07cc-4f8c-b36b-f1169cd5a39f"
+                            },
+                            {
+                              "id": "89e7b64a-7b83-40db-a4f4-e7df499e5f4b",
+                              "name": "An error occurred",
+                              "originalRequest": {
+                                "method": "PATCH",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"properties\": {\n    \"amet_14\": \"<string>\"\n  }\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-89e7b64a-7b83-40db-a4f4-e7df499e5f4b"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-23d6ad25-c04d-4a6b-9012-a3c183e92f4d"
+                        },
+                        {
+                          "name": "Hubspot Archive a Note",
+                          "id": "85771cce-1479-436a-8420-25b11c4fe1b4",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.hubapi.com/oauth/v1/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://app.hubspot.com/oauth/authorize",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes",
+                                ":noteId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "5ae2727b-605f-4c29-8c8e-9811f2486ba2",
+                                  "key": "noteId",
+                                  "value": "<string>",
+                                  "description": "(Required) The unique identifier of the note"
+                                }
+                              ]
+                            },
+                            "description": "Archives (soft deletes) a note engagement by moving it to the recycling bin.\nArchived notes can be restored within 90 days.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "c2dd1f29-3914-45ad-8737-eca7881e387e",
+                              "name": "Successfully archived the note (no content returned)",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "No Content",
+                              "code": 204,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-c2dd1f29-3914-45ad-8737-eca7881e387e"
+                            },
+                            {
+                              "id": "e57ec632-01d7-40a6-bc6b-a10b6751e01d",
+                              "name": "An error occurred",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/:noteId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    ":noteId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "noteId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-e57ec632-01d7-40a6-bc6b-a10b6751e01d"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-85771cce-1479-436a-8420-25b11c4fe1b4"
+                        }
+                      ],
+                      "id": "d7ab07f4-9aab-4a7b-bb8b-d0d04903c9be",
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-d7ab07f4-9aab-4a7b-bb8b-d0d04903c9be"
+                    },
+                    {
+                      "name": "batch",
+                      "item": [
+                        {
+                          "name": "create",
+                          "item": [
+                            {
+                              "name": "Hubspot Create a Batch of Notes",
+                              "id": "ee427acc-527d-45f2-bac6-25b86dc3bf17",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://api.hubapi.com/oauth/v1/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://app.hubspot.com/oauth/authorize",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"officiab8a\": \"<string>\",\n        \"exercitation5\": \"<string>\",\n        \"in_2\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"nostrudaf3\": \"<string>\",\n        \"aliquip_cd8\": \"<string>\",\n        \"fugiat2\": \"<string>\",\n        \"veniamcc\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"INTEGRATOR_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/create",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "batch",
+                                    "create"
+                                  ]
+                                },
+                                "description": "Creates multiple note engagements in a single request.\nEach note can have its own properties and associations.\nMaximum of 100 notes per batch request.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "3d98c124-e2df-4358-9d84-3657d74616c1",
+                                  "name": "Successfully created the batch of notes",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"officiab8a\": \"<string>\",\n        \"exercitation5\": \"<string>\",\n        \"in_2\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"nostrudaf3\": \"<string>\",\n        \"aliquip_cd8\": \"<string>\",\n        \"fugiat2\": \"<string>\",\n        \"veniamcc\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"INTEGRATOR_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/create",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "create"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Created",
+                                  "code": 201,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-3d98c124-e2df-4358-9d84-3657d74616c1"
+                                },
+                                {
+                                  "id": "d366ae50-85bc-4f32-bf39-7ea6c079f765",
+                                  "name": "Multi-status response (some operations succeeded, some failed)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"officiab8a\": \"<string>\",\n        \"exercitation5\": \"<string>\",\n        \"in_2\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"nostrudaf3\": \"<string>\",\n        \"aliquip_cd8\": \"<string>\",\n        \"fugiat2\": \"<string>\",\n        \"veniamcc\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"INTEGRATOR_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/create",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "create"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Multi-Status (WebDAV) (RFC 4918)",
+                                  "code": 207,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-d366ae50-85bc-4f32-bf39-7ea6c079f765"
+                                },
+                                {
+                                  "id": "a4e5cc8c-7e04-4619-a947-98b41863f98b",
+                                  "name": "An error occurred",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"officiab8a\": \"<string>\",\n        \"exercitation5\": \"<string>\",\n        \"in_2\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"nostrudaf3\": \"<string>\",\n        \"aliquip_cd8\": \"<string>\",\n        \"fugiat2\": \"<string>\",\n        \"veniamcc\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"INTEGRATOR_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"USER_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            },\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": \"<integer>\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/create",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "create"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-a4e5cc8c-7e04-4619-a947-98b41863f98b"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-ee427acc-527d-45f2-bac6-25b86dc3bf17"
+                            }
+                          ],
+                          "id": "80a86351-3822-4a36-83f8-dab6070604c8",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-80a86351-3822-4a36-83f8-dab6070604c8"
+                        },
+                        {
+                          "name": "read",
+                          "item": [
+                            {
+                              "name": "Hubspot Read a Batch of Notes",
+                              "id": "94815283-6265-4bec-b2a6-7d4008c61ae7",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://api.hubapi.com/oauth/v1/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://app.hubspot.com/oauth/authorize",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propertiesWithHistory\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"idProperty\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/read?archived=false",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "batch",
+                                    "read"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Whether to include archived notes",
+                                      "key": "archived",
+                                      "value": "false"
+                                    }
+                                  ]
+                                },
+                                "description": "Retrieves multiple note engagements by their IDs or a unique property value.\nMaximum of 100 notes per batch request.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "756878fb-2331-4265-8abf-2403ef7a571b",
+                                  "name": "Successfully retrieved the batch of notes",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propertiesWithHistory\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"idProperty\": \"<string>\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/read?archived=false",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "read"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Whether to include archived notes",
+                                          "key": "archived",
+                                          "value": "false"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-756878fb-2331-4265-8abf-2403ef7a571b"
+                                },
+                                {
+                                  "id": "7d5a6c6b-2953-4bb9-a2c7-4dba533271c7",
+                                  "name": "Multi-status response (some operations succeeded, some failed)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propertiesWithHistory\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"idProperty\": \"<string>\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/read?archived=false",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "read"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Whether to include archived notes",
+                                          "key": "archived",
+                                          "value": "false"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Multi-Status (WebDAV) (RFC 4918)",
+                                  "code": 207,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-7d5a6c6b-2953-4bb9-a2c7-4dba533271c7"
+                                },
+                                {
+                                  "id": "5b092e6b-a7eb-4c0a-afee-a72449bcd0dd",
+                                  "name": "An error occurred",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propertiesWithHistory\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"idProperty\": \"<string>\"\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/read?archived=false",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "read"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Whether to include archived notes",
+                                          "key": "archived",
+                                          "value": "false"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-5b092e6b-a7eb-4c0a-afee-a72449bcd0dd"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-94815283-6265-4bec-b2a6-7d4008c61ae7"
+                            }
+                          ],
+                          "id": "09afa3ec-2894-4dd5-9215-0705216ad4f1",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-09afa3ec-2894-4dd5-9215-0705216ad4f1"
+                        },
+                        {
+                          "name": "update",
+                          "item": [
+                            {
+                              "name": "Hubspot Update a Batch of Notes",
+                              "id": "9946d419-438a-4e3b-8b50-3724eeeacbd9",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://api.hubapi.com/oauth/v1/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://app.hubspot.com/oauth/authorize",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"veniam_a7c\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"fugiatb\": \"<string>\",\n        \"aliquip_3\": \"<string>\"\n      }\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/update",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "batch",
+                                    "update"
+                                  ]
+                                },
+                                "description": "Updates multiple note engagements in a single request.\nEach note update must include the note ID and the properties to update.\nMaximum of 100 notes per batch request.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "a5f39683-7341-487c-a20f-59940fe688e2",
+                                  "name": "Successfully updated the batch of notes",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"veniam_a7c\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"fugiatb\": \"<string>\",\n        \"aliquip_3\": \"<string>\"\n      }\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/update",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "update"
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-a5f39683-7341-487c-a20f-59940fe688e2"
+                                },
+                                {
+                                  "id": "a4815366-3d9d-4838-9b7c-4c81b4e7a2ff",
+                                  "name": "Multi-status response (some operations succeeded, some failed)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"veniam_a7c\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"fugiatb\": \"<string>\",\n        \"aliquip_3\": \"<string>\"\n      }\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/update",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "update"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Multi-Status (WebDAV) (RFC 4918)",
+                                  "code": 207,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"consectetur_168\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"minim91\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"Duis3f3\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"cillum__d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"startedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"requestedAt\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"ipsum0\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"consectetur_5\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"in_\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"nisifd0\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"aliquad5\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    },\n    {\n      \"status\": \"<string>\",\n      \"category\": \"<string>\",\n      \"message\": \"<string>\",\n      \"context\": {\n        \"consectetur_b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"sit10\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ipsumb4b\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"ad_4\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      \"errors\": [\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"cupidatat_2c6\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        },\n        {\n          \"message\": \"<string>\",\n          \"code\": \"<string>\",\n          \"in\": \"<string>\",\n          \"subCategory\": \"<string>\",\n          \"context\": {\n            \"ut4\": [\n              \"<string>\",\n              \"<string>\"\n            ],\n            \"ex_\": [\n              \"<string>\",\n              \"<string>\"\n            ]\n          }\n        }\n      ]\n    }\n  ],\n  \"links\": {\n    \"eu_821\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-a4815366-3d9d-4838-9b7c-4c81b4e7a2ff"
+                                },
+                                {
+                                  "id": "9be572ab-3111-44fc-8d46-cffc4b54e3d3",
+                                  "name": "An error occurred",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"veniam_a7c\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"fugiatb\": \"<string>\",\n        \"aliquip_3\": \"<string>\"\n      }\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/update",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "update"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-9be572ab-3111-44fc-8d46-cffc4b54e3d3"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-9946d419-438a-4e3b-8b50-3724eeeacbd9"
+                            }
+                          ],
+                          "id": "1608c364-d169-4d0b-915e-c0486ca8698c",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-1608c364-d169-4d0b-915e-c0486ca8698c"
+                        },
+                        {
+                          "name": "archive",
+                          "item": [
+                            {
+                              "name": "Hubspot Archive a Batch of Notes",
+                              "id": "88c64b14-acca-4bcd-8fba-fe905e619534",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://api.hubapi.com/oauth/v1/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://app.hubspot.com/oauth/authorize",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/archive",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "batch",
+                                    "archive"
+                                  ]
+                                },
+                                "description": "Archives (soft deletes) multiple note engagements in a single request.\nMaximum of 100 notes per batch request.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "2349d080-afc5-4d0a-84b8-1c6b1229a709",
+                                  "name": "Successfully archived the batch of notes (no content returned)",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/archive",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "archive"
+                                      ]
+                                    }
+                                  },
+                                  "status": "No Content",
+                                  "code": 204,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-2349d080-afc5-4d0a-84b8-1c6b1229a709"
+                                },
+                                {
+                                  "id": "eeee0f72-26e2-4b53-9157-e58e8bff0782",
+                                  "name": "An error occurred",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/crm/v3/objects/notes/batch/archive",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "crm",
+                                        "v3",
+                                        "objects",
+                                        "notes",
+                                        "batch",
+                                        "archive"
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                                  "createdAt": "2026-06-05T15:01:46.000Z",
+                                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                                  "uid": "35240-eeee0f72-26e2-4b53-9157-e58e8bff0782"
+                                }
+                              ],
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-88c64b14-acca-4bcd-8fba-fe905e619534"
+                            }
+                          ],
+                          "id": "a20e4042-91c3-4ca5-b5b6-b91bfc7ea9ed",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-a20e4042-91c3-4ca5-b5b6-b91bfc7ea9ed"
+                        }
+                      ],
+                      "id": "0fd8b5b1-bafe-488f-9c04-d3f8a16658f6",
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-0fd8b5b1-bafe-488f-9c04-d3f8a16658f6"
+                    },
+                    {
+                      "name": "search",
+                      "item": [
+                        {
+                          "name": "Hubspot Search Notes",
+                          "id": "345f4f19-574e-490d-9e11-6520d5db10a7",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.hubapi.com/oauth/v1/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://app.hubspot.com/oauth/authorize",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"HAS_PROPERTY\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NOT_CONTAINS_TOKEN\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"EQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NEQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes/search",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes",
+                                "search"
+                              ]
+                            },
+                            "description": "Searches for note engagements using filters, property values, and full-text search.\nSupports complex filter groups with AND/OR logic.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "ee976ab4-9c81-460d-9d7d-cd5da2bb080b",
+                              "name": "Successfully searched notes",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"HAS_PROPERTY\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NOT_CONTAINS_TOKEN\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"EQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NEQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/search",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "search"
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"total\": \"<integer>\",\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"in_e6\": \"<string>\",\n        \"exercitation977\": \"<string>\",\n        \"occaecat_a4\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"Lorem_5__\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"veniam1\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"deseruntb20\": \"<string>\",\n        \"aute_b53\": \"<string>\",\n        \"anim88a\": \"<string>\",\n        \"veniam_af\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"eiusmodb\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"<string>\",\n      \"link\": \"<string>\"\n    }\n  }\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-ee976ab4-9c81-460d-9d7d-cd5da2bb080b"
+                            },
+                            {
+                              "id": "d9d5562d-6735-4a3e-ac6a-ec92372e17dd",
+                              "name": "An error occurred",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"HAS_PROPERTY\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NOT_CONTAINS_TOKEN\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"EQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"NEQ\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/search",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "search"
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-d9d5562d-6735-4a3e-ac6a-ec92372e17dd"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-345f4f19-574e-490d-9e11-6520d5db10a7"
+                        }
+                      ],
+                      "id": "73e30b96-ee36-4408-9b1b-d15f58e72419",
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-73e30b96-ee36-4408-9b1b-d15f58e72419"
+                    },
+                    {
+                      "name": "gdpr-delete",
+                      "item": [
+                        {
+                          "name": "Hubspot Permanently Delete a Note for Gdpr Compliance",
+                          "id": "19882153-d07d-4436-8155-448fde5cc346",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://api.hubapi.com/oauth/v1/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://app.hubspot.com/oauth/authorize",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"objectId\": \"<string>\",\n  \"idProperty\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes/gdpr-delete",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes",
+                                "gdpr-delete"
+                              ]
+                            },
+                            "description": "Permanently deletes a note engagement for GDPR compliance.\nThis action cannot be undone. Use this endpoint when you need to comply with a data subject's right to erasure request.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "a810039c-00f0-44d6-bf03-6d661ea4c767",
+                              "name": "Successfully deleted the note (no content returned)",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"objectId\": \"<string>\",\n  \"idProperty\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/gdpr-delete",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "gdpr-delete"
+                                  ]
+                                }
+                              },
+                              "status": "No Content",
+                              "code": 204,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-a810039c-00f0-44d6-bf03-6d661ea4c767"
+                            },
+                            {
+                              "id": "96b0d149-7a24-465a-b486-d9811d9fe10c",
+                              "name": "An error occurred",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"objectId\": \"<string>\",\n  \"idProperty\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/crm/v3/objects/notes/gdpr-delete",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "crm",
+                                    "v3",
+                                    "objects",
+                                    "notes",
+                                    "gdpr-delete"
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                              "createdAt": "2026-06-05T15:01:46.000Z",
+                              "updatedAt": "2026-06-05T15:01:46.000Z",
+                              "uid": "35240-96b0d149-7a24-465a-b486-d9811d9fe10c"
+                            }
+                          ],
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-19882153-d07d-4436-8155-448fde5cc346"
+                        }
+                      ],
+                      "id": "e8d9c767-fc08-471e-979c-9447a12f7e2e",
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-e8d9c767-fc08-471e-979c-9447a12f7e2e"
+                    },
+                    {
+                      "name": "Hubspot List All Notes",
+                      "id": "42c5599c-2673-42ce-8766-5629e9145e32",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.hubapi.com/oauth/v1/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://app.hubspot.com/oauth/authorize",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/crm/v3/objects/notes?limit=10&after=<string>&properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "crm",
+                            "v3",
+                            "objects",
+                            "notes"
+                          ],
+                          "query": [
+                            {
+                              "description": "Maximum number of results per page",
+                              "key": "limit",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Pagination cursor from previous response",
+                              "key": "after",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Comma-separated list of properties to return",
+                              "key": "properties",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Comma-separated list of properties to return with history",
+                              "key": "propertiesWithHistory",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Comma-separated list of association types to retrieve",
+                              "key": "associations",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Whether to include archived notes",
+                              "key": "archived",
+                              "value": "false"
+                            }
+                          ]
+                        },
+                        "description": "Returns a paginated list of all note engagements in the CRM.\nUse query parameters to filter by properties, limit results, and paginate through records.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "44dab8d9-8700-4f9b-93f3-26feb3e369d2",
+                          "name": "Successfully retrieved the list of notes",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes?limit=10&after=<string>&properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results per page",
+                                  "key": "limit",
+                                  "value": "10"
+                                },
+                                {
+                                  "description": "Pagination cursor from previous response",
+                                  "key": "after",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of properties to return",
+                                  "key": "properties",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of properties to return with history",
+                                  "key": "propertiesWithHistory",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of association types to retrieve",
+                                  "key": "associations",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Whether to include archived notes",
+                                  "key": "archived",
+                                  "value": "false"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"results\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"et64\": \"<string>\",\n        \"laboris105\": \"<string>\",\n        \"sed542\": \"<string>\",\n        \"in_9\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"culpa_02\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"Lorem6c1\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"voluptate__10\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"aliquip7\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"minim9a\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"cillum_90\": \"<string>\"\n      },\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"archived\": \"<boolean>\",\n      \"propertiesWithHistory\": {\n        \"sint8f\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ],\n        \"proident_d\": [\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          },\n          {\n            \"value\": \"<string>\",\n            \"timestamp\": \"<dateTime>\",\n            \"sourceType\": \"<string>\",\n            \"sourceId\": \"<string>\",\n            \"sourceLabel\": \"<string>\",\n            \"updatedByUserId\": \"<integer>\"\n          }\n        ]\n      },\n      \"archivedAt\": \"<dateTime>\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"<string>\",\n      \"link\": \"<string>\"\n    }\n  }\n}",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-44dab8d9-8700-4f9b-93f3-26feb3e369d2"
+                        },
+                        {
+                          "id": "b2ea99f4-0cbe-4e10-a2e0-c90374dc0dee",
+                          "name": "An error occurred",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes?limit=10&after=<string>&properties=<string>,<string>&propertiesWithHistory=<string>,<string>&associations=<string>,<string>&archived=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Maximum number of results per page",
+                                  "key": "limit",
+                                  "value": "10"
+                                },
+                                {
+                                  "description": "Pagination cursor from previous response",
+                                  "key": "after",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of properties to return",
+                                  "key": "properties",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of properties to return with history",
+                                  "key": "propertiesWithHistory",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Comma-separated list of association types to retrieve",
+                                  "key": "associations",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Whether to include archived notes",
+                                  "key": "archived",
+                                  "value": "false"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-b2ea99f4-0cbe-4e10-a2e0-c90374dc0dee"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-42c5599c-2673-42ce-8766-5629e9145e32"
+                    },
+                    {
+                      "name": "Hubspot Create a Note",
+                      "id": "19340796-70f4-4519-96b1-8e9c64eeee77",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "crm.objects.contacts.read crm.objects.contacts.write",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://api.hubapi.com/oauth/v1/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://app.hubspot.com/oauth/authorize",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"properties\": {\n    \"ipsum__\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/crm/v3/objects/notes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "crm",
+                            "v3",
+                            "objects",
+                            "notes"
+                          ]
+                        },
+                        "description": "Creates a new note engagement in the CRM.\nYou can specify note properties and optionally associate the note with other CRM objects.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "d0808a77-0fee-4f5f-bdba-440a42db5e89",
+                          "name": "Successfully created the note",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"properties\": {\n    \"ipsum__\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes"
+                              ]
+                            }
+                          },
+                          "status": "Created",
+                          "code": 201,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"properties\": {\n    \"Duis_da5\": \"<string>\",\n    \"esse3c5\": \"<string>\"\n  },\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"archived\": \"<boolean>\",\n  \"propertiesWithHistory\": {\n    \"reprehenderit_c4\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ],\n    \"do39\": [\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      },\n      {\n        \"value\": \"<string>\",\n        \"timestamp\": \"<dateTime>\",\n        \"sourceType\": \"<string>\",\n        \"sourceId\": \"<string>\",\n        \"sourceLabel\": \"<string>\",\n        \"updatedByUserId\": \"<integer>\"\n      }\n    ]\n  },\n  \"archivedAt\": \"<dateTime>\"\n}",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-d0808a77-0fee-4f5f-bdba-440a42db5e89"
+                        },
+                        {
+                          "id": "bea4d4d4-a691-42a7-a2e0-c4edf6a9e564",
+                          "name": "An error occurred",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"properties\": {\n    \"ipsum__\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"INTEGRATOR_DEFINED\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/crm/v3/objects/notes",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "crm",
+                                "v3",
+                                "objects",
+                                "notes"
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"cupidatatd6c\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"aliqua12e\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"occaecat9c\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_6\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"veniamf\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"amet_a9\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"temporfc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"in\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"context\": {\n        \"ad19\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:46.000Z",
+                          "updatedAt": "2026-06-05T15:01:46.000Z",
+                          "uid": "35240-bea4d4d4-a691-42a7-a2e0-c4edf6a9e564"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:46.000Z",
+                      "updatedAt": "2026-06-05T15:01:46.000Z",
+                      "uid": "35240-19340796-70f4-4519-96b1-8e9c64eeee77"
+                    }
+                  ],
+                  "id": "a5c9686e-a9c9-4b91-9dd3-4eac5dba3132",
+                  "createdAt": "2026-06-05T15:01:46.000Z",
+                  "updatedAt": "2026-06-05T15:01:46.000Z",
+                  "uid": "35240-a5c9686e-a9c9-4b91-9dd3-4eac5dba3132"
+                }
+              ],
+              "id": "fafbf73c-6c0c-41f9-a85a-4ab06f9659ed",
+              "createdAt": "2026-06-05T15:01:46.000Z",
+              "updatedAt": "2026-06-05T15:01:46.000Z",
+              "uid": "35240-fafbf73c-6c0c-41f9-a85a-4ab06f9659ed"
+            }
+          ],
+          "id": "c9d8db3d-55cb-4fe5-a0d5-637b758da77d",
+          "createdAt": "2026-06-05T15:01:46.000Z",
+          "updatedAt": "2026-06-05T15:01:46.000Z",
+          "uid": "35240-c9d8db3d-55cb-4fe5-a0d5-637b758da77d"
+        }
+      ],
+      "id": "3cb79b37-572b-4d8b-b242-285933104426",
+      "createdAt": "2026-06-05T15:01:46.000Z",
+      "updatedAt": "2026-06-05T15:01:46.000Z",
+      "uid": "35240-3cb79b37-572b-4d8b-b242-285933104426"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hubapi.com"
+    }
+  ]
+}

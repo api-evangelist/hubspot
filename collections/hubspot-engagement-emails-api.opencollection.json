@@ -1,0 +1,316 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Engagement Emails API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Emails",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Email Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived email engagements."
+              }
+            ]
+          },
+          "docs": "Returns a page of email engagement records. Use the limit and after parameters to paginate through email engagements. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Email Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new email engagement record with the provided properties. Common email engagement properties include hs_email_subject, hs_email_text, hs_email_html, hs_email_status, hs_email_direction (INCOMING or OUTGOING), and hs_timestamp."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get an Email Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path",
+                "description": "The ID of the email engagement to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived email engagements."
+              }
+            ]
+          },
+          "docs": "Returns a single email engagement record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update an Email Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path",
+                "description": "The ID of the email engagement to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of an email engagement record. Only the properties included in the request body will be updated."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive an Email Engagement",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path",
+                "description": "The ID of the email engagement to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) an email engagement record by its ID. Archived email engagements can be restored using the HubSpot UI or API."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Email Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for email engagement records using filter groups, sorts, and other query parameters."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Email Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of email engagement records by their IDs. Useful for retrieving multiple email engagements in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Email Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple email engagement records in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Email Engagements",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple email engagement records in a single API call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Email Engagement Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path",
+                "description": "The ID of the email engagement."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object."
+              }
+            ]
+          },
+          "docs": "Returns all associations of an email engagement record to objects of a specified type, such as contacts, companies, or deals."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Email Engagement Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Creates an association between an email engagement record and another CRM object."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete an Email Engagement Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/emails/:emailId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "emailId",
+                "value": "jsmith@example.com",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an association between an email engagement record and another CRM object."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

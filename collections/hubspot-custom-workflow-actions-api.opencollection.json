@@ -1,0 +1,639 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Custom Workflow Actions API",
+    "version": "4.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflow Callbacks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Complete a Single Callback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/automation/v4/actions/callbacks/:callbackId/complete",
+            "params": [
+              {
+                "name": "callbackId",
+                "value": "callback-abc123",
+                "type": "path",
+                "description": "The unique identifier of the callback to complete"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Completes a single callback for an asynchronous workflow action, providing the output \nvalues to continue the workflow execution. Use this endpoint when your action has \nfinished processing and needs to return results to HubSpot.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Complete Multiple Callbacks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/automation/v4/actions/callbacks/complete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Completes multiple callbacks for asynchronous workflow actions in a single request. \nThis is useful when your action processes multiple items and needs to return results \nfor each callback simultaneously.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Action Definitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Action Definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Maximum number of results to return per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page of results"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to include archived action definitions"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a paginated list of all custom action definitions for the specified \napplication. Use query parameters to filter by archived status and control pagination.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new custom workflow action definition for the specified application. \nThe action definition includes input fields, output fields, labels, and configuration \nfor how the action appears in the HubSpot workflow editor.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to include archived action definitions"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a specific custom action definition by its ID. Returns the complete \naction definition including all input fields, output fields, and configuration.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Update an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates an existing custom action definition with the provided changes. \nOnly the specified fields will be updated; other fields remain unchanged.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Archives (soft deletes) a custom action definition. Archived definitions can be \nrestored by updating their archived status. Active workflows using this action \nwill continue to work until modified.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Action Functions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Action Functions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves all serverless functions associated with a custom action definition. \nFunctions can execute before or after the main action to transform data or \nperform additional processing.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve Function by Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions/:functionType",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "functionType",
+                "value": "PRE_ACTION_EXECUTION",
+                "type": "path",
+                "description": "The type of function to operate on"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a function of a specific type for a custom action definition. \nFunction types include PRE_ACTION_EXECUTION and POST_ACTION_EXECUTION.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create or Update a Function",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions/:functionType",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "functionType",
+                "value": "PRE_ACTION_EXECUTION",
+                "type": "path",
+                "description": "The type of function to operate on"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates or updates a serverless function for a custom action definition. \nIf a function of the specified type already exists, it will be replaced \nwith the new function source code.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Function by Type",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions/:functionType",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "functionType",
+                "value": "PRE_ACTION_EXECUTION",
+                "type": "path",
+                "description": "The type of function to operate on"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Permanently deletes a function of the specified type from a custom action definition. \nThis action cannot be undone.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Specific Function",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions/:functionType/:functionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "functionType",
+                "value": "PRE_ACTION_EXECUTION",
+                "type": "path",
+                "description": "The type of function to operate on"
+              },
+              {
+                "name": "functionId",
+                "value": "func-xyz789",
+                "type": "path",
+                "description": "The unique identifier of the function"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a specific function by its ID from a custom action definition. \nThis provides the complete function details including source code.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Specific Function",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/functions/:functionType/:functionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "functionType",
+                "value": "PRE_ACTION_EXECUTION",
+                "type": "path",
+                "description": "The type of function to operate on"
+              },
+              {
+                "name": "functionId",
+                "value": "func-xyz789",
+                "type": "path",
+                "description": "The unique identifier of the function"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Permanently deletes a specific function by its ID from a custom action definition. \nThis action cannot be undone.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Definition Revisions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Definition Revisions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/revisions",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Maximum number of results to return per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page of results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a paginated list of all revisions for a custom action definition. \nEach revision represents a snapshot of the action definition at a point in time.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Specific Revision",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId/revisions/:revisionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "revisionId",
+                "value": "rev-001",
+                "type": "path",
+                "description": "The unique identifier of the revision"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves a specific revision of a custom action definition by its revision ID. \nThis allows you to view the action definition as it existed at a particular point in time.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

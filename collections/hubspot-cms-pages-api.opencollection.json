@@ -1,0 +1,290 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CMS Pages API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Site Pages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Site Pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages",
+            "params": [
+              {
+                "name": "sort",
+                "value": "example-value",
+                "type": "query",
+                "description": "Field to sort results by."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "createdAt",
+                "value": "2025-03-15T14:30:00Z",
+                "type": "query",
+                "description": "Filter pages created at this timestamp."
+              },
+              {
+                "name": "updatedAt",
+                "value": "2025-03-15T14:30:00Z",
+                "type": "query",
+                "description": "Filter pages updated at this timestamp."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived pages."
+              }
+            ]
+          },
+          "docs": "Returns a list of site pages in the portal. You can filter by various properties and paginate through results. Both draft and published pages are accessible through this endpoint."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Site Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new site page with the specified content and settings. The new page starts in draft state and must be published to make it publicly accessible."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Site Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages/:objectId",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the site page to retrieve."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived pages."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific site page by its ID, including content, SEO settings, publish state, and metadata."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Site Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages/:objectId",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the site page to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a site page. Only the properties included in the request body will be updated. Changes are applied to the draft version and must be published."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Site Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages/:objectId",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the site page to delete."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a site page by its ID. Archived pages are no longer publicly accessible but can be restored using the HubSpot UI."
+        },
+        {
+          "info": {
+            "name": "Hubspot Publish a Site Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/pages/site-pages/:objectId/draft/push-live",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the site page to publish."
+              }
+            ]
+          },
+          "docs": "Publishes the draft version of a site page, making all pending content changes live and publicly accessible. After publishing, the page becomes visible at its URL."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Landing Pages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Landing Pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/pages/landing-pages",
+            "params": [
+              {
+                "name": "sort",
+                "value": "example-value",
+                "type": "query",
+                "description": "Field to sort results by."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "createdAt",
+                "value": "2025-03-15T14:30:00Z",
+                "type": "query",
+                "description": "Filter landing pages created at this timestamp."
+              },
+              {
+                "name": "updatedAt",
+                "value": "2025-03-15T14:30:00Z",
+                "type": "query",
+                "description": "Filter landing pages updated at this timestamp."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived landing pages."
+              }
+            ]
+          },
+          "docs": "Returns a list of landing pages in the portal. You can filter by various properties and paginate through results. Both draft and published landing pages are accessible."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Landing Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/pages/landing-pages",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new landing page with the specified content and settings. The new landing page starts in draft state and must be published to make it publicly accessible."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Landing Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/pages/landing-pages/:objectId",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the landing page to retrieve."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived landing pages."
+              }
+            ]
+          },
+          "docs": "Returns the details of a specific landing page by its ID, including content, form connections, SEO settings, and publish state."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Landing Page",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/cms/v3/pages/landing-pages/:objectId",
+            "params": [
+              {
+                "name": "objectId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the landing page to delete."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a landing page by its ID. Archived landing pages are no longer publicly accessible but can be restored using the HubSpot UI."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

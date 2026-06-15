@@ -1,0 +1,210 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Marketing Transactional Email API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SMTP Token Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Smtp Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/smtp-tokens",
+            "params": [
+              {
+                "name": "campaignName",
+                "value": "",
+                "type": "query",
+                "description": "Filter tokens by campaign name"
+              },
+              {
+                "name": "emailCampaignId",
+                "value": "",
+                "type": "query",
+                "description": "Filter tokens by email campaign ID"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor from previous response"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results per page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns a paginated list of all SMTP API tokens for the account.\nUse this endpoint to view all configured tokens and their associated campaigns.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Smtp Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/smtp-tokens",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new SMTP API token for sending transactional emails.\nThe token can be associated with a specific email campaign and optionally configured to create contacts.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Get an Smtp Token by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/smtp-tokens/:tokenId",
+            "params": [
+              {
+                "name": "tokenId",
+                "value": "smtp-token-abc123",
+                "type": "path",
+                "description": "The unique identifier of the SMTP token"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves detailed information about a single SMTP API token by its unique identifier.\nNote: The password is not returned in this response for security reasons.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete an Smtp Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/smtp-tokens/:tokenId",
+            "params": [
+              {
+                "name": "tokenId",
+                "value": "smtp-token-abc123",
+                "type": "path",
+                "description": "The unique identifier of the SMTP token"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Permanently deletes an SMTP API token.\nAny applications using this token will no longer be able to send emails.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Reset Smtp Token Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/smtp-tokens/:tokenId/password-reset",
+            "params": [
+              {
+                "name": "tokenId",
+                "value": "smtp-token-abc123",
+                "type": "path",
+                "description": "The unique identifier of the SMTP token"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Resets the password for an existing SMTP API token.\nThe new password will be returned in the response. Store it securely as it cannot be retrieved again.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Single Send",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Send a Transactional Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/marketing/v3/transactional/single-email/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Sends a single transactional email using a pre-defined email template.\nThe email is sent immediately to the specified recipient with the provided personalization tokens.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,292 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CMS Source Code API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "File Content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Download a Source Code File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/content/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Downloads the byte contents of a file at the specified path in the specified environment.\nUse 'draft' for unpublished changes or 'published' for live content.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a New Source Code File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/content/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new file at the specified path in the specified environment.\nReturns an error if a file already exists at the path. For upsert behavior, use PUT instead.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create or Update a Source Code File",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/content/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new file or updates an existing file at the specified path in the specified environment.\nThis upsert operation accepts multipart/form-data content type with the file as the payload.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Source Code File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/content/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Permanently deletes a file at the specified path in the specified environment.\nThis action cannot be undone.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "File Metadata",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve File or Folder Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/metadata/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              },
+              {
+                "name": "properties",
+                "value": "name,folder",
+                "type": "query",
+                "description": "Specific properties to include in the response"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves metadata for a file or folder at the specified path in the specified environment.\nFor folders, includes a list of child files and subfolders.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "File Validation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Validate a Source Code File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/source-code/:environment/validate/:path",
+            "params": [
+              {
+                "name": "environment",
+                "value": "draft",
+                "type": "path",
+                "description": "The target environment for the operation (draft or published)"
+              },
+              {
+                "name": "path",
+                "value": "templates/blog/post.html",
+                "type": "path",
+                "description": "The file system path to the file or folder"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Validates the source code file at the specified path for syntax errors, \nHubL compatibility, and other issues. Returns validation results without modifying the file.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "File Extraction",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Extract a Zip Archive",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/cms/v3/source-code/extract/async",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Initiates asynchronous extraction of a zip file in the developer file system.\nReturns a task ID that can be used to check extraction status via the status endpoint.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Get Extraction Task Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/source-code/extract/async/tasks/:taskId/status",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the extraction task"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "private-app",
+              "value": "{{private-app}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves the current status of an asynchronous zip file extraction task.\nPoll this endpoint to determine when extraction is complete.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

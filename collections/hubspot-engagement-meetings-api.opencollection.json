@@ -1,0 +1,316 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Engagement Meetings API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Meetings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Meetings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived meetings."
+              }
+            ]
+          },
+          "docs": "Returns a page of meeting engagement records. Use the limit and after parameters to paginate through meetings. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Meeting",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new meeting engagement record with the provided properties. Common meeting properties include hs_meeting_title, hs_meeting_body, hs_meeting_start_time, hs_meeting_end_time, and hs_meeting_outcome."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Meeting",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the meeting to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived meetings."
+              }
+            ]
+          },
+          "docs": "Returns a single meeting engagement record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Meeting",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the meeting to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a meeting engagement record. Only the properties included in the request body will be updated."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Meeting",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the meeting to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a meeting engagement record by its ID. Archived meetings can be restored using the HubSpot UI or API."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Meetings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for meeting engagement records using filter groups, sorts, and other query parameters."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Meetings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of meeting records by their IDs. Useful for retrieving multiple meetings in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Meetings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple meeting engagement records in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Meetings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple meeting engagement records in a single API call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Meeting Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the meeting."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object."
+              }
+            ]
+          },
+          "docs": "Returns all associations of a meeting record to objects of a specified type, such as contacts, companies, or deals."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Meeting Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Creates an association between a meeting record and another CRM object."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Meeting Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/meetings/:meetingId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "meetingId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an association between a meeting record and another CRM object."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,3584 @@
+{
+  "item": [
+    {
+      "id": "1fbd3f1c-5497-4a2f-ab85-940215f303d2",
+      "name": "Batch Operations",
+      "description": {
+        "content": "Operations for processing multiple commerce payments in a single request",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "50677b6e-e3f9-4c8d-8c3b-5a632213c3b7",
+          "name": "Hubspot Read a Batch of Commerce Payments",
+          "request": {
+            "name": "Hubspot Read a Batch of Commerce Payments",
+            "description": {
+              "content": "Retrieves multiple commerce payment records by their internal IDs or unique property values \nin a single request. This operation is optimized for bulk data retrieval and supports \nfetching property history.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "batch",
+                "read"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return only archived results"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"propertiesWithHistory\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"idProperty\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c8af156d-b5c7-422c-bb15-409bc097bc40",
+              "name": "Successfully retrieved commerce payments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "read"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"propertiesWithHistory\": [\n    \"hs_payment_status\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETE\",\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-15T14:45:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-16T09:00:00Z\",\n      \"updatedAt\": \"2024-01-16T09:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"startedAt\": \"2024-01-20T08:00:00Z\",\n  \"completedAt\": \"2024-01-20T08:00:01Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "520b10bf-e5c3-429b-a976-e287c0ac4276",
+              "name": "Multi-status response - some payments retrieved successfully, some failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "read"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"propertiesWithHistory\": [\n    \"hs_payment_status\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETE\",\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-15T14:45:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"numErrors\": 1,\n  \"errors\": [\n    {\n      \"status\": \"404\",\n      \"id\": \"12345678999\",\n      \"category\": \"OBJECT_NOT_FOUND\",\n      \"message\": \"Commerce payment with id 12345678999 not found\"\n    }\n  ],\n  \"startedAt\": \"2024-01-20T08:00:00Z\",\n  \"completedAt\": \"2024-01-20T08:00:01Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b93ee1a-9906-4040-a468-3d6afb144063",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "read"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"propertiesWithHistory\": [\n    \"hs_payment_status\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"errors\": [\n    {\n      \"message\": \"properties is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"in\": \"body\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b16c7bde-5715-4ba4-8c93-5c1a39a96ca6",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "read"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"propertiesWithHistory\": [\n    \"hs_payment_status\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28ae9949-724e-43cd-9554-05dd41bb4f16",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "read"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"propertiesWithHistory\": [\n    \"hs_payment_status\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c8c5a96f-2f56-46cf-a4d7-8723a4fb1333",
+          "name": "Hubspot Archive a Batch of Commerce Payments",
+          "request": {
+            "name": "Hubspot Archive a Batch of Commerce Payments",
+            "description": {
+              "content": "Archives multiple commerce payment records by their IDs in a single request. \nArchived payments can be restored later if needed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "batch",
+                "archive"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "24d3f160-f019-4f4f-89a7-386eb828ef59",
+              "name": "Successfully archived commerce payments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0b0fac00-e52f-42e3-9a27-0f8f882b7c0b",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b953aac1-f09e-4f8f-8fbb-89d0b1724dd6",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b901d69e-ad72-4de8-b7d2-15eb70f2200f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "archive"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\"\n    },\n    {\n      \"id\": \"12345678902\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5fafd33b-17b7-47d6-803d-9732ffb62654",
+          "name": "Hubspot Create a Batch of Commerce Payments",
+          "request": {
+            "name": "Hubspot Create a Batch of Commerce Payments",
+            "description": {
+              "content": "Creates multiple commerce payment records in a single request. Each payment can include \nproperties and associations with other CRM objects.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "batch",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        },\n        {\n          \"to\": {\n            \"id\": \"<string>\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"associationCategory\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"associationTypeId\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "85e564a2-534d-4fab-b7cd-034a3d54a284",
+              "name": "Successfully created commerce payments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"501\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": 187\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETE\",\n  \"results\": [\n    {\n      \"id\": \"12345678903\",\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"createdAt\": \"2024-01-20T10:00:00Z\",\n      \"updatedAt\": \"2024-01-20T10:00:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678904\",\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      },\n      \"createdAt\": \"2024-01-20T10:00:00Z\",\n      \"updatedAt\": \"2024-01-20T10:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"startedAt\": \"2024-01-20T10:00:00Z\",\n  \"completedAt\": \"2024-01-20T10:00:01Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06fe5121-564e-4ed3-ad3c-b676c2b4f892",
+              "name": "Multi-status response - some payments created successfully, some failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"501\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": 187\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"archivedAt\": \"2025-03-15T14:30:00Z\",\n      \"associations\": {\n        \"key\": \"value\"\n      },\n      \"propertiesWithHistory\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"requestedAt\": \"2025-03-15T14:30:00Z\",\n  \"startedAt\": \"2025-03-15T14:30:00Z\",\n  \"completedAt\": \"2025-03-15T14:30:00Z\",\n  \"numErrors\": 100,\n  \"errors\": [\n    {\n      \"status\": \"active\",\n      \"id\": \"500123\",\n      \"category\": \"standard\",\n      \"message\": \"This is an example description.\",\n      \"errors\": [\n        {}\n      ],\n      \"context\": {\n        \"key\": \"value\"\n      },\n      \"links\": {\n        \"key\": \"value\"\n      },\n      \"subCategory\": \"standard\"\n    }\n  ],\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32777389-0e84-433b-a04a-ff010bea6957",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"501\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": 187\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f727896-aafb-4734-aefe-ec14bea4ee91",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"501\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": 187\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cbea0040-2124-4765-ba79-60160d73b8d0",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"credit_card\"\n      },\n      \"associations\": [\n        {\n          \"to\": {\n            \"id\": \"501\"\n          },\n          \"types\": [\n            {\n              \"associationCategory\": \"HUBSPOT_DEFINED\",\n              \"associationTypeId\": 187\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\",\n        \"hs_payment_method\": \"bank_transfer\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b881717d-e157-4211-bf49-60df7bd6182f",
+          "name": "Hubspot Update a Batch of Commerce Payments",
+          "request": {
+            "name": "Hubspot Update a Batch of Commerce Payments",
+            "description": {
+              "content": "Updates multiple commerce payment records in a single request. Only the specified \nproperties will be updated; other properties remain unchanged.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "batch",
+                "update"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"key_0\": \"<string>\",\n        \"key_1\": \"<string>\"\n      },\n      \"idProperty\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"properties\": {\n        \"key_0\": \"<string>\"\n      },\n      \"idProperty\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "db1ef382-0391-4d88-b080-eecec556112b",
+              "name": "Successfully updated commerce payments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\"\n      }\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETE\",\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-20T11:00:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-16T09:00:00Z\",\n      \"updatedAt\": \"2024-01-20T11:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"startedAt\": \"2024-01-20T11:00:00Z\",\n  \"completedAt\": \"2024-01-20T11:00:01Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc094dc0-e743-4a09-8842-f35aa2ba0374",
+              "name": "Multi-status response - some payments updated successfully, some failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\"\n      }\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"PENDING\",\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"archivedAt\": \"2025-03-15T14:30:00Z\",\n      \"associations\": {\n        \"key\": \"value\"\n      },\n      \"propertiesWithHistory\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"requestedAt\": \"2025-03-15T14:30:00Z\",\n  \"startedAt\": \"2025-03-15T14:30:00Z\",\n  \"completedAt\": \"2025-03-15T14:30:00Z\",\n  \"numErrors\": 100,\n  \"errors\": [\n    {\n      \"status\": \"active\",\n      \"id\": \"500123\",\n      \"category\": \"standard\",\n      \"message\": \"This is an example description.\",\n      \"errors\": [\n        {}\n      ],\n      \"context\": {\n        \"key\": \"value\"\n      },\n      \"links\": {\n        \"key\": \"value\"\n      },\n      \"subCategory\": \"standard\"\n    }\n  ],\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de64d0e5-b341-48ad-92ac-eb9358d8c679",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\"\n      }\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e9c2fad-c17e-4710-ada4-f96e29a5fff0",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\"\n      }\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7594e1b9-3d86-4a11-9c82-70a3687563ce",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "batch",
+                    "update"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\"\n      }\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"refunded\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "0d128f81-206a-4183-81ec-ecc7f3a9e6c0",
+      "name": "Payment Search",
+      "description": {
+        "content": "Advanced search operations for finding and filtering commerce payments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fc1433eb-767e-40af-8cc3-987d4dbc3bb5",
+          "name": "Hubspot Search Commerce Payments",
+          "request": {
+            "name": "Hubspot Search Commerce Payments",
+            "description": {
+              "content": "Searches for commerce payments using filters, sorting, and query parameters. \nSupports complex search criteria with multiple filter groups.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"limit\": 10,\n  \"after\": \"<string>\",\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e75a7038-ef22-4485-928e-83ac9c5c9c16",
+              "name": "Successfully executed search",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 2,\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"500.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-10T08:00:00Z\",\n      \"updatedAt\": \"2024-01-10T10:00:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678903\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-15T14:45:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"MTIzNDU2Nzg5MDM=\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "064d631b-ac75-41b3-8d7d-f0a62850c135",
+              "name": "Bad request - Invalid search parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f57825c-2bf2-4fe3-8c82-439a00ca1c7d",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85c89053-8446-4bfc-a4ad-7ec5775ad2b6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "46f5967d-01a0-436d-a3e5-2baef5ab1765",
+      "name": "Single Payment Operations",
+      "description": {
+        "content": "CRUD operations for individual commerce payment records",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e7402664-0a39-4361-a56a-0c9bc2b08578",
+          "name": "Hubspot List Commerce Payments",
+          "request": {
+            "name": "Hubspot List Commerce Payments",
+            "description": {
+              "content": "Retrieves a paginated list of all commerce payments. Use query parameters to control \nwhich properties are returned and to filter results.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of results to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page of results"
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "Comma-separated list of properties to include in the response"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>",
+                  "description": "Comma-separated list of properties to include with their value history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>",
+                  "description": "Comma-separated list of object types to retrieve associated IDs for"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return only archived results"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4cd283f6-6cf4-4d4d-b50b-b4e22de22243",
+              "name": "Successfully retrieved commerce payments list",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "MjAyNC0wMS0xNVQxMDozMDowMFo="
+                    },
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-15T14:45:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678902\",\n      \"properties\": {\n        \"hs_payment_status\": \"pending\",\n        \"hs_amount\": \"275.50\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-16T09:00:00Z\",\n      \"updatedAt\": \"2024-01-16T09:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"MTIzNDU2Nzg5MDI=\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "52d1aab6-34d8-4c49-beea-e52a8efebc67",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "MjAyNC0wMS0xNVQxMDozMDowMFo="
+                    },
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b08ff759-f534-496a-9431-09c0c70bbb7d",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "MjAyNC0wMS0xNVQxMDozMDowMFo="
+                    },
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fcbdef67-3a82-419b-8d56-dbabd9455f49",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "MjAyNC0wMS0xNVQxMDozMDowMFo="
+                    },
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c36aa60c-616b-49cc-8fba-0a5c26d72c75",
+          "name": "Hubspot Create a Commerce Payment",
+          "request": {
+            "name": "Hubspot Create a Commerce Payment",
+            "description": {
+              "content": "Creates a new commerce payment record with the specified properties. Optionally, \nassociations with other CRM objects can be established at creation time.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "68431d4e-bcc3-4bc1-8ec9-32a33d01c241",
+              "name": "Successfully created commerce payment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"pending\",\n    \"hs_amount\": \"350.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\",\n    \"hs_external_payment_id\": \"ext-pay-12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"501\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 187\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345678905\",\n  \"properties\": {\n    \"hs_payment_status\": \"pending\",\n    \"hs_amount\": \"350.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\",\n    \"hs_external_payment_id\": \"ext-pay-12345\"\n  },\n  \"createdAt\": \"2024-01-20T12:00:00Z\",\n  \"updatedAt\": \"2024-01-20T12:00:00Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7231c571-d946-45b3-9d02-bc79eeca66ee",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"pending\",\n    \"hs_amount\": \"350.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\",\n    \"hs_external_payment_id\": \"ext-pay-12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"501\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 187\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aeedd7ae-34bf-45a0-8ab1-ffc0521f8411",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"pending\",\n    \"hs_amount\": \"350.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\",\n    \"hs_external_payment_id\": \"ext-pay-12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"501\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 187\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5d71499-ad48-4bdd-bbb3-2e84768b509a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"pending\",\n    \"hs_amount\": \"350.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\",\n    \"hs_external_payment_id\": \"ext-pay-12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"501\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 187\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7479398f-0385-4635-a237-8c49e2d10009",
+          "name": "Hubspot Retrieve a Commerce Payment",
+          "request": {
+            "name": "Hubspot Retrieve a Commerce Payment",
+            "description": {
+              "content": "Retrieves a specific commerce payment by its ID. Include optional query parameters \nto control which properties are returned.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                ":commercePaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "Comma-separated list of properties to include in the response"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>",
+                  "description": "Comma-separated list of properties to include with their value history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>",
+                  "description": "Comma-separated list of object types to retrieve associated IDs for"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return only archived results"
+                },
+                {
+                  "disabled": false,
+                  "key": "idProperty",
+                  "value": "<string>",
+                  "description": "The name of a property with unique values to use as an identifier"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "commercePaymentId",
+                  "description": "(Required) The unique identifier of the commerce payment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8ea09073-5efa-4563-88e0-a5084c08ae2a",
+              "name": "Successfully retrieved commerce payment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345678901\",\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_amount\": \"150.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_payment_method\": \"credit_card\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00Z\",\n  \"updatedAt\": \"2024-01-15T14:45:00Z\",\n  \"archived\": false,\n  \"associations\": {\n    \"contacts\": {\n      \"results\": [\n        {\n          \"id\": \"501\",\n          \"type\": \"commerce_payment_to_contact\"\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "41b9d13b-70c5-42ab-9de4-d2c631ebb3e4",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36f1beed-4e59-4ca4-bfd2-d83198c06c0d",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "995323cc-e3a3-4b18-a98f-094917e77d9d",
+              "name": "Commerce payment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15d7a302-2113-42a5-9a3b-c178597610ce",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "hs_payment_status,hs_amount,hs_currency"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "hs_payment_status"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "contacts,deals"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "60308b94-6fd0-482d-8af7-f6b4f55b0344",
+          "name": "Hubspot Update a Commerce Payment",
+          "request": {
+            "name": "Hubspot Update a Commerce Payment",
+            "description": {
+              "content": "Performs a partial update of a commerce payment identified by its ID. Only the \nspecified properties will be updated. Read-only and non-existent properties are ignored.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                ":commercePaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "idProperty",
+                  "value": "<string>",
+                  "description": "The name of a property with unique values to use as an identifier"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "commercePaymentId",
+                  "description": "(Required) The unique identifier of the commerce payment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "deb2b2f3-78c3-4d0d-825f-df62ca77f664",
+              "name": "Successfully updated commerce payment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_notes\": \"Payment processed successfully\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345678901\",\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_amount\": \"150.00\",\n    \"hs_currency\": \"USD\",\n    \"hs_notes\": \"Payment processed successfully\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00Z\",\n  \"updatedAt\": \"2024-01-20T13:00:00Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c1ae1ff-fefd-4329-9b94-21a1328b254f",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_notes\": \"Payment processed successfully\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3faabc3f-91a0-4a88-b21d-001867676160",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_notes\": \"Payment processed successfully\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb4d8af7-f4a2-4ee1-a06f-d83660a91b5b",
+              "name": "Commerce payment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_notes\": \"Payment processed successfully\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ae494a94-2b0f-4601-b948-2a237b43feb8",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "idProperty",
+                      "value": "hs_external_payment_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_payment_status\": \"completed\",\n    \"hs_notes\": \"Payment processed successfully\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "47538912-7f1e-4b31-8913-c24a8b220e22",
+          "name": "Hubspot Archive a Commerce Payment",
+          "request": {
+            "name": "Hubspot Archive a Commerce Payment",
+            "description": {
+              "content": "Archives (soft deletes) a commerce payment by its ID. Archived payments can be \nrestored by updating their archived status.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                ":commercePaymentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "commercePaymentId",
+                  "description": "(Required) The unique identifier of the commerce payment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "crm.objects.commerce_payments.read crm.objects.commerce_payments.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "193681b5-b466-4103-ac5a-fdbcb6584041",
+              "name": "Successfully archived commerce payment",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "add1991b-aa7e-4aa6-9b68-d3107a4e2e3b",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ba9d8456-66ea-4634-90ef-b6135dd0402a",
+              "name": "Commerce payment not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fef710af-25be-4e5d-9d95-c07ff8b44bef",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    ":commercePaymentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commercePaymentId",
+                      "description": "(Required) The unique identifier of the commerce payment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0b66604b-98cd-4cea-985b-592c3218a85a",
+    "name": "HubSpot Commerce Payments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Commerce Payments API enables developers to manage commerce payment objects within \nthe HubSpot CRM. This API provides comprehensive functionality for creating, reading, updating, \narchiving, and searching commerce payment records. It supports both individual and batch operations, \nallowing for efficient management of payment data at scale.\n\nKey features include:\n- CRUD operations for individual commerce payments\n- Batch operations for processing multiple payments simultaneously\n- Advanced search capabilities with filtering and sorting\n- Property history tracking for audit purposes\n- Association management with other CRM objects\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

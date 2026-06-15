@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Event Instances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve Event Instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/events/v3/events",
+            "params": [
+              {
+                "name": "objectType",
+                "value": "contact",
+                "type": "query",
+                "description": "The type of CRM object to filter event instances on"
+              },
+              {
+                "name": "objectId",
+                "value": "123456",
+                "type": "query",
+                "description": "The ID of the CRM object to filter events. Requires objectType parameter."
+              },
+              {
+                "name": "eventType",
+                "value": "page_view",
+                "type": "query",
+                "description": "Filter by specific event type name"
+              },
+              {
+                "name": "occurredAfter",
+                "value": "2024-01-01T00:00:00Z",
+                "type": "query",
+                "description": "Filter for events that occurred after this ISO 8601 datetime"
+              },
+              {
+                "name": "occurredBefore",
+                "value": "2024-12-31T23:59:59Z",
+                "type": "query",
+                "description": "Filter for events that occurred before this ISO 8601 datetime"
+              },
+              {
+                "name": "sort",
+                "value": "DESCENDING",
+                "type": "query",
+                "description": "Sort direction based on event timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of results per page (1-100)"
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "Pagination cursor for the next page of results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve instances of event completion data from your HubSpot account. \nUse this endpoint to query events associated with specific CRM objects, \nfilter by event type and date range, and paginate through large result sets. \nThis is useful for analyzing user engagement and tracking conversion funnels.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Event Types",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Retrieve Available Event Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/events/v3/events/event-types",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a list of all available event types in your HubSpot account. \nUse this endpoint to discover what event types exist before querying \nfor specific event instances. This helps build dynamic filtering interfaces\nand validate event type parameters.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

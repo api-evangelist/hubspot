@@ -1,0 +1,2463 @@
+{
+  "item": [
+    {
+      "id": "c2d94078-4f52-4a0f-a532-75cbc6cdd298",
+      "name": "Actors",
+      "description": {
+        "content": "Operations for managing conversation participants including visitors and agents.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dd38fbfd-40e7-4493-94b2-5f631f3476c8",
+          "name": "Hubspot List Actors",
+          "request": {
+            "name": "Hubspot List Actors",
+            "description": {
+              "content": "Retrieve a list of conversation actors (participants) in your account.\nActors can be visitors, agents, or bots who participate in conversations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "actors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of actors per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5bf3b150-fcdd-4c78-aa2f-287f30655dca",
+              "name": "Successfully retrieved the list of actors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"actor_101\",\n      \"actorId\": \"actor_101\",\n      \"name\": \"John Customer\",\n      \"email\": \"john@example.com\",\n      \"type\": \"VISITOR\"\n    },\n    {\n      \"id\": \"actor_agent_123\",\n      \"actorId\": \"actor_agent_123\",\n      \"name\": \"Support Agent\",\n      \"email\": \"support@example.com\",\n      \"type\": \"AGENT\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/actors?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69901f67-03a4-4788-befc-abca43bb3dfc",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f92b5244-c110-404a-b8f8-5cf1e6c43eb6",
+          "name": "Hubspot Retrieve an Actor",
+          "request": {
+            "name": "Hubspot Retrieve an Actor",
+            "description": {
+              "content": "Retrieve a specific actor by their unique identifier.\nReturns complete details about the conversation participant.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "actors",
+                ":actorId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "actorId",
+                  "description": "(Required) The unique identifier of the actor to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9ebbc8c0-b2fd-4dac-9af6-4d190c2b33f4",
+              "name": "Successfully retrieved the actor details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors",
+                    ":actorId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "actorId",
+                      "description": "(Required) The unique identifier of the actor to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"actor_101\",\n  \"actorId\": \"actor_101\",\n  \"name\": \"John Customer\",\n  \"email\": \"john@example.com\",\n  \"type\": \"VISITOR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1eeb80e1-a6fd-42a3-b9ce-8fa979cb0661",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors",
+                    ":actorId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "actorId",
+                      "description": "(Required) The unique identifier of the actor to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "f1b3fc99-39ee-46e8-8b5b-bc2b7ae8b252",
+      "name": "Channels",
+      "description": {
+        "content": "Operations for managing communication channels such as email, chat, and social media.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ff2dba2-5eeb-4da1-9e4f-a31f5ebdc133",
+          "name": "Hubspot List Channels",
+          "request": {
+            "name": "Hubspot List Channels",
+            "description": {
+              "content": "Retrieve a list of available conversation channels configured in your account.\nChannels represent different communication methods like email, chat, or social media.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "channels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of channels per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d3ab5249-f585-4d9e-b866-3907683ef516",
+              "name": "Successfully retrieved the list of channels",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "channels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"channel_789\",\n      \"name\": \"Website Chat\",\n      \"type\": \"CHAT\",\n      \"accountId\": \"account_123\",\n      \"createdAt\": \"2024-01-01T00:00:00Z\"\n    },\n    {\n      \"id\": \"channel_790\",\n      \"name\": \"Support Email\",\n      \"type\": \"EMAIL\",\n      \"accountId\": \"account_124\",\n      \"createdAt\": \"2024-01-01T00:00:00Z\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/channels?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "811892d7-8f6e-400a-8b9b-69f135a47809",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "channels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "7bb47a00-aa10-4bbd-96de-c250932df73b",
+      "name": "Inboxes",
+      "description": {
+        "content": "Operations for managing conversation inboxes where messages are organized and routed.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "035ca399-74bc-4798-acc0-8f1262387327",
+          "name": "Hubspot List All Inboxes",
+          "request": {
+            "name": "Hubspot List All Inboxes",
+            "description": {
+              "content": "Retrieve a paginated list of all conversation inboxes in your HubSpot account.\nUse query parameters to filter, sort, and paginate results.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "inboxes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of results per page (1-100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for retrieving the next page of results"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Property name to sort results by"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Set to true to include archived inboxes in results"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ec48c655-eced-4cab-b026-e55614376417",
+              "name": "Successfully retrieved the list of inboxes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "inboxes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"12345678\",\n      \"name\": \"Support Inbox\",\n      \"type\": \"CONVERSATIONS_INBOX\",\n      \"createdAt\": \"2024-01-10T09:00:00Z\",\n      \"updatedAt\": \"2024-01-15T14:30:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345679\",\n      \"name\": \"Sales Inbox\",\n      \"type\": \"CONVERSATIONS_INBOX\",\n      \"createdAt\": \"2024-01-08T10:00:00Z\",\n      \"updatedAt\": \"2024-01-14T16:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"total\": 2,\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "663a6d11-a3a5-4e4e-9f9e-7e5dc6a5f909",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "inboxes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "createdAt"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c130e32c-e8a7-499e-8e0a-6355a42178aa",
+          "name": "Hubspot Retrieve an Inbox",
+          "request": {
+            "name": "Hubspot Retrieve an Inbox",
+            "description": {
+              "content": "Retrieve a specific conversation inbox by its unique identifier.\nReturns the complete inbox configuration details.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "inboxes",
+                ":inboxId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "inboxId",
+                  "description": "(Required) The unique identifier of the inbox to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9e944cae-e9dd-47ce-9fa6-8b9de61ed8a9",
+              "name": "Successfully retrieved the inbox details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "inboxes",
+                    ":inboxId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inboxId",
+                      "description": "(Required) The unique identifier of the inbox to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345678\",\n  \"name\": \"Support Inbox\",\n  \"type\": \"CONVERSATIONS_INBOX\",\n  \"createdAt\": \"2024-01-10T09:00:00Z\",\n  \"updatedAt\": \"2024-01-15T14:30:00Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d53e276-dd92-498d-9de4-46000fd6dfc3",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "inboxes",
+                    ":inboxId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "inboxId",
+                      "description": "(Required) The unique identifier of the inbox to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d6839b1f-eaab-4a1e-b11b-db1e18112292",
+      "name": "Messages",
+      "description": {
+        "content": "Operations for sending, receiving, and managing messages within conversation threads.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "97f813d8-173a-445e-ae2f-8ca8f43df2ea",
+          "name": "Hubspot List Thread Messages",
+          "request": {
+            "name": "Hubspot List Thread Messages",
+            "description": {
+              "content": "Retrieve all messages in a conversation thread. Messages are returned\nin chronological order with pagination support.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of messages per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "82b81981-858a-471d-9988-8798a64e075e",
+              "name": "Successfully retrieved the list of messages",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"msg_123456\",\n      \"type\": \"MESSAGE\",\n      \"text\": \"Hello, I need help with my order.\",\n      \"direction\": \"INCOMING\",\n      \"createdAt\": \"2024-01-20T10:30:00Z\"\n    },\n    {\n      \"id\": \"msg_123457\",\n      \"type\": \"MESSAGE\",\n      \"text\": \"Hi! I'd be happy to help. What's your order number?\",\n      \"direction\": \"OUTGOING\",\n      \"createdAt\": \"2024-01-20T10:32:00Z\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/threads/987654321/messages?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "adaaf7c1-f65e-47ec-84f7-4dde5b617cde",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0eba953b-6707-40b4-a34d-41a3feb2f620",
+          "name": "Hubspot Send a Message",
+          "request": {
+            "name": "Hubspot Send a Message",
+            "description": {
+              "content": "Send a new message to a conversation thread. The message will be delivered\nthrough the specified channel to the thread participants.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId",
+                "messages"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread to send the message to"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"text\": \"<string>\",\n  \"senderActorId\": \"<string>\",\n  \"richText\": \"<string>\",\n  \"channelId\": \"<string>\",\n  \"channelAccountId\": \"<string>\",\n  \"recipients\": [\n    {\n      \"actorId\": \"<string>\"\n    },\n    {\n      \"actorId\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "69f9542e-adbd-478f-97bf-182d5ad84114",
+              "name": "Successfully sent the message",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to send the message to"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"MESSAGE\",\n  \"text\": \"Thank you for reaching out. How can I help you today?\",\n  \"senderActorId\": \"actor_agent_123\",\n  \"channelId\": \"channel_789\",\n  \"channelAccountId\": \"account_123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"msg_123456\",\n  \"type\": \"MESSAGE\",\n  \"text\": \"Hello, I need help with my order.\",\n  \"direction\": \"INCOMING\",\n  \"channelId\": \"channel_789\",\n  \"channelAccountId\": \"account_123\",\n  \"senders\": [\n    {\n      \"id\": \"actor_101\",\n      \"name\": \"John Customer\",\n      \"email\": \"john@example.com\",\n      \"type\": \"VISITOR\"\n    }\n  ],\n  \"status\": {\n    \"statusType\": \"DELIVERED\"\n  },\n  \"createdAt\": \"2024-01-20T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6602a2b-e3a3-4fde-a61c-f8be4f5f024c",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to send the message to"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"MESSAGE\",\n  \"text\": \"Thank you for reaching out. How can I help you today?\",\n  \"senderActorId\": \"actor_agent_123\",\n  \"channelId\": \"channel_789\",\n  \"channelAccountId\": \"account_123\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "837bc220-5eb2-4f79-9f88-2372d4274218",
+          "name": "Hubspot Retrieve a Message",
+          "request": {
+            "name": "Hubspot Retrieve a Message",
+            "description": {
+              "content": "Retrieve a specific message by its unique identifier within a thread.\nReturns the complete message details including sender, recipients, and attachments.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId",
+                "messages",
+                ":messageId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread containing the message"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "messageId",
+                  "description": "(Required) The unique identifier of the message to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5885f6e6-cfdb-4ea1-abd0-9c4f8884907a",
+              "name": "Successfully retrieved the message details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages",
+                    ":messageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread containing the message"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) The unique identifier of the message to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"msg_123456\",\n  \"type\": \"MESSAGE\",\n  \"text\": \"Hello, I need help with my order.\",\n  \"direction\": \"INCOMING\",\n  \"channelId\": \"channel_789\",\n  \"channelAccountId\": \"account_123\",\n  \"senders\": [\n    {\n      \"id\": \"actor_101\",\n      \"name\": \"John Customer\",\n      \"email\": \"john@example.com\",\n      \"type\": \"VISITOR\"\n    }\n  ],\n  \"status\": {\n    \"statusType\": \"DELIVERED\"\n  },\n  \"createdAt\": \"2024-01-20T10:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34fa34a4-f796-4e96-a392-2e09ca31d527",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId",
+                    "messages",
+                    ":messageId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread containing the message"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "messageId",
+                      "description": "(Required) The unique identifier of the message to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "371c7a05-bfdb-4a1c-86e6-877277ee344d",
+      "name": "Threads",
+      "description": {
+        "content": "Operations for creating, retrieving, updating, and archiving conversation threads.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ebf68b16-a17c-4470-a2b4-5604fbab02c7",
+          "name": "Hubspot List Conversation Threads",
+          "request": {
+            "name": "Hubspot List Conversation Threads",
+            "description": {
+              "content": "Retrieve a paginated list of conversation threads with optional filtering.\nFilter by inbox, contact, or status to find specific conversations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "inboxId",
+                  "value": "<string>",
+                  "description": "Filter threads by inbox ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "associatedContactId",
+                  "value": "<string>",
+                  "description": "Filter threads by associated CRM contact ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter threads by status"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of results per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Property to sort results by"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "708c1c0c-aba4-4b9e-b131-6c09cfe72d41",
+              "name": "Successfully retrieved the list of threads",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "inboxId",
+                      "value": "12345678"
+                    },
+                    {
+                      "key": "associatedContactId",
+                      "value": "101"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "latestMessageTimestamp"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"987654321\",\n      \"inboxId\": \"12345678\",\n      \"status\": \"OPEN\",\n      \"spam\": false,\n      \"associatedContactId\": \"101\",\n      \"createdAt\": \"2024-01-15T09:00:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"987654322\",\n      \"inboxId\": \"12345678\",\n      \"status\": \"CLOSED\",\n      \"spam\": false,\n      \"associatedContactId\": \"102\",\n      \"createdAt\": \"2024-01-14T11:00:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/threads?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87162f44-0b6d-41bb-84c1-1044b95559f6",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "inboxId",
+                      "value": "12345678"
+                    },
+                    {
+                      "key": "associatedContactId",
+                      "value": "101"
+                    },
+                    {
+                      "key": "status",
+                      "value": "OPEN"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "latestMessageTimestamp"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "539c82a1-91a8-469e-a4d3-bad6da0f6a9c",
+          "name": "Hubspot Retrieve a Thread",
+          "request": {
+            "name": "Hubspot Retrieve a Thread",
+            "description": {
+              "content": "Retrieve a specific conversation thread by its unique identifier.\nOptionally include associated objects like tickets.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Set to true to retrieve archived threads"
+                },
+                {
+                  "disabled": false,
+                  "key": "property",
+                  "value": "<string>",
+                  "description": "Specific property to return in the response"
+                },
+                {
+                  "disabled": false,
+                  "key": "association",
+                  "value": "<string>",
+                  "description": "Include associated objects in the response"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1f1f5802-8977-4501-9e32-e523f62b2db2",
+              "name": "Successfully retrieved the thread details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "property",
+                      "value": "status"
+                    },
+                    {
+                      "key": "association",
+                      "value": "TICKET"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"987654321\",\n  \"inboxId\": \"12345678\",\n  \"status\": \"OPEN\",\n  \"spam\": false,\n  \"associatedContactId\": \"101\",\n  \"assignedTo\": \"user_456\",\n  \"originalChannelId\": \"channel_789\",\n  \"originalChannelAccountId\": \"account_123\",\n  \"latestMessageTimestamp\": \"2024-01-20T10:30:00Z\",\n  \"latestMessageSentTimestamp\": \"2024-01-20T10:25:00Z\",\n  \"latestMessageReceivedTimestamp\": \"2024-01-20T10:30:00Z\",\n  \"createdAt\": \"2024-01-15T09:00:00Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f4db290-f68f-4341-a84c-1ed2ee4ff37a",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    },
+                    {
+                      "key": "property",
+                      "value": "status"
+                    },
+                    {
+                      "key": "association",
+                      "value": "TICKET"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb61091c-130e-474c-b53e-f6e571f5f3c2",
+          "name": "Hubspot Update a Thread",
+          "request": {
+            "name": "Hubspot Update a Thread",
+            "description": {
+              "content": "Update properties of an existing conversation thread.\nUse this to change status, reassign the thread, or modify other properties.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread to update"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\",\n  \"assignedTo\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3a5cfd59-2573-4b38-9d4f-0fabefd338a1",
+              "name": "Successfully updated the thread",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"CLOSED\",\n  \"assignedTo\": \"user_789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"987654321\",\n  \"inboxId\": \"12345678\",\n  \"status\": \"OPEN\",\n  \"spam\": false,\n  \"associatedContactId\": \"101\",\n  \"assignedTo\": \"user_456\",\n  \"originalChannelId\": \"channel_789\",\n  \"originalChannelAccountId\": \"account_123\",\n  \"latestMessageTimestamp\": \"2024-01-20T10:30:00Z\",\n  \"latestMessageSentTimestamp\": \"2024-01-20T10:25:00Z\",\n  \"latestMessageReceivedTimestamp\": \"2024-01-20T10:30:00Z\",\n  \"createdAt\": \"2024-01-15T09:00:00Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "95ec1f5c-be2f-4286-9606-439631e661af",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to update"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"CLOSED\",\n  \"assignedTo\": \"user_789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0e77bbe1-d255-46e5-95c8-709df1e92d1c",
+          "name": "Hubspot Archive a Thread",
+          "request": {
+            "name": "Hubspot Archive a Thread",
+            "description": {
+              "content": "Archive a conversation thread. The thread will be permanently deleted \n30 days after being archived. This action can be undone within the retention period.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "threads",
+                ":threadId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "threadId",
+                  "description": "(Required) The unique identifier of the thread to archive"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "conversations.read conversations.write"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "022a7984-4eb0-4f40-bfeb-205bf832473d",
+              "name": "Successfully archived the thread",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to archive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f7663bfb-ac4b-4456-ba00-17d81dc37fca",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "threads",
+                    ":threadId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "threadId",
+                      "description": "(Required) The unique identifier of the thread to archive"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "860ae50b-114c-4ec0-9b0c-6211ed43dbf8",
+    "name": "HubSpot Conversations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Conversations API enables you to manage conversation threads, \nmessages, and inboxes programmatically. Use this API to query existing \nconversations, send messages, manage thread assignments, and seamlessly \nintegrate with your support and sales workflows.\n\n## Key Features\n- **Inbox Management**: Create and configure conversation inboxes for different teams\n- **Thread Operations**: Create, update, and archive conversation threads\n- **Messaging**: Send and receive messages with rich text and attachments\n- **Channel Integration**: Connect multiple communication channels (email, chat, social)\n- **Actor Management**: Track and manage conversation participants\n\n## Authentication\nThis API supports OAuth 2.0 and Private App authentication methods.\n\n## Rate Limits\nStandard HubSpot API rate limits apply. See HubSpot documentation for details.\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

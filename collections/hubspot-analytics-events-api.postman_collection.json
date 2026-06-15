@@ -1,0 +1,657 @@
+{
+  "item": [
+    {
+      "id": "96838b47-6f3e-41dd-9aff-32f1d40e9f67",
+      "name": "Event Instances",
+      "description": {
+        "content": "Retrieve and query event completion data from CRM objects",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9ee895e0-f1f5-4336-a220-ace7151b7b96",
+          "name": "Hubspot Retrieve Event Instances",
+          "request": {
+            "name": "Hubspot Retrieve Event Instances",
+            "description": {
+              "content": "Retrieve instances of event completion data from your HubSpot account. \nUse this endpoint to query events associated with specific CRM objects, \nfilter by event type and date range, and paginate through large result sets. \nThis is useful for analyzing user engagement and tracking conversion funnels.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "v3",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "objectType",
+                  "value": "<string>",
+                  "description": "The type of CRM object to filter event instances on"
+                },
+                {
+                  "disabled": false,
+                  "key": "objectId",
+                  "value": "<string>",
+                  "description": "The ID of the CRM object to filter events. Requires objectType parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "eventType",
+                  "value": "<string>",
+                  "description": "Filter by specific event type name"
+                },
+                {
+                  "disabled": false,
+                  "key": "occurredAfter",
+                  "value": "<dateTime>",
+                  "description": "Filter for events that occurred after this ISO 8601 datetime"
+                },
+                {
+                  "disabled": false,
+                  "key": "occurredBefore",
+                  "value": "<dateTime>",
+                  "description": "Filter for events that occurred before this ISO 8601 datetime"
+                },
+                {
+                  "disabled": false,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort direction based on event timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of results per page (1-100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page of results"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e36e077e-78cc-4f2c-8bd9-c47e8cb47d7f",
+              "name": "Successfully retrieved event instances",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "objectType",
+                      "value": "contact"
+                    },
+                    {
+                      "key": "objectId",
+                      "value": "123456"
+                    },
+                    {
+                      "key": "eventType",
+                      "value": "page_view"
+                    },
+                    {
+                      "key": "occurredAfter",
+                      "value": "2024-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "occurredBefore",
+                      "value": "2024-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "DESCENDING"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"evt_12345\",\n      \"eventType\": \"page_view\",\n      \"objectId\": \"123456\",\n      \"objectType\": \"contact\",\n      \"occurredAt\": \"2024-01-15T10:30:00Z\",\n      \"properties\": {\n        \"page_url\": \"https://example.com/pricing\",\n        \"duration\": \"45\"\n      }\n    },\n    {\n      \"id\": \"evt_12346\",\n      \"eventType\": \"form_submission\",\n      \"objectId\": \"123456\",\n      \"objectType\": \"contact\",\n      \"occurredAt\": \"2024-01-15T10:35:00Z\",\n      \"properties\": {\n        \"form_name\": \"Contact Us\",\n        \"submission_id\": \"sub_789\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/events/v3/events/?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f96c701a-5db2-4e78-9a13-765dcc971cf8",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "objectType",
+                      "value": "contact"
+                    },
+                    {
+                      "key": "objectId",
+                      "value": "123456"
+                    },
+                    {
+                      "key": "eventType",
+                      "value": "page_view"
+                    },
+                    {
+                      "key": "occurredAfter",
+                      "value": "2024-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "occurredBefore",
+                      "value": "2024-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "DESCENDING"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"invalidFields\": [\n      \"objectType\"\n    ]\n  },\n  \"links\": {\n    \"documentation\": \"https://developers.hubspot.com/docs/api/events\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"objectType must be a valid CRM object type\",\n      \"code\": \"INVALID_OBJECT_TYPE\",\n      \"in\": \"query\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57061b6d-7325-473e-bc8f-be7f0fda4d10",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "objectType",
+                      "value": "contact"
+                    },
+                    {
+                      "key": "objectId",
+                      "value": "123456"
+                    },
+                    {
+                      "key": "eventType",
+                      "value": "page_view"
+                    },
+                    {
+                      "key": "occurredAfter",
+                      "value": "2024-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "occurredBefore",
+                      "value": "2024-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "DESCENDING"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"invalidFields\": [\n      \"objectType\"\n    ]\n  },\n  \"links\": {\n    \"documentation\": \"https://developers.hubspot.com/docs/api/events\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"objectType must be a valid CRM object type\",\n      \"code\": \"INVALID_OBJECT_TYPE\",\n      \"in\": \"query\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0271357-2c2c-4810-b1eb-6c01285e5e89",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "objectType",
+                      "value": "contact"
+                    },
+                    {
+                      "key": "objectId",
+                      "value": "123456"
+                    },
+                    {
+                      "key": "eventType",
+                      "value": "page_view"
+                    },
+                    {
+                      "key": "occurredAfter",
+                      "value": "2024-01-01T00:00:00Z"
+                    },
+                    {
+                      "key": "occurredBefore",
+                      "value": "2024-12-31T23:59:59Z"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "DESCENDING"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"invalidFields\": [\n      \"objectType\"\n    ]\n  },\n  \"links\": {\n    \"documentation\": \"https://developers.hubspot.com/docs/api/events\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"objectType must be a valid CRM object type\",\n      \"code\": \"INVALID_OBJECT_TYPE\",\n      \"in\": \"query\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "dfada3ce-86f6-4f34-bdca-b77333cccb87",
+      "name": "Event Types",
+      "description": {
+        "content": "Discover and retrieve available event type definitions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3ef4ddb6-3fb1-46ae-b52a-63c00da5c068",
+          "name": "Hubspot Retrieve Available Event Types",
+          "request": {
+            "name": "Hubspot Retrieve Available Event Types",
+            "description": {
+              "content": "Retrieve a list of all available event types in your HubSpot account. \nUse this endpoint to discover what event types exist before querying \nfor specific event instances. This helps build dynamic filtering interfaces\nand validate event type parameters.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "v3",
+                "events",
+                "event-types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a7f7616d-0f02-40b9-96ae-9903061d3836",
+              "name": "Successfully retrieved event types",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events",
+                    "event-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"eventTypes\": [\n    \"page_view\",\n    \"form_submission\",\n    \"email_open\",\n    \"email_click\",\n    \"meeting_booked\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86337cdf-50dc-4810-b9f9-975681622f61",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events",
+                    "event-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"invalidFields\": [\n      \"objectType\"\n    ]\n  },\n  \"links\": {\n    \"documentation\": \"https://developers.hubspot.com/docs/api/events\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"objectType must be a valid CRM object type\",\n      \"code\": \"INVALID_OBJECT_TYPE\",\n      \"in\": \"query\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "87473bb8-ec7d-4cb4-80b8-ae804e2ea199",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "v3",
+                    "events",
+                    "event-types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"invalidFields\": [\n      \"objectType\"\n    ]\n  },\n  \"links\": {\n    \"documentation\": \"https://developers.hubspot.com/docs/api/events\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"objectType must be a valid CRM object type\",\n      \"code\": \"INVALID_OBJECT_TYPE\",\n      \"in\": \"query\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "60d4a9e4-7287-4a6a-883a-4b3d6c3893a5",
+    "name": "HubSpot Analytics Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

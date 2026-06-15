@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CMS Domains API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/domains/",
+            "params": [
+              {
+                "name": "createdAt",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains created at this exact date and time"
+              },
+              {
+                "name": "createdAfter",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains created after this date and time"
+              },
+              {
+                "name": "createdBefore",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains created before this date and time"
+              },
+              {
+                "name": "updatedAt",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains updated at this exact date and time"
+              },
+              {
+                "name": "updatedAfter",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains updated after this date and time"
+              },
+              {
+                "name": "updatedBefore",
+                "value": "",
+                "type": "query",
+                "description": "Only return domains updated before this date and time"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Properties to sort by, with optional direction prefix (- for descending)"
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "The paging cursor token from a previous response for pagination"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results per page (default 10, max 100)"
+              },
+              {
+                "name": "archived",
+                "value": "",
+                "type": "query",
+                "description": "Whether to return only archived domains"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns all existing domains that have been created and connected to the HubSpot account.\nResults can be filtered by creation or update date and paginated using cursor-based pagination.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Domain by Id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/cms/v3/domains/:domainId",
+            "params": [
+              {
+                "name": "domainId",
+                "value": "3210329704",
+                "type": "path",
+                "description": "The unique identifier of the domain"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Returns detailed information about a single domain identified by its unique ID.\nThe response includes configuration status, SSL settings, and usage information.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Search API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Search Crm Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/:objectType/search",
+            "params": [
+              {
+                "name": "objectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for CRM object records of the specified type using filter groups, sort criteria, and other query parameters. Supports complex filtering with multiple filter groups (joined with OR logic) where each group contains filters (joined with AND logic). Returns matching records with the specified properties."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,502 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Conversations API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Inboxes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Inboxes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/inboxes",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of results per page (1-100)"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for retrieving the next page of results"
+              },
+              {
+                "name": "sort",
+                "value": "createdAt",
+                "type": "query",
+                "description": "Property name to sort results by"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Set to true to include archived inboxes in results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all conversation inboxes in your HubSpot account.\nUse query parameters to filter, sort, and paginate results.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Inbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/inboxes/:inboxId",
+            "params": [
+              {
+                "name": "inboxId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier of the inbox to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific conversation inbox by its unique identifier.\nReturns the complete inbox configuration details.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Threads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Conversation Threads",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads",
+            "params": [
+              {
+                "name": "inboxId",
+                "value": "12345678",
+                "type": "query",
+                "description": "Filter threads by inbox ID"
+              },
+              {
+                "name": "associatedContactId",
+                "value": "101",
+                "type": "query",
+                "description": "Filter threads by associated CRM contact ID"
+              },
+              {
+                "name": "status",
+                "value": "OPEN",
+                "type": "query",
+                "description": "Filter threads by status"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of results per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              },
+              {
+                "name": "sort",
+                "value": "latestMessageTimestamp",
+                "type": "query",
+                "description": "Property to sort results by"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of conversation threads with optional filtering.\nFilter by inbox, contact, or status to find specific conversations.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread to retrieve"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Set to true to retrieve archived threads"
+              },
+              {
+                "name": "property",
+                "value": "status",
+                "type": "query",
+                "description": "Specific property to return in the response"
+              },
+              {
+                "name": "association",
+                "value": "TICKET",
+                "type": "query",
+                "description": "Include associated objects in the response"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific conversation thread by its unique identifier.\nOptionally include associated objects like tickets.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Update properties of an existing conversation thread.\nUse this to change status, reassign the thread, or modify other properties.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Thread",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread to archive"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Archive a conversation thread. The thread will be permanently deleted \n30 days after being archived. This action can be undone within the retention period.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Thread Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of messages per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve all messages in a conversation thread. Messages are returned\nin chronological order with pagination support.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Send a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread to send the message to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Send a new message to a conversation thread. The message will be delivered\nthrough the specified channel to the thread participants.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages/:messageId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread containing the message"
+              },
+              {
+                "name": "messageId",
+                "value": "msg_123456",
+                "type": "path",
+                "description": "The unique identifier of the message to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific message by its unique identifier within a thread.\nReturns the complete message details including sender, recipients, and attachments.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Channels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/channels",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of channels per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a list of available conversation channels configured in your account.\nChannels represent different communication methods like email, chat, or social media.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Actors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Actors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/actors",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of actors per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a list of conversation actors (participants) in your account.\nActors can be visitors, agents, or bots who participate in conversations.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Actor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/actors/:actorId",
+            "params": [
+              {
+                "name": "actorId",
+                "value": "actor_101",
+                "type": "path",
+                "description": "The unique identifier of the actor to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific actor by their unique identifier.\nReturns complete details about the conversation participant.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

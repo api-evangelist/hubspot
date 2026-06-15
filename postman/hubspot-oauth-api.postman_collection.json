@@ -1,0 +1,1015 @@
+{
+  "info": {
+    "_postman_id": "41c4e954-1781-4e21-bf7a-83f3a9ded721",
+    "name": "HubSpot OAuth API",
+    "description": "The HubSpot OAuth API enables secure authentication and authorization for accessing HubSpot resources.\nUse these endpoints to manage OAuth tokens, refresh access tokens, and retrieve token metadata for\nintegrations with the HubSpot platform.\n\n\nContact Support:\n Name: HubSpot Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-06-05T15:01:39.000Z",
+    "updatedAt": "2026-06-05T15:01:39.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-41c4e954-1781-4e21-bf7a-83f3a9ded721"
+  },
+  "item": [
+    {
+      "name": "oauth",
+      "item": [
+        {
+          "name": "v1",
+          "item": [
+            {
+              "name": "access-tokens",
+              "item": [
+                {
+                  "name": "{token}",
+                  "item": [
+                    {
+                      "name": "Hubspot Retrieve Access Token Metadata",
+                      "id": "89f13139-f63f-4dfb-9e3e-6a38ac99f5ec",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/access-tokens/:token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "access-tokens",
+                            ":token"
+                          ],
+                          "variable": [
+                            {
+                              "id": "847899c0-46bb-4ccf-b82a-fe030c54ab89",
+                              "key": "token",
+                              "value": "<string>",
+                              "description": "(Required) The OAuth access token to retrieve metadata for"
+                            }
+                          ]
+                        },
+                        "description": "Retrieves metadata for a specific OAuth access token, including associated scopes,\nexpiration time, and the user and hub information linked to the token.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "a168d4f1-137e-46c9-9025-d3e1390bb289",
+                          "name": "Successfully retrieved access token metadata",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/access-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "access-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Content-Type",
+                              "value": "<string>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"token\": \"<string>\",\n  \"app_id\": \"<integer>\",\n  \"hub_id\": \"<integer>\",\n  \"scopes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"token_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"user_id\": \"<integer>\",\n  \"user\": \"<string>\",\n  \"hub_domain\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-a168d4f1-137e-46c9-9025-d3e1390bb289"
+                        },
+                        {
+                          "id": "62ae4054-0711-48c7-ace5-db12de81d25a",
+                          "name": "Unauthorized - Invalid or expired token",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/access-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "access-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-62ae4054-0711-48c7-ace5-db12de81d25a"
+                        },
+                        {
+                          "id": "bc09322a-1ea7-4850-ae19-e667aa91bb79",
+                          "name": "Internal Server Error",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/access-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "access-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-bc09322a-1ea7-4850-ae19-e667aa91bb79"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-89f13139-f63f-4dfb-9e3e-6a38ac99f5ec"
+                    }
+                  ],
+                  "id": "97bba587-1986-4d46-9b79-f0616856e9ce",
+                  "createdAt": "2026-06-05T15:01:40.000Z",
+                  "updatedAt": "2026-06-05T15:01:40.000Z",
+                  "uid": "35240-97bba587-1986-4d46-9b79-f0616856e9ce"
+                }
+              ],
+              "id": "500caf81-8715-410f-9431-b5978348b083",
+              "createdAt": "2026-06-05T15:01:40.000Z",
+              "updatedAt": "2026-06-05T15:01:40.000Z",
+              "uid": "35240-500caf81-8715-410f-9431-b5978348b083"
+            },
+            {
+              "name": "refresh-tokens",
+              "item": [
+                {
+                  "name": "{token}",
+                  "item": [
+                    {
+                      "name": "Hubspot Retrieve Refresh Token Metadata",
+                      "id": "6c41053c-194e-47d3-87da-627dc60ad68a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "refresh-tokens",
+                            ":token"
+                          ],
+                          "variable": [
+                            {
+                              "id": "66bf64c0-824a-4f11-811b-5a18ff2ea48b",
+                              "key": "token",
+                              "value": "<string>",
+                              "description": "(Required) The OAuth refresh token"
+                            }
+                          ]
+                        },
+                        "description": "Retrieves metadata for a specific OAuth refresh token, including the associated\nclient, user, and hub information.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "21e2dab3-be04-41a1-93e5-5ee3acb9be18",
+                          "name": "Successfully retrieved refresh token metadata",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Content-Type",
+                              "value": "<string>"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"token\": \"<string>\",\n  \"client_id\": \"<string>\",\n  \"hub_id\": \"<integer>\",\n  \"scopes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"user_id\": \"<integer>\",\n  \"user\": \"<string>\"\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-21e2dab3-be04-41a1-93e5-5ee3acb9be18"
+                        },
+                        {
+                          "id": "059e521a-306c-4042-9786-258e3d1b0424",
+                          "name": "Unauthorized - Invalid refresh token",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-059e521a-306c-4042-9786-258e3d1b0424"
+                        },
+                        {
+                          "id": "88bd9447-34cb-4574-a605-3fe914bbe140",
+                          "name": "Internal Server Error",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-88bd9447-34cb-4574-a605-3fe914bbe140"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-6c41053c-194e-47d3-87da-627dc60ad68a"
+                    },
+                    {
+                      "name": "Hubspot Revoke a Refresh Token",
+                      "id": "3c56628e-0bdc-4b51-ab9e-9238a2b70a55",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "refresh-tokens",
+                            ":token"
+                          ],
+                          "variable": [
+                            {
+                              "id": "337eecb5-9fc0-425d-8b16-5971a6f3844c",
+                              "key": "token",
+                              "value": "<string>",
+                              "description": "(Required) The OAuth refresh token"
+                            }
+                          ]
+                        },
+                        "description": "Revokes a specific OAuth refresh token, invalidating it and any associated access tokens.\nUse this endpoint when a user logs out or when you need to terminate a session.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "a6ae8357-caba-42a6-8f59-14ff67201abc",
+                          "name": "Refresh token successfully revoked",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-a6ae8357-caba-42a6-8f59-14ff67201abc"
+                        },
+                        {
+                          "id": "b99b6120-ac36-4904-8612-d3bc0b452c01",
+                          "name": "Unauthorized - Invalid refresh token",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-b99b6120-ac36-4904-8612-d3bc0b452c01"
+                        },
+                        {
+                          "id": "f2274798-2788-421d-832a-28163e2f3e95",
+                          "name": "Internal Server Error",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/oauth/v1/refresh-tokens/:token",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "oauth",
+                                "v1",
+                                "refresh-tokens",
+                                ":token"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "token"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                          "createdAt": "2026-06-05T15:01:40.000Z",
+                          "updatedAt": "2026-06-05T15:01:40.000Z",
+                          "uid": "35240-f2274798-2788-421d-832a-28163e2f3e95"
+                        }
+                      ],
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-3c56628e-0bdc-4b51-ab9e-9238a2b70a55"
+                    }
+                  ],
+                  "id": "55ceb6b6-25ac-4612-a90b-f80d37742775",
+                  "createdAt": "2026-06-05T15:01:40.000Z",
+                  "updatedAt": "2026-06-05T15:01:40.000Z",
+                  "uid": "35240-55ceb6b6-25ac-4612-a90b-f80d37742775"
+                }
+              ],
+              "id": "43250149-4588-4e11-abc6-8df45cf15615",
+              "createdAt": "2026-06-05T15:01:40.000Z",
+              "updatedAt": "2026-06-05T15:01:40.000Z",
+              "uid": "35240-43250149-4588-4e11-abc6-8df45cf15615"
+            },
+            {
+              "name": "token",
+              "item": [
+                {
+                  "name": "Hubspot Create or Refresh an Access Token",
+                  "id": "03f68ba2-984f-4678-ae56-262d322d218a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) The type of grant being requested",
+                          "key": "grant_type",
+                          "value": "refresh_token"
+                        },
+                        {
+                          "description": "(Required) The client ID of your application",
+                          "key": "client_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) The client secret of your application",
+                          "key": "client_secret",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The redirect URI (required for authorization_code grant)",
+                          "key": "redirect_uri",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The authorization code (required for authorization_code grant)",
+                          "key": "code",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The refresh token (required for refresh_token grant)",
+                          "key": "refresh_token",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/oauth/v1/token",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "oauth",
+                        "v1",
+                        "token"
+                      ]
+                    },
+                    "description": "Exchanges an authorization code for an access token or refreshes an existing access token\nusing a refresh token. This endpoint supports multiple grant types including authorization_code\nand refresh_token flows.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "0ca720e0-27ca-4f4e-8e79-914a005a5660",
+                      "name": "Successfully created or refreshed access token",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) The type of grant being requested",
+                              "key": "grant_type",
+                              "value": "refresh_token"
+                            },
+                            {
+                              "description": "(Required) The client ID of your application",
+                              "key": "client_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The client secret of your application",
+                              "key": "client_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The redirect URI (required for authorization_code grant)",
+                              "key": "redirect_uri",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The authorization code (required for authorization_code grant)",
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The refresh token (required for refresh_token grant)",
+                              "key": "refresh_token",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "token"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Content-Type",
+                          "value": "<string>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"access_token\": \"<string>\",\n  \"token_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"refresh_token\": \"<string>\",\n  \"id_token\": \"<string>\"\n}",
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-0ca720e0-27ca-4f4e-8e79-914a005a5660"
+                    },
+                    {
+                      "id": "796d7c3d-917d-492d-aefb-1289c727dd67",
+                      "name": "Bad Request - Invalid grant or missing parameters",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) The type of grant being requested",
+                              "key": "grant_type",
+                              "value": "refresh_token"
+                            },
+                            {
+                              "description": "(Required) The client ID of your application",
+                              "key": "client_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The client secret of your application",
+                              "key": "client_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The redirect URI (required for authorization_code grant)",
+                              "key": "redirect_uri",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The authorization code (required for authorization_code grant)",
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The refresh token (required for refresh_token grant)",
+                              "key": "refresh_token",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "token"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-796d7c3d-917d-492d-aefb-1289c727dd67"
+                    },
+                    {
+                      "id": "9e2b133d-4867-44ad-a046-cd81083537f3",
+                      "name": "Unauthorized - Invalid client credentials",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) The type of grant being requested",
+                              "key": "grant_type",
+                              "value": "refresh_token"
+                            },
+                            {
+                              "description": "(Required) The client ID of your application",
+                              "key": "client_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The client secret of your application",
+                              "key": "client_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The redirect URI (required for authorization_code grant)",
+                              "key": "redirect_uri",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The authorization code (required for authorization_code grant)",
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The refresh token (required for refresh_token grant)",
+                              "key": "refresh_token",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "token"
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-9e2b133d-4867-44ad-a046-cd81083537f3"
+                    },
+                    {
+                      "id": "b6c767c5-4257-49f3-8334-2c59125c04e4",
+                      "name": "Internal Server Error",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) The type of grant being requested",
+                              "key": "grant_type",
+                              "value": "refresh_token"
+                            },
+                            {
+                              "description": "(Required) The client ID of your application",
+                              "key": "client_id",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) The client secret of your application",
+                              "key": "client_secret",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The redirect URI (required for authorization_code grant)",
+                              "key": "redirect_uri",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The authorization code (required for authorization_code grant)",
+                              "key": "code",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The refresh token (required for refresh_token grant)",
+                              "key": "refresh_token",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/oauth/v1/token",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "oauth",
+                            "v1",
+                            "token"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"category\": \"<string>\",\n  \"correlationId\": \"<uuid>\",\n  \"message\": \"<string>\",\n  \"subCategory\": \"<string>\",\n  \"context\": {\n    \"sit_f\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"esse_f31\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"sit_b0\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"links\": {\n    \"Excepteur2\": \"<string>\",\n    \"Excepteurccd\": \"<string>\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"amet_92\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    },\n    {\n      \"message\": \"<string>\",\n      \"code\": \"<string>\",\n      \"subCategory\": \"<string>\",\n      \"in\": \"<string>\",\n      \"context\": {\n        \"dolore\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"cupidatatc\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-06-05T15:01:40.000Z",
+                      "updatedAt": "2026-06-05T15:01:40.000Z",
+                      "uid": "35240-b6c767c5-4257-49f3-8334-2c59125c04e4"
+                    }
+                  ],
+                  "createdAt": "2026-06-05T15:01:40.000Z",
+                  "updatedAt": "2026-06-05T15:01:40.000Z",
+                  "uid": "35240-03f68ba2-984f-4678-ae56-262d322d218a"
+                }
+              ],
+              "id": "3d49437e-78b6-4cfb-a8c7-78f25ee1568e",
+              "createdAt": "2026-06-05T15:01:40.000Z",
+              "updatedAt": "2026-06-05T15:01:40.000Z",
+              "uid": "35240-3d49437e-78b6-4cfb-a8c7-78f25ee1568e"
+            }
+          ],
+          "id": "3aeb36e7-cd69-4364-b44c-456daaa457ba",
+          "createdAt": "2026-06-05T15:01:40.000Z",
+          "updatedAt": "2026-06-05T15:01:40.000Z",
+          "uid": "35240-3aeb36e7-cd69-4364-b44c-456daaa457ba"
+        }
+      ],
+      "id": "a5cb2c3a-a2d2-44d5-8647-bce672bbbdf4",
+      "createdAt": "2026-06-05T15:01:40.000Z",
+      "updatedAt": "2026-06-05T15:01:40.000Z",
+      "uid": "35240-a5cb2c3a-a2d2-44d5-8647-bce672bbbdf4"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hubapi.com"
+    }
+  ]
+}

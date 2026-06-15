@@ -1,0 +1,316 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Engagement Tasks API",
+    "version": "v3"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived tasks."
+              }
+            ]
+          },
+          "docs": "Returns a page of task engagement records. Use the limit and after parameters to paginate through tasks. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new task engagement record with the provided properties. Common task properties include hs_task_subject, hs_task_body, hs_task_status, hs_task_priority, hs_task_type, and hs_timestamp for the due date."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the task to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived tasks."
+              }
+            ]
+          },
+          "docs": "Returns a single task engagement record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the task to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a task engagement record. Only the properties included in the request body will be updated."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the task to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a task engagement record by its ID. Archived tasks can be restored using the HubSpot UI or API."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for task engagement records using filter groups, sorts, and other query parameters."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/batch/read",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reads a batch of task records by their IDs. Useful for retrieving multiple tasks in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/batch/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple task engagement records in a single API call."
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Update Tasks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/batch/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates multiple task engagement records in a single API call."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Task Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the task."
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path",
+                "description": "The type of associated object."
+              }
+            ]
+          },
+          "docs": "Returns all associations of a task record to objects of a specified type, such as contacts, companies, or deals."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Task Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Creates an association between a task record and another CRM object."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a Task Association",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/tasks/:taskId/associations/:toObjectType/:toObjectId/:associationType",
+            "params": [
+              {
+                "name": "taskId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "toObjectType",
+                "value": "standard",
+                "type": "path"
+              },
+              {
+                "name": "toObjectId",
+                "value": "500123",
+                "type": "path"
+              },
+              {
+                "name": "associationType",
+                "value": "standard",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Removes an association between a task record and another CRM object."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

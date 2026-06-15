@@ -1,0 +1,485 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot CRM Associations API",
+    "version": "4.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Object Associations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Associations for an Object",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v4/objects/:fromObjectType/:fromObjectId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of the source object (e.g., contacts, companies, deals)"
+              },
+              {
+                "name": "fromObjectId",
+                "value": "12345",
+                "type": "path",
+                "description": "ID of the source object"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of target objects to retrieve associations for"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Maximum number of results per page"
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "Pagination cursor for fetching next page of results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves all associations of a specific type for a given CRM object.\nReturns paginated results with the associated objects and their association types.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Association Between Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v4/objects/:fromObjectType/:fromObjectId/associations/:toObjectType",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of the source object"
+              },
+              {
+                "name": "fromObjectId",
+                "value": "12345",
+                "type": "path",
+                "description": "ID of the source object"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of the target object"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new association between two CRM objects.\nSpecify the target object and the association types to establish the relationship.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete an Association Between Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v4/objects/:fromObjectType/:fromObjectId/associations/:toObjectType/:toObjectId",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of the source object"
+              },
+              {
+                "name": "fromObjectId",
+                "value": "12345",
+                "type": "path",
+                "description": "ID of the source object"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of the target object"
+              },
+              {
+                "name": "toObjectId",
+                "value": "67890",
+                "type": "path",
+                "description": "ID of the target object"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Removes an association between two CRM objects.\nThis operation deletes all association types between the specified objects.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch Association Operations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Batch Read Associations for Multiple Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/batch/read",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of source objects"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of target objects"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves associations for multiple source objects in a single request.\nUseful for efficiently loading associations for a list of records.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Create Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/batch/create",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of source objects"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of target objects"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates multiple associations in a single request.\nAllows efficient bulk creation of relationships between CRM objects.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Batch Archive Associations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/batch/archive",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Type of source objects"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Type of target objects"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes multiple associations in a single request.\nEfficiently removes relationships between multiple CRM objects.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Association Label Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Association Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/labels",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Source object type"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Target object type"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves all association labels defined for a pair of object types.\nLabels provide human-readable descriptions for different types of associations.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Association Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/labels",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Source object type"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Target object type"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Creates a new custom association label for categorizing relationships.\nCustom labels help distinguish between different types of associations.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Update an Association Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/labels/:associationTypeId",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Source object type"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Target object type"
+              },
+              {
+                "name": "associationTypeId",
+                "value": "101",
+                "type": "path",
+                "description": "Association type ID to update"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates an existing association label.\nModify the display text or inverse label for a custom association type.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete an Association Label",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v4/associations/:fromObjectType/:toObjectType/labels/:associationTypeId",
+            "params": [
+              {
+                "name": "fromObjectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "Source object type"
+              },
+              {
+                "name": "toObjectType",
+                "value": "companies",
+                "type": "path",
+                "description": "Target object type"
+              },
+              {
+                "name": "associationTypeId",
+                "value": "101",
+                "type": "path",
+                "description": "Association type ID to delete"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Deletes a custom association label.\nThis removes the label definition but does not affect existing associations.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Association Type Definitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Association Definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v4/associations/definitions",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieves all association type definitions available in the account.\nReturns both HubSpot-defined and custom association types across all object types.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
