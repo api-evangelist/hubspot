@@ -1,0 +1,87 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Deal to Slack Notification
+  summary: Create a HubSpot CRM deal and announce it in a Slack channel in real time.
+  description: >-
+    Replicates the HubSpot App Marketplace "Slack" integration behavior of
+    sending real-time notifications when a CRM record is created. This workflow
+    creates a new deal in the HubSpot CRM, captures the resulting deal id, and
+    then posts a message to a Slack channel via chat.postMessage announcing the
+    newly created deal.
+  version: 1.0.0
+sourceDescriptions:
+  - name: hubspotDealsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-deals-api-openapi.yml
+    type: openapi
+  - name: slackWebApi
+    url: https://raw.githubusercontent.com/api-evangelist/slack/refs/heads/main/openapi/slack-chat-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: hubspot-deal-to-slack
+    summary: Create a HubSpot deal, then notify a Slack channel about it.
+    description: >-
+      A two-step, cross-provider integration. The first step creates a deal in
+      the HubSpot CRM using the supplied deal properties and captures the new
+      deal id. The second step posts a Slack message to the target channel
+      announcing that the deal was created.
+    inputs:
+      type: object
+      properties:
+        dealname:
+          type: string
+          description: Name of the deal to create in HubSpot.
+        amount:
+          type: string
+          description: Monetary amount for the deal.
+        pipeline:
+          type: string
+          description: HubSpot pipeline id the deal belongs to.
+        dealstage:
+          type: string
+          description: HubSpot pipeline stage id for the deal.
+        slackToken:
+          type: string
+          description: Slack authentication token with chat:write scope.
+        slackChannel:
+          type: string
+          description: Slack channel id or name to post the notification to.
+        slackText:
+          type: string
+          description: Message text to post to Slack.
+    steps:
+      - stepId: create-hubspot-deal
+        description: Create a new deal record in the HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotDealsApi.createDeal
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              dealname: $inputs.dealname
+              amount: $inputs.amount
+              pipeline: $inputs.pipeline
+              dealstage: $inputs.dealstage
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          dealId: $response.body#/id
+      - stepId: post-slack-notification
+        description: Post a Slack message announcing the newly created deal.
+        operationId: $sourceDescriptions.slackWebApi.postChatPostmessage
+        parameters:
+          - name: token
+            in: header
+            value: $inputs.slackToken
+        requestBody:
+          contentType: application/json
+          payload:
+            channel: $inputs.slackChannel
+            text: $inputs.slackText
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          messageTs: $response.body#/ts
+          ok: $response.body#/ok
+    outputs:
+      dealId: $steps.create-hubspot-deal.outputs.dealId
+      slackMessageTs: $steps.post-slack-notification.outputs.messageTs
+      slackOk: $steps.post-slack-notification.outputs.ok

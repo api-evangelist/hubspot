@@ -1,0 +1,62 @@
+arazzo: 1.0.1
+info:
+  title: Salesforce to HubSpot Contact Mirror
+  summary: Query a Salesforce contact, then mirror it into HubSpot CRM.
+  description: >-
+    A cross-provider workflow that reads a contact from Salesforce using a SOQL
+    query and mirrors that record into HubSpot as a new contact. Demonstrates
+    keeping two CRMs aligned by copying a record of truth from Salesforce into
+    HubSpot for teams that operate across both systems.
+  version: 1.0.0
+sourceDescriptions:
+  - name: salesforceRestApi
+    url: https://raw.githubusercontent.com/api-evangelist/salesforce/refs/heads/main/openapi/salesforce-rest-api-openapi.yml
+    type: openapi
+  - name: hubspotContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: salesforce-to-hubspot-mirror
+    summary: Query a Salesforce contact, then create it in HubSpot.
+    description: >-
+      Runs a SOQL query against Salesforce to find a contact by email, then
+      creates a mirrored contact record in HubSpot carrying the same email and
+      name properties.
+    inputs:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+    steps:
+      - stepId: query-salesforce
+        description: Query Salesforce for the source contact by email.
+        operationId: $sourceDescriptions.salesforceRestApi.executeQuery
+        parameters:
+          - name: q
+            in: query
+            value: SELECT Id, FirstName, LastName, Email FROM Contact WHERE Email = ':email'
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          totalSize: $response.body#/totalSize
+      - stepId: create-hubspot-contact
+        description: Mirror the contact into HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              email: $inputs.email
+              firstname: $inputs.firstName
+              lastname: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          hubspotId: $response.body#/id
+    outputs:
+      totalSize: $steps.query-salesforce.outputs.totalSize
+      hubspotId: $steps.create-hubspot-contact.outputs.hubspotId

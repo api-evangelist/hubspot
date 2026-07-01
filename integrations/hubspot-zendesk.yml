@@ -1,0 +1,73 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Contact to Zendesk Support Ticket
+  summary: Create a HubSpot CRM contact and open a matching Zendesk support ticket for them.
+  description: >-
+    Replicates the HubSpot App Marketplace + Zendesk integration that keeps support
+    and CRM in sync. This workflow first creates (or records) a customer as a contact
+    in the HubSpot CRM, then opens a support ticket in Zendesk on that customer's
+    behalf so the CRM record and the support conversation stay connected.
+  version: 1.0.0
+sourceDescriptions:
+  - name: hubspotContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+  - name: zendeskTicketsApi
+    url: https://raw.githubusercontent.com/api-evangelist/zendesk/refs/heads/main/openapi/tickets-openapi-original.yml
+    type: openapi
+workflows:
+  - workflowId: hubspot-contact-to-zendesk-ticket
+    summary: Create a HubSpot contact, then open a Zendesk support ticket for that contact.
+    description: >-
+      Given a customer's details and an issue description, create the contact in the
+      HubSpot CRM, capture the new contact id, and then open a support ticket in
+      Zendesk with the customer set as the requester so support work is linked to the
+      CRM record.
+    inputs:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        subject:
+          type: string
+        comment:
+          type: string
+    steps:
+      - stepId: create-contact
+        description: Create the contact in HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              email: $inputs.email
+              firstname: $inputs.firstName
+              lastname: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          contactId: $response.body#/id
+      - stepId: create-ticket
+        description: Open a support ticket in Zendesk for the newly created contact.
+        operationId: $sourceDescriptions.zendeskTicketsApi.CreateTicket
+        requestBody:
+          contentType: application/json
+          payload:
+            ticket:
+              subject: $inputs.subject
+              comment:
+                body: $inputs.comment
+              requester:
+                name: $inputs.firstName $inputs.lastName
+                email: $inputs.email
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          ticketId: $response.body#/ticket/id
+    outputs:
+      contactId: $steps.create-contact.outputs.contactId
+      ticketId: $steps.create-ticket.outputs.ticketId

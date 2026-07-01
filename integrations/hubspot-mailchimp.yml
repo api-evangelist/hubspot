@@ -1,0 +1,74 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Contact to Mailchimp Subscribe
+  summary: Create a HubSpot contact, then subscribe them to a Mailchimp list.
+  description: >-
+    A cross-provider workflow that creates a new contact in the HubSpot CRM and
+    then adds that same person as a subscribed member of a Mailchimp audience
+    list. Demonstrates syncing a newly captured CRM contact into an email
+    marketing audience for ongoing campaigns.
+  version: 1.0.0
+sourceDescriptions:
+  - name: hubspotContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+  - name: mailchimpMarketingApi
+    url: https://raw.githubusercontent.com/api-evangelist/mailchimp/refs/heads/main/openapi/mailchimp-marketing-api-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: hubspot-contact-to-mailchimp-member
+    summary: Create a HubSpot contact, then add them to a Mailchimp list.
+    description: >-
+      Creates a HubSpot contact with email and name properties, captures the
+      contact id, then subscribes the same email address to a Mailchimp audience
+      list with merge fields carried across from the CRM record.
+    inputs:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        listId:
+          type: string
+    steps:
+      - stepId: create-contact
+        description: Create a new contact record in HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              email: $inputs.email
+              firstname: $inputs.firstName
+              lastname: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          contactId: $response.body#/id
+      - stepId: subscribe-member
+        description: Subscribe the contact to a Mailchimp audience list.
+        operationId: $sourceDescriptions.mailchimpMarketingApi.postListsIdMembers
+        parameters:
+          - name: list_id
+            in: path
+            value: $inputs.listId
+        requestBody:
+          contentType: application/json
+          payload:
+            email_address: $inputs.email
+            status: subscribed
+            merge_fields:
+              FNAME: $inputs.firstName
+              LNAME: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          memberId: $response.body#/id
+          memberStatus: $response.body#/status
+    outputs:
+      contactId: $steps.create-contact.outputs.contactId
+      memberId: $steps.subscribe-member.outputs.memberId
+      memberStatus: $steps.subscribe-member.outputs.memberStatus

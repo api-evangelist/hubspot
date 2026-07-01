@@ -1,0 +1,94 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Contact to SendGrid List and Welcome
+  summary: Create a HubSpot contact, add to a SendGrid list, then welcome them.
+  description: >-
+    A cross-provider workflow that creates a contact in HubSpot, upserts that
+    person into a SendGrid Marketing Contacts list, and sends them a welcome
+    email through the SendGrid Mail Send API. Demonstrates onboarding a new CRM
+    contact into both a marketing audience and a first-touch email in one pass.
+  version: 1.0.0
+sourceDescriptions:
+  - name: hubspotContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+  - name: sendgridContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/tsg_mc_contacts_v3.yaml
+    type: openapi
+  - name: sendgridMailApi
+    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/tsg_mail_v3.yaml
+    type: openapi
+workflows:
+  - workflowId: hubspot-contact-to-sendgrid-onboard
+    summary: Create a HubSpot contact, upsert to SendGrid, then welcome email.
+    description: >-
+      Creates a HubSpot contact, upserts the same email into a SendGrid
+      Marketing Contacts list, then sends a welcome email through SendGrid Mail
+      Send.
+    inputs:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        listId:
+          type: string
+        fromEmail:
+          type: string
+    steps:
+      - stepId: create-contact
+        description: Create the contact record in HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              email: $inputs.email
+              firstname: $inputs.firstName
+              lastname: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          contactId: $response.body#/id
+      - stepId: add-to-sendgrid
+        description: Upsert the contact into a SendGrid Marketing Contacts list.
+        operationId: $sourceDescriptions.sendgridContactsApi.UpdateContact
+        requestBody:
+          contentType: application/json
+          payload:
+            list_ids:
+              - $inputs.listId
+            contacts:
+              - email: $inputs.email
+                first_name: $inputs.firstName
+                last_name: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 202
+        outputs:
+          jobId: $response.body#/job_id
+      - stepId: send-welcome
+        description: Send a welcome email to the new contact via SendGrid.
+        operationId: $sourceDescriptions.sendgridMailApi.SendMail
+        requestBody:
+          contentType: application/json
+          payload:
+            personalizations:
+              - to:
+                  - email: $inputs.email
+                subject: Welcome to our community
+            from:
+              email: $inputs.fromEmail
+            content:
+              - type: text/plain
+                value: You are now subscribed. Watch your inbox for updates.
+        successCriteria:
+          - condition: $statusCode == 202
+        outputs:
+          emailStatus: $statusCode
+    outputs:
+      contactId: $steps.create-contact.outputs.contactId
+      jobId: $steps.add-to-sendgrid.outputs.jobId
+      emailStatus: $steps.send-welcome.outputs.emailStatus

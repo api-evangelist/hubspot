@@ -1,0 +1,75 @@
+arazzo: 1.0.1
+info:
+  title: HubSpot Contact to Google Sheets Row
+  summary: Create a HubSpot CRM contact and append it as a row in a Google Sheet.
+  description: >-
+    Replicates the HubSpot App Marketplace "create or update rows in a Google
+    Sheet from HubSpot records" integration. A contact is created in HubSpot
+    CRM, then that contact's core fields and generated id are appended as a new
+    row to a target Google Sheet range.
+  version: 1.0.0
+sourceDescriptions:
+  - name: hubspotContactsApi
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    type: openapi
+  - name: googleSheetsApi
+    url: https://raw.githubusercontent.com/api-evangelist/google-sheets/refs/heads/main/openapi/google-sheets-openapi.yml
+    type: openapi
+workflows:
+  - workflowId: hubspot-contact-to-google-sheets-row
+    summary: Create a HubSpot contact, then append it to a Google Sheet.
+    description: >-
+      Two-step flow that first creates a contact in HubSpot CRM and captures
+      its id, then appends the email, first name, last name, and contact id as
+      a new row to the specified Google Sheet range.
+    inputs:
+      type: object
+      properties:
+        email: {type: string}
+        firstName: {type: string}
+        lastName: {type: string}
+        spreadsheetId: {type: string}
+        range: {type: string}
+    steps:
+      - stepId: create-contact
+        description: Create the contact in HubSpot CRM.
+        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        requestBody:
+          contentType: application/json
+          payload:
+            properties:
+              email: $inputs.email
+              firstname: $inputs.firstName
+              lastname: $inputs.lastName
+        successCriteria:
+          - condition: $statusCode == 201
+        outputs:
+          contactId: $response.body#/id
+      - stepId: append-row
+        description: Append the contact as a row in the Google Sheet.
+        operationId: $sourceDescriptions.googleSheetsApi.appendValues
+        parameters:
+          - name: spreadsheetId
+            in: path
+            value: $inputs.spreadsheetId
+          - name: range
+            in: path
+            value: $inputs.range
+          - name: valueInputOption
+            in: query
+            value: USER_ENTERED
+        requestBody:
+          contentType: application/json
+          payload:
+            values:
+              - - $inputs.email
+                - $inputs.firstName
+                - $inputs.lastName
+                - $steps.create-contact.outputs.contactId
+        successCriteria:
+          - condition: $statusCode == 200
+        outputs:
+          updatedRange: $response.body#/updates/updatedRange
+    outputs:
+      contactId: $steps.create-contact.outputs.contactId
+      updatedRange: $steps.append-row.outputs.updatedRange
