@@ -1,0 +1,557 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens SMTP Token Management API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: SMTP Token Management
+  description: Create, query, and manage SMTP API tokens for transactional email sending
+paths:
+  /marketing/v3/transactional/smtp-tokens:
+    get:
+      tags:
+      - SMTP Token Management
+      summary: Hubspot List All Smtp Tokens
+      description: 'Returns a paginated list of all SMTP API tokens for the account.
+
+        Use this endpoint to view all configured tokens and their associated campaigns.
+
+        '
+      operationId: listSmtpTokens
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "ListSmtpTokensSuccessResponse"
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/CampaignNameParam'
+        example: example-value
+      - $ref: '#/components/parameters/EmailCampaignIdParam'
+        example: example-value
+      - $ref: '#/components/parameters/AfterParam'
+        example: example-value
+      - $ref: '#/components/parameters/LimitParam'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved the list of SMTP tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmtpTokenCollectionResponse'
+              examples:
+                ListSmtpTokensSuccessResponse:
+                  $ref: '#/components/examples/ListSmtpTokensSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+    post:
+      tags:
+      - SMTP Token Management
+      summary: Hubspot Create an Smtp Token
+      description: 'Creates a new SMTP API token for sending transactional emails.
+
+        The token can be associated with a specific email campaign and optionally configured to create contacts.
+
+        '
+      operationId: createSmtpToken
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "CreateSmtpTokenSuccessResponse"
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmtpTokenCreateRequest'
+            examples:
+              CreateSmtpTokenRequest:
+                $ref: '#/components/examples/CreateSmtpTokenRequest'
+      responses:
+        '201':
+          description: Successfully created the SMTP token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmtpTokenWithPassword'
+              examples:
+                CreateSmtpTokenSuccessResponse:
+                  $ref: '#/components/examples/CreateSmtpTokenSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+  /marketing/v3/transactional/smtp-tokens/{tokenId}:
+    get:
+      tags:
+      - SMTP Token Management
+      summary: Hubspot Get an Smtp Token by Id
+      description: 'Retrieves detailed information about a single SMTP API token by its unique identifier.
+
+        Note: The password is not returned in this response for security reasons.
+
+        '
+      operationId: getSmtpTokenById
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "GetSmtpTokenSuccessResponse"
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved the SMTP token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmtpToken'
+              examples:
+                GetSmtpTokenSuccessResponse:
+                  $ref: '#/components/examples/GetSmtpTokenSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+    delete:
+      tags:
+      - SMTP Token Management
+      summary: Hubspot Delete an Smtp Token
+      description: 'Permanently deletes an SMTP API token.
+
+        Any applications using this token will no longer be able to send emails.
+
+        '
+      operationId: deleteSmtpToken
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "DeleteSmtpTokenSuccessResponse"
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
+      responses:
+        '204':
+          description: Successfully deleted the SMTP token (no content returned)
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+  /marketing/v3/transactional/smtp-tokens/{tokenId}/password-reset:
+    post:
+      tags:
+      - SMTP Token Management
+      summary: Hubspot Reset Smtp Token Password
+      description: 'Resets the password for an existing SMTP API token.
+
+        The new password will be returned in the response. Store it securely as it cannot be retrieved again.
+
+        '
+      operationId: resetSmtpTokenPassword
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "ResetSmtpTokenPasswordSuccessResponse"
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/TokenIdParam'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully reset the SMTP token password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmtpTokenWithPassword'
+              examples:
+                ResetSmtpTokenPasswordSuccessResponse:
+                  $ref: '#/components/examples/ResetSmtpTokenPasswordSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+components:
+  parameters:
+    AfterParam:
+      name: after
+      in: query
+      description: Pagination cursor from previous response
+      required: false
+      schema:
+        type: string
+    TokenIdParam:
+      name: tokenId
+      in: path
+      description: The unique identifier of the SMTP token
+      required: true
+      schema:
+        type: string
+      example: smtp-token-abc123
+    LimitParam:
+      name: limit
+      in: query
+      description: Maximum number of results per page
+      required: false
+      schema:
+        type: integer
+        default: 10
+        maximum: 100
+    CampaignNameParam:
+      name: campaignName
+      in: query
+      description: Filter tokens by campaign name
+      required: false
+      schema:
+        type: string
+    EmailCampaignIdParam:
+      name: emailCampaignId
+      in: query
+      description: Filter tokens by email campaign ID
+      required: false
+      schema:
+        type: string
+  examples:
+    CreateSmtpTokenSuccessResponse:
+      summary: Successful response after creating an SMTP token
+      value:
+        id: smtp-token-ghi789
+        campaignName: Order Confirmation Emails
+        createContact: true
+        createdAt: '2024-01-20T14:00:00.000Z'
+        createdBy: user@example.com
+        password: smtp-password-newly-generated
+    ListSmtpTokensSuccessResponse:
+      summary: Successful response listing SMTP tokens
+      value:
+        results:
+        - id: smtp-token-abc123
+          campaignName: Password Reset Emails
+          emailCampaignId: campaign-xyz789
+          createContact: true
+          createdAt: '2024-01-15T10:30:00.000Z'
+          createdBy: user@example.com
+        - id: smtp-token-def456
+          campaignName: Order Confirmation Emails
+          emailCampaignId: campaign-uvw456
+          createContact: false
+          createdAt: '2024-01-10T08:00:00.000Z'
+          createdBy: admin@example.com
+        paging:
+          next:
+            after: c210cC10b2tlbi1kZWY0NTY%3D
+    CreateSmtpTokenRequest:
+      summary: Request to create an SMTP token
+      value:
+        campaignName: Order Confirmation Emails
+        createContact: true
+    ErrorResponse:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    GetSmtpTokenSuccessResponse:
+      summary: Successful response for a single SMTP token
+      value:
+        id: smtp-token-abc123
+        campaignName: Password Reset Emails
+        emailCampaignId: campaign-xyz789
+        createContact: true
+        createdAt: '2024-01-15T10:30:00.000Z'
+        createdBy: user@example.com
+    ResetSmtpTokenPasswordSuccessResponse:
+      summary: Successful response after resetting SMTP token password
+      value:
+        id: smtp-token-abc123
+        campaignName: Password Reset Emails
+        emailCampaignId: campaign-xyz789
+        createContact: true
+        createdAt: '2024-01-15T10:30:00.000Z'
+        createdBy: user@example.com
+        password: smtp-password-reset-value
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        in:
+          type: string
+          description: Field where error occurred
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    SmtpTokenCollectionResponse:
+      type: object
+      description: A paginated collection of SMTP tokens
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          description: The list of SMTP tokens
+          items:
+            $ref: '#/components/schemas/SmtpToken'
+          example:
+          - id: smtp-token-abc123
+            campaignName: Password Reset Emails
+            emailCampaignId: campaign-xyz789
+            createContact: true
+            createdAt: '2024-01-15T10:30:00.000Z'
+            createdBy: user@example.com
+        paging:
+          $ref: '#/components/schemas/Paging'
+    SmtpTokenCreateRequest:
+      type: object
+      description: Request body for creating an SMTP token
+      required:
+      - campaignName
+      - createContact
+      properties:
+        campaignName:
+          type: string
+          description: The name for the email campaign
+          example: Order Confirmation Emails
+        createContact:
+          type: boolean
+          description: Whether to create contacts for recipients who don't exist
+          example: true
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+    SmtpTokenWithPassword:
+      type: object
+      description: SMTP token with password (returned only on creation or password reset)
+      required:
+      - id
+      - createdAt
+      - createdBy
+      - campaignName
+      - createContact
+      - password
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the SMTP token
+          example: smtp-token-abc123
+        campaignName:
+          type: string
+          description: The name of the email campaign associated with this token
+          example: Password Reset Emails
+        emailCampaignId:
+          type: string
+          description: The ID of the associated email campaign
+          example: campaign-xyz789
+        createContact:
+          type: boolean
+          description: Whether sending an email creates a contact if one doesn't exist
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: When the token was created
+          example: '2024-01-15T10:30:00.000Z'
+        createdBy:
+          type: string
+          description: The user or application that created the token
+          example: user@example.com
+        password:
+          type: string
+          description: The SMTP password. Store securely - this cannot be retrieved again.
+          example: smtp-password-secret-value
+    SmtpToken:
+      type: object
+      description: Represents an SMTP API token for transactional email sending
+      required:
+      - id
+      - createdAt
+      - createdBy
+      - campaignName
+      - createContact
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the SMTP token
+          example: smtp-token-abc123
+        campaignName:
+          type: string
+          description: The name of the email campaign associated with this token
+          example: Password Reset Emails
+        emailCampaignId:
+          type: string
+          description: The ID of the associated email campaign
+          example: campaign-xyz789
+        createContact:
+          type: boolean
+          description: Whether sending an email creates a contact if one doesn't exist
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: When the token was created
+          example: '2024-01-15T10:30:00.000Z'
+        createdBy:
+          type: string
+          description: The user or application that created the token
+          example: user@example.com
+    NextPage:
+      type: object
+      description: Information about the next page
+      required:
+      - after
+      properties:
+        after:
+          type: string
+          description: Cursor for the next page
+          example: c210cC10b2tlbi1hYmMxMjM%3D
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    Error:
+      type: object
+      description: Error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique request identifier for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: More specific error category
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

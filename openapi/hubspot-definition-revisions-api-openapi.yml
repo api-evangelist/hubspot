@@ -1,0 +1,721 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Definition Revisions API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Definition Revisions
+  description: Operations to view revision history of action definitions
+paths:
+  /automation/v4/actions/{appId}/{definitionId}/revisions:
+    get:
+      tags:
+      - Definition Revisions
+      summary: Hubspot List Definition Revisions
+      description: "Retrieves a paginated list of all revisions for a custom action definition. \nEach revision represents a snapshot of the action definition at a point in time.\n"
+      operationId: listActionDefinitionRevisions
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionDefinitionRevisionCollectionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/LimitQuery'
+        example: example-value
+      - $ref: '#/components/parameters/AfterQuery'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved action definition revisions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionDefinitionRevisionCollection'
+              examples:
+                ActionDefinitionRevisionCollectionSuccessExample:
+                  $ref: '#/components/examples/ActionDefinitionRevisionCollectionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactiondefinitionrevisions400Example:
+                  summary: Default listActionDefinitionRevisions 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id001
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id002
+                      key: value
+                    links: &id003
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactiondefinitionrevisions401Example:
+                  summary: Default listActionDefinitionRevisions 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+        '404':
+          description: Action definition not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactiondefinitionrevisions404Example:
+                  summary: Default listActionDefinitionRevisions 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactiondefinitionrevisions500Example:
+                  summary: Default listActionDefinitionRevisions 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+  /automation/v4/actions/{appId}/{definitionId}/revisions/{revisionId}:
+    get:
+      tags:
+      - Definition Revisions
+      summary: Hubspot Retrieve a Specific Revision
+      description: "Retrieves a specific revision of a custom action definition by its revision ID. \nThis allows you to view the action definition as it existed at a particular point in time.\n"
+      operationId: getActionDefinitionRevisionById
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionDefinitionRevisionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/RevisionIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved action definition revision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionDefinitionRevision'
+              examples:
+                ActionDefinitionRevisionSuccessExample:
+                  $ref: '#/components/examples/ActionDefinitionRevisionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactiondefinitionrevisionbyid400Example:
+                  summary: Default getActionDefinitionRevisionById 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id004
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id005
+                      key: value
+                    links: &id006
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactiondefinitionrevisionbyid401Example:
+                  summary: Default getActionDefinitionRevisionById 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+        '404':
+          description: Revision not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactiondefinitionrevisionbyid404Example:
+                  summary: Default getActionDefinitionRevisionById 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactiondefinitionrevisionbyid500Example:
+                  summary: Default getActionDefinitionRevisionById 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+components:
+  schemas:
+    ActionFunctionReference:
+      type: object
+      description: A reference to a function associated with an action
+      required:
+      - functionType
+      - id
+      properties:
+        functionType:
+          type: string
+          enum:
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+          - POST_FETCH_OPTIONS
+          - POST_ACTION_EXECUTION
+          description: The type of function
+          example: PRE_ACTION_EXECUTION
+        id:
+          type: string
+          description: The unique identifier of the function
+          example: '500123'
+    OutputField:
+      type: object
+      description: An output field returned by the action
+      required:
+      - typeDefinition
+      properties:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+    ActionDefinitionRevision:
+      type: object
+      description: A revision of an action definition
+      required:
+      - revisionId
+      - definition
+      - createdAt
+      properties:
+        revisionId:
+          type: string
+          description: The unique identifier of the revision
+          example: '500123'
+        definition:
+          $ref: '#/components/schemas/ActionDefinition'
+        createdAt:
+          type: string
+          format: date-time
+          description: When the revision was created
+          example: '2025-03-15T14:30:00Z'
+    FieldTypeDefinition:
+      type: object
+      description: Definition of a field's type and configuration
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+          description: The programmatic name of the field
+          example: Example Record
+        type:
+          type: string
+          enum:
+          - STRING
+          - NUMBER
+          - BOOL
+          - DATE
+          - DATETIME
+          - ENUMERATION
+          - PHONE_NUMBER
+          - CURRENCY
+          description: The data type of the field
+          example: STRING
+        fieldType:
+          type: string
+          enum:
+          - TEXT
+          - TEXTAREA
+          - NUMBER
+          - SELECT
+          - BOOLEANCHECKBOX
+          - DATE
+          - FILE
+          description: The UI field type for input
+          example: TEXT
+        label:
+          type: string
+          description: Human-readable label for the field
+          example: Example Record
+        description:
+          type: string
+          description: Description of the field
+          example: This is an example description.
+        options:
+          type: array
+          description: Options for enumeration fields
+          items:
+            $ref: '#/components/schemas/FieldOption'
+          example:
+          - label: Example Record
+            value: example-value
+            displayOrder: 100
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The error message
+          example: This is an example description.
+        code:
+          type: string
+          description: An error code
+          example: example-value
+        in:
+          type: string
+          description: The location of the error
+          example: example-value
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    ObjectRequestOptions:
+      type: object
+      description: Options for requesting CRM object data
+      properties:
+        properties:
+          type: array
+          description: CRM properties to include in the action execution request
+          items:
+            type: string
+          example:
+          - example-value
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: Cursor for the next page
+          example:
+            after: example-value
+    ActionDefinitionRevisionCollection:
+      type: object
+      description: A paginated collection of action definition revisions
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          description: List of revisions
+          items:
+            $ref: '#/components/schemas/ActionDefinitionRevision'
+          example:
+          - revisionId: '500123'
+            definition: {}
+            createdAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    ActionDefinition:
+      type: object
+      description: A custom workflow action definition
+      required:
+      - id
+      - revisionId
+      - actionUrl
+      - labels
+      - objectTypes
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the action definition
+          example: '500123'
+        revisionId:
+          type: string
+          description: The current revision identifier
+          example: '500123'
+        actionUrl:
+          type: string
+          format: uri
+          description: The URL that HubSpot will call when the action executes
+          example: https://app.hubspot.com/contacts/12345
+        labels:
+          $ref: '#/components/schemas/ActionLabels'
+        inputFields:
+          type: array
+          description: Input fields that users can configure for the action
+          items:
+            $ref: '#/components/schemas/InputField'
+          example:
+          - typeDefinition: {}
+            supportedValueTypes:
+            - {}
+            isRequired: true
+        outputFields:
+          type: array
+          description: Output fields that the action returns
+          items:
+            $ref: '#/components/schemas/OutputField'
+          example:
+          - typeDefinition: {}
+        objectTypes:
+          type: array
+          description: CRM object types this action can operate on
+          items:
+            type: string
+            enum:
+            - CONTACT
+            - COMPANY
+            - DEAL
+            - TICKET
+            - QUOTE
+          example:
+          - CONTACT
+        objectRequestOptions:
+          $ref: '#/components/schemas/ObjectRequestOptions'
+        published:
+          type: boolean
+          description: Whether the action is published and available for use
+          example: true
+        functions:
+          type: array
+          description: Functions associated with this action
+          items:
+            $ref: '#/components/schemas/ActionFunctionReference'
+          example:
+          - functionType: PRE_ACTION_EXECUTION
+            id: '500123'
+    ActionLabels:
+      type: object
+      description: Human-readable labels for the action
+      required:
+      - actionName
+      properties:
+        actionName:
+          type: string
+          description: The display name of the action
+          example: Example Record
+        actionDescription:
+          type: string
+          description: A description of what the action does
+          example: This is an example description.
+        appDisplayName:
+          type: string
+          description: The name of the app providing this action
+          example: Example Record
+        actionCardContent:
+          type: string
+          description: Content to display on the action card in the workflow editor
+          example: example-value
+    Error:
+      type: object
+      description: An error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for this error instance
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: A human-readable error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: A more specific error category
+          example: standard
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    FieldOption:
+      type: object
+      description: An option for an enumeration field
+      required:
+      - label
+      - value
+      properties:
+        label:
+          type: string
+          description: Display label for the option
+          example: Example Record
+        value:
+          type: string
+          description: The value of the option
+          example: example-value
+        displayOrder:
+          type: integer
+          description: Order in which to display the option
+          example: 100
+    InputField:
+      type: object
+      description: An input field for the action
+      required:
+      - typeDefinition
+      - supportedValueTypes
+      properties:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+        supportedValueTypes:
+          type: array
+          description: The types of values that can be provided for this field
+          items:
+            type: string
+            enum:
+            - STATIC_VALUE
+            - OBJECT_PROPERTY
+            - OUTPUT_FROM_PREVIOUS_ACTION
+          example:
+          - STATIC_VALUE
+        isRequired:
+          type: boolean
+          description: Whether this field is required
+          example: true
+  parameters:
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier of the HubSpot application
+      schema:
+        type: integer
+        format: int32
+      example: 12345
+    DefinitionIdPath:
+      name: definitionId
+      in: path
+      required: true
+      description: The unique identifier of the action definition
+      schema:
+        type: string
+      example: action-def-001
+    AfterQuery:
+      name: after
+      in: query
+      description: Pagination cursor for the next page of results
+      schema:
+        type: string
+      example: NTI1Cg%3D%3D
+    RevisionIdPath:
+      name: revisionId
+      in: path
+      required: true
+      description: The unique identifier of the revision
+      schema:
+        type: string
+      example: rev-001
+    LimitQuery:
+      name: limit
+      in: query
+      description: Maximum number of results to return per page
+      schema:
+        type: integer
+        default: 100
+        maximum: 500
+      example: 100
+  examples:
+    ActionDefinitionRevisionSuccessExample:
+      summary: Example action definition revision
+      value:
+        revisionId: rev-001
+        definition:
+          id: action-def-001
+          revisionId: rev-001
+          actionUrl: https://api.example.com/workflow-actions/execute
+          labels:
+            actionName: Send Custom Notification
+            appDisplayName: Custom Notifications App
+          objectTypes:
+          - CONTACT
+          published: true
+        createdAt: '2024-01-15T10:30:00Z'
+    ActionDefinitionRevisionCollectionSuccessExample:
+      summary: Example collection of action definition revisions
+      value:
+        results:
+        - revisionId: rev-003
+          definition:
+            id: action-def-001
+            revisionId: rev-003
+            actionUrl: https://api.example.com/workflow-actions/execute
+            labels:
+              actionName: Send Custom Notification V3
+              appDisplayName: Custom Notifications App
+            objectTypes:
+            - CONTACT
+            published: true
+          createdAt: '2024-01-20T14:00:00Z'
+        - revisionId: rev-002
+          definition:
+            id: action-def-001
+            revisionId: rev-002
+            actionUrl: https://api.example.com/workflow-actions/execute
+            labels:
+              actionName: Send Custom Notification V2
+              appDisplayName: Custom Notifications App
+            objectTypes:
+            - CONTACT
+            published: true
+          createdAt: '2024-01-18T09:15:00Z'
+        - revisionId: rev-001
+          definition:
+            id: action-def-001
+            revisionId: rev-001
+            actionUrl: https://api.example.com/workflow-actions/execute
+            labels:
+              actionName: Send Custom Notification
+              appDisplayName: Custom Notifications App
+            objectTypes:
+            - CONTACT
+            published: false
+          createdAt: '2024-01-15T10:30:00Z'
+        paging:
+          next:
+            after: MTIzNDU%3D
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

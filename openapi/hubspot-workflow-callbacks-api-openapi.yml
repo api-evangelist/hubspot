@@ -1,0 +1,449 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Workflow Callbacks API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Workflow Callbacks
+  description: Operations to complete workflow action callbacks for asynchronous actions
+paths:
+  /automation/v4/actions/callbacks/{callbackId}/complete:
+    post:
+      tags:
+      - Workflow Callbacks
+      summary: Hubspot Complete a Single Callback
+      description: "Completes a single callback for an asynchronous workflow action, providing the output \nvalues to continue the workflow execution. Use this endpoint when your action has \nfinished processing and needs to return results to HubSpot.\n"
+      operationId: completeCallback
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "CallbackCompletionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      parameters:
+      - $ref: '#/components/parameters/CallbackIdPath'
+        example: example-value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallbackCompletionRequest'
+            examples:
+              CallbackCompletionRequestExample:
+                $ref: '#/components/examples/CallbackCompletionRequestExample'
+      responses:
+        '204':
+          description: Callback completed successfully
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorBadRequestExample:
+                  $ref: '#/components/examples/ErrorBadRequestExample'
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Completecallback401Example:
+                  summary: Default completeCallback 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id001
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id002
+                      key: value
+                    links: &id003
+                      key: value
+        '404':
+          description: Callback not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorNotFoundExample:
+                  $ref: '#/components/examples/ErrorNotFoundExample'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Completecallback500Example:
+                  summary: Default completeCallback 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+  /automation/v4/actions/callbacks/complete:
+    post:
+      tags:
+      - Workflow Callbacks
+      summary: Hubspot Complete Multiple Callbacks
+      description: "Completes multiple callbacks for asynchronous workflow actions in a single request. \nThis is useful when your action processes multiple items and needs to return results \nfor each callback simultaneously.\n"
+      operationId: batchCompleteCallbacks
+      x-microcks-operation:
+        delay: 150
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "BatchCallbackCompletionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCallbackCompletionRequest'
+            examples:
+              BatchCallbackCompletionRequestExample:
+                $ref: '#/components/examples/BatchCallbackCompletionRequestExample'
+      responses:
+        '204':
+          description: All callbacks completed successfully
+        '207':
+          description: Multi-status - Some callbacks succeeded, some failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchCallbackResponse'
+              examples:
+                BatchCallbackPartialSuccessExample:
+                  $ref: '#/components/examples/BatchCallbackPartialSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Batchcompletecallbacks400Example:
+                  summary: Default batchCompleteCallbacks 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id004
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id005
+                      key: value
+                    links: &id006
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Batchcompletecallbacks401Example:
+                  summary: Default batchCompleteCallbacks 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Batchcompletecallbacks500Example:
+                  summary: Default batchCompleteCallbacks 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The error message
+          example: This is an example description.
+        code:
+          type: string
+          description: An error code
+          example: example-value
+        in:
+          type: string
+          description: The location of the error
+          example: example-value
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    CallbackCompletionRequest:
+      type: object
+      description: Request body for completing a single callback
+      required:
+      - outputFields
+      properties:
+        outputFields:
+          type: object
+          description: The output values to return to the workflow
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Error:
+      type: object
+      description: An error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for this error instance
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: A human-readable error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: A more specific error category
+          example: standard
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    BatchCallbackInput:
+      type: object
+      description: A single callback completion input
+      required:
+      - callbackId
+      - outputFields
+      properties:
+        callbackId:
+          type: string
+          description: The unique identifier of the callback
+          example: '500123'
+        outputFields:
+          type: object
+          description: The output values to return
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    BatchCallbackCompletionRequest:
+      type: object
+      description: Request body for completing multiple callbacks
+      required:
+      - inputs
+      properties:
+        inputs:
+          type: array
+          description: List of callbacks to complete
+          items:
+            $ref: '#/components/schemas/BatchCallbackInput'
+          example:
+          - callbackId: '500123'
+            outputFields:
+              key: value
+    BatchCallbackResponse:
+      type: object
+      description: Response from a batch callback completion operation
+      properties:
+        status:
+          type: string
+          enum:
+          - COMPLETE
+          - PARTIAL
+          description: Overall status of the batch operation
+          example: COMPLETE
+        errors:
+          type: array
+          description: List of errors for failed callbacks
+          items:
+            $ref: '#/components/schemas/BatchCallbackError'
+          example:
+          - callbackId: '500123'
+            message: This is an example description.
+            category: standard
+    BatchCallbackError:
+      type: object
+      description: Error information for a failed callback
+      required:
+      - callbackId
+      - message
+      - category
+      properties:
+        callbackId:
+          type: string
+          description: The callback that failed
+          example: '500123'
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        category:
+          type: string
+          description: Error category
+          example: standard
+  examples:
+    ErrorBadRequestExample:
+      summary: Bad request error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input JSON
+        subCategory: INVALID_PARAMETER
+        errors:
+        - message: actionUrl is required
+          code: REQUIRED_FIELD
+          in: body
+    BatchCallbackPartialSuccessExample:
+      summary: Batch callback response with partial failure
+      value:
+        status: PARTIAL
+        errors:
+        - callbackId: callback-xyz789
+          message: Callback not found or already completed
+          category: NOT_FOUND
+    CallbackCompletionRequestExample:
+      summary: Example callback completion request
+      value:
+        outputFields:
+          result: success
+          processedCount: '42'
+          notificationId: notif-123
+    ErrorNotFoundExample:
+      summary: Not found error response
+      value:
+        category: NOT_FOUND
+        correlationId: cde8f123-4567-89ab-cdef-012345678901
+        message: Resource not found
+        subCategory: OBJECT_NOT_FOUND
+    BatchCallbackCompletionRequestExample:
+      summary: Example batch callback completion request
+      value:
+        inputs:
+        - callbackId: callback-abc123
+          outputFields:
+            result: success
+            processedCount: '42'
+        - callbackId: callback-def456
+          outputFields:
+            result: success
+            processedCount: '18'
+  parameters:
+    CallbackIdPath:
+      name: callbackId
+      in: path
+      required: true
+      description: The unique identifier of the callback to complete
+      schema:
+        type: string
+      example: callback-abc123
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

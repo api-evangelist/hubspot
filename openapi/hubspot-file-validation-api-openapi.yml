@@ -1,0 +1,332 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens File Validation API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: File Validation
+  description: Operations for validating source code files
+paths:
+  /cms/v3/source-code/{environment}/validate/{path}:
+    post:
+      tags:
+      - File Validation
+      summary: Hubspot Validate a Source Code File
+      description: "Validates the source code file at the specified path for syntax errors, \nHubL compatibility, and other issues. Returns validation results without modifying the file.\n"
+      operationId: validateSourceCodeFile
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def result = "ValidationSuccessExample"
+
+          return result
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/EnvironmentPath'
+        example: example-value
+      - $ref: '#/components/parameters/FilePathPath'
+        example: example-value
+      requestBody:
+        description: Optional file content to validate instead of the existing file
+        required: false
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FileUploadRequest'
+            examples:
+              FileUploadExample:
+                $ref: '#/components/examples/FileUploadExample'
+      responses:
+        '200':
+          description: Validation completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResult'
+              examples:
+                ValidationSuccessExample:
+                  $ref: '#/components/examples/ValidationSuccessExample'
+                ValidationErrorsExample:
+                  $ref: '#/components/examples/ValidationErrorsExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+      - privateApps:
+        - content
+      - oauth2:
+        - content
+components:
+  parameters:
+    FilePathPath:
+      name: path
+      in: path
+      required: true
+      description: The file system path to the file or folder
+      schema:
+        type: string
+        pattern: .+
+      example: templates/blog/post.html
+    EnvironmentPath:
+      name: environment
+      in: path
+      required: true
+      description: The target environment for the operation (draft or published)
+      schema:
+        type: string
+        enum:
+        - draft
+        - published
+      example: draft
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: Required property 'path' is missing
+        code:
+          type: string
+          description: Error code
+          example: MISSING_REQUIRED_PROPERTY
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of the error
+          example: body
+        context:
+          type: object
+          description: Additional context
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingScopes:
+            - scope1
+            - scope2
+    ValidationResult:
+      type: object
+      description: Result of file validation
+      required:
+      - valid
+      properties:
+        valid:
+          type: boolean
+          description: Whether the file passed validation
+          example: true
+        errors:
+          type: array
+          description: List of validation errors (if any)
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          example:
+          - message: 'Syntax error: unexpected end of template'
+            line: 42
+            column: 15
+            category: HUBL_SYNTAX
+        warnings:
+          type: array
+          description: List of validation warnings (if any)
+          items:
+            $ref: '#/components/schemas/ValidationWarning'
+          example:
+          - message: Deprecated function 'blog_recent_posts' used
+            line: 28
+            suggestion: Use 'blog_posts' function instead
+    ValidationError:
+      type: object
+      description: A validation error
+      required:
+      - message
+      - line
+      properties:
+        message:
+          type: string
+          description: Error description
+          example: 'Syntax error: unexpected end of template'
+        line:
+          type: integer
+          description: Line number where the error occurred
+          example: 42
+        column:
+          type: integer
+          description: Column number where the error occurred
+          example: 15
+        category:
+          type: string
+          description: Error category
+          example: HUBL_SYNTAX
+    Error:
+      type: object
+      description: Standard error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: Error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique identifier for error tracking
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        context:
+          type: object
+          description: Additional error context
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingScopes:
+            - scope1
+            - scope2
+            invalidPropertyName:
+            - propertyValue
+        links:
+          type: object
+          description: Links to relevant documentation
+          additionalProperties:
+            type: string
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Required property 'path' is missing
+            code: MISSING_REQUIRED_PROPERTY
+            subCategory: standard
+            in: body
+            context:
+              missingScopes:
+              - scope1
+              - scope2
+    FileUploadRequest:
+      type: object
+      description: Request body for file upload operations
+      required:
+      - file
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The file content to upload
+          example: example-value
+    ValidationWarning:
+      type: object
+      description: A validation warning
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Warning description
+          example: Deprecated function 'blog_recent_posts' used
+        line:
+          type: integer
+          description: Line number where the warning occurred
+          example: 28
+        suggestion:
+          type: string
+          description: Suggested fix
+          example: Use 'blog_posts' function instead
+  examples:
+    ValidationSuccessExample:
+      summary: Successful validation response
+      description: Example response when file passes validation
+      value:
+        valid: true
+        errors: []
+        warnings: []
+    ValidationErrorsExample:
+      summary: Validation with errors response
+      description: Example response when file has validation errors
+      value:
+        valid: false
+        errors:
+        - message: 'Syntax error: unexpected end of template'
+          line: 42
+          column: 15
+          category: HUBL_SYNTAX
+        warnings:
+        - message: Deprecated function 'blog_recent_posts' used
+          line: 28
+          suggestion: Use 'blog_posts' function instead
+    NotFoundErrorExample:
+      summary: Not found error response
+      description: Example error response when file is not found
+      value:
+        category: OBJECT_NOT_FOUND
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: 'File not found at path: templates/missing.html'
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    FileUploadExample:
+      summary: File upload request
+      description: Example multipart form data for file upload
+      value:
+        file: <binary file content>
+    ValidationErrorResponseExample:
+      summary: Validation error response
+      description: Example error response for invalid input
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        context:
+          missingScopes:
+          - scope1
+          - scope2
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationErrorExample:
+              $ref: '#/components/examples/ValidationErrorResponseExample'
+            NotFoundErrorExample:
+              $ref: '#/components/examples/NotFoundErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

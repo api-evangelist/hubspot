@@ -1,0 +1,1283 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Associations API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Associations
+  description: Operations for managing subscription associations
+paths:
+  /crm/v3/objects/subscriptions/{subscriptionId}/associations/{toObjectType}:
+    get:
+      operationId: listSubscriptionAssociations
+      summary: Hubspot List Subscription Associations
+      description: Returns all associations of a subscription record to objects of a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listsubscriptionassociations200Example:
+                  summary: Default listSubscriptionAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/{companyId}/associations/{toObjectType}:
+    get:
+      operationId: listCompanyAssociations
+      summary: Hubspot List Company Associations
+      description: Returns all associations of a company record to objects of a specified type, such as contacts, deals, or tickets.
+      tags:
+      - Associations
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., contacts, deals, tickets).
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation_2'
+              examples:
+                Listcompanyassociations200Example:
+                  summary: Default listCompanyAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/{companyId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createCompanyAssociation
+      summary: Hubspot Create a Company Association
+      description: Creates an association between a company and another CRM object record. The association type specifies the relationship between the objects.
+      tags:
+      - Associations
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association_2'
+              examples:
+                Createcompanyassociation200Example:
+                  summary: Default createCompanyAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteCompanyAssociation
+      summary: Hubspot Delete a Company Association
+      description: Removes an association between a company and another CRM object record. This does not delete the company or the associated object, only the relationship between them.
+      tags:
+      - Associations
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}:
+    get:
+      operationId: listContactAssociations
+      summary: Hubspot List Contact Associations
+      description: Returns all associations of a contact record to objects of a specified type, such as companies, deals, or tickets.
+      tags:
+      - Associations
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., companies, deals, tickets).
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation_3'
+              examples:
+                Listcontactassociations200Example:
+                  summary: Default listContactAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createContactAssociation
+      summary: Hubspot Create a Contact Association
+      description: Creates an association between a contact and another CRM object record. The association type specifies the relationship between the objects.
+      tags:
+      - Associations
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association_3'
+              examples:
+                Createcontactassociation200Example:
+                  summary: Default createContactAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteContactAssociation
+      summary: Hubspot Delete a Contact Association
+      description: Removes an association between a contact and another CRM object record. This does not delete the contact or the associated object, only the relationship between them.
+      tags:
+      - Associations
+      parameters:
+      - name: contactId
+        in: path
+        required: true
+        description: The ID of the contact.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/{dealId}/associations/{toObjectType}:
+    get:
+      operationId: listDealAssociations
+      summary: Hubspot List Deal Associations
+      description: Returns all associations of a deal record to objects of a specified type, such as contacts, companies, or tickets.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., contacts, companies).
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation_4'
+              examples:
+                Listdealassociations200Example:
+                  summary: Default listDealAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/{dealId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createDealAssociation
+      summary: Hubspot Create a Deal Association
+      description: Creates an association between a deal and another CRM object record. The association type specifies the relationship between the objects.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association_4'
+              examples:
+                Createdealassociation200Example:
+                  summary: Default createDealAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteDealAssociation
+      summary: Hubspot Delete a Deal Association
+      description: Removes an association between a deal and another CRM object record. This does not delete the deal or the associated object, only the relationship between them.
+      tags:
+      - Associations
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}:
+    get:
+      operationId: listTicketAssociations
+      summary: Hubspot List Ticket Associations
+      description: Returns all associations of a ticket record to objects of a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object (e.g., contacts, companies, deals).
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation_5'
+              examples:
+                Listticketassociations200Example:
+                  summary: Default listTicketAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/{ticketId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createTicketAssociation
+      summary: Hubspot Create a Ticket Association
+      description: Creates an association between a ticket and another CRM object record. The association type specifies the relationship between the objects.
+      tags:
+      - Associations
+      parameters:
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the object to associate with.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the object to associate with.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to create.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association_5'
+              examples:
+                Createticketassociation200Example:
+                  summary: Default createTicketAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteTicketAssociation
+      summary: Hubspot Delete a Ticket Association
+      description: Removes an association between a ticket and another CRM object record. This does not delete the ticket or the associated object, only the relationship between them.
+      tags:
+      - Associations
+      parameters:
+      - name: ticketId
+        in: path
+        required: true
+        description: The ID of the ticket.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of the associated object.
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        description: The ID of the associated object.
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        description: The type of association to delete.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/emails/{emailId}/associations/{toObjectType}:
+    get:
+      operationId: listEmailEngagementAssociations
+      summary: Hubspot List Email Engagement Associations
+      description: Returns all associations of an email engagement record to objects of a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        description: The ID of the email engagement.
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listemailengagementassociations200Example:
+                  summary: Default listEmailEngagementAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/emails/{emailId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createEmailEngagementAssociation
+      summary: Hubspot Create an Email Engagement Association
+      description: Creates an association between an email engagement record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+              examples:
+                Createemailengagementassociation200Example:
+                  summary: Default createEmailEngagementAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteEmailEngagementAssociation
+      summary: Hubspot Delete an Email Engagement Association
+      description: Removes an association between an email engagement record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: jsmith@example.com
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}:
+    get:
+      operationId: listMeetingAssociations
+      summary: Hubspot List Meeting Associations
+      description: Returns all associations of a meeting record to objects of a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        description: The ID of the meeting.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listmeetingassociations200Example:
+                  summary: Default listMeetingAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/meetings/{meetingId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createMeetingAssociation
+      summary: Hubspot Create a Meeting Association
+      description: Creates an association between a meeting record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+              examples:
+                Createmeetingassociation200Example:
+                  summary: Default createMeetingAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteMeetingAssociation
+      summary: Hubspot Delete a Meeting Association
+      description: Removes an association between a meeting record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: meetingId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tasks/{taskId}/associations/{toObjectType}:
+    get:
+      operationId: listTaskAssociations
+      summary: Hubspot List Task Associations
+      description: Returns all associations of a task record to objects of a specified type, such as contacts, companies, or deals.
+      tags:
+      - Associations
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        description: The ID of the task.
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        description: The type of associated object.
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: List of associations returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseAssociation'
+              examples:
+                Listtaskassociations200Example:
+                  summary: Default listTaskAssociations 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      type: standard
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tasks/{taskId}/associations/{toObjectType}/{toObjectId}/{associationType}:
+    put:
+      operationId: createTaskAssociation
+      summary: Hubspot Create a Task Association
+      description: Creates an association between a task record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '200':
+          description: Association created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+              examples:
+                Createtaskassociation200Example:
+                  summary: Default createTaskAssociation 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    type: standard
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteTaskAssociation
+      summary: Hubspot Delete a Task Association
+      description: Removes an association between a task record and another CRM object.
+      tags:
+      - Associations
+      parameters:
+      - name: taskId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '500123'
+      - name: associationType
+        in: path
+        required: true
+        schema:
+          type: string
+        example: standard
+      responses:
+        '204':
+          description: Association deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    Association_5:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Paging_4:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Association_2:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    CollectionResponseAssociation_3:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_3'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_3'
+    CollectionResponseAssociation_2:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_2'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_2'
+    Paging_2:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Association_4:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Paging_5:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    CollectionResponseAssociation_4:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_4'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_4'
+    Paging_3:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: The cursor to use to get the next page of results.
+          example:
+            after: example-value
+    Association_3:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    CollectionResponseAssociation_5:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_5'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_5'
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

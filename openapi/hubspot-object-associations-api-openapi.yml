@@ -1,0 +1,462 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Object Associations API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Object Associations
+  description: Create, retrieve, and delete associations between individual CRM objects
+paths:
+  /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}:
+    get:
+      tags:
+      - Object Associations
+      operationId: listObjectAssociations
+      summary: Hubspot List Associations for an Object
+      description: 'Retrieves all associations of a specific type for a given CRM object.
+
+        Returns paginated results with the associated objects and their association types.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object (e.g., contacts, companies, deals)
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: '12345'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects to retrieve associations for
+        example: companies
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 500
+          default: 100
+        description: Maximum number of results per page
+        example: 100
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for fetching next page of results
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved associations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationResult'
+              examples:
+                success:
+                  $ref: '#/components/examples/AssociationResultExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      tags:
+      - Object Associations
+      operationId: createObjectAssociation
+      summary: Hubspot Create an Association Between Objects
+      description: 'Creates a new association between two CRM objects.
+
+        Specify the target object and the association types to establish the relationship.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: '12345'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the target object
+        example: companies
+      requestBody:
+        required: true
+        description: Association details to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssociationInput'
+            examples:
+              CreateAssociationInputExample:
+                $ref: '#/components/examples/CreateAssociationInputExample'
+      responses:
+        '200':
+          description: Successfully created association
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationResult'
+              examples:
+                success:
+                  $ref: '#/components/examples/AssociationResultExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /crm/v4/objects/{fromObjectType}/{fromObjectId}/associations/{toObjectType}/{toObjectId}:
+    delete:
+      tags:
+      - Object Associations
+      operationId: deleteObjectAssociation
+      summary: Hubspot Delete an Association Between Objects
+      description: 'Removes an association between two CRM objects.
+
+        This operation deletes all association types between the specified objects.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the source object
+        example: contacts
+      - name: fromObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the source object
+        example: '12345'
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of the target object
+        example: companies
+      - name: toObjectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID of the target object
+        example: '67890'
+      responses:
+        '204':
+          description: Successfully deleted association
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  examples:
+    AssociationResultExample:
+      summary: Example association result
+      value:
+        from:
+          id: '12345'
+        to:
+        - toObjectId: '67890'
+          associationTypes:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 1
+            label: Primary Company
+        - toObjectId: '67891'
+          associationTypes:
+          - associationCategory: USER_DEFINED
+            associationTypeId: 101
+            label: Partner Company
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+    CreateAssociationInputExample:
+      summary: Example create association input
+      value:
+        to:
+          id: '67890'
+        types:
+        - associationCategory: HUBSPOT_DEFINED
+          associationTypeId: 1
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    CreateAssociationInput:
+      type: object
+      description: Input for creating an association
+      properties:
+        to:
+          $ref: '#/components/schemas/ObjectReference'
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationTypeInput'
+          description: Association types to create
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+      required:
+      - to
+      - types
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        category:
+          type: string
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          example: This is an example description.
+        subCategory:
+          type: string
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    AssociationTypeInput:
+      type: object
+      description: Input for specifying an association type
+      properties:
+        associationCategory:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          example: 500123
+      required:
+      - associationCategory
+      - associationTypeId
+    Association:
+      type: object
+      description: Represents an association between two CRM objects
+      properties:
+        toObjectId:
+          type: string
+          description: ID of the target object
+          example: '500123'
+        associationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+          description: Types of associations between the objects
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+            label: Example Record
+      required:
+      - toObjectId
+      - associationTypes
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    AssociationType:
+      type: object
+      description: Defines the type of association
+      properties:
+        associationCategory:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          description: Category of the association type
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          description: Numeric identifier for the association type
+          example: 500123
+        label:
+          type: string
+          description: Human-readable label for the association
+          example: Example Record
+      required:
+      - associationCategory
+      - associationTypeId
+    AssociationResult:
+      type: object
+      description: Result of an association query
+      properties:
+        from:
+          $ref: '#/components/schemas/ObjectReference'
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          description: Associated objects
+          example:
+          - toObjectId: '500123'
+            associationTypes:
+            - associationCategory: HUBSPOT_DEFINED
+              associationTypeId: 500123
+              label: Example Record
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - from
+      - to
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    ObjectReference:
+      type: object
+      description: Reference to a CRM object by ID
+      properties:
+        id:
+          type: string
+          description: ID of the object
+          example: '500123'
+      required:
+      - id
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

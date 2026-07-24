@@ -1,0 +1,381 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Rows API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Rows
+  description: Operations for managing HubDB table rows
+paths:
+  /cms/v3/hubdb/tables/{tableIdOrName}/rows:
+    get:
+      operationId: listHubDBTableRows
+      summary: Hubspot List Hubdb Table Rows
+      description: Returns the rows of a specific HubDB table. By default, returns rows from the published version of the table. Use the draft parameter to retrieve rows from the draft version.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+        example: '500123'
+      - name: sort
+        in: query
+        description: Column to sort results by.
+        schema:
+          type: string
+        example: example-value
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+        example: 100
+      - name: properties
+        in: query
+        description: A comma-separated list of column names to return.
+        schema:
+          type: string
+        example: example-value
+      responses:
+        '200':
+          description: Successful response with the table rows.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseHubDBRow'
+              examples:
+                Listhubdbtablerows200Example:
+                  summary: Default listHubDBTableRows 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      values:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: addHubDBTableRow
+      summary: Hubspot Add a Row to a Hubdb Table
+      description: Adds a new row to a HubDB table. The row data is added to the draft version of the table. Publish the table draft to make the new row visible on live pages.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to add a row to.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBRowCreateRequest'
+            examples:
+              AddhubdbtablerowRequestExample:
+                summary: Default addHubDBTableRow request
+                x-microcks-default: true
+                value:
+                  values:
+                    key: value
+      responses:
+        '201':
+          description: Row added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+              examples:
+                Addhubdbtablerow201Example:
+                  summary: Default addHubDBTableRow 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    values:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /cms/v3/hubdb/tables/{tableIdOrName}/rows/{rowId}:
+    get:
+      operationId: getHubDBTableRow
+      summary: Hubspot Get a Hubdb Table Row
+      description: Returns a specific row from a HubDB table by its row ID. Returns the published version of the row by default.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+        example: '500123'
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '200':
+          description: Successful response with the row details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+              examples:
+                Gethubdbtablerow200Example:
+                  summary: Default getHubDBTableRow 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    values:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateHubDBTableRow
+      summary: Hubspot Update a Hubdb Table Row
+      description: Performs a partial update of a specific HubDB table row. Only the columns included in the request body will be updated. Changes are applied to the draft version and must be published.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+        example: '500123'
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to update.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBRowCreateRequest'
+            examples:
+              UpdatehubdbtablerowRequestExample:
+                summary: Default updateHubDBTableRow request
+                x-microcks-default: true
+                value:
+                  values:
+                    key: value
+      responses:
+        '200':
+          description: Row updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBRow'
+              examples:
+                Updatehubdbtablerow200Example:
+                  summary: Default updateHubDBTableRow 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    values:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteHubDBTableRow
+      summary: Hubspot Delete a Hubdb Table Row
+      description: Permanently deletes a row from a HubDB table. The deletion is applied to the draft version and must be published to remove the row from live pages.
+      tags:
+      - Rows
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table.
+        schema:
+          type: string
+        example: '500123'
+      - name: rowId
+        in: path
+        required: true
+        description: The ID of the row to delete.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '204':
+          description: Row deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    CollectionResponseHubDBRow:
+      type: object
+      description: A paginated list of HubDB table rows.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDBRow'
+          example:
+          - id: '500123'
+            values:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    HubDBRowCreateRequest:
+      type: object
+      description: Request body for creating or updating a HubDB table row.
+      properties:
+        values:
+          type: object
+          description: The column values for the row as key-value pairs.
+          additionalProperties: true
+          example:
+            key: value
+    HubDBRow:
+      type: object
+      description: A row in a HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the row.
+          example: '500123'
+        values:
+          type: object
+          description: The column values for the row as key-value pairs.
+          additionalProperties: true
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the row was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the row was last updated.
+          example: '2025-03-15T14:30:00Z'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

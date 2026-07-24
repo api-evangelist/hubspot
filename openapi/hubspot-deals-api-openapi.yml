@@ -1,0 +1,547 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Deals API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Deals
+  description: Operations for managing deal records
+paths:
+  /crm/v3/objects/deals:
+    get:
+      operationId: listDeals
+      summary: Hubspot List Deals
+      description: Returns a page of deal records. Use the limit and after parameters to paginate through deals. You can also specify which properties to return using the properties parameter.
+      tags:
+      - Deals
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived deals.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with a list of deals.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseDeal'
+              examples:
+                Listdeals200Example:
+                  summary: Default listDeals 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createDeal
+      summary: Hubspot Create a Deal
+      description: Creates a new deal record with the provided properties. The request body should include a properties object containing the field values for the deal you want to create, including dealname, amount, and pipeline stage.
+      tags:
+      - Deals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatedealRequestExample:
+                summary: Default createDeal request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '201':
+          description: Deal created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+              examples:
+                Createdeal201Example:
+                  summary: Default createDeal 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/{dealId}:
+    get:
+      operationId: getDeal
+      summary: Hubspot Get a Deal
+      description: Returns a single deal record by its ID. You can specify which properties to return using the properties parameter.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived deals.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with the deal record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+              examples:
+                Getdeal200Example:
+                  summary: Default getDeal 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateDeal
+      summary: Hubspot Update a Deal
+      description: Performs a partial update of a deal record. Only the properties included in the request body will be updated; other properties will remain unchanged.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to update.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatedealRequestExample:
+                summary: Default updateDeal request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '200':
+          description: Deal updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Deal'
+              examples:
+                Updatedeal200Example:
+                  summary: Default updateDeal 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteDeal
+      summary: Hubspot Archive a Deal
+      description: Archives (soft deletes) a deal record by its ID. Archived deals can be restored using the HubSpot UI or API. This does not permanently delete the deal from HubSpot.
+      tags:
+      - Deals
+      parameters:
+      - name: dealId
+        in: path
+        required: true
+        description: The ID of the deal to archive.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '204':
+          description: Deal archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/search:
+    post:
+      operationId: searchDeals
+      summary: Hubspot Search Deals
+      description: Searches for deal records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval.
+      tags:
+      - Deals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchdealsRequestExample:
+                summary: Default searchDeals request
+                x-microcks-default: true
+                value:
+                  filterGroups:
+                  - filters:
+                    - {}
+                  sorts:
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties:
+                  - example-value
+                  limit: 100
+                  after: example-value
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseDeal'
+              examples:
+                Searchdeals200Example:
+                  summary: Default searchDeals 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    FilterGroup:
+      type: object
+      description: A group of filters combined with AND logic.
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    SimplePublicObjectInput:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Deal:
+      type: object
+      description: A HubSpot deal record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the deal.
+          example: '500123'
+        properties:
+          type: object
+          description: The deal's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the deal has been archived.
+          example: true
+        associations:
+          type: object
+          description: The deal's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    Association:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    SearchRequest:
+      type: object
+      description: A search request for CRM objects.
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum:
+                - ASCENDING
+                - DESCENDING
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
+        query:
+          type: string
+          example: example-value
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          maximum: 200
+          example: 100
+        after:
+          type: string
+          example: example-value
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Filter:
+      type: object
+      description: A single filter condition.
+      properties:
+        propertyName:
+          type: string
+          example: Example Record
+        operator:
+          type: string
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          example: example-value
+    CollectionResponseDeal:
+      type: object
+      description: A paginated list of deal records.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        paging:
+          $ref: '#/components/schemas/Paging'
+    CollectionResponseAssociation:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

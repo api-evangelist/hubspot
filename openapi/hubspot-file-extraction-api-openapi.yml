@@ -1,0 +1,345 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens File Extraction API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: File Extraction
+  description: Operations for extracting zip archives in the developer file system
+paths:
+  /cms/v3/source-code/extract/async:
+    post:
+      tags:
+      - File Extraction
+      summary: Hubspot Extract a Zip Archive
+      description: 'Initiates asynchronous extraction of a zip file in the developer file system.
+
+        Returns a task ID that can be used to check extraction status via the status endpoint.
+
+        '
+      operationId: extractZipFileAsync
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def result = "TaskLocatorSuccessExample"
+
+          return result
+
+          '
+      requestBody:
+        description: The path to the zip file to extract
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileExtractRequest'
+            examples:
+              FileExtractRequestExample:
+                $ref: '#/components/examples/FileExtractRequestExample'
+      responses:
+        '202':
+          description: Extraction task accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskLocator'
+              examples:
+                TaskLocatorSuccessExample:
+                  $ref: '#/components/examples/TaskLocatorSuccessExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+      - privateApps:
+        - content
+      - oauth2:
+        - content
+  /cms/v3/source-code/extract/async/tasks/{taskId}/status:
+    get:
+      tags:
+      - File Extraction
+      summary: Hubspot Get Extraction Task Status
+      description: 'Retrieves the current status of an asynchronous zip file extraction task.
+
+        Poll this endpoint to determine when extraction is complete.
+
+        '
+      operationId: getExtractionTaskStatus
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def result = "ActionResponseSuccessExample"
+
+          return result
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/TaskIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved task status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+              examples:
+                ActionResponseSuccessExample:
+                  $ref: '#/components/examples/ActionResponseSuccessExample'
+                ActionResponseProcessingExample:
+                  $ref: '#/components/examples/ActionResponseProcessingExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      security:
+      - privateApps:
+        - content
+      - oauth2:
+        - content
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: Required property 'path' is missing
+        code:
+          type: string
+          description: Error code
+          example: MISSING_REQUIRED_PROPERTY
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of the error
+          example: body
+        context:
+          type: object
+          description: Additional context
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingScopes:
+            - scope1
+            - scope2
+    ActionResponse:
+      type: object
+      description: Response for asynchronous action status
+      required:
+      - status
+      - startedAt
+      - completedAt
+      properties:
+        status:
+          type: string
+          description: Current status of the action
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          example: COMPLETE
+        requestedAt:
+          type: string
+          format: date-time
+          description: When the action was requested
+          example: '2024-01-15T10:30:00Z'
+        startedAt:
+          type: string
+          format: date-time
+          description: When the action started processing
+          example: '2024-01-15T10:30:01Z'
+        completedAt:
+          type: string
+          format: date-time
+          description: When the action completed
+          example: '2024-01-15T10:30:15Z'
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Error:
+      type: object
+      description: Standard error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: Error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique identifier for error tracking
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        context:
+          type: object
+          description: Additional error context
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingScopes:
+            - scope1
+            - scope2
+            invalidPropertyName:
+            - propertyValue
+        links:
+          type: object
+          description: Links to relevant documentation
+          additionalProperties:
+            type: string
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Required property 'path' is missing
+            code: MISSING_REQUIRED_PROPERTY
+            subCategory: standard
+            in: body
+            context:
+              missingScopes:
+              - scope1
+              - scope2
+    FileExtractRequest:
+      type: object
+      description: Request body for zip file extraction
+      required:
+      - path
+      properties:
+        path:
+          type: string
+          description: Path to the zip file in the developer file system
+          example: uploads/theme-update.zip
+    TaskLocator:
+      type: object
+      description: Locator for an asynchronous task
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the task
+          example: '12345'
+        links:
+          type: object
+          description: Related links for the task
+          additionalProperties:
+            type: string
+          example:
+            status: /cms/v3/source-code/extract/async/tasks/12345/status
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationErrorExample:
+              $ref: '#/components/examples/ValidationErrorResponseExample'
+            NotFoundErrorExample:
+              $ref: '#/components/examples/NotFoundErrorExample'
+  examples:
+    ActionResponseProcessingExample:
+      summary: Processing action response
+      description: Example response for an in-progress extraction task
+      value:
+        status: PROCESSING
+        requestedAt: '2024-01-15T10:30:00Z'
+        startedAt: '2024-01-15T10:30:01Z'
+        completedAt: null
+    TaskLocatorSuccessExample:
+      summary: Successful task locator response
+      description: Example response when extraction task is accepted
+      value:
+        id: '12345'
+        links:
+          status: /cms/v3/source-code/extract/async/tasks/12345/status
+    ActionResponseSuccessExample:
+      summary: Completed action response
+      description: Example response for a completed extraction task
+      value:
+        status: COMPLETE
+        requestedAt: '2024-01-15T10:30:00Z'
+        startedAt: '2024-01-15T10:30:01Z'
+        completedAt: '2024-01-15T10:30:15Z'
+    NotFoundErrorExample:
+      summary: Not found error response
+      description: Example error response when file is not found
+      value:
+        category: OBJECT_NOT_FOUND
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: 'File not found at path: templates/missing.html'
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    FileExtractRequestExample:
+      summary: Zip extraction request
+      description: Example request to extract a zip file
+      value:
+        path: uploads/theme-update.zip
+    ValidationErrorResponseExample:
+      summary: Validation error response
+      description: Example error response for invalid input
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        context:
+          missingScopes:
+          - scope1
+          - scope2
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  parameters:
+    TaskIdPath:
+      name: taskId
+      in: path
+      required: true
+      description: The unique identifier of the extraction task
+      schema:
+        type: integer
+        format: int32
+      example: 12345
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

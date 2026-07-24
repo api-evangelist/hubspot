@@ -1,0 +1,519 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Threads API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Threads
+  description: Operations for creating, retrieving, updating, and archiving conversation threads.
+paths:
+  /conversations/v3/conversations/threads:
+    get:
+      tags:
+      - Threads
+      operationId: listThreads
+      summary: Hubspot List Conversation Threads
+      description: 'Retrieve a paginated list of conversation threads with optional filtering.
+
+        Filter by inbox, contact, or status to find specific conversations.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
+      parameters:
+      - name: inboxId
+        in: query
+        schema:
+          type: string
+        description: Filter threads by inbox ID
+        example: '12345678'
+      - name: associatedContactId
+        in: query
+        schema:
+          type: string
+        description: Filter threads by associated CRM contact ID
+        example: '101'
+      - name: status
+        in: query
+        schema:
+          type: string
+          enum:
+          - OPEN
+          - CLOSED
+        description: Filter threads by status
+        example: OPEN
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: NTI1Cg%3D%3D
+      - name: sort
+        in: query
+        schema:
+          type: string
+        description: Property to sort results by
+        example: latestMessageTimestamp
+      responses:
+        '200':
+          description: Successfully retrieved the list of threads
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadCollection'
+              examples:
+                Success:
+                  $ref: '#/components/examples/ThreadCollectionExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /conversations/v3/conversations/threads/{threadId}:
+    get:
+      tags:
+      - Threads
+      operationId: getThreadById
+      summary: Hubspot Retrieve a Thread
+      description: 'Retrieve a specific conversation thread by its unique identifier.
+
+        Optionally include associated objects like tickets.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
+      parameters:
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to retrieve
+        example: '987654321'
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Set to true to retrieve archived threads
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return in the response
+        example: status
+      - name: association
+        in: query
+        schema:
+          type: string
+          enum:
+          - TICKET
+        description: Include associated objects in the response
+        example: TICKET
+      responses:
+        '200':
+          description: Successfully retrieved the thread details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
+              examples:
+                Success:
+                  $ref: '#/components/examples/ThreadExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    patch:
+      tags:
+      - Threads
+      operationId: updateThread
+      summary: Hubspot Update a Thread
+      description: 'Update properties of an existing conversation thread.
+
+        Use this to change status, reassign the thread, or modify other properties.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - conversations.write
+      - PrivateApp: []
+      parameters:
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to update
+        example: '987654321'
+      requestBody:
+        required: true
+        description: Thread properties to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateThreadRequest'
+            examples:
+              UpdateStatus:
+                $ref: '#/components/examples/UpdateThreadRequestExample'
+      responses:
+        '200':
+          description: Successfully updated the thread
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Thread'
+              examples:
+                Success:
+                  $ref: '#/components/examples/ThreadExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+      - Threads
+      operationId: archiveThread
+      summary: Hubspot Archive a Thread
+      description: "Archive a conversation thread. The thread will be permanently deleted \n30 days after being archived. This action can be undone within the retention period.\n"
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - conversations.write
+      - PrivateApp: []
+      parameters:
+      - name: threadId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the thread to archive
+        example: '987654321'
+      responses:
+        '204':
+          description: Successfully archived the thread
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ThreadCollection:
+      type: object
+      description: Paginated collection of conversation threads
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Thread'
+          description: Array of thread records
+          example:
+          - id: '987654321'
+            inboxId: '12345678'
+            status: OPEN
+            spam: false
+            associatedContactId: '101'
+            assignedTo: user_456
+            originalChannelId: channel_789
+            originalChannelAccountId: account_123
+            latestMessageTimestamp: '2024-01-20T10:30:00Z'
+            latestMessageSentTimestamp: '2024-01-20T10:25:00Z'
+            latestMessageReceivedTimestamp: '2024-01-20T10:30:00Z'
+            closedAt: '2024-01-21T15:00:00Z'
+            createdAt: '2024-01-15T09:00:00Z'
+            archived: false
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - results
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error.
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid thread ID format
+        code:
+          type: string
+          description: Error code
+          example: INVALID_FORMAT
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: PARAMETER_ERROR
+        in:
+          type: string
+          description: Location where error occurred
+          example: path
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Error:
+      type: object
+      description: Standard error response structure.
+      properties:
+        category:
+          type: string
+          description: Error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique tracking identifier for support requests
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input parameters
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: INVALID_PARAMETER
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Invalid thread ID format
+            code: INVALID_FORMAT
+            subCategory: PARAMETER_ERROR
+            in: path
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    UpdateThreadRequest:
+      type: object
+      description: Request payload for updating a thread's properties.
+      properties:
+        status:
+          type: string
+          enum:
+          - OPEN
+          - CLOSED
+          description: New thread status
+          example: CLOSED
+        assignedTo:
+          type: string
+          description: User ID to assign the thread to
+          example: user_789
+    Thread:
+      type: object
+      description: Represents a conversation thread containing messages between participants.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the thread
+          example: '987654321'
+        inboxId:
+          type: string
+          description: ID of the inbox containing this thread
+          example: '12345678'
+        status:
+          type: string
+          enum:
+          - OPEN
+          - CLOSED
+          description: Current status of the thread
+          example: OPEN
+        spam:
+          type: boolean
+          description: Whether the thread is marked as spam
+          example: false
+        associatedContactId:
+          type: string
+          description: ID of the associated CRM contact
+          example: '101'
+        assignedTo:
+          type: string
+          description: User ID the thread is assigned to
+          example: user_456
+        originalChannelId:
+          type: string
+          description: ID of the original communication channel
+          example: channel_789
+        originalChannelAccountId:
+          type: string
+          description: ID of the original channel account
+          example: account_123
+        latestMessageTimestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the latest message
+          example: '2024-01-20T10:30:00Z'
+        latestMessageSentTimestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the latest sent message
+          example: '2024-01-20T10:25:00Z'
+        latestMessageReceivedTimestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the latest received message
+          example: '2024-01-20T10:30:00Z'
+        closedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the thread was closed
+          example: '2024-01-21T15:00:00Z'
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the thread was created
+          example: '2024-01-15T09:00:00Z'
+        archived:
+          type: boolean
+          description: Whether the thread is archived
+          example: false
+      required:
+      - id
+      - inboxId
+      - status
+      - createdAt
+    Paging:
+      type: object
+      description: Pagination information for list responses.
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    PagingNext:
+      type: object
+      description: Pagination cursor information for retrieving the next page.
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: NTI1Cg%3D%3D
+        link:
+          type: string
+          description: API link to the next page
+          example: /conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D
+  examples:
+    ThreadCollectionExample:
+      summary: Paginated list of threads
+      value:
+        results:
+        - id: '987654321'
+          inboxId: '12345678'
+          status: OPEN
+          spam: false
+          associatedContactId: '101'
+          createdAt: '2024-01-15T09:00:00Z'
+          archived: false
+        - id: '987654322'
+          inboxId: '12345678'
+          status: CLOSED
+          spam: false
+          associatedContactId: '102'
+          createdAt: '2024-01-14T11:00:00Z'
+          archived: false
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /conversations/v3/conversations/threads?after=NTI1Cg%3D%3D
+    ThreadExample:
+      summary: A complete thread record
+      value:
+        id: '987654321'
+        inboxId: '12345678'
+        status: OPEN
+        spam: false
+        associatedContactId: '101'
+        assignedTo: user_456
+        originalChannelId: channel_789
+        originalChannelAccountId: account_123
+        latestMessageTimestamp: '2024-01-20T10:30:00Z'
+        latestMessageSentTimestamp: '2024-01-20T10:25:00Z'
+        latestMessageReceivedTimestamp: '2024-01-20T10:30:00Z'
+        createdAt: '2024-01-15T09:00:00Z'
+        archived: false
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        context:
+          invalidFields:
+          - threadId
+    UpdateThreadRequestExample:
+      summary: Example request to update a thread
+      value:
+        status: CLOSED
+        assignedTo: user_789
+  responses:
+    ErrorResponse:
+      description: An error occurred while processing the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationError:
+              $ref: '#/components/examples/ErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

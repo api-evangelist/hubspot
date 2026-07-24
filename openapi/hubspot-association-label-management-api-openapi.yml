@@ -1,0 +1,436 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Association Label Management API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Association Label Management
+  description: Create, update, and delete custom labels for association types
+paths:
+  /crm/v4/associations/{fromObjectType}/{toObjectType}/labels:
+    get:
+      tags:
+      - Association Label Management
+      operationId: listAssociationLabels
+      summary: Hubspot List Association Labels
+      description: 'Retrieves all association labels defined for a pair of object types.
+
+        Labels provide human-readable descriptions for different types of associations.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      responses:
+        '200':
+          description: Successfully retrieved association labels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationLabelCollection'
+              examples:
+                success:
+                  $ref: '#/components/examples/AssociationLabelCollectionExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags:
+      - Association Label Management
+      operationId: createAssociationLabel
+      summary: Hubspot Create an Association Label
+      description: 'Creates a new custom association label for categorizing relationships.
+
+        Custom labels help distinguish between different types of associations.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      requestBody:
+        required: true
+        description: Label details to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLabelInput'
+            examples:
+              CreateLabelInputExample:
+                $ref: '#/components/examples/CreateLabelInputExample'
+      responses:
+        '200':
+          description: Successfully created association label
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationLabel'
+              examples:
+                success:
+                  $ref: '#/components/examples/AssociationLabelExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /crm/v4/associations/{fromObjectType}/{toObjectType}/labels/{associationTypeId}:
+    put:
+      tags:
+      - Association Label Management
+      operationId: updateAssociationLabel
+      summary: Hubspot Update an Association Label
+      description: 'Updates an existing association label.
+
+        Modify the display text or inverse label for a custom association type.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      - name: associationTypeId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Association type ID to update
+        example: 101
+      requestBody:
+        required: true
+        description: Updated label details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLabelInput'
+            examples:
+              CreateLabelInputExample:
+                $ref: '#/components/examples/CreateLabelInputExample'
+      responses:
+        '204':
+          description: Successfully updated association label
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+      - Association Label Management
+      operationId: deleteAssociationLabel
+      summary: Hubspot Delete an Association Label
+      description: 'Deletes a custom association label.
+
+        This removes the label definition but does not affect existing associations.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Source object type
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Target object type
+        example: companies
+      - name: associationTypeId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Association type ID to delete
+        example: 101
+      responses:
+        '204':
+          description: Successfully deleted association label
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  examples:
+    CreateLabelInputExample:
+      summary: Example create label input
+      value:
+        label: Primary Contact
+        name: primary_contact
+        inverseLabel: Main Company
+    AssociationLabelCollectionExample:
+      summary: Example collection of association labels
+      value:
+        results:
+        - typeId: 101
+          label: Primary Contact
+          category: USER_DEFINED
+        - typeId: 102
+          label: Billing Contact
+          category: USER_DEFINED
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: https://api.hubapi.com/crm/v4/associations/contacts/companies/labels?after=NTI1Cg%3D%3D
+    AssociationLabelExample:
+      summary: Example association label
+      value:
+        typeId: 101
+        label: Primary Contact
+        category: USER_DEFINED
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    CreateLabelInput:
+      type: object
+      description: Input for creating an association label
+      properties:
+        label:
+          type: string
+          description: Display text for the label
+          example: Example Record
+        name:
+          type: string
+          description: Internal name for the label
+          example: Example Record
+        inverseLabel:
+          type: string
+          description: Label for the inverse direction
+          example: Example Record
+      required:
+      - label
+      - name
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        category:
+          type: string
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          example: This is an example description.
+        subCategory:
+          type: string
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    AssociationLabelCollection:
+      type: object
+      description: Collection of association labels
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationLabel'
+          description: Array of association labels
+          example:
+          - typeId: 500123
+            label: Example Record
+            category: HUBSPOT_DEFINED
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - results
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    AssociationLabel:
+      type: object
+      description: A label that can be applied to associations
+      properties:
+        typeId:
+          type: integer
+          description: Numeric identifier for the label type
+          example: 500123
+        label:
+          type: string
+          description: Display text for the label
+          example: Example Record
+        category:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          description: Category of the label
+          example: HUBSPOT_DEFINED
+      required:
+      - typeId
+      - label
+      - category
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

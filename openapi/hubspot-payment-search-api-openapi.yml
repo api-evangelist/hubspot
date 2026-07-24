@@ -1,0 +1,537 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Payment Search API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Payment Search
+  description: Advanced search operations for finding and filtering commerce payments
+paths:
+  /crm/v3/objects/commerce_payments/search:
+    post:
+      tags:
+      - Payment Search
+      summary: Hubspot Search Commerce Payments
+      description: "Searches for commerce payments using filters, sorting, and query parameters. \nSupports complex search criteria with multiple filter groups.\n"
+      operationId: searchCommercePayments
+      x-microcks-operation:
+        delay: 150
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "SearchCommercePaymentsSuccessExample"
+
+          '
+      security:
+      - oauth2Auth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchCommercePaymentsRequestExample:
+                $ref: '#/components/examples/SearchCommercePaymentsRequestExample'
+      responses:
+        '200':
+          description: Successfully executed search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              examples:
+                SearchCommercePaymentsSuccessExample:
+                  $ref: '#/components/examples/SearchCommercePaymentsSuccessExample'
+        '400':
+          description: Bad request - Invalid search parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Searchcommercepayments400Example:
+                  summary: Default searchCommercePayments 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id001
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id002
+                      key: value
+                    links: &id003
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Searchcommercepayments401Example:
+                  summary: Default searchCommercePayments 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Searchcommercepayments500Example:
+                  summary: Default searchCommercePayments 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+components:
+  schemas:
+    PropertyHistory:
+      type: object
+      description: A historical property value
+      required:
+      - value
+      - timestamp
+      - sourceType
+      properties:
+        value:
+          type: string
+          description: The property value
+          example: example-value
+        timestamp:
+          type: string
+          format: date-time
+          description: When this value was set
+          example: '2025-03-15T14:30:00Z'
+        sourceType:
+          type: string
+          description: The source that set this value
+          example: standard
+        sourceId:
+          type: string
+          description: The identifier of the source
+          example: '500123'
+        sourceLabel:
+          type: string
+          description: A human-readable label for the source
+          example: Example Record
+        updatedByUserId:
+          type: integer
+          description: The user ID that made the change
+          example: 1718153645993
+    SortOption:
+      type: object
+      description: A sort option for ordering results
+      required:
+      - propertyName
+      - direction
+      properties:
+        propertyName:
+          type: string
+          description: The property to sort by
+          example: Example Record
+        direction:
+          type: string
+          enum:
+          - ASCENDING
+          - DESCENDING
+          description: The sort direction
+          example: ASCENDING
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The error message
+          example: This is an example description.
+        code:
+          type: string
+          description: An error code
+          example: example-value
+        in:
+          type: string
+          description: The location of the error
+          example: example-value
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    FilterGroup:
+      type: object
+      description: A group of filters combined with AND logic
+      required:
+      - filters
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+            values:
+            - {}
+            highValue: example-value
+    SearchResponse:
+      type: object
+      description: Response from a search operation
+      required:
+      - total
+      - results
+      properties:
+        total:
+          type: integer
+          description: Total number of matching results
+          example: 10
+        results:
+          type: array
+          description: The matching commerce payments
+          items:
+            $ref: '#/components/schemas/CommercePayment'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            archivedAt: '2025-03-15T14:30:00Z'
+            associations:
+              key: value
+            propertiesWithHistory:
+              key: value
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Error:
+      type: object
+      description: An error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for this error instance
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: A human-readable error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: A more specific error category
+          example: standard
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    SearchRequest:
+      type: object
+      description: Request body for searching commerce payments
+      properties:
+        query:
+          type: string
+          description: Search query string
+          example: example-value
+        limit:
+          type: integer
+          description: Maximum number of results
+          default: 10
+          example: 10
+        after:
+          type: string
+          description: Pagination cursor
+          example: example-value
+        sorts:
+          type: array
+          description: Sort order for results
+          items:
+            $ref: '#/components/schemas/SortOption'
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
+        properties:
+          type: array
+          description: Properties to return
+          items:
+            type: string
+          example:
+          - example-value
+        filterGroups:
+          type: array
+          description: Filter groups for the search
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
+    Filter:
+      type: object
+      description: A single filter criterion
+      required:
+      - propertyName
+      - operator
+      properties:
+        propertyName:
+          type: string
+          description: The property to filter on
+          example: Example Record
+        operator:
+          type: string
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          description: The comparison operator
+          example: EQ
+        value:
+          type: string
+          description: The value to compare against
+          example: example-value
+        values:
+          type: array
+          description: Values for IN/NOT_IN operators
+          items:
+            type: string
+          example:
+          - example-value
+        highValue:
+          type: string
+          description: Upper bound for BETWEEN operator
+          example: example-value
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: Cursor for the next page
+            link:
+              type: string
+              description: Link to the next page
+          example:
+            after: example-value
+            link: https://app.hubspot.com/contacts/12345
+        prev:
+          type: object
+          properties:
+            before:
+              type: string
+              description: Cursor for the previous page
+            link:
+              type: string
+              description: Link to the previous page
+          example:
+            before: example-value
+            link: https://app.hubspot.com/contacts/12345
+    CommercePayment:
+      type: object
+      description: A commerce payment object representing a payment transaction
+      required:
+      - id
+      - properties
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the commerce payment
+          example: '500123'
+        properties:
+          type: object
+          description: The properties of the commerce payment
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: When the commerce payment was created
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the commerce payment was last updated
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the commerce payment is archived
+          example: true
+        archivedAt:
+          type: string
+          format: date-time
+          description: When the commerce payment was archived
+          example: '2025-03-15T14:30:00Z'
+        associations:
+          type: object
+          description: Associated objects
+          additionalProperties:
+            $ref: '#/components/schemas/AssociationResult'
+          example:
+            key: value
+        propertiesWithHistory:
+          type: object
+          description: Properties with their value history
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/PropertyHistory'
+          example:
+            key: value
+    AssociationResult:
+      type: object
+      description: Association results for an object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  examples:
+    SearchCommercePaymentsSuccessExample:
+      summary: Successful search response
+      value:
+        total: 2
+        results:
+        - id: '12345678901'
+          properties:
+            hs_payment_status: completed
+            hs_amount: '500.00'
+            hs_currency: USD
+          createdAt: '2024-01-10T08:00:00Z'
+          updatedAt: '2024-01-10T10:00:00Z'
+          archived: false
+        - id: '12345678903'
+          properties:
+            hs_payment_status: completed
+            hs_amount: '150.00'
+            hs_currency: USD
+          createdAt: '2024-01-15T10:30:00Z'
+          updatedAt: '2024-01-15T14:45:00Z'
+          archived: false
+        paging:
+          next:
+            after: MTIzNDU2Nzg5MDM=
+    SearchCommercePaymentsRequestExample:
+      summary: Example search request
+      value:
+        filterGroups:
+        - filters:
+          - propertyName: hs_payment_status
+            operator: EQ
+            value: completed
+          - propertyName: hs_amount
+            operator: GTE
+            value: '100'
+        sorts:
+        - propertyName: hs_amount
+          direction: DESCENDING
+        properties:
+        - hs_payment_status
+        - hs_amount
+        - hs_currency
+        limit: 20
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

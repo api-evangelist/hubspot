@@ -1,0 +1,330 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Token Management API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Token Management
+  description: Operations for creating, refreshing, and managing OAuth tokens
+paths:
+  /oauth/v1/token:
+    post:
+      tags:
+      - Token Management
+      summary: Hubspot Create or Refresh an Access Token
+      description: 'Exchanges an authorization code for an access token or refreshes an existing access token
+
+        using a refresh token. This endpoint supports multiple grant types including authorization_code
+
+        and refresh_token flows.
+
+        '
+      operationId: createOrRefreshAccessToken
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def result = "TokenResponseSuccessExample"
+
+          return result
+
+          '
+      parameters:
+      - $ref: '#/components/parameters/ContentTypeFormHeader'
+        example: example-value
+      - $ref: '#/components/parameters/AcceptHeader'
+        example: example-value
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+            examples:
+              RefreshTokenRequestExample:
+                $ref: '#/components/examples/RefreshTokenRequestExample'
+              AuthorizationCodeRequestExample:
+                $ref: '#/components/examples/AuthorizationCodeRequestExample'
+      responses:
+        '200':
+          description: Successfully created or refreshed access token
+          headers:
+            Content-Type:
+              schema:
+                type: string
+                example: application/json
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+              examples:
+                TokenResponseSuccessExample:
+                  $ref: '#/components/examples/TokenResponseSuccessExample'
+        '400':
+          description: Bad Request - Invalid grant or missing parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                BadRequestErrorExample:
+                  $ref: '#/components/examples/BadRequestErrorExample'
+        '401':
+          description: Unauthorized - Invalid client credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UnauthorizedErrorExample:
+                  $ref: '#/components/examples/UnauthorizedErrorExample'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                InternalServerErrorExample:
+                  $ref: '#/components/examples/InternalServerErrorExample'
+components:
+  schemas:
+    TokenResponse:
+      type: object
+      description: Response containing the new access token and related information
+      required:
+      - access_token
+      - token_type
+      - expires_in
+      - refresh_token
+      properties:
+        access_token:
+          type: string
+          description: The new access token
+          example: CKDZpunPLhICAQEYs-gDIIGOBii1hQIyGQAf3xBKEgsYjYMJVvlHEz9tFHAwSq1TQAM40s0D
+        token_type:
+          type: string
+          description: The type of token (always 'bearer')
+          example: bearer
+        expires_in:
+          type: integer
+          description: Number of seconds until the access token expires
+          example: 1800
+        refresh_token:
+          type: string
+          description: The refresh token for obtaining new access tokens
+          example: 6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a
+        id_token:
+          type: string
+          description: The ID token (only returned if openid scope was requested)
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: A human-readable error message
+          example: Invalid parameter value
+        code:
+          type: string
+          description: An error code
+          example: INVALID_PARAMETER
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: MISSING_REQUIRED_FIELD
+        in:
+          type: string
+          description: The location of the error (e.g., body, query, path)
+          example: body
+        context:
+          type: object
+          description: Additional context about the specific error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingFields:
+            - client_secret
+    TokenRequest:
+      type: object
+      description: Request body for token creation or refresh
+      required:
+      - grant_type
+      - client_id
+      - client_secret
+      properties:
+        grant_type:
+          type: string
+          description: The type of grant being requested
+          enum:
+          - authorization_code
+          - refresh_token
+          example: refresh_token
+        client_id:
+          type: string
+          description: The client ID of your application
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        client_secret:
+          type: string
+          description: The client secret of your application
+          example: 12345678-abcd-efgh-ijkl-9876543210ab
+        redirect_uri:
+          type: string
+          description: The redirect URI (required for authorization_code grant)
+          example: https://myapp.example.com/oauth/callback
+        code:
+          type: string
+          description: The authorization code (required for authorization_code grant)
+          example: abc123def456
+        refresh_token:
+          type: string
+          description: The refresh token (required for refresh_token grant)
+          example: 6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a
+    Error:
+      type: object
+      description: Standard error response object
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The category of the error
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for tracking this error
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: A human-readable error message
+          example: Invalid refresh token
+        subCategory:
+          type: string
+          description: A more specific error category
+          example: INVALID_TOKEN
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            invalidToken:
+            - The provided token is invalid or expired
+        links:
+          type: object
+          description: Links to relevant documentation
+          additionalProperties:
+            type: string
+          example:
+            knowledge-base: https://developers.hubspot.com/docs/api/oauth
+        errors:
+          type: array
+          description: List of specific errors
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Invalid parameter value
+            code: INVALID_PARAMETER
+            subCategory: MISSING_REQUIRED_FIELD
+            in: body
+            context:
+              missingFields:
+              - client_secret
+  examples:
+    BadRequestErrorExample:
+      summary: Bad request error response
+      description: Example error response for invalid requests
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Missing required parameter
+        subCategory: MISSING_PARAMETER
+        errors:
+        - message: The 'client_secret' parameter is required
+          code: MISSING_REQUIRED_FIELD
+          in: body
+    UnauthorizedErrorExample:
+      summary: Unauthorized error response
+      description: Example error response for unauthorized requests
+      value:
+        category: UNAUTHORIZED
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid or expired token
+        subCategory: INVALID_TOKEN
+    TokenResponseSuccessExample:
+      summary: Successful token response
+      description: Example response when successfully creating or refreshing an access token
+      value:
+        access_token: CKDZpunPLhICAQEYs-gDIIGOBii1hQIyGQAf3xBKEgsYjYMJVvlHEz9tFHAwSq1TQAM40s0D
+        token_type: bearer
+        expires_in: 1800
+        refresh_token: 6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a
+    AuthorizationCodeRequestExample:
+      summary: Authorization code request
+      description: Example request body for exchanging an authorization code
+      value:
+        grant_type: authorization_code
+        client_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        client_secret: 12345678-abcd-efgh-ijkl-9876543210ab
+        redirect_uri: https://myapp.example.com/oauth/callback
+        code: abc123def456
+    RefreshTokenRequestExample:
+      summary: Refresh token request
+      description: Example request body for refreshing an access token
+      value:
+        grant_type: refresh_token
+        client_id: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        client_secret: 12345678-abcd-efgh-ijkl-9876543210ab
+        refresh_token: 6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a
+    InternalServerErrorExample:
+      summary: Internal server error response
+      description: Example error response for server errors
+      value:
+        category: SERVER_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: An unexpected error occurred
+        links:
+          knowledge-base: https://developers.hubspot.com/docs/api/oauth
+  parameters:
+    ContentTypeFormHeader:
+      name: Content-Type
+      in: header
+      description: The media type of the request body
+      schema:
+        type: string
+        default: application/x-www-form-urlencoded
+      example: application/x-www-form-urlencoded
+    AcceptHeader:
+      name: Accept
+      in: header
+      description: The media type the client is willing to accept in the response
+      schema:
+        type: string
+        default: application/json
+      example: application/json
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

@@ -1,0 +1,591 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Blog Authors API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Blog Authors
+  description: Create, read, update, and delete individual blog author profiles
+paths:
+  /cms/v3/blogs/authors:
+    get:
+      tags:
+      - Blog Authors
+      operationId: listBlogAuthors
+      summary: Hubspot List All Blog Authors
+      description: "Retrieve a paginated list of all blog authors in your HubSpot account. \nUse query parameters to filter, sort, and paginate the results.\n"
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results per page (1-100)
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: example-value
+      - name: sort
+        in: query
+        schema:
+          type: array
+          items:
+            type: string
+        description: Properties to sort by
+        example:
+        - example-value
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived authors
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved blog authors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogAuthorCollection'
+              examples:
+                Success:
+                  $ref: '#/components/examples/BlogAuthorCollectionExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      tags:
+      - Blog Authors
+      operationId: createBlogAuthor
+      summary: Hubspot Create a Blog Author
+      description: Create a new blog author profile in your HubSpot account.
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      requestBody:
+        required: true
+        description: Blog author data to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogAuthorInput'
+            examples:
+              CreateAuthor:
+                $ref: '#/components/examples/BlogAuthorInputExample'
+      responses:
+        '201':
+          description: Successfully created blog author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogAuthor'
+              examples:
+                Success:
+                  $ref: '#/components/examples/BlogAuthorExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /cms/v3/blogs/authors/{objectId}:
+    get:
+      tags:
+      - Blog Authors
+      operationId: getBlogAuthorById
+      summary: Hubspot Retrieve a Blog Author
+      description: Retrieve a specific blog author by their unique identifier.
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: '12345678901'
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to return archived authors
+        example: false
+      - name: property
+        in: query
+        schema:
+          type: string
+        description: Specific property to return
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved blog author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogAuthor'
+              examples:
+                Success:
+                  $ref: '#/components/examples/BlogAuthorExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    patch:
+      tags:
+      - Blog Authors
+      operationId: updateBlogAuthor
+      summary: Hubspot Update a Blog Author
+      description: "Update an existing blog author. Only the properties included in the \nrequest body will be updated; all other properties remain unchanged.\n"
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: '12345678901'
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to update archived authors
+        example: false
+      requestBody:
+        required: true
+        description: Blog author properties to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogAuthorInput'
+            examples:
+              UpdateAuthor:
+                $ref: '#/components/examples/BlogAuthorInputExample'
+      responses:
+        '200':
+          description: Successfully updated blog author
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BlogAuthor'
+              examples:
+                Success:
+                  $ref: '#/components/examples/BlogAuthorExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      tags:
+      - Blog Authors
+      operationId: archiveBlogAuthor
+      summary: Hubspot Archive a Blog Author
+      description: Archive (soft delete) a blog author by their unique identifier.
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      parameters:
+      - name: objectId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The unique identifier of the blog author
+        example: '12345678901'
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+        description: Whether to return archived authors
+        example: true
+      responses:
+        '204':
+          description: Successfully archived blog author
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  examples:
+    BlogAuthorExample:
+      summary: Complete blog author profile
+      value:
+        id: '12345678901'
+        name: Jane Smith
+        slug: jane-smith
+        email: jane.smith@example.com
+        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
+        website: https://janesmith.com
+        twitter: '@janesmith'
+        linkedin: https://linkedin.com/in/janesmith
+        avatar: https://example.com/avatars/jane-smith.jpg
+        language: en
+        created: '2024-01-15T10:30:00Z'
+        updated: '2024-01-20T14:45:00Z'
+    BlogAuthorCollectionExample:
+      summary: Paginated list of blog authors
+      value:
+        total: 25
+        results:
+        - id: '12345678901'
+          name: Jane Smith
+          slug: jane-smith
+          email: jane.smith@example.com
+          bio: Senior content strategist
+          language: en
+          created: '2024-01-15T10:30:00Z'
+          updated: '2024-01-20T14:45:00Z'
+        - id: '12345678902'
+          name: John Doe
+          slug: john-doe
+          email: john.doe@example.com
+          bio: Technical writer and developer advocate
+          language: en
+          created: '2024-01-10T09:00:00Z'
+          updated: '2024-01-18T11:30:00Z'
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /cms/v3/blogs/authors?after=NTI1Cg%3D%3D
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    BlogAuthorInputExample:
+      summary: Blog author creation input
+      value:
+        name: Jane Smith
+        slug: jane-smith
+        email: jane.smith@example.com
+        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
+        website: https://janesmith.com
+        twitter: '@janesmith'
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location where the error occurred
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Additional context about the error
+          example:
+            key: value
+      required:
+      - message
+    Error:
+      type: object
+      description: Standard error response returned when an API request fails
+      properties:
+        category:
+          type: string
+          description: High-level error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique identifier for tracking and debugging
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: Human-readable error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Additional error context
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Related links for error resolution
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          description: List of specific errors
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    BlogAuthorCollection:
+      type: object
+      description: Paginated collection of blog authors
+      properties:
+        total:
+          type: integer
+          description: Total number of authors matching the query
+          example: 10
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlogAuthor'
+          description: Array of blog authors
+          example:
+          - id: '500123'
+            name: Example Record
+            slug: example-value
+            email: jsmith@example.com
+            bio: example-value
+            website: https://app.hubspot.com/contacts/12345
+            twitter: example-value
+            facebook: example-value
+            linkedin: https://app.hubspot.com/contacts/12345
+            avatar: https://app.hubspot.com/contacts/12345
+            language: en
+            translatedFromId: '500123'
+            created: '2025-03-15T14:30:00Z'
+            updated: '2025-03-15T14:30:00Z'
+            deletedAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - total
+      - results
+    BlogAuthor:
+      type: object
+      description: Represents a blog author profile with biographical and social information
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the blog author
+          example: '500123'
+        name:
+          type: string
+          description: Full display name of the author
+          example: Example Record
+        slug:
+          type: string
+          description: URL-friendly identifier for the author
+          example: example-value
+        email:
+          type: string
+          format: email
+          description: Author's email address
+          example: jsmith@example.com
+        bio:
+          type: string
+          description: Author biography or description
+          example: example-value
+        website:
+          type: string
+          format: uri
+          description: Author's personal website URL
+          example: https://app.hubspot.com/contacts/12345
+        twitter:
+          type: string
+          description: Author's Twitter/X handle
+          example: example-value
+        facebook:
+          type: string
+          description: Author's Facebook profile URL
+          example: example-value
+        linkedin:
+          type: string
+          description: Author's LinkedIn profile URL
+          example: https://app.hubspot.com/contacts/12345
+        avatar:
+          type: string
+          format: uri
+          description: URL to the author's avatar image
+          example: https://app.hubspot.com/contacts/12345
+        language:
+          type: string
+          description: Language code for the author profile (e.g., en, es, fr)
+          example: en
+        translatedFromId:
+          type: string
+          description: ID of the original author this was translated from
+          example: '500123'
+        created:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the author was created
+          example: '2025-03-15T14:30:00Z'
+        updated:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the author was last updated
+          example: '2025-03-15T14:30:00Z'
+        deletedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the author was archived
+          example: '2025-03-15T14:30:00Z'
+      required:
+      - id
+      - name
+      - created
+      - updated
+    Paging:
+      type: object
+      description: Pagination information for navigating result sets
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    PagingNext:
+      type: object
+      description: Pagination cursor for retrieving the next page of results
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: API link to the next page of results
+          example: https://app.hubspot.com/contacts/12345
+    BlogAuthorInput:
+      type: object
+      description: Input data for creating or updating a blog author
+      properties:
+        name:
+          type: string
+          description: Full display name of the author
+          example: Example Record
+        slug:
+          type: string
+          description: URL-friendly identifier for the author
+          example: example-value
+        email:
+          type: string
+          format: email
+          description: Author's email address
+          example: jsmith@example.com
+        bio:
+          type: string
+          description: Author biography or description
+          example: example-value
+        website:
+          type: string
+          format: uri
+          description: Author's personal website URL
+          example: https://app.hubspot.com/contacts/12345
+        twitter:
+          type: string
+          description: Author's Twitter/X handle
+          example: example-value
+        facebook:
+          type: string
+          description: Author's Facebook profile URL
+          example: example-value
+        linkedin:
+          type: string
+          description: Author's LinkedIn profile URL
+          example: https://app.hubspot.com/contacts/12345
+        avatar:
+          type: string
+          format: uri
+          description: URL to the author's avatar image
+          example: https://app.hubspot.com/contacts/12345
+      required:
+      - name
+  responses:
+    ErrorResponse:
+      description: An error occurred while processing the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationError:
+              $ref: '#/components/examples/ErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

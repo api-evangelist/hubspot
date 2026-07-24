@@ -1,0 +1,254 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Association Type Definitions API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Association Type Definitions
+  description: Retrieve and manage association type definitions across object types
+paths:
+  /crm/v4/associations/definitions:
+    get:
+      tags:
+      - Association Type Definitions
+      operationId: listAssociationDefinitions
+      summary: Hubspot List All Association Definitions
+      description: 'Retrieves all association type definitions available in the account.
+
+        Returns both HubSpot-defined and custom association types across all object types.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
+      responses:
+        '200':
+          description: Successfully retrieved association definitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationDefinitionCollection'
+              examples:
+                success:
+                  $ref: '#/components/examples/AssociationDefinitionCollectionExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        category:
+          type: string
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          example: This is an example description.
+        subCategory:
+          type: string
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    AssociationDefinition:
+      type: object
+      description: Definition of an association type between two object types
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the association definition
+          example: '500123'
+        fromObjectTypeId:
+          type: string
+          description: Source object type ID
+          example: '500123'
+        toObjectTypeId:
+          type: string
+          description: Target object type ID
+          example: '500123'
+        name:
+          type: string
+          description: Name of the association type
+          example: Example Record
+        label:
+          type: string
+          description: Display label for the association
+          example: Example Record
+        inverseLabel:
+          type: string
+          description: Label for the inverse association
+          example: Example Record
+        category:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          description: Category of the association definition
+          example: HUBSPOT_DEFINED
+      required:
+      - id
+      - fromObjectTypeId
+      - toObjectTypeId
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    AssociationDefinitionCollection:
+      type: object
+      description: Collection of association definitions
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationDefinition'
+          description: Array of association definitions
+          example:
+          - id: '500123'
+            fromObjectTypeId: '500123'
+            toObjectTypeId: '500123'
+            name: Example Record
+            label: Example Record
+            inverseLabel: Example Record
+            category: HUBSPOT_DEFINED
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - results
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  examples:
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+    AssociationDefinitionCollectionExample:
+      summary: Example collection of association definitions
+      value:
+        results:
+        - id: contact_to_company
+          fromObjectTypeId: 0-1
+          toObjectTypeId: 0-2
+          name: contact_to_company
+          label: Company
+          inverseLabel: Contacts
+          category: HUBSPOT_DEFINED
+        - id: deal_to_contact
+          fromObjectTypeId: 0-3
+          toObjectTypeId: 0-1
+          name: deal_to_contact
+          label: Contact
+          inverseLabel: Deals
+          category: HUBSPOT_DEFINED
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: https://api.hubapi.com/crm/v4/associations/definitions?after=NTI1Cg%3D%3D
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

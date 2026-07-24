@@ -1,0 +1,639 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Batch Association Operations API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Batch Association Operations
+  description: Perform bulk create, read, and archive operations on multiple associations
+paths:
+  /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/read:
+    post:
+      tags:
+      - Batch Association Operations
+      operationId: batchReadAssociations
+      summary: Hubspot Batch Read Associations for Multiple Objects
+      description: 'Retrieves associations for multiple source objects in a single request.
+
+        Useful for efficiently loading associations for a list of records.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
+      requestBody:
+        required: true
+        description: List of source object IDs to read associations for
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAssociationReadInput'
+            examples:
+              BatchAssociationReadInputExample:
+                $ref: '#/components/examples/BatchAssociationReadInputExample'
+      responses:
+        '200':
+          description: Successfully retrieved associations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchAssociationResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/BatchAssociationResponseExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/create:
+    post:
+      tags:
+      - Batch Association Operations
+      operationId: batchCreateAssociations
+      summary: Hubspot Batch Create Associations
+      description: 'Creates multiple associations in a single request.
+
+        Allows efficient bulk creation of relationships between CRM objects.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("success")
+
+          return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
+      requestBody:
+        required: true
+        description: List of associations to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAssociationCreateInput'
+            examples:
+              BatchAssociationCreateInputExample:
+                $ref: '#/components/examples/BatchAssociationCreateInputExample'
+      responses:
+        '200':
+          description: Successfully created associations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchAssociationResponse'
+              examples:
+                success:
+                  $ref: '#/components/examples/BatchAssociationResponseExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /crm/v4/associations/{fromObjectType}/{toObjectType}/batch/archive:
+    post:
+      tags:
+      - Batch Association Operations
+      operationId: batchArchiveAssociations
+      summary: Hubspot Batch Archive Associations
+      description: 'Deletes multiple associations in a single request.
+
+        Efficiently removes relationships between multiple CRM objects.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "success"
+
+          '
+        delay: 100
+      security:
+      - OAuth2:
+        - crm.objects.contacts.write
+      - PrivateAppToken: []
+      parameters:
+      - name: fromObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of source objects
+        example: contacts
+      - name: toObjectType
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Type of target objects
+        example: companies
+      requestBody:
+        required: true
+        description: List of associations to archive
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAssociationArchiveInput'
+            examples:
+              BatchAssociationArchiveInputExample:
+                $ref: '#/components/examples/BatchAssociationArchiveInputExample'
+      responses:
+        '204':
+          description: Successfully archived associations
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    StandardError:
+      type: object
+      description: Standard error in batch operations
+      properties:
+        status:
+          type: string
+          example: active
+        id:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+        message:
+          type: string
+          example: This is an example description.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+      required:
+      - status
+      - category
+      - message
+    BatchAssociationReadInput:
+      type: object
+      description: Input for batch reading associations
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectReference'
+          description: Source objects to read associations for
+          example:
+          - id: '500123'
+      required:
+      - inputs
+    Association:
+      type: object
+      description: Represents an association between two CRM objects
+      properties:
+        toObjectId:
+          type: string
+          description: ID of the target object
+          example: '500123'
+        associationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+          description: Types of associations between the objects
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+            label: Example Record
+      required:
+      - toObjectId
+      - associationTypes
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    AssociationResult:
+      type: object
+      description: Result of an association query
+      properties:
+        from:
+          $ref: '#/components/schemas/ObjectReference'
+        to:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          description: Associated objects
+          example:
+          - toObjectId: '500123'
+            associationTypes:
+            - associationCategory: HUBSPOT_DEFINED
+              associationTypeId: 500123
+              label: Example Record
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - from
+      - to
+    ObjectReference:
+      type: object
+      description: Reference to a CRM object by ID
+      properties:
+        id:
+          type: string
+          description: ID of the object
+          example: '500123'
+      required:
+      - id
+    BatchAssociationCreateInput:
+      type: object
+      description: Input for batch creating associations
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchAssociationCreateItem'
+          description: Associations to create
+          example:
+          - from: {}
+            to: {}
+            types:
+            - {}
+      required:
+      - inputs
+    BatchAssociationArchiveItem:
+      type: object
+      description: Single item in a batch association archive request
+      properties:
+        from:
+          $ref: '#/components/schemas/ObjectReference'
+        to:
+          $ref: '#/components/schemas/ObjectReference'
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationTypeInput'
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+      required:
+      - from
+      - to
+    BatchAssociationCreateItem:
+      type: object
+      description: Single item in a batch association create request
+      properties:
+        from:
+          $ref: '#/components/schemas/ObjectReference'
+        to:
+          $ref: '#/components/schemas/ObjectReference'
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationTypeInput'
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+      required:
+      - from
+      - to
+      - types
+    BatchAssociationResponse:
+      type: object
+      description: Response from batch association operations
+      properties:
+        status:
+          type: string
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          description: Status of the batch operation
+          example: PENDING
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationResult'
+          description: Successfully processed associations
+          example:
+          - from: {}
+            to:
+            - toObjectId: '500123'
+              associationTypes:
+              - associationCategory: HUBSPOT_DEFINED
+                associationTypeId: 500123
+                label: Example Record
+            paging: {}
+        requestedAt:
+          type: string
+          format: date-time
+          description: When the batch was requested
+          example: '2025-03-15T14:30:00Z'
+        startedAt:
+          type: string
+          format: date-time
+          description: When processing started
+          example: '2025-03-15T14:30:00Z'
+        completedAt:
+          type: string
+          format: date-time
+          description: When processing completed
+          example: '2025-03-15T14:30:00Z'
+        numErrors:
+          type: integer
+          description: Number of errors encountered
+          example: 100
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardError'
+          description: List of errors
+          example:
+          - status: active
+            id: '500123'
+            category: standard
+            message: This is an example description.
+            errors:
+            - {}
+            context:
+              key: value
+            links:
+              key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+      required:
+      - status
+      - results
+      - startedAt
+      - completedAt
+    AssociationTypeInput:
+      type: object
+      description: Input for specifying an association type
+      properties:
+        associationCategory:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          example: 500123
+      required:
+      - associationCategory
+      - associationTypeId
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        category:
+          type: string
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          example: This is an example description.
+        subCategory:
+          type: string
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    AssociationType:
+      type: object
+      description: Defines the type of association
+      properties:
+        associationCategory:
+          type: string
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          description: Category of the association type
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          description: Numeric identifier for the association type
+          example: 500123
+        label:
+          type: string
+          description: Human-readable label for the association
+          example: Example Record
+      required:
+      - associationCategory
+      - associationTypeId
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    BatchAssociationArchiveInput:
+      type: object
+      description: Input for batch archiving associations
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchAssociationArchiveItem'
+          description: Associations to archive
+          example:
+          - from: {}
+            to: {}
+            types:
+            - {}
+      required:
+      - inputs
+  examples:
+    BatchAssociationResponseExample:
+      summary: Example batch association response
+      value:
+        status: COMPLETE
+        results:
+        - from:
+            id: '12345'
+          to:
+          - toObjectId: '67890'
+            associationTypes:
+            - associationCategory: HUBSPOT_DEFINED
+              associationTypeId: 1
+        requestedAt: '2024-01-20T14:44:00Z'
+        startedAt: '2024-01-20T14:44:01Z'
+        completedAt: '2024-01-20T14:45:00Z'
+    BatchAssociationReadInputExample:
+      summary: Example batch read input
+      value:
+        inputs:
+        - id: '12345'
+        - id: '12346'
+    BatchAssociationCreateInputExample:
+      summary: Example batch create input
+      value:
+        inputs:
+        - from:
+            id: '12345'
+          to:
+            id: '67890'
+          types:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 1
+    BatchAssociationArchiveInputExample:
+      summary: Example batch archive input
+      value:
+        inputs:
+        - from:
+            id: '12345'
+          to:
+            id: '67890'
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ErrorExample:
+              $ref: '#/components/examples/ErrorExample'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

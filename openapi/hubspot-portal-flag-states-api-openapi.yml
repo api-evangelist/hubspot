@@ -1,0 +1,703 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Portal Flag States API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Portal Flag States
+  description: Manage feature flag states for specific portals (HubSpot accounts)
+paths:
+  /feature-flags/v3/{appId}/flags/{flagName}/portals:
+    get:
+      tags:
+      - Portal Flag States
+      summary: Hubspot List Portal Flag States
+      description: 'Retrieves a paginated list of portal (account) flag states for a specific feature flag.
+
+        Returns all portals that have an explicit flag state override set.
+
+        '
+      operationId: listPortalFlagStates
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("PortalFlagStateCollectionExample")
+
+          return "PortalFlagStateCollectionExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      - name: limit
+        in: query
+        description: Maximum number of results to return per page
+        schema:
+          type: integer
+          default: 100
+          maximum: 500
+        example: 100
+      - name: after
+        in: query
+        description: Pagination cursor for fetching the next page of results
+        schema:
+          type: string
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved portal flag states
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalFlagStateCollection'
+              examples:
+                PortalFlagStateCollectionExample:
+                  $ref: '#/components/examples/PortalFlagStateCollectionExample'
+        '400':
+          description: Bad request - Invalid parameters provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listportalflagstates400Example:
+                  summary: Default listPortalFlagStates 400 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id001
+                      key: value
+                    links: &id002
+                      key: value
+                    errors: &id003
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listportalflagstates401Example:
+                  summary: Default listPortalFlagStates 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id001
+                    links: *id002
+                    errors: *id003
+        '404':
+          description: Feature flag not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listportalflagstates404Example:
+                  summary: Default listPortalFlagStates 404 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id001
+                    links: *id002
+                    errors: *id003
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listportalflagstates500Example:
+                  summary: Default listPortalFlagStates 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id001
+                    links: *id002
+                    errors: *id003
+  /feature-flags/v3/{appId}/flags/{flagName}/portals/{portalId}:
+    get:
+      tags:
+      - Portal Flag States
+      summary: Hubspot Retrieve a Portal Flag State
+      description: 'Retrieves the flag state for a specific portal (account).
+
+        Returns the current flag state override for the specified portal.
+
+        '
+      operationId: getPortalFlagState
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("PortalFlagStateExample")
+
+          return "PortalFlagStateExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      - $ref: '#/components/parameters/PortalIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved the portal flag state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalFlagState'
+              examples:
+                PortalFlagStateExample:
+                  $ref: '#/components/examples/PortalFlagStateExample'
+        '400':
+          description: Bad request - Invalid parameters provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getportalflagstate400Example:
+                  summary: Default getPortalFlagState 400 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id004
+                      key: value
+                    links: &id005
+                      key: value
+                    errors: &id006
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getportalflagstate401Example:
+                  summary: Default getPortalFlagState 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id004
+                    links: *id005
+                    errors: *id006
+        '404':
+          description: Portal flag state not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getportalflagstate404Example:
+                  summary: Default getPortalFlagState 404 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id004
+                    links: *id005
+                    errors: *id006
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getportalflagstate500Example:
+                  summary: Default getPortalFlagState 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id004
+                    links: *id005
+                    errors: *id006
+    put:
+      tags:
+      - Portal Flag States
+      summary: Hubspot Set a Portal Flag State
+      description: 'Sets the flag state override for a specific portal (account).
+
+        This overrides the application-level default state for this portal only.
+
+        '
+      operationId: setPortalFlagState
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("PortalFlagStateExample")
+
+          return "PortalFlagStateExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      - $ref: '#/components/parameters/PortalIdPath'
+        example: example-value
+      requestBody:
+        required: true
+        description: Flag state to set for the portal
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortalFlagStateInput'
+            examples:
+              PortalFlagStateInputExample:
+                $ref: '#/components/examples/PortalFlagStateInputExample'
+      responses:
+        '200':
+          description: Successfully set the portal flag state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalFlagState'
+              examples:
+                PortalFlagStateExample:
+                  $ref: '#/components/examples/PortalFlagStateExample'
+        '400':
+          description: Bad request - Invalid parameters provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Setportalflagstate400Example:
+                  summary: Default setPortalFlagState 400 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id007
+                      key: value
+                    links: &id008
+                      key: value
+                    errors: &id009
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Setportalflagstate401Example:
+                  summary: Default setPortalFlagState 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id007
+                    links: *id008
+                    errors: *id009
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Setportalflagstate500Example:
+                  summary: Default setPortalFlagState 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id007
+                    links: *id008
+                    errors: *id009
+    delete:
+      tags:
+      - Portal Flag States
+      summary: Hubspot Delete a Portal Flag State
+      description: 'Removes the flag state override for a specific portal (account).
+
+        The portal will revert to using the application-level default flag state.
+
+        '
+      operationId: deletePortalFlagState
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("PortalFlagStateExample")
+
+          return "PortalFlagStateExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      - $ref: '#/components/parameters/PortalIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully deleted the portal flag state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalFlagState'
+              examples:
+                PortalFlagStateExample:
+                  $ref: '#/components/examples/PortalFlagStateExample'
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteportalflagstate401Example:
+                  summary: Default deletePortalFlagState 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id010
+                      key: value
+                    links: &id011
+                      key: value
+                    errors: &id012
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '404':
+          description: Portal flag state not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteportalflagstate404Example:
+                  summary: Default deletePortalFlagState 404 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id010
+                    links: *id011
+                    errors: *id012
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteportalflagstate500Example:
+                  summary: Default deletePortalFlagState 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id010
+                    links: *id011
+                    errors: *id012
+components:
+  parameters:
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier for the HubSpot application
+      schema:
+        type: integer
+        format: int64
+      example: 12345678
+    FlagNamePath:
+      name: flagName
+      in: path
+      required: true
+      description: The name of the feature flag
+      schema:
+        type: string
+      example: new-dashboard-feature
+    PortalIdPath:
+      name: portalId
+      in: path
+      required: true
+      description: The unique identifier for the HubSpot portal (account)
+      schema:
+        type: integer
+        format: int64
+      example: 98765432
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information for specific validation failures
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Specific error message
+          example: flagState is required
+        code:
+          type: string
+          description: Error code
+          example: REQUIRED_FIELD
+        subCategory:
+          type: string
+          description: Error sub-category
+          example: MISSING_FIELD
+        in:
+          type: string
+          description: Location of the error (e.g., path, body, query)
+          example: body
+        context:
+          type: object
+          description: Additional context for the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    Error:
+      type: object
+      description: Represents an error response from the API
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique identifier for the request, useful for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input JSON
+        subCategory:
+          type: string
+          description: More specific error classification
+          example: INVALID_PARAMETER
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Helpful links related to the error
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          description: List of detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: flagState is required
+            code: REQUIRED_FIELD
+            subCategory: MISSING_FIELD
+            in: body
+            context:
+              key: value
+    PortalFlagStateInput:
+      type: object
+      description: Input payload for setting a portal flag state
+      required:
+      - flagState
+      properties:
+        flagState:
+          $ref: '#/components/schemas/FlagState'
+    PortalFlagStateCollection:
+      type: object
+      description: A paginated collection of portal flag states
+      required:
+      - portalFlagStates
+      properties:
+        portalFlagStates:
+          type: array
+          description: List of portal flag states
+          items:
+            $ref: '#/components/schemas/PortalFlagState'
+          example:
+          - appId: 12345678
+            flagName: new-dashboard-feature
+            portalId: 98765432
+            flagState: {}
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      description: Pagination information for list responses
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    PortalFlagState:
+      type: object
+      description: Represents the flag state override for a specific portal (account)
+      required:
+      - appId
+      - flagName
+      - portalId
+      - flagState
+      properties:
+        appId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot application
+          example: 12345678
+        flagName:
+          type: string
+          description: The name of the feature flag
+          example: new-dashboard-feature
+        portalId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot portal (account)
+          example: 98765432
+        flagState:
+          $ref: '#/components/schemas/FlagState'
+    FlagState:
+      type: string
+      description: The state of a feature flag
+      enum:
+      - 'ON'
+      - 'OFF'
+      - ABSENT
+      example: 'ON'
+    PagingNext:
+      type: object
+      description: Information for fetching the next page of results
+      required:
+      - after
+      properties:
+        after:
+          type: string
+          description: Cursor for the next page
+          example: NTI1Cg%3D%3D
+        link:
+          type: string
+          description: Direct link to the next page
+          example: https://api.hubapi.com/feature-flags/v3/12345678/flags/new-dashboard-feature/portals?after=NTI1Cg%3D%3D
+  examples:
+    PortalFlagStateExample:
+      summary: Example portal flag state
+      value:
+        appId: 12345678
+        flagName: new-dashboard-feature
+        portalId: 98765432
+        flagState: 'ON'
+    PortalFlagStateCollectionExample:
+      summary: Example collection of portal flag states
+      value:
+        portalFlagStates:
+        - appId: 12345678
+          flagName: new-dashboard-feature
+          portalId: 98765432
+          flagState: 'ON'
+        - appId: 12345678
+          flagName: new-dashboard-feature
+          portalId: 87654321
+          flagState: 'OFF'
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: https://api.hubapi.com/feature-flags/v3/12345678/flags/new-dashboard-feature/portals?after=NTI1Cg%3D%3D
+    PortalFlagStateInputExample:
+      summary: Example portal flag state input
+      value:
+        flagState: 'ON'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

@@ -1,0 +1,502 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Application Feature Flags API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Application Feature Flags
+  description: Manage feature flag configurations at the application level
+paths:
+  /feature-flags/v3/{appId}/flags/{flagName}:
+    get:
+      tags:
+      - Application Feature Flags
+      summary: Hubspot Retrieve a Feature Flag Configuration
+      description: 'Retrieves the configuration for a specific feature flag associated with an application.
+
+        Returns the flag name, default state, and any override state configured.
+
+        '
+      operationId: getApplicationFeatureFlag
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("FeatureFlagExample")
+
+          return "FeatureFlagExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved the feature flag configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlag'
+              examples:
+                FeatureFlagExample:
+                  $ref: '#/components/examples/FeatureFlagExample'
+        '400':
+          description: Bad request - Invalid parameters provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorExample:
+                  $ref: '#/components/examples/ErrorExample'
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getapplicationfeatureflag401Example:
+                  summary: Default getApplicationFeatureFlag 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id001
+                      key: value
+                    links: &id002
+                      key: value
+                    errors: &id003
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '404':
+          description: Feature flag not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getapplicationfeatureflag404Example:
+                  summary: Default getApplicationFeatureFlag 404 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id001
+                    links: *id002
+                    errors: *id003
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getapplicationfeatureflag500Example:
+                  summary: Default getApplicationFeatureFlag 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id001
+                    links: *id002
+                    errors: *id003
+    put:
+      tags:
+      - Application Feature Flags
+      summary: Hubspot Create or Update a Feature Flag
+      description: 'Creates or updates a feature flag configuration for an application.
+
+        Set the default state that will apply to all portals unless overridden.
+
+        '
+      operationId: upsertApplicationFeatureFlag
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("FeatureFlagExample")
+
+          return "FeatureFlagExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      requestBody:
+        required: true
+        description: Feature flag configuration to set
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeatureFlagInput'
+            examples:
+              FeatureFlagInputExample:
+                $ref: '#/components/examples/FeatureFlagInputExample'
+      responses:
+        '200':
+          description: Successfully created or updated the feature flag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlag'
+              examples:
+                FeatureFlagExample:
+                  $ref: '#/components/examples/FeatureFlagExample'
+        '400':
+          description: Bad request - Invalid parameters provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertapplicationfeatureflag400Example:
+                  summary: Default upsertApplicationFeatureFlag 400 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id004
+                      key: value
+                    links: &id005
+                      key: value
+                    errors: &id006
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertapplicationfeatureflag401Example:
+                  summary: Default upsertApplicationFeatureFlag 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id004
+                    links: *id005
+                    errors: *id006
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertapplicationfeatureflag500Example:
+                  summary: Default upsertApplicationFeatureFlag 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id004
+                    links: *id005
+                    errors: *id006
+    delete:
+      tags:
+      - Application Feature Flags
+      summary: Hubspot Delete a Feature Flag
+      description: 'Deletes a feature flag from an application.
+
+        This will also remove all portal-level flag state overrides associated with this flag.
+
+        '
+      operationId: deleteApplicationFeatureFlag
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def mockResponse = mockRequest.getResponseByDispatchCriteria("FeatureFlagExample")
+
+          return "FeatureFlagExample"
+
+          '
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FlagNamePath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully deleted the feature flag
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureFlag'
+              examples:
+                FeatureFlagExample:
+                  $ref: '#/components/examples/FeatureFlagExample'
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteapplicationfeatureflag401Example:
+                  summary: Default deleteApplicationFeatureFlag 401 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: &id007
+                      key: value
+                    links: &id008
+                      key: value
+                    errors: &id009
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
+        '404':
+          description: Feature flag not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteapplicationfeatureflag404Example:
+                  summary: Default deleteApplicationFeatureFlag 404 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id007
+                    links: *id008
+                    errors: *id009
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteapplicationfeatureflag500Example:
+                  summary: Default deleteApplicationFeatureFlag 500 response
+                  x-microcks-default: true
+                  value:
+                    category: VALIDATION_ERROR
+                    correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+                    message: Invalid input JSON
+                    subCategory: INVALID_PARAMETER
+                    context: *id007
+                    links: *id008
+                    errors: *id009
+components:
+  parameters:
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier for the HubSpot application
+      schema:
+        type: integer
+        format: int64
+      example: 12345678
+    FlagNamePath:
+      name: flagName
+      in: path
+      required: true
+      description: The name of the feature flag
+      schema:
+        type: string
+      example: new-dashboard-feature
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information for specific validation failures
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Specific error message
+          example: flagState is required
+        code:
+          type: string
+          description: Error code
+          example: REQUIRED_FIELD
+        subCategory:
+          type: string
+          description: Error sub-category
+          example: MISSING_FIELD
+        in:
+          type: string
+          description: Location of the error (e.g., path, body, query)
+          example: body
+        context:
+          type: object
+          description: Additional context for the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    FeatureFlagInput:
+      type: object
+      description: Input payload for creating or updating a feature flag
+      required:
+      - defaultState
+      properties:
+        defaultState:
+          $ref: '#/components/schemas/FlagState'
+    Error:
+      type: object
+      description: Represents an error response from the API
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique identifier for the request, useful for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input JSON
+        subCategory:
+          type: string
+          description: More specific error classification
+          example: INVALID_PARAMETER
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Helpful links related to the error
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          description: List of detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: flagState is required
+            code: REQUIRED_FIELD
+            subCategory: MISSING_FIELD
+            in: body
+            context:
+              key: value
+    FeatureFlag:
+      type: object
+      description: Represents a feature flag configuration for an application
+      required:
+      - appId
+      - flagName
+      - defaultState
+      properties:
+        appId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot application
+          example: 12345678
+        flagName:
+          type: string
+          description: The name of the feature flag
+          example: new-dashboard-feature
+        defaultState:
+          $ref: '#/components/schemas/FlagState'
+        overrideState:
+          $ref: '#/components/schemas/FlagState'
+    FlagState:
+      type: string
+      description: The state of a feature flag
+      enum:
+      - 'ON'
+      - 'OFF'
+      - ABSENT
+      example: 'ON'
+  examples:
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input JSON
+        subCategory: INVALID_PARAMETER
+        errors:
+        - message: flagState is required
+          code: REQUIRED_FIELD
+          in: body
+    FeatureFlagInputExample:
+      summary: Example feature flag input
+      value:
+        defaultState: 'ON'
+    FeatureFlagExample:
+      summary: Example feature flag configuration
+      value:
+        appId: 12345678
+        flagName: new-dashboard-feature
+        defaultState: 'OFF'
+        overrideState: ABSENT
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

@@ -1,0 +1,2354 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Batch API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Batch
+  description: Batch operations for subscriptions
+paths:
+  /crm/v3/objects/subscriptions/batch/read:
+    post:
+      operationId: batchReadSubscriptions
+      summary: Hubspot Batch Read Subscriptions
+      description: Reads a batch of subscription records by their IDs. Useful for retrieving multiple subscriptions in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadsubscriptionsRequestExample:
+                summary: Default batchReadSubscriptions request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchreadsubscriptions200Example:
+                  summary: Default batchReadSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/subscriptions/batch/create:
+    post:
+      operationId: batchCreateSubscriptions
+      summary: Hubspot Batch Create Subscriptions
+      description: Creates multiple subscription records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatesubscriptionsRequestExample:
+                summary: Default batchCreateSubscriptions request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Subscriptions created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchcreatesubscriptions201Example:
+                  summary: Default batchCreateSubscriptions 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/subscriptions/batch/update:
+    post:
+      operationId: batchUpdateSubscriptions
+      summary: Hubspot Batch Update Subscriptions
+      description: Updates multiple subscription records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatesubscriptionsRequestExample:
+                summary: Default batchUpdateSubscriptions request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Subscriptions updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseSubscription'
+              examples:
+                Batchupdatesubscriptions200Example:
+                  summary: Default batchUpdateSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/batch/read:
+    post:
+      operationId: batchReadCompanies
+      summary: Hubspot Batch Read Companies
+      description: Reads a batch of company records by their IDs or unique property values. Useful for retrieving multiple companies in a single API call instead of making individual requests.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput_2'
+            examples:
+              BatchreadcompaniesRequestExample:
+                summary: Default batchReadCompanies request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseCompany'
+              examples:
+                Batchreadcompanies200Example:
+                  summary: Default batchReadCompanies 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/batch/create:
+    post:
+      operationId: batchCreateCompanies
+      summary: Hubspot Batch Create Companies
+      description: Creates multiple company records in a single API call. The request body should include an array of company property objects.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput_2'
+            examples:
+              BatchcreatecompaniesRequestExample:
+                summary: Default batchCreateCompanies request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Companies created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseCompany'
+              examples:
+                Batchcreatecompanies201Example:
+                  summary: Default batchCreateCompanies 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/batch/update:
+    post:
+      operationId: batchUpdateCompanies
+      summary: Hubspot Batch Update Companies
+      description: Updates multiple company records in a single API call. Each record in the request must include the company ID and the properties to update.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput_2'
+            examples:
+              BatchupdatecompaniesRequestExample:
+                summary: Default batchUpdateCompanies request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Companies updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseCompany'
+              examples:
+                Batchupdatecompanies200Example:
+                  summary: Default batchUpdateCompanies 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/batch/archive:
+    post:
+      operationId: batchArchiveCompanies
+      summary: Hubspot Batch Archive Companies
+      description: Archives multiple company records in a single API call by their IDs. Archived companies can be restored using the HubSpot UI or API.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchivecompaniesRequestExample:
+                summary: Default batchArchiveCompanies request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+      responses:
+        '204':
+          description: Companies archived successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/batch/read:
+    post:
+      operationId: batchReadContacts
+      summary: Hubspot Batch Read Contacts
+      description: Reads a batch of contact records by their IDs or unique property values. Useful for retrieving multiple contacts in a single API call instead of making individual requests.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput_3'
+            examples:
+              BatchreadcontactsRequestExample:
+                summary: Default batchReadContacts request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchreadcontacts200Example:
+                  summary: Default batchReadContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/batch/create:
+    post:
+      operationId: batchCreateContacts
+      summary: Hubspot Batch Create Contacts
+      description: Creates multiple contact records in a single API call. The request body should include an array of contact property objects. Returns the created contact records.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput_3'
+            examples:
+              BatchcreatecontactsRequestExample:
+                summary: Default batchCreateContacts request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Contacts created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchcreatecontacts201Example:
+                  summary: Default batchCreateContacts 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/batch/update:
+    post:
+      operationId: batchUpdateContacts
+      summary: Hubspot Batch Update Contacts
+      description: Updates multiple contact records in a single API call. Each record in the request must include the contact ID and the properties to update.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput_3'
+            examples:
+              BatchupdatecontactsRequestExample:
+                summary: Default batchUpdateContacts request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Contacts updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseContact'
+              examples:
+                Batchupdatecontacts200Example:
+                  summary: Default batchUpdateContacts 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/contacts/batch/archive:
+    post:
+      operationId: batchArchiveContacts
+      summary: Hubspot Batch Archive Contacts
+      description: Archives multiple contact records in a single API call by their IDs. Archived contacts can be restored using the HubSpot UI or API.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchivecontactsRequestExample:
+                summary: Default batchArchiveContacts request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+      responses:
+        '204':
+          description: Contacts archived successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/batch/read:
+    post:
+      operationId: batchReadDeals
+      summary: Hubspot Batch Read Deals
+      description: Reads a batch of deal records by their IDs or unique property values. Useful for retrieving multiple deals in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput_4'
+            examples:
+              BatchreaddealsRequestExample:
+                summary: Default batchReadDeals request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+              examples:
+                Batchreaddeals200Example:
+                  summary: Default batchReadDeals 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/batch/create:
+    post:
+      operationId: batchCreateDeals
+      summary: Hubspot Batch Create Deals
+      description: Creates multiple deal records in a single API call. The request body should include an array of deal property objects.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput_4'
+            examples:
+              BatchcreatedealsRequestExample:
+                summary: Default batchCreateDeals request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Deals created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+              examples:
+                Batchcreatedeals201Example:
+                  summary: Default batchCreateDeals 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/batch/update:
+    post:
+      operationId: batchUpdateDeals
+      summary: Hubspot Batch Update Deals
+      description: Updates multiple deal records in a single API call. Each record in the request must include the deal ID and the properties to update.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput_4'
+            examples:
+              BatchupdatedealsRequestExample:
+                summary: Default batchUpdateDeals request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Deals updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseDeal'
+              examples:
+                Batchupdatedeals200Example:
+                  summary: Default batchUpdateDeals 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/deals/batch/archive:
+    post:
+      operationId: batchArchiveDeals
+      summary: Hubspot Batch Archive Deals
+      description: Archives multiple deal records in a single API call by their IDs. Archived deals can be restored using the HubSpot UI or API.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchivedealsRequestExample:
+                summary: Default batchArchiveDeals request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+      responses:
+        '204':
+          description: Deals archived successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/batch/read:
+    post:
+      operationId: batchReadTickets
+      summary: Hubspot Batch Read Tickets
+      description: Reads a batch of ticket records by their IDs or unique property values. Useful for retrieving multiple tickets in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput_5'
+            examples:
+              BatchreadticketsRequestExample:
+                summary: Default batchReadTickets request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchreadtickets200Example:
+                  summary: Default batchReadTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/batch/create:
+    post:
+      operationId: batchCreateTickets
+      summary: Hubspot Batch Create Tickets
+      description: Creates multiple ticket records in a single API call. The request body should include an array of ticket property objects.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput_5'
+            examples:
+              BatchcreateticketsRequestExample:
+                summary: Default batchCreateTickets request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Tickets created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchcreatetickets201Example:
+                  summary: Default batchCreateTickets 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/batch/update:
+    post:
+      operationId: batchUpdateTickets
+      summary: Hubspot Batch Update Tickets
+      description: Updates multiple ticket records in a single API call. Each record in the request must include the ticket ID and the properties to update.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput_5'
+            examples:
+              BatchupdateticketsRequestExample:
+                summary: Default batchUpdateTickets request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Tickets updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTicket'
+              examples:
+                Batchupdatetickets200Example:
+                  summary: Default batchUpdateTickets 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tickets/batch/archive:
+    post:
+      operationId: batchArchiveTickets
+      summary: Hubspot Batch Archive Tickets
+      description: Archives multiple ticket records in a single API call by their IDs. Archived tickets can be restored using the HubSpot UI or API.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchArchiveInput'
+            examples:
+              BatcharchiveticketsRequestExample:
+                summary: Default batchArchiveTickets request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+      responses:
+        '204':
+          description: Tickets archived successfully.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/emails/batch/read:
+    post:
+      operationId: batchReadEmailEngagements
+      summary: Hubspot Batch Read Email Engagements
+      description: Reads a batch of email engagement records by their IDs. Useful for retrieving multiple email engagements in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreademailengagementsRequestExample:
+                summary: Default batchReadEmailEngagements request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchreademailengagements200Example:
+                  summary: Default batchReadEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/emails/batch/create:
+    post:
+      operationId: batchCreateEmailEngagements
+      summary: Hubspot Batch Create Email Engagements
+      description: Creates multiple email engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreateemailengagementsRequestExample:
+                summary: Default batchCreateEmailEngagements request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Email engagements created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchcreateemailengagements201Example:
+                  summary: Default batchCreateEmailEngagements 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/emails/batch/update:
+    post:
+      operationId: batchUpdateEmailEngagements
+      summary: Hubspot Batch Update Email Engagements
+      description: Updates multiple email engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdateemailengagementsRequestExample:
+                summary: Default batchUpdateEmailEngagements request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Email engagements updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseEmailEngagement'
+              examples:
+                Batchupdateemailengagements200Example:
+                  summary: Default batchUpdateEmailEngagements 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/meetings/batch/read:
+    post:
+      operationId: batchReadMeetings
+      summary: Hubspot Batch Read Meetings
+      description: Reads a batch of meeting records by their IDs. Useful for retrieving multiple meetings in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadmeetingsRequestExample:
+                summary: Default batchReadMeetings request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchreadmeetings200Example:
+                  summary: Default batchReadMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/meetings/batch/create:
+    post:
+      operationId: batchCreateMeetings
+      summary: Hubspot Batch Create Meetings
+      description: Creates multiple meeting engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatemeetingsRequestExample:
+                summary: Default batchCreateMeetings request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Meetings created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchcreatemeetings201Example:
+                  summary: Default batchCreateMeetings 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/meetings/batch/update:
+    post:
+      operationId: batchUpdateMeetings
+      summary: Hubspot Batch Update Meetings
+      description: Updates multiple meeting engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatemeetingsRequestExample:
+                summary: Default batchUpdateMeetings request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Meetings updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseMeeting'
+              examples:
+                Batchupdatemeetings200Example:
+                  summary: Default batchUpdateMeetings 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tasks/batch/read:
+    post:
+      operationId: batchReadTasks
+      summary: Hubspot Batch Read Tasks
+      description: Reads a batch of task records by their IDs. Useful for retrieving multiple tasks in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchReadInput'
+            examples:
+              BatchreadtasksRequestExample:
+                summary: Default batchReadTasks request
+                x-microcks-default: true
+                value:
+                  properties:
+                  - example-value
+                  inputs:
+                  - id: '500123'
+      responses:
+        '200':
+          description: Batch read completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTask'
+              examples:
+                Batchreadtasks200Example:
+                  summary: Default batchReadTasks 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tasks/batch/create:
+    post:
+      operationId: batchCreateTasks
+      summary: Hubspot Batch Create Tasks
+      description: Creates multiple task engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchCreateInput'
+            examples:
+              BatchcreatetasksRequestExample:
+                summary: Default batchCreateTasks request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - properties:
+                      key: value
+      responses:
+        '201':
+          description: Tasks created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTask'
+              examples:
+                Batchcreatetasks201Example:
+                  summary: Default batchCreateTasks 201 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/tasks/batch/update:
+    post:
+      operationId: batchUpdateTasks
+      summary: Hubspot Batch Update Tasks
+      description: Updates multiple task engagement records in a single API call.
+      tags:
+      - Batch
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateInput'
+            examples:
+              BatchupdatetasksRequestExample:
+                summary: Default batchUpdateTasks request
+                x-microcks-default: true
+                value:
+                  inputs:
+                  - id: '500123'
+                    properties:
+                      key: value
+      responses:
+        '200':
+          description: Tasks updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchResponseTask'
+              examples:
+                Batchupdatetasks200Example:
+                  summary: Default batchUpdateTasks 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    completedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    BatchUpdateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    BatchResponseCompany:
+      type: object
+      description: Results from a batch operation on companies.
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    BatchCreateInput:
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput'
+          example:
+          - properties:
+              key: value
+    BatchCreateInput_2:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_2'
+          example:
+          - properties:
+              key: value
+    BatchResponseSubscription:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Association_5:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Paging_4:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    SimplePublicObjectInput_5:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    SimplePublicObjectInput:
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Contact:
+      type: object
+      description: A HubSpot contact record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the contact.
+          example: '500123'
+        properties:
+          type: object
+          description: The contact's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the contact was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the contact was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the contact has been archived.
+          example: true
+        associations:
+          type: object
+          description: The contact's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_3'
+          example:
+            key: value
+    Association_2:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    CollectionResponseAssociation_4:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_4'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_4'
+    BatchUpdateInput_5:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    BatchReadInput_2:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    Ticket:
+      type: object
+      description: A HubSpot ticket record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the ticket.
+          example: '500123'
+        properties:
+          type: object
+          description: The ticket's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the ticket was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the ticket was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the ticket has been archived.
+          example: true
+        associations:
+          type: object
+          description: The ticket's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_5'
+          example:
+            key: value
+    BatchReadInput_5:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchResponseMeeting:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meeting'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    EmailEngagement:
+      type: object
+      description: A HubSpot email engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the email engagement.
+          example: '500123'
+        properties:
+          type: object
+          description: The email engagement's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    BatchResponseTicket:
+      type: object
+      description: Results from a batch operation on tickets.
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Subscription:
+      type: object
+      description: A HubSpot commerce subscription record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the subscription.
+          example: '500123'
+        properties:
+          type: object
+          description: The subscription's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    BatchResponseEmailEngagement:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailEngagement'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    BatchCreateInput_4:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_4'
+          example:
+          - properties:
+              key: value
+    Paging_5:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    CollectionResponseAssociation_5:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_5'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_5'
+    SimplePublicObjectInput_2:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          description: The properties to set on the object.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Deal:
+      type: object
+      description: A HubSpot deal record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the deal.
+          example: '500123'
+        properties:
+          type: object
+          description: The deal's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the deal was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the deal has been archived.
+          example: true
+        associations:
+          type: object
+          description: The deal's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_4'
+          example:
+            key: value
+    BatchReadInput_3:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          description: The properties to return for each record.
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          description: The IDs of the records to read.
+          example:
+          - id: '500123'
+    BatchArchiveInput:
+      type: object
+      description: Input for a batch archive operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchUpdateInput_2:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    BatchCreateInput_5:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_5'
+          example:
+          - properties:
+              key: value
+    BatchResponseTask:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    SimplePublicObjectInput_4:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Meeting:
+      type: object
+      description: A HubSpot meeting engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the meeting.
+          example: '500123'
+        properties:
+          type: object
+          description: The meeting's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    Paging_2:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    BatchResponseDeal:
+      type: object
+      description: Results from a batch operation on deals.
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Task:
+      type: object
+      description: A HubSpot task engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the task.
+          example: '500123'
+        properties:
+          type: object
+          description: The task's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    BatchUpdateInput_4:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    Paging_3:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: The cursor to use to get the next page of results.
+          example:
+            after: example-value
+    BatchReadInput:
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    Association_4:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Association_3:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    BatchReadInput_4:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchResponseContact:
+      type: object
+      description: Results from a batch operation on contacts.
+      properties:
+        status:
+          type: string
+          description: The status of the batch operation.
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    SimplePublicObjectInput_3:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          description: The properties to set on the object.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    CollectionResponseAssociation_3:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_3'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_3'
+    CollectionResponseAssociation_2:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_2'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_2'
+    Company:
+      type: object
+      description: A HubSpot company record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the company.
+          example: '500123'
+        properties:
+          type: object
+          description: The company's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the company was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the company was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the company has been archived.
+          example: true
+        associations:
+          type: object
+          description: The company's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_2'
+          example:
+            key: value
+    BatchCreateInput_3:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_3'
+          example:
+          - properties:
+              key: value
+    BatchUpdateInput_3:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  responses:
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

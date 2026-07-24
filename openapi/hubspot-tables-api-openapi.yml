@@ -1,0 +1,544 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Tables API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Tables
+  description: Operations for managing HubDB tables
+paths:
+  /cms/v3/hubdb/tables:
+    get:
+      operationId: listHubDBTables
+      summary: Hubspot List Hubdb Tables
+      description: Returns a list of all HubDB tables in the portal. Each table entry includes metadata such as the table name, label, column definitions, and publish status. Both published and draft tables are accessible through this endpoint.
+      tags:
+      - Tables
+      parameters:
+      - name: sort
+        in: query
+        description: Field to sort results by.
+        schema:
+          type: string
+        example: example-value
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+        example: 100
+      - name: createdAt
+        in: query
+        description: Filter tables created at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      - name: updatedAt
+        in: query
+        description: Filter tables updated at this timestamp.
+        schema:
+          type: string
+          format: date-time
+        example: '2025-03-15T14:30:00Z'
+      responses:
+        '200':
+          description: Successful response with a list of HubDB tables.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseHubDBTable'
+              examples:
+                Listhubdbtables200Example:
+                  summary: Default listHubDBTables 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      name: Example Record
+                      label: Example Record
+                      columns:
+                      - id: '500123'
+                        name: Example Record
+                        label: Example Record
+                        type: TEXT
+                        options:
+                        - {}
+                      published: true
+                      rowCount: 10
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      publishedAt: '2025-03-15T14:30:00Z'
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createHubDBTable
+      summary: Hubspot Create a Hubdb Table
+      description: Creates a new HubDB table with the specified name, label, and column definitions. The new table starts in draft state and must be published to make it available for CMS page use.
+      tags:
+      - Tables
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBTableCreateRequest'
+            examples:
+              CreatehubdbtableRequestExample:
+                summary: Default createHubDBTable request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  label: Example Record
+                  columns:
+                  - name: Example Record
+                    label: Example Record
+                    type: standard
+      responses:
+        '201':
+          description: Table created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+              examples:
+                Createhubdbtable201Example:
+                  summary: Default createHubDBTable 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    label: Example Record
+                    columns:
+                    - id: '500123'
+                      name: Example Record
+                      label: Example Record
+                      type: TEXT
+                      options:
+                      - {}
+                    published: true
+                    rowCount: 10
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    publishedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /cms/v3/hubdb/tables/{tableIdOrName}:
+    get:
+      operationId: getHubDBTable
+      summary: Hubspot Get a Hubdb Table
+      description: Returns the details of a specific HubDB table identified by its ID or name, including column definitions, publish status, and metadata.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '200':
+          description: Successful response with the HubDB table details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+              examples:
+                Gethubdbtable200Example:
+                  summary: Default getHubDBTable 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    label: Example Record
+                    columns:
+                    - id: '500123'
+                      name: Example Record
+                      label: Example Record
+                      type: TEXT
+                      options:
+                      - {}
+                    published: true
+                    rowCount: 10
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    publishedAt: '2025-03-15T14:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    put:
+      operationId: updateHubDBTable
+      summary: Hubspot Update a Hubdb Table
+      description: Updates an existing HubDB table's metadata, label, or column definitions. Updates are applied to the draft version of the table and must be published to take effect on live pages.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to update.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HubDBTableCreateRequest'
+            examples:
+              UpdatehubdbtableRequestExample:
+                summary: Default updateHubDBTable request
+                x-microcks-default: true
+                value:
+                  name: Example Record
+                  label: Example Record
+                  columns:
+                  - name: Example Record
+                    label: Example Record
+                    type: standard
+      responses:
+        '200':
+          description: Table updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+              examples:
+                Updatehubdbtable200Example:
+                  summary: Default updateHubDBTable 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    label: Example Record
+                    columns:
+                    - id: '500123'
+                      name: Example Record
+                      label: Example Record
+                      type: TEXT
+                      options:
+                      - {}
+                    published: true
+                    rowCount: 10
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    publishedAt: '2025-03-15T14:30:00Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteHubDBTable
+      summary: Hubspot Delete a Hubdb Table
+      description: Permanently deletes a HubDB table and all its rows. This action cannot be undone. Deleting a table that is used by CMS pages may break those pages.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to delete.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '204':
+          description: Table deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /cms/v3/hubdb/tables/{tableIdOrName}/draft/push-live:
+    post:
+      operationId: publishHubDBTableDraft
+      summary: Hubspot Publish Hubdb Table Draft
+      description: Publishes the draft version of a HubDB table, making all pending changes to the table structure and rows live. After publishing, the draft and live versions are synchronized.
+      tags:
+      - Tables
+      parameters:
+      - name: tableIdOrName
+        in: path
+        required: true
+        description: The ID or name of the HubDB table to publish.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '200':
+          description: Table draft published successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HubDBTable'
+              examples:
+                Publishhubdbtabledraft200Example:
+                  summary: Default publishHubDBTableDraft 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    name: Example Record
+                    label: Example Record
+                    columns:
+                    - id: '500123'
+                      name: Example Record
+                      label: Example Record
+                      type: TEXT
+                      options:
+                      - {}
+                    published: true
+                    rowCount: 10
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    publishedAt: '2025-03-15T14:30:00Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    HubDBTableCreateRequest:
+      type: object
+      description: Request body for creating or updating a HubDB table.
+      required:
+      - name
+      - label
+      properties:
+        name:
+          type: string
+          description: The machine-readable name of the table.
+          example: Example Record
+        label:
+          type: string
+          description: The human-readable label for the table.
+          example: Example Record
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              label:
+                type: string
+              type:
+                type: string
+          example:
+          - name: Example Record
+            label: Example Record
+            type: standard
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    HubDBTable:
+      type: object
+      description: A HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the table.
+          example: '500123'
+        name:
+          type: string
+          description: The machine-readable name of the table.
+          example: Example Record
+        label:
+          type: string
+          description: The human-readable label for the table.
+          example: Example Record
+        columns:
+          type: array
+          description: The column definitions for the table.
+          items:
+            $ref: '#/components/schemas/HubDBColumn'
+          example:
+          - id: '500123'
+            name: Example Record
+            label: Example Record
+            type: TEXT
+            options:
+            - {}
+        published:
+          type: boolean
+          description: Whether the table has been published.
+          example: true
+        rowCount:
+          type: integer
+          description: The number of rows in the published table.
+          example: 10
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the table was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the table was last updated.
+          example: '2025-03-15T14:30:00Z'
+        publishedAt:
+          type: string
+          format: date-time
+          description: The date and time the table was last published.
+          example: '2025-03-15T14:30:00Z'
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    HubDBColumn:
+      type: object
+      description: A column definition in a HubDB table.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the column.
+          example: '500123'
+        name:
+          type: string
+          description: The machine-readable name of the column.
+          example: Example Record
+        label:
+          type: string
+          description: The human-readable label for the column.
+          example: Example Record
+        type:
+          type: string
+          description: The data type of the column.
+          enum:
+          - TEXT
+          - NUMBER
+          - URL
+          - IMAGE
+          - SELECT
+          - MULTISELECT
+          - BOOLEAN
+          - LOCATION
+          - DATE
+          - DATETIME
+          - CURRENCY
+          - RICHTEXT
+          - FOREIGN_ID
+          example: TEXT
+        options:
+          type: array
+          description: Available options for SELECT and MULTISELECT columns.
+          items:
+            type: object
+          example:
+          - {}
+    CollectionResponseHubDBTable:
+      type: object
+      description: A paginated list of HubDB tables.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDBTable'
+          example:
+          - id: '500123'
+            name: Example Record
+            label: Example Record
+            columns:
+            - id: '500123'
+              name: Example Record
+              label: Example Record
+              type: TEXT
+              options:
+              - {}
+            published: true
+            rowCount: 10
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            publishedAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

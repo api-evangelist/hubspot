@@ -1,0 +1,261 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Channels API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Channels
+  description: Operations for managing communication channels such as email, chat, and social media.
+paths:
+  /conversations/v3/conversations/channels:
+    get:
+      tags:
+      - Channels
+      operationId: listChannels
+      summary: Hubspot List Channels
+      description: 'Retrieve a list of available conversation channels configured in your account.
+
+        Channels represent different communication methods like email, chat, or social media.
+
+        '
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - conversations.read
+      - PrivateApp: []
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of channels per page
+        example: 20
+      - name: after
+        in: query
+        schema:
+          type: string
+        description: Pagination cursor for the next page
+        example: NTI1Cg%3D%3D
+      responses:
+        '200':
+          description: Successfully retrieved the list of channels
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelCollection'
+              examples:
+                Success:
+                  $ref: '#/components/examples/ChannelCollectionExample'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error.
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid thread ID format
+        code:
+          type: string
+          description: Error code
+          example: INVALID_FORMAT
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: PARAMETER_ERROR
+        in:
+          type: string
+          description: Location where error occurred
+          example: path
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Channel:
+      type: object
+      description: Represents a communication channel for conversations.
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the channel
+          example: channel_789
+        name:
+          type: string
+          description: Display name of the channel
+          example: Website Chat
+        type:
+          type: string
+          description: Type of channel (e.g., EMAIL, CHAT, FACEBOOK)
+          example: CHAT
+        accountId:
+          type: string
+          description: Associated account ID
+          example: account_123
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the channel was created
+          example: '2024-01-01T00:00:00Z'
+      required:
+      - id
+      - name
+      - type
+    Error:
+      type: object
+      description: Standard error response structure.
+      properties:
+        category:
+          type: string
+          description: Error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique tracking identifier for support requests
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input parameters
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: INVALID_PARAMETER
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: Invalid thread ID format
+            code: INVALID_FORMAT
+            subCategory: PARAMETER_ERROR
+            in: path
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    Paging:
+      type: object
+      description: Pagination information for list responses.
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    PagingNext:
+      type: object
+      description: Pagination cursor information for retrieving the next page.
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: NTI1Cg%3D%3D
+        link:
+          type: string
+          description: API link to the next page
+          example: /conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D
+    ChannelCollection:
+      type: object
+      description: Paginated collection of channels
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Channel'
+          description: Array of channel records
+          example:
+          - id: channel_789
+            name: Website Chat
+            type: CHAT
+            accountId: account_123
+            createdAt: '2024-01-01T00:00:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      required:
+      - results
+  responses:
+    ErrorResponse:
+      description: An error occurred while processing the request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationError:
+              $ref: '#/components/examples/ErrorExample'
+  examples:
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        context:
+          invalidFields:
+          - threadId
+    ChannelCollectionExample:
+      summary: Paginated list of channels
+      value:
+        results:
+        - id: channel_789
+          name: Website Chat
+          type: CHAT
+          accountId: account_123
+          createdAt: '2024-01-01T00:00:00Z'
+        - id: channel_790
+          name: Support Email
+          type: EMAIL
+          accountId: account_124
+          createdAt: '2024-01-01T00:00:00Z'
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /conversations/v3/conversations/channels?after=NTI1Cg%3D%3D
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

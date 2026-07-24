@@ -1,0 +1,1132 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Search API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Search
+  description: Operations for searching CRM objects
+paths:
+  /crm/v3/objects/{objectType}/search:
+    post:
+      operationId: searchCRMObjects
+      summary: Hubspot Search Crm Objects
+      description: Searches for CRM object records of the specified type using filter groups, sort criteria, and other query parameters. Supports complex filtering with multiple filter groups (joined with OR logic) where each group contains filters (joined with AND logic). Returns matching records with the specified properties.
+      tags:
+      - Search
+      parameters:
+      - name: objectType
+        in: path
+        required: true
+        description: The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names.
+        schema:
+          type: string
+          example: contacts
+        example: contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              filterByEmail:
+                summary: Filter contacts by email domain
+                value:
+                  filterGroups:
+                  - filters:
+                    - propertyName: email
+                      operator: CONTAINS_TOKEN
+                      value: '@example.com'
+                  properties:
+                  - email
+                  - firstname
+                  - lastname
+                  limit: 10
+              filterByDealStage:
+                summary: Filter deals by stage and amount
+                value:
+                  filterGroups:
+                  - filters:
+                    - propertyName: dealstage
+                      operator: EQ
+                      value: contractsent
+                    - propertyName: amount
+                      operator: GT
+                      value: '10000'
+                  sorts:
+                  - propertyName: amount
+                    direction: DESCENDING
+                  properties:
+                  - dealname
+                  - amount
+                  - dealstage
+                  - closedate
+                  limit: 20
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+              examples:
+                Searchcrmobjects200Example:
+                  summary: Default searchCRMObjects 200 response
+                  x-microcks-default: true
+                  value:
+                    total: 10
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                    paging:
+                      next: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/calls/search:
+    post:
+      tags:
+      - Search
+      summary: Hubspot Search Calls
+      description: 'Searches for call engagements using filters, property values, and full-text search.
+
+        Supports complex filter groups with AND/OR logic.
+
+        '
+      operationId: searchCalls
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "SearchCallsSuccessResponse"
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CallSearchRequest'
+            examples:
+              SearchCallsRequest:
+                $ref: '#/components/examples/SearchCallsRequest'
+      responses:
+        '200':
+          description: Successfully searched calls
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallSearchResponse'
+              examples:
+                SearchCallsSuccessResponse:
+                  $ref: '#/components/examples/SearchCallsSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_2'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
+  /crm/v3/objects/notes/search:
+    post:
+      tags:
+      - Search
+      summary: Hubspot Search Notes
+      description: 'Searches for note engagements using filters, property values, and full-text search.
+
+        Supports complex filter groups with AND/OR logic.
+
+        '
+      operationId: searchNotes
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "SearchNotesSuccessResponse"
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteSearchRequest'
+            examples:
+              SearchNotesRequest:
+                $ref: '#/components/examples/SearchNotesRequest'
+      responses:
+        '200':
+          description: Successfully searched notes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteSearchResponse'
+              examples:
+                SearchNotesSuccessResponse:
+                  $ref: '#/components/examples/SearchNotesSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - crm.objects.contacts.read
+      - PrivateApp:
+        - crm.objects.contacts.read
+components:
+  schemas:
+    PropertyHistory:
+      type: object
+      description: Historical value of a property
+      properties:
+        value:
+          type: string
+          description: The historical value
+          example: Discovery Call
+        timestamp:
+          type: string
+          format: date-time
+          description: When the value was set
+          example: '2024-01-15T10:30:00.000Z'
+        sourceType:
+          type: string
+          description: The source type that set this value
+          example: CRM_UI
+        sourceId:
+          type: string
+          description: The source identifier
+          example: userId:12345
+        sourceLabel:
+          type: string
+          description: Human-readable source label
+          example: John Doe
+        updatedByUserId:
+          type: integer
+          description: The user ID who made the change
+          example: 12345
+    FilterGroup:
+      type: object
+      description: A group of filter conditions combined with AND logic. Use multiple filter groups to create OR conditions between groups.
+      properties:
+        filters:
+          type: array
+          description: An array of filters, all of which must match (AND logic).
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+            highValue: example-value
+            values:
+            - {}
+    Filter:
+      type: object
+      description: A single filter condition for a CRM object property.
+      required:
+      - propertyName
+      - operator
+      properties:
+        propertyName:
+          type: string
+          description: The name of the CRM property to filter on.
+          example: Example Record
+        operator:
+          type: string
+          description: The comparison operator for the filter.
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          description: The value to compare against. Not required for HAS_PROPERTY and NOT_HAS_PROPERTY operators.
+          example: example-value
+        highValue:
+          type: string
+          description: The upper bound value for BETWEEN operator comparisons.
+          example: example-value
+        values:
+          type: array
+          items:
+            type: string
+          description: An array of values for IN and NOT_IN operator comparisons.
+          example:
+          - example-value
+    Error_3:
+      type: object
+      description: Error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique request identifier for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: More specific error category
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+    CallSearchRequest:
+      type: object
+      description: Request body for searching calls
+      properties:
+        filterGroups:
+          type: array
+          description: Filter groups for the search (OR logic between groups)
+          items:
+            $ref: '#/components/schemas/FilterGroup_2'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          description: Sort order for results
+          items:
+            $ref: '#/components/schemas/SortOption'
+          example:
+          - propertyName: hs_timestamp
+            direction: DESCENDING
+        query:
+          type: string
+          description: Full-text search query
+          example: discovery
+        properties:
+          type: array
+          description: Properties to return
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          description: Maximum results to return
+          default: 10
+          maximum: 100
+          example: 10
+        after:
+          type: string
+          description: Pagination cursor
+          example: example-value
+    CRMObject:
+      type: object
+      description: A CRM object record returned from a search.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the CRM record.
+          example: '500123'
+        properties:
+          type: object
+          description: The CRM record's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the record was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the record was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the record has been archived.
+          example: true
+    Filter_3:
+      type: object
+      description: A single search filter
+      required:
+      - propertyName
+      - operator
+      properties:
+        propertyName:
+          type: string
+          description: The property to filter on
+          example: hubspot_owner_id
+        operator:
+          type: string
+          description: The filter operator
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          description: The value to filter by
+          example: '12345'
+        values:
+          type: array
+          description: Values for IN/NOT_IN operators
+          items:
+            type: string
+          example:
+          - example-value
+        highValue:
+          type: string
+          description: High value for BETWEEN operator
+          example: example-value
+    SortOption:
+      type: object
+      description: Sort option for search results
+      required:
+      - propertyName
+      properties:
+        propertyName:
+          type: string
+          description: The property to sort by
+          example: hs_timestamp
+        direction:
+          type: string
+          enum:
+          - ASCENDING
+          - DESCENDING
+          description: Sort direction
+          default: DESCENDING
+          example: DESCENDING
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        in:
+          type: string
+          description: Field where error occurred
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    NextPage_2:
+      type: object
+      description: Information about the next page
+      required:
+      - after
+      properties:
+        after:
+          type: string
+          description: Cursor for the next page
+          example: MTAyNA%3D%3D
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    Filter_2:
+      type: object
+      description: A single search filter
+      required:
+      - propertyName
+      - operator
+      properties:
+        propertyName:
+          type: string
+          description: The property to filter on
+          example: hs_call_direction
+        operator:
+          type: string
+          description: The filter operator
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          description: The value to filter by
+          example: OUTBOUND
+        values:
+          type: array
+          description: Values for IN/NOT_IN operators
+          items:
+            type: string
+          example:
+          - example-value
+        highValue:
+          type: string
+          description: High value for BETWEEN operator
+          example: example-value
+    SearchResponse:
+      type: object
+      description: The response from a CRM search operation.
+      properties:
+        total:
+          type: integer
+          description: The total number of records matching the search criteria.
+          example: 10
+        results:
+          type: array
+          description: The matching CRM records for the current page.
+          items:
+            $ref: '#/components/schemas/CRMObject'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Note:
+      type: object
+      description: Represents a note engagement in the CRM
+      required:
+      - id
+      - properties
+      - createdAt
+      - updatedAt
+      - archived
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the note
+          example: '1024'
+        properties:
+          type: object
+          description: The note properties
+          additionalProperties:
+            type: string
+          example:
+            hs_note_body: Met with client to discuss Q1 goals. They are interested in expanding their subscription.
+            hs_timestamp: '2024-01-15T10:30:00.000Z'
+            hubspot_owner_id: '12345'
+        propertiesWithHistory:
+          type: object
+          description: Properties with their change history
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/PropertyHistory_2'
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: When the note was created
+          example: '2024-01-15T10:30:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the note was last updated
+          example: '2024-01-15T11:00:00.000Z'
+        archived:
+          type: boolean
+          description: Whether the note is archived
+          example: false
+        archivedAt:
+          type: string
+          format: date-time
+          description: When the note was archived (if archived)
+          example: '2025-03-15T14:30:00Z'
+    SearchRequest:
+      type: object
+      description: A search request for CRM objects. Filter groups are combined with OR logic; filters within a group are combined with AND logic.
+      properties:
+        filterGroups:
+          type: array
+          description: An array of filter groups. Records matching any filter group will be included in results (OR logic between groups). Filters within a group are all required (AND logic within groups).
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          description: An array of sort criteria to order the results.
+          items:
+            $ref: '#/components/schemas/Sort'
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
+        query:
+          type: string
+          description: A full-text search query string. When provided, returns records where any searchable property contains the query term.
+          example: example-value
+        properties:
+          type: array
+          description: An array of property names to include in the response for each record. If not specified, a default set of properties is returned.
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          description: The maximum number of results to return. Maximum value is 200.
+          default: 10
+          maximum: 200
+          example: 10
+        after:
+          type: string
+          description: The cursor token for pagination. Use the value from the previous response's paging.next.after to get the next page of results.
+          example: example-value
+    Paging:
+      type: object
+      description: Pagination information for the response.
+      properties:
+        next:
+          type: object
+          description: Information for retrieving the next page of results.
+          properties:
+            after:
+              type: string
+              description: The cursor token to use in the after parameter for the next page.
+            link:
+              type: string
+              description: A URL link to the next page of results.
+          example:
+            after: example-value
+            link: https://app.hubspot.com/contacts/12345
+    CallSearchResponse:
+      type: object
+      description: Search results for calls
+      required:
+      - total
+      - results
+      properties:
+        total:
+          type: integer
+          description: Total number of matching calls
+          example: 25
+        results:
+          type: array
+          description: The matching calls
+          items:
+            $ref: '#/components/schemas/Call'
+          example:
+          - id: '512'
+            properties:
+              hs_call_title: Discovery Call
+              hs_call_body: Discussed product requirements
+              hs_call_duration: '1800000'
+              hs_call_direction: OUTBOUND
+              hs_call_disposition: connected
+              hs_call_status: COMPLETED
+              hs_timestamp: '2024-01-15T10:30:00.000Z'
+            propertiesWithHistory:
+              key: value
+            createdAt: '2024-01-15T10:30:00.000Z'
+            updatedAt: '2024-01-15T11:00:00.000Z'
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging_2'
+    FilterGroup_3:
+      type: object
+      description: A group of filters (AND logic within group)
+      properties:
+        filters:
+          type: array
+          description: The filters in this group
+          items:
+            $ref: '#/components/schemas/Filter_3'
+          example:
+          - propertyName: hubspot_owner_id
+            operator: EQ
+            value: '12345'
+            values:
+            - {}
+            highValue: example-value
+    Paging_2:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+    Paging_3:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage_2'
+    Error_2:
+      type: object
+      description: Error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique request identifier for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: More specific error category
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+    NoteSearchResponse:
+      type: object
+      description: Search results for notes
+      required:
+      - total
+      - results
+      properties:
+        total:
+          type: integer
+          description: Total number of matching notes
+          example: 42
+        results:
+          type: array
+          description: The matching notes
+          items:
+            $ref: '#/components/schemas/Note'
+          example:
+          - id: '1024'
+            properties:
+              hs_note_body: Met with client to discuss Q1 goals. They are interested in expanding their subscription.
+              hs_timestamp: '2024-01-15T10:30:00.000Z'
+              hubspot_owner_id: '12345'
+            propertiesWithHistory:
+              key: value
+            createdAt: '2024-01-15T10:30:00.000Z'
+            updatedAt: '2024-01-15T11:00:00.000Z'
+            archived: false
+            archivedAt: '2025-03-15T14:30:00Z'
+        paging:
+          $ref: '#/components/schemas/Paging_3'
+    NextPage:
+      type: object
+      description: Information about the next page
+      required:
+      - after
+      properties:
+        after:
+          type: string
+          description: Cursor for the next page
+          example: NTI1Cg%3D%3D
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
+    Sort:
+      type: object
+      description: A sort criterion for ordering search results.
+      required:
+      - propertyName
+      properties:
+        propertyName:
+          type: string
+          description: The name of the CRM property to sort by.
+          example: Example Record
+        direction:
+          type: string
+          description: The sort direction.
+          enum:
+          - ASCENDING
+          - DESCENDING
+          default: ASCENDING
+          example: ASCENDING
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+              in:
+                type: string
+              code:
+                type: string
+          example:
+          - message: This is an example description.
+            in: example-value
+            code: example-value
+    FilterGroup_2:
+      type: object
+      description: A group of filters (AND logic within group)
+      properties:
+        filters:
+          type: array
+          description: The filters in this group
+          items:
+            $ref: '#/components/schemas/Filter_2'
+          example:
+          - propertyName: hs_call_direction
+            operator: EQ
+            value: OUTBOUND
+            values:
+            - {}
+            highValue: example-value
+    Call:
+      type: object
+      description: Represents a call engagement in the CRM
+      required:
+      - id
+      - properties
+      - createdAt
+      - updatedAt
+      - archived
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the call
+          example: '512'
+        properties:
+          type: object
+          description: The call properties
+          additionalProperties:
+            type: string
+          example:
+            hs_call_title: Discovery Call
+            hs_call_body: Discussed product requirements
+            hs_call_duration: '1800000'
+            hs_call_direction: OUTBOUND
+            hs_call_disposition: connected
+            hs_call_status: COMPLETED
+            hs_timestamp: '2024-01-15T10:30:00.000Z'
+        propertiesWithHistory:
+          type: object
+          description: Properties with their change history
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/PropertyHistory'
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: When the call was created
+          example: '2024-01-15T10:30:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: When the call was last updated
+          example: '2024-01-15T11:00:00.000Z'
+        archived:
+          type: boolean
+          description: Whether the call is archived
+          example: false
+        archivedAt:
+          type: string
+          format: date-time
+          description: When the call was archived (if archived)
+          example: '2025-03-15T14:30:00Z'
+    PropertyHistory_2:
+      type: object
+      description: Historical value of a property
+      properties:
+        value:
+          type: string
+          description: The historical value
+          example: Initial meeting notes
+        timestamp:
+          type: string
+          format: date-time
+          description: When the value was set
+          example: '2024-01-15T10:30:00.000Z'
+        sourceType:
+          type: string
+          description: The source type that set this value
+          example: CRM_UI
+        sourceId:
+          type: string
+          description: The source identifier
+          example: userId:12345
+        sourceLabel:
+          type: string
+          description: Human-readable source label
+          example: John Doe
+        updatedByUserId:
+          type: integer
+          description: The user ID who made the change
+          example: 12345
+    NoteSearchRequest:
+      type: object
+      description: Request body for searching notes
+      properties:
+        filterGroups:
+          type: array
+          description: Filter groups for the search (OR logic between groups)
+          items:
+            $ref: '#/components/schemas/FilterGroup_3'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          description: Sort order for results
+          items:
+            $ref: '#/components/schemas/SortOption'
+          example:
+          - propertyName: hs_timestamp
+            direction: DESCENDING
+        query:
+          type: string
+          description: Full-text search query
+          example: meeting client
+        properties:
+          type: array
+          description: Properties to return
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          description: Maximum results to return
+          default: 10
+          maximum: 100
+          example: 10
+        after:
+          type: string
+          description: Pagination cursor
+          example: example-value
+  examples:
+    SearchNotesSuccessResponse:
+      summary: Successful response for note search
+      value:
+        total: 42
+        results:
+        - id: '1024'
+          properties:
+            hs_note_body: Met with client to discuss Q1 goals.
+            hs_timestamp: '2024-01-15T10:30:00.000Z'
+          createdAt: '2024-01-15T10:30:00.000Z'
+          updatedAt: '2024-01-15T11:00:00.000Z'
+          archived: false
+        paging:
+          next:
+            after: MTAyNA%3D%3D
+    SearchCallsSuccessResponse:
+      summary: Successful response for call search
+      value:
+        total: 25
+        results:
+        - id: '512'
+          properties:
+            hs_call_title: Discovery Call
+            hs_call_direction: OUTBOUND
+            hs_timestamp: '2024-01-15T10:30:00.000Z'
+          createdAt: '2024-01-15T10:30:00.000Z'
+          updatedAt: '2024-01-15T11:00:00.000Z'
+          archived: false
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+    SearchNotesRequest:
+      summary: Request to search notes
+      value:
+        filterGroups:
+        - filters:
+          - propertyName: hubspot_owner_id
+            operator: EQ
+            value: '12345'
+        sorts:
+        - propertyName: hs_timestamp
+          direction: DESCENDING
+        properties:
+        - hs_note_body
+        - hs_timestamp
+        limit: 10
+    SearchCallsRequest:
+      summary: Request to search calls
+      value:
+        filterGroups:
+        - filters:
+          - propertyName: hs_call_direction
+            operator: EQ
+            value: OUTBOUND
+        sorts:
+        - propertyName: hs_timestamp
+          direction: DESCENDING
+        properties:
+        - hs_call_title
+        - hs_call_direction
+        - hs_timestamp
+        limit: 10
+    ErrorResponse:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  responses:
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

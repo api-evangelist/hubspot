@@ -1,0 +1,301 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Single Send API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Single Send
+  description: Send individual transactional emails using templates
+paths:
+  /marketing/v3/transactional/single-email/send:
+    post:
+      tags:
+      - Single Send
+      summary: Hubspot Send a Transactional Email
+      description: 'Sends a single transactional email using a pre-defined email template.
+
+        The email is sent immediately to the specified recipient with the provided personalization tokens.
+
+        '
+      operationId: sendTransactionalEmail
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "SendTransactionalEmailSuccessResponse"
+
+          '
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionalEmailRequest'
+            examples:
+              SendTransactionalEmailRequest:
+                $ref: '#/components/examples/SendTransactionalEmailRequest'
+      responses:
+        '200':
+          description: Successfully sent the transactional email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionalEmailResponse'
+              examples:
+                SendTransactionalEmailSuccessResponse:
+                  $ref: '#/components/examples/SendTransactionalEmailSuccessResponse'
+        default:
+          description: An error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ErrorResponse:
+                  $ref: '#/components/examples/ErrorResponse'
+      security:
+      - OAuth2:
+        - transactional-email
+      - PrivateApp:
+        - transactional-email
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        in:
+          type: string
+          description: Field where error occurred
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    Error:
+      type: object
+      description: Error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique request identifier for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: More specific error category
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+    TransactionalEmailRequest:
+      type: object
+      description: Request body for sending a transactional email
+      required:
+      - emailId
+      - message
+      properties:
+        emailId:
+          type: integer
+          description: The ID of the transactional email template to use
+          example: 12345678
+        message:
+          $ref: '#/components/schemas/EmailMessage'
+        contactProperties:
+          type: object
+          description: Properties to set on the contact (if createContact is enabled)
+          additionalProperties:
+            type: string
+          example:
+            firstname: John
+            lastname: Doe
+            company: Acme Corp
+        customProperties:
+          type: object
+          description: Custom template variables for personalization
+          additionalProperties:
+            type: string
+          example:
+            order_number: ORD-12345
+            order_total: $99.99
+    TransactionalEmailResponse:
+      type: object
+      description: Response after sending a transactional email
+      required:
+      - status
+      - statusId
+      properties:
+        status:
+          type: string
+          enum:
+          - PENDING
+          - PROCESSING
+          - CANCELED
+          - COMPLETE
+          description: The status of the email send
+          example: PENDING
+        statusId:
+          type: string
+          description: A unique identifier for tracking the email status
+          example: status-id-abc123
+        sendResult:
+          type: string
+          description: Additional details about the send result
+          example: SENT
+        requestedAt:
+          type: string
+          format: date-time
+          description: When the send was requested
+          example: '2025-03-15T14:30:00Z'
+        startedAt:
+          type: string
+          format: date-time
+          description: When the send processing started
+          example: '2025-03-15T14:30:00Z'
+        completedAt:
+          type: string
+          format: date-time
+          description: When the send processing completed
+          example: '2025-03-15T14:30:00Z'
+    EmailMessage:
+      type: object
+      description: The email message configuration
+      required:
+      - to
+      properties:
+        to:
+          type: string
+          format: email
+          description: The recipient's email address
+          example: recipient@example.com
+        from:
+          type: string
+          format: email
+          description: Override the from address (must be verified)
+          example: noreply@yourcompany.com
+        sendId:
+          type: string
+          description: A unique ID to prevent duplicate sends
+          example: unique-send-id-123
+        replyTo:
+          type: array
+          description: Reply-to email addresses
+          items:
+            type: string
+            format: email
+          example:
+          - support@yourcompany.com
+        cc:
+          type: array
+          description: CC email addresses
+          items:
+            type: string
+            format: email
+          example:
+          - jsmith@example.com
+        bcc:
+          type: array
+          description: BCC email addresses
+          items:
+            type: string
+            format: email
+          example:
+          - jsmith@example.com
+  examples:
+    SendTransactionalEmailSuccessResponse:
+      summary: Successful response after sending a transactional email
+      value:
+        status: PENDING
+        statusId: status-id-abc123
+    SendTransactionalEmailRequest:
+      summary: Request to send a transactional email
+      value:
+        emailId: 12345678
+        message:
+          to: recipient@example.com
+          from: noreply@yourcompany.com
+          sendId: unique-send-id-123
+          replyTo:
+          - support@yourcompany.com
+        contactProperties:
+          firstname: John
+          lastname: Doe
+        customProperties:
+          order_number: ORD-12345
+          order_total: $99.99
+    ErrorResponse:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

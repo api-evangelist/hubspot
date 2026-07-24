@@ -1,0 +1,534 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Subscriptions API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Subscriptions
+  description: Operations for managing subscription records
+paths:
+  /crm/v3/objects/subscriptions:
+    get:
+      operationId: listSubscriptions
+      summary: Hubspot List Subscriptions
+      description: Returns a page of commerce subscription records. Use the limit and after parameters to paginate through subscriptions. You can also specify which properties to return using the properties parameter.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived subscriptions.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with a list of subscriptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseSubscription'
+              examples:
+                Listsubscriptions200Example:
+                  summary: Default listSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createSubscription
+      summary: Hubspot Create a Subscription
+      description: Creates a new subscription record with the provided properties. Subscription records track recurring revenue relationships with customers.
+      tags:
+      - Subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatesubscriptionRequestExample:
+                summary: Default createSubscription request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '201':
+          description: Subscription created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+              examples:
+                Createsubscription201Example:
+                  summary: Default createSubscription 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/subscriptions/{subscriptionId}:
+    get:
+      operationId: getSubscription
+      summary: Hubspot Get a Subscription
+      description: Returns a single subscription record by its ID. You can specify which properties to return using the properties parameter.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived subscriptions.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with the subscription record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+              examples:
+                Getsubscription200Example:
+                  summary: Default getSubscription 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateSubscription
+      summary: Hubspot Update a Subscription
+      description: Performs a partial update of a subscription record. Only the properties included in the request body will be updated; other properties will remain unchanged.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to update.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatesubscriptionRequestExample:
+                summary: Default updateSubscription request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '200':
+          description: Subscription updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+              examples:
+                Updatesubscription200Example:
+                  summary: Default updateSubscription 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteSubscription
+      summary: Hubspot Archive a Subscription
+      description: Archives (soft deletes) a subscription record by its ID. Archived subscriptions can be restored using the HubSpot UI or API.
+      tags:
+      - Subscriptions
+      parameters:
+      - name: subscriptionId
+        in: path
+        required: true
+        description: The ID of the subscription to archive.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '204':
+          description: Subscription archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/subscriptions/search:
+    post:
+      operationId: searchSubscriptions
+      summary: Hubspot Search Subscriptions
+      description: Searches for subscription records using filter groups, sorts, and other query parameters.
+      tags:
+      - Subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchsubscriptionsRequestExample:
+                summary: Default searchSubscriptions request
+                x-microcks-default: true
+                value:
+                  filterGroups:
+                  - filters:
+                    - {}
+                  sorts:
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties:
+                  - example-value
+                  limit: 100
+                  after: example-value
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseSubscription'
+              examples:
+                Searchsubscriptions200Example:
+                  summary: Default searchSubscriptions 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Subscription:
+      type: object
+      description: A HubSpot commerce subscription record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the subscription.
+          example: '500123'
+        properties:
+          type: object
+          description: The subscription's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    FilterGroup:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    SimplePublicObjectInput:
+      type: object
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    SearchRequest:
+      type: object
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum:
+                - ASCENDING
+                - DESCENDING
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
+        query:
+          type: string
+          example: example-value
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          maximum: 200
+          example: 100
+        after:
+          type: string
+          example: example-value
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Filter:
+      type: object
+      properties:
+        propertyName:
+          type: string
+          example: Example Record
+        operator:
+          type: string
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          example: example-value
+    CollectionResponseSubscription:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        paging:
+          $ref: '#/components/schemas/Paging'
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

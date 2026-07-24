@@ -1,0 +1,175 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Publishing and Scheduling API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Publishing and Scheduling
+  description: Schedule publication and manage post visibility
+paths:
+  /cms/v3/blogs/posts/schedule:
+    post:
+      tags:
+      - Publishing and Scheduling
+      operationId: scheduleBlogPost
+      summary: Hubspot Schedule a Blog Post
+      description: Schedule a blog post for publication at a specific date and time.
+      x-microcks-operation:
+        dispatcher: SCRIPT
+        dispatcherRules: 'return "Success"
+
+          '
+      security:
+      - OAuth2:
+        - content
+      - PrivateApp: []
+      requestBody:
+        required: true
+        description: Scheduling details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRequest'
+            example:
+              id: '123456789012'
+              publishDate: '2024-02-01T10:00:00Z'
+      responses:
+        '200':
+          description: Successfully scheduled blog post
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+components:
+  schemas:
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of error
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Error:
+      type: object
+      description: Standard error response
+      properties:
+        category:
+          type: string
+          description: Error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique tracking identifier
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
+    ScheduleRequest:
+      type: object
+      description: Request to schedule a blog post for publication
+      properties:
+        id:
+          type: string
+          description: ID of the blog post to schedule
+          example: '500123'
+        publishDate:
+          type: string
+          format: date-time
+          description: ISO 8601 date and time to publish
+          example: '2025-03-15T14:30:00Z'
+      required:
+      - id
+      - publishDate
+  responses:
+    ErrorResponse:
+      description: An error occurred
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ValidationError:
+              $ref: '#/components/examples/ErrorExample'
+  examples:
+    ErrorExample:
+      summary: Validation error
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

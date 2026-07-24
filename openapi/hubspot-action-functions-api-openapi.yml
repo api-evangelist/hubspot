@@ -1,0 +1,867 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Action Functions API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Action Functions
+  description: Operations to manage serverless functions associated with action definitions
+paths:
+  /automation/v4/actions/{appId}/{definitionId}/functions:
+    get:
+      tags:
+      - Action Functions
+      summary: Hubspot List Action Functions
+      description: "Retrieves all serverless functions associated with a custom action definition. \nFunctions can execute before or after the main action to transform data or \nperform additional processing.\n"
+      operationId: listActionFunctions
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionFunctionCollectionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved action functions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionFunctionCollection'
+              examples:
+                ActionFunctionCollectionSuccessExample:
+                  $ref: '#/components/examples/ActionFunctionCollectionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactionfunctions400Example:
+                  summary: Default listActionFunctions 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id001
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id002
+                      key: value
+                    links: &id003
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactionfunctions401Example:
+                  summary: Default listActionFunctions 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+        '404':
+          description: Action definition not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactionfunctions404Example:
+                  summary: Default listActionFunctions 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Listactionfunctions500Example:
+                  summary: Default listActionFunctions 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id001
+                    context: *id002
+                    links: *id003
+  /automation/v4/actions/{appId}/{definitionId}/functions/{functionType}:
+    get:
+      tags:
+      - Action Functions
+      summary: Hubspot Retrieve Function by Type
+      description: "Retrieves a function of a specific type for a custom action definition. \nFunction types include PRE_ACTION_EXECUTION and POST_ACTION_EXECUTION.\n"
+      operationId: getActionFunctionByType
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionFunctionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionTypePath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved action function
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionFunction'
+              examples:
+                ActionFunctionSuccessExample:
+                  $ref: '#/components/examples/ActionFunctionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbytype400Example:
+                  summary: Default getActionFunctionByType 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id004
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id005
+                      key: value
+                    links: &id006
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbytype401Example:
+                  summary: Default getActionFunctionByType 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbytype404Example:
+                  summary: Default getActionFunctionByType 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbytype500Example:
+                  summary: Default getActionFunctionByType 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id004
+                    context: *id005
+                    links: *id006
+    put:
+      tags:
+      - Action Functions
+      summary: Hubspot Create or Update a Function
+      description: "Creates or updates a serverless function for a custom action definition. \nIf a function of the specified type already exists, it will be replaced \nwith the new function source code.\n"
+      operationId: upsertActionFunction
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionFunctionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionTypePath'
+        example: example-value
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionFunctionInput'
+            examples:
+              ActionFunctionInputExample:
+                $ref: '#/components/examples/ActionFunctionInputExample'
+      responses:
+        '200':
+          description: Successfully updated action function
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionFunction'
+              examples:
+                ActionFunctionSuccessExample:
+                  $ref: '#/components/examples/ActionFunctionSuccessExample'
+        '201':
+          description: Successfully created action function
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionFunction'
+              examples:
+                ActionFunctionSuccessExample:
+                  $ref: '#/components/examples/ActionFunctionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertactionfunction400Example:
+                  summary: Default upsertActionFunction 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id007
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id008
+                      key: value
+                    links: &id009
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertactionfunction401Example:
+                  summary: Default upsertActionFunction 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id007
+                    context: *id008
+                    links: *id009
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Upsertactionfunction500Example:
+                  summary: Default upsertActionFunction 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id007
+                    context: *id008
+                    links: *id009
+    delete:
+      tags:
+      - Action Functions
+      summary: Hubspot Delete a Function by Type
+      description: "Permanently deletes a function of the specified type from a custom action definition. \nThis action cannot be undone.\n"
+      operationId: deleteActionFunctionByType
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "DeleteActionFunctionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionTypePath'
+        example: example-value
+      responses:
+        '204':
+          description: Successfully deleted action function
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbytype401Example:
+                  summary: Default deleteActionFunctionByType 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id010
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id011
+                      key: value
+                    links: &id012
+                      key: value
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbytype404Example:
+                  summary: Default deleteActionFunctionByType 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id010
+                    context: *id011
+                    links: *id012
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbytype500Example:
+                  summary: Default deleteActionFunctionByType 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id010
+                    context: *id011
+                    links: *id012
+  /automation/v4/actions/{appId}/{definitionId}/functions/{functionType}/{functionId}:
+    get:
+      tags:
+      - Action Functions
+      summary: Hubspot Retrieve a Specific Function
+      description: "Retrieves a specific function by its ID from a custom action definition. \nThis provides the complete function details including source code.\n"
+      operationId: getActionFunctionById
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "ActionFunctionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionTypePath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionIdPath'
+        example: example-value
+      responses:
+        '200':
+          description: Successfully retrieved action function
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionFunction'
+              examples:
+                ActionFunctionSuccessExample:
+                  $ref: '#/components/examples/ActionFunctionSuccessExample'
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbyid400Example:
+                  summary: Default getActionFunctionById 400 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id013
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id014
+                      key: value
+                    links: &id015
+                      key: value
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbyid401Example:
+                  summary: Default getActionFunctionById 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id013
+                    context: *id014
+                    links: *id015
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbyid404Example:
+                  summary: Default getActionFunctionById 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id013
+                    context: *id014
+                    links: *id015
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Getactionfunctionbyid500Example:
+                  summary: Default getActionFunctionById 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id013
+                    context: *id014
+                    links: *id015
+    delete:
+      tags:
+      - Action Functions
+      summary: Hubspot Delete a Specific Function
+      description: "Permanently deletes a specific function by its ID from a custom action definition. \nThis action cannot be undone.\n"
+      operationId: deleteActionFunctionById
+      x-microcks-operation:
+        delay: 100
+        dispatcher: SCRIPT
+        dispatcherRules: 'def response = mockRequest.requestContent
+
+          return "DeleteActionFunctionSuccessExample"
+
+          '
+      security:
+      - oauth2:
+        - automation
+      - privateApp: []
+      parameters:
+      - $ref: '#/components/parameters/AppIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/DefinitionIdPath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionTypePath'
+        example: example-value
+      - $ref: '#/components/parameters/FunctionIdPath'
+        example: example-value
+      responses:
+        '204':
+          description: Successfully deleted action function
+        '401':
+          description: Unauthorized - Invalid or missing authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbyid401Example:
+                  summary: Default deleteActionFunctionById 401 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: &id016
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context: &id017
+                      key: value
+                    links: &id018
+                      key: value
+        '404':
+          description: Function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbyid404Example:
+                  summary: Default deleteActionFunctionById 404 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id016
+                    context: *id017
+                    links: *id018
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                Deleteactionfunctionbyid500Example:
+                  summary: Default deleteActionFunctionById 500 response
+                  x-microcks-default: true
+                  value:
+                    category: standard
+                    correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                    message: This is an example description.
+                    subCategory: standard
+                    errors: *id016
+                    context: *id017
+                    links: *id018
+components:
+  parameters:
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier of the HubSpot application
+      schema:
+        type: integer
+        format: int32
+      example: 12345
+    DefinitionIdPath:
+      name: definitionId
+      in: path
+      required: true
+      description: The unique identifier of the action definition
+      schema:
+        type: string
+      example: action-def-001
+    FunctionIdPath:
+      name: functionId
+      in: path
+      required: true
+      description: The unique identifier of the function
+      schema:
+        type: string
+      example: func-xyz789
+    FunctionTypePath:
+      name: functionType
+      in: path
+      required: true
+      description: The type of function to operate on
+      schema:
+        type: string
+        enum:
+        - PRE_ACTION_EXECUTION
+        - PRE_FETCH_OPTIONS
+        - POST_FETCH_OPTIONS
+        - POST_ACTION_EXECUTION
+      example: PRE_ACTION_EXECUTION
+  schemas:
+    ActionFunction:
+      type: object
+      description: A serverless function associated with an action
+      required:
+      - id
+      - functionType
+      - functionSource
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the function
+          example: '500123'
+        functionType:
+          type: string
+          enum:
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+          - POST_FETCH_OPTIONS
+          - POST_ACTION_EXECUTION
+          description: The type of function
+          example: PRE_ACTION_EXECUTION
+        functionSource:
+          type: string
+          description: The JavaScript source code of the function
+          example: example-value
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The error message
+          example: This is an example description.
+        code:
+          type: string
+          description: An error code
+          example: example-value
+        in:
+          type: string
+          description: The location of the error
+          example: example-value
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    ActionFunctionInput:
+      type: object
+      description: Input for creating or updating a function
+      required:
+      - functionSource
+      properties:
+        functionSource:
+          type: string
+          description: The JavaScript source code of the function
+          example: example-value
+    Error:
+      type: object
+      description: An error response
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for this error instance
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        message:
+          type: string
+          description: A human-readable error message
+          example: This is an example description.
+        subCategory:
+          type: string
+          description: A more specific error category
+          example: standard
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    ActionFunctionCollection:
+      type: object
+      description: A collection of action functions
+      required:
+      - results
+      properties:
+        results:
+          type: array
+          description: List of action functions
+          items:
+            $ref: '#/components/schemas/ActionFunction'
+          example:
+          - id: '500123'
+            functionType: PRE_ACTION_EXECUTION
+            functionSource: example-value
+  examples:
+    ActionFunctionSuccessExample:
+      summary: Example action function
+      value:
+        id: func-xyz789
+        functionType: PRE_ACTION_EXECUTION
+        functionSource: 'exports.main = (event, callback) => { console.log(''Pre-execution hook''); callback({ outputFields: {} }); };'
+    ActionFunctionCollectionSuccessExample:
+      summary: Example collection of action functions
+      value:
+        results:
+        - id: func-xyz789
+          functionType: PRE_ACTION_EXECUTION
+          functionSource: 'exports.main = (event, callback) => { callback({ outputFields: {} }); };'
+        - id: func-abc123
+          functionType: POST_ACTION_EXECUTION
+          functionSource: exports.main = (event, callback) => { console.log('Action completed'); callback({}); };
+    ActionFunctionInputExample:
+      summary: Example action function input
+      value:
+        functionSource: 'exports.main = (event, callback) => { const result = processData(event.inputFields); callback({ outputFields: { result: result } }); };'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data

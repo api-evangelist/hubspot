@@ -1,0 +1,548 @@
+openapi: 3.1.0
+info:
+  title: HubSpot Analytics Events Access Tokens Companies API
+  description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
+  version: 3.0.0
+  contact:
+    name: HubSpot Developer Support
+    url: https://developers.hubspot.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.hubapi.com
+  description: HubSpot Production API Server
+tags:
+- name: Companies
+  description: Operations for managing company records
+paths:
+  /crm/v3/objects/companies:
+    get:
+      operationId: listCompanies
+      summary: Hubspot List Companies
+      description: Returns a page of company records. Use the limit and after parameters to paginate through companies. You can also specify which properties to return using the properties parameter.
+      tags:
+      - Companies
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of results to return per page.
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        example: 10
+      - name: after
+        in: query
+        description: The cursor for pagination to get the next page of results.
+        schema:
+          type: string
+        example: example-value
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived companies.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with a list of companies.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseCompany'
+              examples:
+                Listcompanies200Example:
+                  summary: Default listCompanies 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createCompany
+      summary: Hubspot Create a Company
+      description: Creates a new company record with the provided properties. The request body should include a properties object containing the field values for the company you want to create.
+      tags:
+      - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              CreatecompanyRequestExample:
+                summary: Default createCompany request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '201':
+          description: Company created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+              examples:
+                Createcompany201Example:
+                  summary: Default createCompany 201 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/{companyId}:
+    get:
+      operationId: getCompany
+      summary: Hubspot Get a Company
+      description: Returns a single company record by its ID. You can specify which properties to return using the properties parameter.
+      tags:
+      - Companies
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company to retrieve.
+        schema:
+          type: string
+        example: '500123'
+      - name: properties
+        in: query
+        description: A comma-separated list of property names to return.
+        schema:
+          type: string
+        example: example-value
+      - name: archived
+        in: query
+        description: Whether to return archived companies.
+        schema:
+          type: boolean
+          default: false
+        example: false
+      responses:
+        '200':
+          description: Successful response with the company record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+              examples:
+                Getcompany200Example:
+                  summary: Default getCompany 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateCompany
+      summary: Hubspot Update a Company
+      description: Performs a partial update of a company record. Only the properties included in the request body will be updated; other properties will remain unchanged.
+      tags:
+      - Companies
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company to update.
+        schema:
+          type: string
+        example: '500123'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimplePublicObjectInput'
+            examples:
+              UpdatecompanyRequestExample:
+                summary: Default updateCompany request
+                x-microcks-default: true
+                value:
+                  properties:
+                    key: value
+      responses:
+        '200':
+          description: Company updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+              examples:
+                Updatecompany200Example:
+                  summary: Default updateCompany 200 response
+                  x-microcks-default: true
+                  value:
+                    id: '500123'
+                    properties:
+                      key: value
+                    createdAt: '2025-03-15T14:30:00Z'
+                    updatedAt: '2025-03-15T14:30:00Z'
+                    archived: true
+                    associations:
+                      key: value
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    delete:
+      operationId: deleteCompany
+      summary: Hubspot Archive a Company
+      description: Archives (soft deletes) a company record by its ID. Archived companies can be restored using the HubSpot UI or API. This does not permanently delete the company from HubSpot.
+      tags:
+      - Companies
+      parameters:
+      - name: companyId
+        in: path
+        required: true
+        description: The ID of the company to archive.
+        schema:
+          type: string
+        example: '500123'
+      responses:
+        '204':
+          description: Company archived successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /crm/v3/objects/companies/search:
+    post:
+      operationId: searchCompanies
+      summary: Hubspot Search Companies
+      description: Searches for company records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval.
+      tags:
+      - Companies
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              SearchcompaniesRequestExample:
+                summary: Default searchCompanies request
+                x-microcks-default: true
+                value:
+                  filterGroups:
+                  - filters:
+                    - {}
+                  sorts:
+                  - propertyName: Example Record
+                    direction: ASCENDING
+                  query: example-value
+                  properties:
+                  - example-value
+                  limit: 100
+                  after: example-value
+      responses:
+        '200':
+          description: Search results returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseCompany'
+              examples:
+                Searchcompanies200Example:
+                  summary: Default searchCompanies 200 response
+                  x-microcks-default: true
+                  value:
+                    results:
+                    - id: '500123'
+                      properties:
+                        key: value
+                      createdAt: '2025-03-15T14:30:00Z'
+                      updatedAt: '2025-03-15T14:30:00Z'
+                      archived: true
+                      associations:
+                        key: value
+                    paging:
+                      next: {}
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    CollectionResponseCompany:
+      type: object
+      description: A paginated list of company records.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        paging:
+          $ref: '#/components/schemas/Paging'
+    FilterGroup:
+      type: object
+      description: A group of filters combined with AND logic.
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    SimplePublicObjectInput:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          description: The properties to set on the object.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    Association:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    SearchRequest:
+      type: object
+      description: A search request for CRM objects.
+      properties:
+        filterGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+          example:
+          - filters:
+            - {}
+        sorts:
+          type: array
+          items:
+            type: object
+            properties:
+              propertyName:
+                type: string
+              direction:
+                type: string
+                enum:
+                - ASCENDING
+                - DESCENDING
+          example:
+          - propertyName: Example Record
+            direction: ASCENDING
+        query:
+          type: string
+          example: example-value
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        limit:
+          type: integer
+          maximum: 200
+          example: 100
+        after:
+          type: string
+          example: example-value
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Filter:
+      type: object
+      description: A single filter condition.
+      properties:
+        propertyName:
+          type: string
+          example: Example Record
+        operator:
+          type: string
+          enum:
+          - EQ
+          - NEQ
+          - LT
+          - LTE
+          - GT
+          - GTE
+          - BETWEEN
+          - IN
+          - NOT_IN
+          - HAS_PROPERTY
+          - NOT_HAS_PROPERTY
+          - CONTAINS_TOKEN
+          - NOT_CONTAINS_TOKEN
+          example: EQ
+        value:
+          type: string
+          example: example-value
+    Company:
+      type: object
+      description: A HubSpot company record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the company.
+          example: '500123'
+        properties:
+          type: object
+          description: The company's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the company was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the company was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the company has been archived.
+          example: true
+        associations:
+          type: object
+          description: The company's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    CollectionResponseAssociation:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            analytics.read: Read analytics data
