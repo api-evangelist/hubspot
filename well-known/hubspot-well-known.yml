@@ -1,0 +1,126 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of each /.well-known/ path on every HubSpot host in apis.yml and openapi servers[]
+note: >-
+  Five real documents were served. The api.hubapi.com and mcp.hubspot.com
+  /.well-known/oauth-authorization-server documents are the SAME body and both
+  declare issuer https://mcp.hubspot.com — that is the MCP authorization server,
+  not the classic app OAuth server. The classic developer-app OAuth server is
+  published separately at app.hubspot.com. security.txt is served identically
+  (byte-for-byte) from www.hubspot.com and developers.hubspot.com and is
+  PGP-signed, with the canonical URI naming www.hubspot.com.
+hosts:
+- host: https://api.hubapi.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: hubspot-oauth-authorization-server.json
+    kind: RFC 8414 OAuth 2.0 Authorization Server Metadata
+    issuer: https://mcp.hubspot.com
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://api.hubspot.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: hubspot-oauth-authorization-server.json
+    note: identical body to api.hubapi.com
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://mcp.hubspot.com
+  documents:
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    file: hubspot-mcp-oauth-protected-resource.json
+    kind: RFC 9728 OAuth 2.0 Protected Resource Metadata
+    resource: https://mcp.hubspot.com
+    resource_documentation: https://developers.hubspot.com/mcp
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: hubspot-oauth-authorization-server.json
+    note: identical body to api.hubapi.com
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: https://app.hubspot.com
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: hubspot-app-oauth-authorization-server.json
+    kind: RFC 8414 OAuth 2.0 Authorization Server Metadata
+    issuer: https://app.hubspot.com
+    note: the classic HubSpot developer-app OAuth server (authorize on app.hubspot.com,
+      token on api.hubapi.com/oauth/v1/token)
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.hubspot.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: hubspot-security.txt
+    kind: RFC 9116
+    canonical: true
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://developers.hubspot.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: hubspot-security.txt
+    note: byte-identical to www.hubspot.com; Canonical field names www.hubspot.com
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+security_txt:
+  contact: mailto:security-notifications@hubspot.com
+  expires: '2034-06-01'
+  policy: https://hackerone.com/hubspot
+  acknowledgments: https://hackerone.com/hubspot/thanks
+  canonical: https://www.hubspot.com/.well-known/security.txt
+  pgp_signed: true
+x-evidence:
+  fetched: '2026-08-13'
+  hits: 5
+  misses: 33

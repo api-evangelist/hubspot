@@ -1,0 +1,719 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/*.yml + openapi/_original/*.yml — component schema $ref graph and id-reference fields
+note: Entity-relationship graph derived mechanically from every harvested HubSpot OpenAPI document. Component
+  schema $ref links become has_one/has_many edges (has_many when the property is an array); fields matching
+  a <object>Id / <object>_id pattern become belongs_to edges. Envelope schemas (Collection/Response/Request/Input/Batch/Paging/Error/Filter/Sort)
+  are excluded so the graph reflects domain objects rather than transport wrappers. HubSpot object id-prefixes
+  and the canonical object-type ids (0-1 contacts, 0-2 companies, 0-3 deals, 0-5 tickets) are documented
+  only behind a login redirect on developers.hubspot.com, so they are NOT recorded here rather than being
+  guessed.
+core_objects:
+- Contact
+- Company
+- Deal
+- Ticket
+- Note
+- Call
+- Email
+- Meeting
+- Task
+- Product
+- LineItem
+- Quote
+- Order
+- Invoice
+- Cart
+- Subscription
+- Payment
+- List
+- Form
+- BlogPost
+- Page
+- HubDbTable
+core_objects_note: Named from the harvested spec titles and the HubSpot MCP capability categories; each
+  is present as a schema and/or a dedicated OpenAPI document in openapi/.
+association_model:
+  description: 'HubSpot does not model relationships as foreign keys on the object. Every object-to-object
+    link is an ASSOCIATION — a typed edge with its own id, created through the Associations API (openapi/hubspot-associations-api-openapi.yml,
+    hubspot-association-type-definitions-api-openapi.yml, hubspot-association-label-management-api-openapi.yml).
+    This is why the $ref graph below is sparse relative to the object count: the edges live in a separate
+    API, not in the object schemas.'
+  apis:
+  - openapi/hubspot-associations-api-openapi.yml
+  - openapi/hubspot-association-type-definitions-api-openapi.yml
+  - openapi/hubspot-association-label-management-api-openapi.yml
+  - openapi/hubspot-batch-association-operations-api-openapi.yml
+  - openapi/hubspot-object-associations-api-openapi.yml
+  shape: '{fromObjectType, fromObjectId, toObjectType, toObjectId, associationTypeId, label}'
+entity_count: 55
+relationship_count: 25
+entities:
+- name: BlogPost
+  property_count: 32
+  required:
+  - created
+  - id
+  - name
+  - updated
+  source_count: 5
+  sources:
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-blog-posts-api-openapi.yml
+  - hubspot-drafts-and-revisions-api-openapi.yml
+- name: Domain
+  property_count: 21
+  required:
+  - domain
+  - id
+  - isResolving
+  - isUsedForBlogPost
+  - isUsedForEmail
+  - isUsedForKnowledge
+  - isUsedForLandingPage
+  - isUsedForSitePage
+  source_count: 2
+  sources:
+  - hubspot-domain-management-api-openapi.yml
+  - hubspot-domains-api-openapi.yml
+- name: BlogAuthor
+  property_count: 15
+  required:
+  - created
+  - id
+  - name
+  - updated
+  source_count: 4
+  sources:
+  - hubspot-authors-api-openapi.yml
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-blog-authors-api-openapi.yml
+- name: Thread
+  property_count: 14
+  required:
+  - createdAt
+  - id
+  - inboxId
+  - status
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-threads-api-openapi.yml
+- name: Message
+  property_count: 13
+  required:
+  - createdAt
+  - id
+  - type
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-messages-api-openapi.yml
+- name: ActionDefinition
+  property_count: 10
+  required:
+  - actionUrl
+  - id
+  - labels
+  - objectTypes
+  - revisionId
+  source_count: 3
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: AccessTokenMetadata
+  property_count: 9
+  required:
+  - app_id
+  - expires_in
+  - hub_id
+  - scopes
+  - token
+  - token_type
+  source_count: 2
+  sources:
+  - hubspot-access-tokens-api-openapi.yml
+  - hubspot-oauth-api-openapi.yml
+- name: HubDBTable
+  property_count: 9
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-cms-hubdb-api-openapi.yml
+  - hubspot-tables-api-openapi.yml
+- name: List
+  property_count: 9
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-crm-lists-api-openapi.yml
+  - hubspot-lists-api-openapi.yml
+- name: AssetFileMetadata
+  property_count: 8
+  required:
+  - createdAt
+  - folder
+  - id
+  - name
+  - updatedAt
+  source_count: 3
+  sources:
+  - hubspot-file-content-api-openapi.yml
+  - hubspot-file-metadata-api-openapi.yml
+  - hubspot-source-code-api-openapi.yml
+- name: CommercePayment
+  property_count: 8
+  required:
+  - createdAt
+  - id
+  - properties
+  - updatedAt
+  source_count: 4
+  sources:
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-commerce-payments-api-openapi.yml
+  - hubspot-payment-search-api-openapi.yml
+- name: ActionDefinitionPatch
+  property_count: 7
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+- name: AssociationDefinition
+  property_count: 7
+  required:
+  - fromObjectTypeId
+  - id
+  - toObjectTypeId
+  source_count: 2
+  sources:
+  - hubspot-association-type-definitions-api-openapi.yml
+  - hubspot-crm-associations-api-openapi.yml
+- name: Call
+  property_count: 7
+  required:
+  - archived
+  - createdAt
+  - id
+  - properties
+  - updatedAt
+  source_count: 4
+  sources:
+  - hubspot-basic-operations-api-openapi.yml
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-engagement-calls-api-openapi.yml
+- name: Note
+  property_count: 7
+  required:
+  - archived
+  - createdAt
+  - id
+  - properties
+  - updatedAt
+  source_count: 4
+  sources:
+  - hubspot-basic-operations-api-openapi.yml
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-engagement-notes-openapi.yml
+- name: SmtpTokenWithPassword
+  property_count: 7
+  required:
+  - campaignName
+  - createContact
+  - createdAt
+  - createdBy
+  - id
+  - password
+  source_count: 2
+  sources:
+  - hubspot-marketing-emal-api-openapi.yml
+  - hubspot-smtp-token-management-api-openapi.yml
+- name: Company
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-companies-api-openapi.yml
+  - hubspot-crm-companies-api-openapi.yml
+- name: Contact
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-contacts-api-openapi.yml
+  - hubspot-crm-contacts-api-openapi.yml
+- name: Deal
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-crm-deals-api-openapi.yml
+  - hubspot-deals-api-openapi.yml
+- name: EmailEngagement
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-emails-api-openapi.yml
+  - hubspot-engagement-emails-api-openapi.yml
+- name: EmailMessage
+  property_count: 6
+  required:
+  - to
+  source_count: 2
+  sources:
+  - hubspot-marketing-emal-api-openapi.yml
+  - hubspot-single-send-api-openapi.yml
+- name: EventInstance
+  property_count: 6
+  required:
+  - eventType
+  - id
+  - occurredAt
+  source_count: 2
+  sources:
+  - hubspot-analytics-events-api-openapi.yml
+  - hubspot-event-instances-api-openapi.yml
+- name: FieldTypeDefinition
+  property_count: 6
+  required:
+  - name
+  - type
+  source_count: 3
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: Inbox
+  property_count: 6
+  required:
+  - createdAt
+  - id
+  - name
+  - updatedAt
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-inboxes-api-openapi.yml
+- name: Meeting
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-engagement-meetings-api-openapi.yml
+  - hubspot-meetings-api-openapi.yml
+- name: PropertyHistory
+  property_count: 6
+  required:
+  - sourceType
+  - timestamp
+  - value
+  source_count: 8
+  sources:
+  - hubspot-basic-operations-api-openapi.yml
+  - hubspot-batch-operations-api-openapi.yml
+  - hubspot-commerce-payments-api-openapi.yml
+- name: RefreshTokenMetadata
+  property_count: 6
+  required:
+  - client_id
+  - hub_id
+  - scopes
+  - token
+  source_count: 2
+  sources:
+  - hubspot-oauth-api-openapi.yml
+  - hubspot-refresh-tokens-api-openapi.yml
+- name: SmtpToken
+  property_count: 6
+  required:
+  - campaignName
+  - createContact
+  - createdAt
+  - createdBy
+  - id
+  source_count: 2
+  sources:
+  - hubspot-marketing-emal-api-openapi.yml
+  - hubspot-smtp-token-management-api-openapi.yml
+- name: Subscription
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-commerce-subscriptions-api-openapi.yml
+  - hubspot-subscriptions-api-openapi.yml
+- name: Task
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-engagement-tasks-api-openapi.yml
+  - hubspot-tasks-api-openapi.yml
+- name: Ticket
+  property_count: 6
+  required: []
+  source_count: 3
+  sources:
+  - hubspot-batch-api-openapi.yml
+  - hubspot-crm-tickets-api-openapi.yml
+  - hubspot-tickets-api-openapi.yml
+- name: Actor
+  property_count: 5
+  required:
+  - id
+  source_count: 3
+  sources:
+  - hubspot-actors-api-openapi.yml
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-messages-api-openapi.yml
+- name: Attachment
+  property_count: 5
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-messages-api-openapi.yml
+- name: CRMObject
+  property_count: 5
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-crm-search-api-openapi.yml
+  - hubspot-search-api-openapi.yml
+- name: Channel
+  property_count: 5
+  required:
+  - id
+  - name
+  - type
+  source_count: 2
+  sources:
+  - hubspot-channels-api-openapi.yml
+  - hubspot-conversations-api-openapi.yml
+- name: HubDBColumn
+  property_count: 5
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-cms-hubdb-api-openapi.yml
+  - hubspot-tables-api-openapi.yml
+- name: ActionLabels
+  property_count: 4
+  required:
+  - actionName
+  source_count: 3
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: Association
+  property_count: 4
+  required:
+  - associationTypes
+  - toObjectId
+  source_count: 21
+  sources:
+  - hubspot-associations-api-openapi.yml
+  - hubspot-batch-api-openapi.yml
+  - hubspot-batch-association-operations-api-openapi.yml
+- name: FeatureFlag
+  property_count: 4
+  required:
+  - appId
+  - defaultState
+  - flagName
+  source_count: 2
+  sources:
+  - hubspot-application-feature-flags-api-openapi.yml
+  - hubspot-crm-feature-flags-api-openapi.yml
+- name: HubDBRow
+  property_count: 4
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-cms-hubdb-api-openapi.yml
+  - hubspot-rows-api-openapi.yml
+- name: PortalFlagState
+  property_count: 4
+  required:
+  - appId
+  - flagName
+  - flagState
+  - portalId
+  source_count: 3
+  sources:
+  - hubspot-batch-portal-operations-api-openapi.yml
+  - hubspot-crm-feature-flags-api-openapi.yml
+  - hubspot-portal-flag-states-api-openapi.yml
+- name: VersionHistory
+  property_count: 4
+  required: []
+  source_count: 1
+  sources:
+  - hubspot-drafts-and-revisions-api-openapi.yml
+- name: ActionDefinitionRevision
+  property_count: 3
+  required:
+  - createdAt
+  - definition
+  - revisionId
+  source_count: 2
+  sources:
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: ActionFunction
+  property_count: 3
+  required:
+  - functionSource
+  - functionType
+  - id
+  source_count: 2
+  sources:
+  - hubspot-action-functions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+- name: AssociationLabel
+  property_count: 3
+  required:
+  - category
+  - label
+  - typeId
+  source_count: 2
+  sources:
+  - hubspot-association-label-management-api-openapi.yml
+  - hubspot-crm-associations-api-openapi.yml
+- name: AssociationType
+  property_count: 3
+  required:
+  - associationCategory
+  - associationTypeId
+  source_count: 9
+  sources:
+  - hubspot-basic-operations-api-openapi.yml
+  - hubspot-batch-association-operations-api-openapi.yml
+  - hubspot-batch-operations-api-openapi.yml
+- name: FieldOption
+  property_count: 3
+  required:
+  - label
+  - value
+  source_count: 3
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: ValidationWarning
+  property_count: 3
+  required:
+  - message
+  source_count: 2
+  sources:
+  - hubspot-file-validation-api-openapi.yml
+  - hubspot-source-code-api-openapi.yml
+- name: ActionFunctionReference
+  property_count: 2
+  required:
+  - functionType
+  - id
+  source_count: 3
+  sources:
+  - hubspot-action-definitions-api-openapi.yml
+  - hubspot-custom-workflow-actions-api-openapi.yml
+  - hubspot-definition-revisions-api-openapi.yml
+- name: Membership
+  property_count: 2
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-crm-lists-api-openapi.yml
+  - hubspot-memberships-api-openapi.yml
+- name: TaskLocator
+  property_count: 2
+  required:
+  - id
+  source_count: 2
+  sources:
+  - hubspot-file-extraction-api-openapi.yml
+  - hubspot-source-code-api-openapi.yml
+- name: CommercePaymentPatch
+  property_count: 1
+  required:
+  - properties
+  source_count: 2
+  sources:
+  - hubspot-commerce-payments-api-openapi.yml
+  - hubspot-single-payment-operations-api-openapi.yml
+- name: MessageRecipient
+  property_count: 1
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-messages-api-openapi.yml
+- name: MessageStatus
+  property_count: 1
+  required: []
+  source_count: 2
+  sources:
+  - hubspot-conversations-api-openapi.yml
+  - hubspot-messages-api-openapi.yml
+- name: ObjectReference
+  property_count: 1
+  required:
+  - id
+  source_count: 3
+  sources:
+  - hubspot-batch-association-operations-api-openapi.yml
+  - hubspot-crm-associations-api-openapi.yml
+  - hubspot-object-associations-api-openapi.yml
+relationships:
+- from: AccessTokenMetadata
+  to: User
+  kind: belongs_to
+  via: user_id
+  source: openapi/hubspot-access-tokens-api-openapi.yml
+  inferred: id-reference field
+- from: ActionDefinition
+  to: ActionFunctionReference
+  kind: has_many
+  via: functions
+  source: openapi/hubspot-action-definitions-api-openapi.yml
+- from: ActionDefinition
+  to: ActionLabels
+  kind: has_one
+  via: labels
+  source: openapi/hubspot-action-definitions-api-openapi.yml
+- from: ActionDefinitionPatch
+  to: ActionLabels
+  kind: has_one
+  via: labels
+  source: openapi/hubspot-action-definitions-api-openapi.yml
+- from: ActionDefinitionRevision
+  to: ActionDefinition
+  kind: has_one
+  via: definition
+  source: openapi/hubspot-definition-revisions-api-openapi.yml
+- from: Actor
+  to: Actor
+  kind: belongs_to
+  via: actorId
+  source: openapi/hubspot-actors-api-openapi.yml
+  inferred: id-reference field
+- from: Association
+  to: AssociationType
+  kind: has_many
+  via: associationTypes
+  source: openapi/hubspot-batch-association-operations-api-openapi.yml
+- from: BlogPost
+  to: Folder
+  kind: belongs_to
+  via: folderId
+  source: openapi/hubspot-batch-operations-api-openapi.yml
+  inferred: id-reference field
+- from: EventInstance
+  to: Object
+  kind: belongs_to
+  via: objectId
+  source: openapi/hubspot-event-instances-api-openapi.yml
+  inferred: id-reference field
+- from: FeatureFlag
+  to: FlagState
+  kind: has_one
+  via: defaultState
+  source: openapi/hubspot-application-feature-flags-api-openapi.yml
+- from: FeatureFlag
+  to: FlagState
+  kind: has_one
+  via: overrideState
+  source: openapi/hubspot-application-feature-flags-api-openapi.yml
+- from: FieldTypeDefinition
+  to: FieldOption
+  kind: has_many
+  via: options
+  source: openapi/hubspot-action-definitions-api-openapi.yml
+- from: HubDBTable
+  to: HubDBColumn
+  kind: has_many
+  via: columns
+  source: openapi/hubspot-tables-api-openapi.yml
+- from: List
+  to: List
+  kind: belongs_to
+  via: listId
+  source: openapi/hubspot-lists-api-openapi.yml
+  inferred: id-reference field
+- from: Message
+  to: Attachment
+  kind: has_many
+  via: attachments
+  source: openapi/hubspot-messages-api-openapi.yml
+- from: Message
+  to: Channel
+  kind: belongs_to
+  via: channelId
+  source: openapi/hubspot-messages-api-openapi.yml
+  inferred: id-reference field
+- from: Message
+  to: Actor
+  kind: has_many
+  via: recipients
+  source: openapi/hubspot-messages-api-openapi.yml
+- from: Message
+  to: Actor
+  kind: has_many
+  via: senders
+  source: openapi/hubspot-messages-api-openapi.yml
+- from: Message
+  to: MessageStatus
+  kind: has_one
+  via: status
+  source: openapi/hubspot-messages-api-openapi.yml
+- from: MessageRecipient
+  to: Actor
+  kind: belongs_to
+  via: actorId
+  source: openapi/hubspot-messages-api-openapi.yml
+  inferred: id-reference field
+- from: PortalFlagState
+  to: FlagState
+  kind: has_one
+  via: flagState
+  source: openapi/hubspot-batch-portal-operations-api-openapi.yml
+- from: PortalFlagState
+  to: Portal
+  kind: belongs_to
+  via: portalId
+  source: openapi/hubspot-batch-portal-operations-api-openapi.yml
+  inferred: id-reference field
+- from: RefreshTokenMetadata
+  to: User
+  kind: belongs_to
+  via: user_id
+  source: openapi/hubspot-refresh-tokens-api-openapi.yml
+  inferred: id-reference field
+- from: Thread
+  to: Inbox
+  kind: belongs_to
+  via: inboxId
+  source: openapi/hubspot-threads-api-openapi.yml
+  inferred: id-reference field
+- from: VersionHistory
+  to: BlogPost
+  kind: has_one
+  via: object
+  source: openapi/hubspot-drafts-and-revisions-api-openapi.yml
+render: subway/
+cross_links:
+  conventions: conventions/hubspot-conventions.yml
+  json_schema: json-schema/
+  vocabulary: vocabulary/hubspot-vocabulary.yaml
+  json_ld: json-ld/

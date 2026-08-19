@@ -1,0 +1,390 @@
+{
+  "item": [
+    {
+      "id": "c9e328d1-195b-459c-8284-30bb60ac1cbe",
+      "name": "Actors",
+      "description": {
+        "content": "Operations for managing conversation participants including visitors and agents.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d8eda6be-876d-4d46-8aaa-f065a18bb681",
+          "name": "Hubspot List Actors",
+          "request": {
+            "name": "Hubspot List Actors",
+            "description": {
+              "content": "Retrieve a list of conversation actors (participants) in your account.\nActors can be visitors, agents, or bots who participate in conversations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "actors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Maximum number of actors per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a8e48152-685c-4875-b549-a0d1b74fd8c5",
+              "name": "Successfully retrieved the list of actors",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"actor_101\",\n      \"actorId\": \"actor_101\",\n      \"name\": \"John Customer\",\n      \"email\": \"john@example.com\",\n      \"type\": \"VISITOR\"\n    },\n    {\n      \"id\": \"actor_agent_123\",\n      \"actorId\": \"actor_agent_123\",\n      \"name\": \"Support Agent\",\n      \"email\": \"support@example.com\",\n      \"type\": \"AGENT\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"/conversations/v3/conversations/actors?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24f850ab-9382-4a57-b6e5-6fba8f68f2ec",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8573f050-89ab-464f-b0c3-86ec8c2c595e",
+          "name": "Hubspot Retrieve an Actor",
+          "request": {
+            "name": "Hubspot Retrieve an Actor",
+            "description": {
+              "content": "Retrieve a specific actor by their unique identifier.\nReturns complete details about the conversation participant.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "conversations",
+                "v3",
+                "conversations",
+                "actors",
+                ":actorId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "actorId",
+                  "description": "(Required) The unique identifier of the actor to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "12624b77-1e47-4c06-9d01-48725dbfce25",
+              "name": "Successfully retrieved the actor details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors",
+                    ":actorId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "actorId",
+                      "description": "(Required) The unique identifier of the actor to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"actor_101\",\n  \"actorId\": \"actor_101\",\n  \"name\": \"John Customer\",\n  \"email\": \"john@example.com\",\n  \"type\": \"VISITOR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bcf35500-3456-4566-91ec-2d0f3537bfcf",
+              "name": "An error occurred while processing the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "conversations",
+                    "v3",
+                    "conversations",
+                    "actors",
+                    ":actorId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "actorId",
+                      "description": "(Required) The unique identifier of the actor to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input parameters\",\n  \"context\": {\n    \"invalidFields\": [\n      \"threadId\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8bc9148f-a4e1-40fa-8dc4-e9959990ca34",
+    "name": "HubSpot Analytics Events Access Tokens Actors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "item": [
+    {
+      "id": "5950561e-f345-4355-884c-d4e64c53de73",
+      "name": "Payment Search",
+      "description": {
+        "content": "Advanced search operations for finding and filtering commerce payments",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "978e0cbe-8bd7-402a-a793-aee7217027bb",
+          "name": "Hubspot Search Commerce Payments",
+          "request": {
+            "name": "Hubspot Search Commerce Payments",
+            "description": {
+              "content": "Searches for commerce payments using filters, sorting, and query parameters. \nSupports complex search criteria with multiple filter groups.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "commerce_payments",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"query\": \"<string>\",\n  \"limit\": 10,\n  \"after\": \"<string>\",\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    }\n  ],\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fb9d8360-1138-4ab7-a41c-6fb6bcbced9a",
+              "name": "Successfully executed search",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 2,\n  \"results\": [\n    {\n      \"id\": \"12345678901\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"500.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-10T08:00:00Z\",\n      \"updatedAt\": \"2024-01-10T10:00:00Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"12345678903\",\n      \"properties\": {\n        \"hs_payment_status\": \"completed\",\n        \"hs_amount\": \"150.00\",\n        \"hs_currency\": \"USD\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00Z\",\n      \"updatedAt\": \"2024-01-15T14:45:00Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"MTIzNDU2Nzg5MDM=\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8fea621e-1b04-4eb3-9709-ba5fe1af20a3",
+              "name": "Bad request - Invalid search parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d661e0b7-0eb1-4f40-9427-f2ec7fc0803b",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "30a4ebb5-1b73-4efb-9e7b-f93d15fc3f11",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "commerce_payments",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_payment_status\",\n          \"operator\": \"EQ\",\n          \"value\": \"completed\"\n        },\n        {\n          \"propertyName\": \"hs_amount\",\n          \"operator\": \"GTE\",\n          \"value\": \"100\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_amount\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_payment_status\",\n    \"hs_amount\",\n    \"hs_currency\"\n  ],\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "58ab3f9b-fcfc-480b-8456-67135197217c",
+    "name": "HubSpot Analytics Events Access Tokens Payment Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

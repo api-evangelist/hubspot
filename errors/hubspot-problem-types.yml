@@ -1,0 +1,163 @@
+generated: '2026-08-13'
+method: searched
+source: https://developers.hubspot.com/docs/reference/api/other-resources/error-handling
+derived_from: openapi/*.yml (385 4xx/5xx responses across 56 documents)
+format: hubspot-error-envelope
+format_note: >-
+  HubSpot does NOT use RFC 9457 application/problem+json. Every 4xx/5xx response
+  in every harvested spec is `application/json` carrying HubSpot's own error
+  envelope. Recorded as it is, not normalised into a problem+json shape it does
+  not use.
+envelope:
+  media_type: application/json
+  fields:
+  - name: status
+    type: string
+    example: error
+  - name: message
+    type: string
+    description: human-readable error description
+  - name: category
+    type: string
+    description: machine-readable error category
+    example: VALIDATION_ERROR
+  - name: subCategory
+    type: string
+    description: finer-grained category, on the detail objects
+  - name: correlationId
+    type: string
+    format: uuid
+    description: unique request identifier — quote this to HubSpot support
+    example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+  - name: errors
+    type: array
+    description: per-field detail objects
+    items:
+    - name: message
+      type: string
+      required: true
+    - name: code
+      type: string
+    - name: in
+      type: string
+      description: field where the error occurred
+    - name: subCategory
+      type: string
+    - name: context
+      type: object
+      description: 'map of string -> array of string, e.g. {propertyName: [field_name]}'
+  - name: context
+    type: object
+  - name: links
+    type: object
+    description: map of string -> string
+  note: >-
+    HubSpot's own reference states the fields "should all be treated as
+    optional" — availability varies between APIs.
+response_headers:
+- name: x-hubspot-correlation-id
+  description: uuid trace id, mirrors the body `correlationId`
+  method: probed
+- name: x-hubspot-auth-failure
+  description: present on authentication failures, e.g. "401 Unauthorized"
+  method: probed
+probe:
+  fetched: '2026-08-13'
+  url: https://api.hubapi.com/crm/v3/objects/contacts?limit=1
+  http_status: 401
+  body: '{"status":"error","message":"Authentication credentials not found. This
+    API supports OAuth 2.0 authentication ...","correlationId":"019ffb23-56ec-7628-bae3-e022b229c69f","category":"INVALID_AUTHENTICATION"}'
+categories:
+- id: VALIDATION_ERROR
+  meaning: invalid property values or missing required fields
+  source: docs
+- id: PROPERTY_DOESNT_EXIST
+  meaning: a referenced property does not exist on the object
+  source: docs
+- id: INVALID_AUTHENTICATION
+  meaning: authentication credentials missing or not valid
+  source: probed live 401 from api.hubapi.com on 2026-08-13
+categories_note: >-
+  Only the two categories HubSpot names on the public error-handling reference
+  are recorded. HubSpot's per-API guides carry many more category strings, but
+  those guides 307-redirect to a login, so the full registry is not enumerated
+  here rather than being invented.
+problems:
+- status: 200
+  title: Success
+  meaning: default success for most endpoints
+- status: 207
+  title: Multi-Status
+  meaning: mixed success/failure in a batch operation when multi-status error handling
+    is enabled
+- status: 400
+  title: Bad Request
+  meaning: invalid parameters or body
+  occurrences_in_specs: 93
+  example_operation: openapi/hubspot-action-definitions-api-openapi.yml#listActionDefinitions
+- status: 401
+  title: Unauthorized
+  meaning: invalid or expired authentication credentials
+  occurrences_in_specs: 167
+  example_operation: openapi/hubspot-access-tokens-api-openapi.yml#getAccessTokenMetadata
+- status: 403
+  title: Forbidden
+  meaning: authenticated but lacking the required permission scopes
+  remediation: check scopes/hubspot-scopes.yml and the app's granted scopes
+- status: 404
+  title: Not Found
+  meaning: the resource does not exist in this account
+  occurrences_in_specs: 85
+  example_operation: openapi/hubspot-action-definitions-api-openapi.yml#getActionDefinitionById
+- status: 414
+  title: URI Too Long
+  meaning: URI too long, or the cumulative merge limit (250+ merges) exceeded
+- status: 423
+  title: Locked
+  meaning: a high-volume data sync is in progress
+  remediation: retry after 2 or more seconds
+- status: 429
+  title: Too Many Requests
+  meaning: over API quota
+  remediation: back off; see rate-limits/hubspot-rate-limits.yml for the headers that
+    carry the remaining budget
+- status: 477
+  title: Migration In Progress
+  meaning: an account migration is running
+  remediation: honour the Retry-After header, which can be up to 24 hours
+  header: Retry-After
+- status: 500
+  title: Internal Server Error
+  occurrences_in_specs: 40
+  example_operation: openapi/hubspot-access-tokens-api-openapi.yml#getAccessTokenMetadata
+- status: 502
+  title: Bad Gateway
+  meaning: processing limits exceeded / timeout
+  remediation: pause then retry
+- status: 503
+  title: Service Unavailable
+  meaning: temporary outage
+  remediation: pause then retry; check https://status.hubspot.com
+- status: 504
+  title: Gateway Timeout
+  meaning: processing limits exceeded / timeout
+  remediation: pause then retry
+- status: 521
+  title: Server Down
+  remediation: pause then retry
+- status: 522
+  title: Connection Timeout
+  remediation: contact HubSpot support with the correlationId
+- status: 523
+  title: Origin Unreachable
+  remediation: pause then retry
+- status: 524
+  title: Response Timeout
+  meaning: the request exceeded the 100 second response limit
+  remediation: reduce the request size or paginate
+- status: 525
+  title: SSL Handshake Failed
+  remediation: contact HubSpot support
+- status: 526
+  title: Invalid SSL Certificate
+  remediation: contact HubSpot support

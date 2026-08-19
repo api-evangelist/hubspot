@@ -1,0 +1,127 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Messages API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Messages",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Thread Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of messages per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve all messages in a conversation thread. Messages are returned\nin chronological order with pagination support.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Send a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread to send the message to"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Send a new message to a conversation thread. The message will be delivered\nthrough the specified channel to the thread participants.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve a Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/threads/:threadId/messages/:messageId",
+            "params": [
+              {
+                "name": "threadId",
+                "value": "987654321",
+                "type": "path",
+                "description": "The unique identifier of the thread containing the message"
+              },
+              {
+                "name": "messageId",
+                "value": "msg_123456",
+                "type": "path",
+                "description": "The unique identifier of the message to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific message by its unique identifier within a thread.\nReturns the complete message details including sender, recipients, and attachments.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

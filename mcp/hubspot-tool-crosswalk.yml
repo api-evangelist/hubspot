@@ -1,0 +1,222 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  mcp/hubspot-mcp.yml (capability categories published at
+  https://developers.hubspot.com/mcp) bound to the 260 operations across the 56
+  OpenAPI documents in openapi/
+note: >-
+  HubSpot's MCP tool NAMES are not obtainable. tools/list on
+  https://mcp.hubspot.com/anthropic/v1/mcp returns HTTP 401 with an OAuth
+  challenge, and HubSpot's public MCP page enumerates CAPABILITY CATEGORIES, not
+  tools. This crosswalk therefore binds each PUBLISHED CAPABILITY to the REST
+  operations that back it — it does NOT invent tool names. Every `tool:` value
+  below is HubSpot's own category wording, marked `tool_name: unknown`, and
+  confidence is set accordingly. When the live manifest becomes readable this
+  file should be re-derived tool-by-tool.
+surfaces:
+  openapi:
+    path: openapi/
+    documents: 56
+    operations: 260
+    gated: false
+  mcp:
+    url: https://mcp.hubspot.com/anthropic/v1/mcp
+    gated: true
+    gate: OAuth 2.0 bearer (401 + WWW-Authenticate resource_metadata)
+    tools_listed: false
+  mcp_local:
+    install: hs mcp setup
+    package: "@hubspot/mcp-server"
+    gated: true
+    note: developer-platform MCP server, started locally by the HubSpot CLI
+  graphql:
+    endpoint: null
+    gated: false
+    note: >-
+      HubSpot publishes NO GraphQL endpoint — https://api.hubapi.com/graphql
+      returns 404. graphql/hubspot-schema.graphql in this repo is an explicitly
+      CONCEPTUAL SDL derived from the REST data model, not a provider surface,
+      so it contributes no rows to this crosswalk.
+crosswalk:
+- tool: 'CRM objects: contacts (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listContacts, createContact, getContact, updateContact, deleteContact, searchContacts,
+    batchReadContacts, batchCreateContacts, batchUpdateContacts]
+  binding: rest
+  confidence: medium
+  note: category is published by HubSpot; the operation set is the complete contacts
+    surface in openapi/hubspot-contacts-api-openapi.yml + hubspot-batch-api-openapi.yml
+- tool: 'CRM objects: companies (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listCompanies, createCompany, getCompany, updateCompany, deleteCompany, searchCompanies,
+    batchReadCompanies, batchCreateCompanies, batchUpdateCompanies]
+  binding: rest
+  confidence: medium
+- tool: 'CRM objects: deals (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listDeals, createDeal, getDeal, updateDeal, deleteDeal, searchDeals]
+  binding: rest
+  confidence: medium
+- tool: 'CRM objects: tickets (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listTickets, createTicket, getTicket, updateTicket, deleteTicket, searchTickets]
+  binding: rest
+  confidence: medium
+- tool: 'CRM objects: subscriptions (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listSubscriptions, createSubscription, getSubscription, updateSubscription,
+    deleteSubscription, searchSubscriptions, batchReadSubscriptions, batchCreateSubscriptions,
+    batchUpdateSubscriptions]
+  binding: rest
+  confidence: medium
+- tool: 'CRM objects: segments/lists (read/write)'
+  tool_name: unknown
+  category: crm-objects
+  rest: [listLists, createList, getList, deleteList, getListMemberships, addListMembers,
+    removeListMembers]
+  binding: rest
+  confidence: low
+  note: HubSpot's MCP page says "segments"; the closest public REST surface is the
+    Lists API
+- tool: 'Engagements: calls (read/write)'
+  tool_name: unknown
+  category: engagements
+  rest: [listCalls, createCall, getCallById, updateCall, archiveCall, searchCalls]
+  binding: rest
+  confidence: medium
+- tool: 'Engagements: emails (read/write)'
+  tool_name: unknown
+  category: engagements
+  rest: [listEmailEngagements, createEmailEngagement, getEmailEngagement, updateEmailEngagement,
+    deleteEmailEngagement, searchEmailEngagements]
+  binding: rest
+  confidence: medium
+- tool: 'Engagements: meetings (read/write)'
+  tool_name: unknown
+  category: engagements
+  rest: [listMeetings, createMeeting, getMeeting, updateMeeting, deleteMeeting, searchMeetings]
+  binding: rest
+  confidence: medium
+- tool: 'Engagements: notes (read/write)'
+  tool_name: unknown
+  category: engagements
+  rest: [listNotes, createNote, getNoteById, updateNote, archiveNote, searchNotes]
+  binding: rest
+  confidence: medium
+- tool: 'Engagements: tasks (read/write)'
+  tool_name: unknown
+  category: engagements
+  rest: [listTasks, createTask, getTask, updateTask, deleteTask, searchTasks]
+  binding: rest
+  confidence: medium
+- tool: 'Marketing and content: landing pages (read)'
+  tool_name: unknown
+  category: content
+  rest: [listLandingPages, getLandingPage]
+  binding: rest
+  confidence: medium
+- tool: 'Marketing and content: website pages (read)'
+  tool_name: unknown
+  category: content
+  rest: [listSitePages, getSitePage]
+  binding: rest
+  confidence: medium
+- tool: 'Marketing and content: blog posts (read)'
+  tool_name: unknown
+  category: content
+  rest: [listBlogPosts, getBlogPostById]
+  binding: rest
+  confidence: medium
+- tool: 'Users and permissions: owners (read)'
+  tool_name: unknown
+  category: users
+  rest: [listActors, getActorById]
+  binding: rest
+  confidence: low
+  note: >-
+    The Owners API is listed in apis.yml but has no harvested OpenAPI document;
+    the Actors API is the nearest harvested surface. Confidence deliberately low.
+mcp_only:
+- tool: 'CRM objects: carts, products, orders, line items, invoices, quotes (read/write)'
+  reason: >-
+    HubSpot lists these as MCP-writable, but the corresponding Carts, Products,
+    Orders, Line Items, Invoices and Quotes APIs are declared in apis.yml with
+    documentation URLs only — no OpenAPI document has been harvested for them,
+    so there is no operationId to bind to.
+- tool: 'Users and permissions: users, teams, reporting structures, roles, seats (read)'
+  reason: >-
+    Backed by the Settings User Provisioning API, which has a documentation URL
+    in apis.yml but no harvested OpenAPI document.
+- tool: 'Marketing and content: campaigns and campaign metrics (read)'
+  reason: >-
+    Backed by the Marketing Campaigns API; no harvested OpenAPI document in
+    openapi/.
+rest_only:
+- capability: OAuth and token management
+  operations: [createOrRefreshAccessToken, getAccessTokenMetadata, getRefreshTokenMetadata,
+    revokeRefreshToken]
+  note: credential lifecycle — deliberately outside an agent tool surface
+- capability: Associations
+  operations: [listObjectAssociations, createObjectAssociation, deleteObjectAssociation,
+    listAssociationDefinitions, listAssociationLabels, createAssociationLabel, updateAssociationLabel,
+    deleteAssociationLabel, batchReadAssociations, batchCreateAssociations, batchArchiveAssociations,
+    listCompanyAssociations, createCompanyAssociation, deleteCompanyAssociation, listContactAssociations,
+    createContactAssociation]
+  note: >-
+    The single largest REST-only capability. HubSpot's whole relationship model
+    lives here (see data-model/hubspot-data-model.yml) and none of it is named
+    in the published MCP capability list.
+- capability: CMS source code and file management
+  operations: [downloadSourceCodeFile, upsertSourceCodeFile, createSourceCodeFile,
+    deleteSourceCodeFile, getSourceCodeMetadata, validateSourceCodeFile, extractZipFileAsync,
+    getExtractionTaskStatus]
+- capability: HubDB
+  operations: [listHubDBTables, createHubDBTable, getHubDBTable, updateHubDBTable,
+    deleteHubDBTable, publishHubDBTableDraft, listHubDBTableRows, addHubDBTableRow,
+    getHubDBTableRow, updateHubDBTableRow, deleteHubDBTableRow]
+- capability: Conversations inbox
+  operations: [listInboxes, getInboxById, listChannels, listThreads, getThreadById,
+    updateThread, archiveThread, listThreadMessages, sendMessage, getMessageById]
+- capability: Transactional and marketing email send
+  operations: [sendTransactionalEmail, listSmtpTokens, createSmtpToken, getSmtpTokenById,
+    deleteSmtpToken, resetSmtpTokenPassword]
+- capability: Custom workflow actions
+  operations: [listActionDefinitions, createActionDefinition, getActionDefinitionById,
+    updateActionDefinitionById, archiveActionDefinitionById, listActionFunctions, getActionFunctionByType,
+    upsertActionFunction, deleteActionFunctionByType, getActionFunctionById, deleteActionFunctionById,
+    listActionDefinitionRevisions, getActionDefinitionRevisionById, completeCallback,
+    batchCompleteCallbacks]
+- capability: Commerce payments
+  operations: [listCommercePayments, createCommercePayment, getCommercePaymentById,
+    updateCommercePaymentById, archiveCommercePaymentById, searchCommercePayments]
+- capability: Blog authoring lifecycle
+  operations: [listBlogAuthors, createBlogAuthor, getBlogAuthorById, updateBlogAuthor,
+    archiveBlogAuthor, cloneBlogPost, scheduleBlogPost, pushBlogPostDraftLive, resetBlogPostDraft,
+    getBlogPostRevisions, restoreBlogPostRevision]
+- capability: GDPR compliance deletes
+  operations: [gdprDeleteCall, gdprDeleteNote]
+- capability: Analytics events
+  operations: [getEventTypes, getEventInstances]
+- capability: Domains, feature flags, portal flags
+  operations: [listDomains, getDomainById, getApplicationFeatureFlag, upsertApplicationFeatureFlag,
+    deleteApplicationFeatureFlag, listPortalFlagStates, getPortalFlagState, setPortalFlagState,
+    deletePortalFlagState, batchUpsertPortalFlagStates, batchDeletePortalFlagStates]
+coverage:
+  mcp_tools_named: 0
+  mcp_capabilities_published: 4
+  capability_rows_bound: 15
+  mcp_only_rows: 3
+  rest_operations_total: 260
+  rest_operations_bound: 91
+  rest_operations_unbound: 169
+  graphql_fields: 0
+  note: >-
+    "rest_operations_bound" counts operations reachable through a published MCP
+    capability. 169 of 260 harvested operations — 65% — have no counterpart in
+    anything HubSpot publishes about its MCP server, with the Associations API
+    the most consequential omission.

@@ -1,0 +1,787 @@
+{
+  "item": [
+    {
+      "id": "3e9ed055-c235-4099-80e4-c723af5deebe",
+      "name": "Object Associations",
+      "description": {
+        "content": "Create, retrieve, and delete associations between individual CRM objects",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "23582a00-8d0c-4509-b6ec-1d64192125ef",
+          "name": "Hubspot List Associations for an Object",
+          "request": {
+            "name": "Hubspot List Associations for an Object",
+            "description": {
+              "content": "Retrieves all associations of a specific type for a given CRM object.\nReturns paginated results with the associated objects and their association types.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v4",
+                "objects",
+                ":fromObjectType",
+                ":fromObjectId",
+                "associations",
+                ":toObjectType"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for fetching next page of results"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectType",
+                  "description": "(Required) Type of the source object (e.g., contacts, companies, deals)"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectId",
+                  "description": "(Required) ID of the source object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "toObjectType",
+                  "description": "(Required) Type of target objects to retrieve associations for"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1de23752-bc08-4ce7-8520-cc1db02bc40f",
+              "name": "Successfully retrieved associations",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object (e.g., contacts, companies, deals)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of target objects to retrieve associations for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"from\": {\n    \"id\": \"12345\"\n  },\n  \"to\": [\n    {\n      \"toObjectId\": \"67890\",\n      \"associationTypes\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 1,\n          \"label\": \"Primary Company\"\n        }\n      ]\n    },\n    {\n      \"toObjectId\": \"67891\",\n      \"associationTypes\": [\n        {\n          \"associationCategory\": \"USER_DEFINED\",\n          \"associationTypeId\": 101,\n          \"label\": \"Partner Company\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a06a532b-fda9-49cc-8ff6-d5453822be9e",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object (e.g., contacts, companies, deals)"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of target objects to retrieve associations for"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid association type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2b836bdc-ebd7-43f3-9191-47bd286cb2db",
+          "name": "Hubspot Create an Association Between Objects",
+          "request": {
+            "name": "Hubspot Create an Association Between Objects",
+            "description": {
+              "content": "Creates a new association between two CRM objects.\nSpecify the target object and the association types to establish the relationship.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v4",
+                "objects",
+                ":fromObjectType",
+                ":fromObjectId",
+                "associations",
+                ":toObjectType"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectType",
+                  "description": "(Required) Type of the source object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectId",
+                  "description": "(Required) ID of the source object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "toObjectType",
+                  "description": "(Required) Type of the target object"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": {\n    \"id\": \"<string>\"\n  },\n  \"types\": [\n    {\n      \"associationCategory\": \"<string>\",\n      \"associationTypeId\": \"<integer>\"\n    },\n    {\n      \"associationCategory\": \"<string>\",\n      \"associationTypeId\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "31970317-90b1-4fd0-8122-5cc989dbae40",
+              "name": "Successfully created association",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of the target object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": {\n    \"id\": \"67890\"\n  },\n  \"types\": [\n    {\n      \"associationCategory\": \"HUBSPOT_DEFINED\",\n      \"associationTypeId\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"from\": {\n    \"id\": \"12345\"\n  },\n  \"to\": [\n    {\n      \"toObjectId\": \"67890\",\n      \"associationTypes\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 1,\n          \"label\": \"Primary Company\"\n        }\n      ]\n    },\n    {\n      \"toObjectId\": \"67891\",\n      \"associationTypes\": [\n        {\n          \"associationCategory\": \"USER_DEFINED\",\n          \"associationTypeId\": 101,\n          \"label\": \"Partner Company\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b78891c-8bee-4978-9934-cf5e9fa16f17",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of the target object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"to\": {\n    \"id\": \"67890\"\n  },\n  \"types\": [\n    {\n      \"associationCategory\": \"HUBSPOT_DEFINED\",\n      \"associationTypeId\": 1\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid association type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e5869ac7-d780-4e0f-8064-ae91f323cadf",
+          "name": "Hubspot Delete an Association Between Objects",
+          "request": {
+            "name": "Hubspot Delete an Association Between Objects",
+            "description": {
+              "content": "Removes an association between two CRM objects.\nThis operation deletes all association types between the specified objects.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v4",
+                "objects",
+                ":fromObjectType",
+                ":fromObjectId",
+                "associations",
+                ":toObjectType",
+                ":toObjectId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectType",
+                  "description": "(Required) Type of the source object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "fromObjectId",
+                  "description": "(Required) ID of the source object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "toObjectType",
+                  "description": "(Required) Type of the target object"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "toObjectId",
+                  "description": "(Required) ID of the target object"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "41d80b70-be86-4579-8025-dc94e770b3ed",
+              "name": "Successfully deleted association",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType",
+                    ":toObjectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of the target object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectId",
+                      "description": "(Required) ID of the target object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "589d9bbb-1fba-4902-a9c8-6055308c3466",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "objects",
+                    ":fromObjectType",
+                    ":fromObjectId",
+                    "associations",
+                    ":toObjectType",
+                    ":toObjectId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectType",
+                      "description": "(Required) Type of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "fromObjectId",
+                      "description": "(Required) ID of the source object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectType",
+                      "description": "(Required) Type of the target object"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "toObjectId",
+                      "description": "(Required) ID of the target object"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid association type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e501cf31-a007-4bfa-8069-9e8c33503056",
+    "name": "HubSpot Analytics Events Access Tokens Object Associations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

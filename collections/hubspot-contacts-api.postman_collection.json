@@ -1,0 +1,1277 @@
+{
+  "item": [
+    {
+      "id": "45d66a96-c516-4d5a-a067-722f3e2b849f",
+      "name": "Contacts",
+      "description": {
+        "content": "Operations for managing contact records",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "24dbf789-c5b9-4eea-9199-f0c5321f2e8e",
+          "name": "Hubspot List Contacts",
+          "request": {
+            "name": "Hubspot List Contacts",
+            "description": {
+              "content": "Returns a page of contact records. Use the limit and after parameters to paginate through contacts. You can also specify which properties to return using the properties parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "The maximum number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor for pagination to get the next page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A comma-separated list of property names to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return archived contacts."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4d4b7beb-60be-40dc-8218-8726ab9597a0",
+              "name": "Successful response with a list of contacts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"associations\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4518db81-622f-4c7c-ad62-a5d943e8bbac",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f5025a4b-79ea-421b-80f6-22ed499053f4",
+          "name": "Hubspot Create a Contact",
+          "request": {
+            "name": "Hubspot Create a Contact",
+            "description": {
+              "content": "Creates a new contact record with the provided properties. The request body should include a properties object containing the field values for the contact you want to create.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0ca7cc40-6d42-4f65-89f4-841cb95a9e59",
+              "name": "Contact created successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4871ee7c-c66a-4eb0-9aae-2c82640fe45c",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a137813-d812-4553-80bd-59f6771ce43e",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "259cd85c-eea2-4df1-a97b-b2dd8461ca79",
+          "name": "Hubspot Get a Contact",
+          "request": {
+            "name": "Hubspot Get a Contact",
+            "description": {
+              "content": "Returns a single contact record by its ID. You can specify which properties to return using the properties parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts",
+                ":contactId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A comma-separated list of property names to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return archived contacts."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contactId",
+                  "description": "(Required) The ID of the contact to retrieve."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4e461c9a-180a-4da9-8549-d73b3fe6c0ef",
+              "name": "Successful response with the contact record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e5f54e4-6121-4727-b5ec-6525bfc9debd",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad035987-9081-481c-9c20-1ccf5b222ab2",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2e40c8ad-ec23-4f69-a670-c283932ed1fd",
+          "name": "Hubspot Update a Contact",
+          "request": {
+            "name": "Hubspot Update a Contact",
+            "description": {
+              "content": "Performs a partial update of a contact record. Only the properties included in the request body will be updated; other properties will remain unchanged.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts",
+                ":contactId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contactId",
+                  "description": "(Required) The ID of the contact to update."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37fceaa0-4685-4842-b89f-2e9d8ab936b0",
+              "name": "Contact updated successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f96f018-2098-4786-ba7a-884f0c473462",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "344b8626-8f26-44b5-81ec-49a039e2235a",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bd61dff-96c8-4b18-85b9-14667b942e62",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e2397c4-5964-4728-a55a-80eee873bfc9",
+          "name": "Hubspot Archive a Contact",
+          "request": {
+            "name": "Hubspot Archive a Contact",
+            "description": {
+              "content": "Archives (soft deletes) a contact record by its ID. Archived contacts can be restored using the HubSpot UI or API. This does not permanently delete the contact from HubSpot.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts",
+                ":contactId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "contactId",
+                  "description": "(Required) The ID of the contact to archive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fee951cb-a1fe-4948-abc3-88b60d9b7e72",
+              "name": "Contact archived successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to archive."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "532cd61a-1b5b-42a4-bb0f-e0a108bcf1e7",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09a48043-ef8c-4eb1-8283-c28c2f1c4eba",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    ":contactId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "contactId",
+                      "description": "(Required) The ID of the contact to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5417307a-3c5a-4d09-b313-3ab32d3aa0d2",
+          "name": "Hubspot Search Contacts",
+          "request": {
+            "name": "Hubspot Search Contacts",
+            "description": {
+              "content": "Searches for contact records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "contacts",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": \"<integer>\",\n  \"after\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3b7c64a0-1a8d-49b9-b48d-9f12e07b524d",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"associations\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c48ec6f4-9708-45c1-a321-8df646a0c78a",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a25418f-cc18-4d37-8d5b-63face1f701c",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "contacts",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d3b5413f-2614-4ee3-99e6-06a4f4e47b2f",
+    "name": "HubSpot Analytics Events Access Tokens Contacts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,11 +1,9 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/hubspot-analytics-events-api-openapi.yml, openapi/hubspot-authors-api-openapi.yml,
-  openapi/hubspot-blog-posts-api-openapi.yml, openapi/hubspot-commerce-payments-api-openapi.yml,
-  openapi/hubspot-conversations-api-openapi.yml, openapi/hubspot-crm-associations-api-openapi.yml,
-  openapi/hubspot-custom-workflow-actions-api-openapi.yml, openapi/hubspot-domains-api-openapi.yml,
-  openapi/hubspot-engagement-calls-api-openapi.yml, openapi/hubspot-engagement-notes-openapi.yml,
-  openapi/hubspot-marketing-emal-api-openapi.yml, openapi/hubspot-source-code-api-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: openapi/hubspot-analytics-events-api-openapi.yml, openapi/hubspot-authors-api-openapi.yml, openapi/hubspot-blog-posts-api-openapi.yml,
+  openapi/hubspot-commerce-payments-api-openapi.yml, openapi/hubspot-conversations-api-openapi.yml, openapi/hubspot-crm-associations-api-openapi.yml,
+  openapi/hubspot-custom-workflow-actions-api-openapi.yml, openapi/hubspot-domains-api-openapi.yml, openapi/hubspot-engagement-calls-api-openapi.yml,
+  openapi/hubspot-engagement-notes-openapi.yml, openapi/hubspot-marketing-emal-api-openapi.yml, openapi/hubspot-source-code-api-openapi.yml
 schemes:
 - name: OAuth2
   source: openapi/hubspot-analytics-events-api-openapi.yml
@@ -80,6 +78,13 @@ schemes:
     authorizationUrl: https://app.hubspot.com/oauth/authorize
     tokenUrl: https://api.hubapi.com/oauth/v1/token
 scopes:
+- scope: account-info.security.read
+  description: Read account security activity logs
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
 - scope: analytics.read
   description: Read analytics data
   flows:
@@ -104,6 +109,69 @@ scopes:
   - authorizationCode
   sources:
   - openapi/hubspot-domains-api-openapi.yml
+- scope: cms.functions.read
+  description: Read serverless functions (Content Hub Enterprise)
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.functions.write
+  description: Create or update serverless functions (Content Hub Enterprise)
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.knowledge_base.articles.publish
+  description: Publish knowledge base articles
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.knowledge_base.articles.read
+  description: Read knowledge base articles
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.knowledge_base.articles.write
+  description: Create or update knowledge base articles
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.membership.access_groups.read
+  description: Read membership access groups
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: cms.membership.access_groups.write
+  description: Create or update membership access groups
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: communication_preferences.read
+  description: Read subscription and communication preferences
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: communication_preferences.write
+  description: Update subscription and communication preferences
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
 - scope: content
   description: Read from and write to content
   flows:
@@ -176,9 +244,51 @@ scopes:
   - authorizationCode
   sources:
   - openapi/hubspot-crm-associations-api-openapi.yml
+- scope: settings.billing.write
+  description: Update billing configuration
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: settings.users.read
+  description: Read users, teams, roles and seats
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
+- scope: settings.users.write
+  description: Create or update users, teams, roles and seats
+  flows:
+  - authorizationCode
+  sources:
+  - https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  method: searched
 - scope: transactional-email
   description: Send transactional emails and manage SMTP tokens
   flows:
   - authorizationCode
   sources:
   - openapi/hubspot-marketing-emal-api-openapi.yml
+docs: https://developers.hubspot.com/docs/guides/apps/authentication/scopes
+docs_note: The canonical scopes reference is served at https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes
+  (HTTP 200). The newer /docs/reference/api/scopes path 307-redirects to a HubSpot login. The list below
+  is the derived spec baseline PLUS scope families read from the public legacy reference; HubSpot's full
+  scope registry is much larger than any single harvested spec declares, and only families verifiable
+  on the public page are added here.
+scope_families:
+- family: crm.objects.<object>.<read|write>
+  note: per CRM object type; Enterprise accounts additionally expose "sensitive" and "highly sensitive"
+    data variants
+- family: cms.<area>.<read|write|publish>
+  note: domains, functions, knowledge base, membership
+- family: settings.<area>.<read|write>
+  note: users, billing
+- family: <bare scope>
+  note: legacy single-word scopes such as automation, content, transactional-email
+request_model: 'Private apps: scopes are selected in the private-app settings. Public apps: required and
+  optional scopes are configured on the app and presented to the installing user in the app install URL.
+  Scope availability varies by account tier (Starter/Professional/Enterprise) and by Hub, so requesting
+  a scope the account does not have will fail the install.'
+scope_count: 29

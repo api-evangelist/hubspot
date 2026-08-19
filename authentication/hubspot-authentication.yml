@@ -1,10 +1,9 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/hubspot-analytics-events-api-openapi.yml, openapi/hubspot-authors-api-openapi.yml,
-  openapi/hubspot-blog-posts-api-openapi.yml, openapi/hubspot-cms-hubdb-api-openapi.yml, openapi/hubspot-cms-pages-api-openapi.yml,
-  openapi/hubspot-commerce-payments-api-openapi.yml, openapi/hubspot-commerce-subscriptions-api-openapi.yml,
-  openapi/hubspot-conversations-api-openapi.yml, openapi/hubspot-crm-associations-api-openapi.yml,
-  openapi/hubspot-crm-companies-api-openapi.yml, openapi/hubspot-crm-contacts-api-openapi.yml,
+generated: '2026-08-13'
+method: searched
+source: openapi/hubspot-analytics-events-api-openapi.yml, openapi/hubspot-authors-api-openapi.yml, openapi/hubspot-blog-posts-api-openapi.yml,
+  openapi/hubspot-cms-hubdb-api-openapi.yml, openapi/hubspot-cms-pages-api-openapi.yml, openapi/hubspot-commerce-payments-api-openapi.yml,
+  openapi/hubspot-commerce-subscriptions-api-openapi.yml, openapi/hubspot-conversations-api-openapi.yml,
+  openapi/hubspot-crm-associations-api-openapi.yml, openapi/hubspot-crm-companies-api-openapi.yml, openapi/hubspot-crm-contacts-api-openapi.yml,
   openapi/hubspot-crm-deals-api-openapi.yml ...
 summary:
   types:
@@ -82,3 +81,55 @@ schemes:
   - openapi/hubspot-engagement-calls-api-openapi.yml
   - openapi/hubspot-engagement-notes-openapi.yml
   - openapi/hubspot-marketing-emal-api-openapi.yml
+docs: https://developers.hubspot.com/docs/api/intro-to-auth
+authorization_server_metadata:
+  app:
+    url: https://app.hubspot.com/.well-known/oauth-authorization-server
+    http_status: 200
+    issuer: https://app.hubspot.com
+    authorization_endpoint: https://app.hubspot.com/oauth/authorize
+    token_endpoint: https://api.hubapi.com/oauth/v1/token
+    response_types_supported:
+    - code
+    code_challenge_methods_supported:
+    - S256
+  mcp:
+    url: https://mcp.hubspot.com/.well-known/oauth-authorization-server
+    http_status: 200
+    issuer: https://mcp.hubspot.com
+    authorization_endpoint: https://mcp.hubspot.com/oauth/authorize/user
+    token_endpoint: https://mcp.hubspot.com/oauth/v3/token
+    introspection_endpoint: https://mcp.hubspot.com/oauth/v3/token/introspect
+    grant_types_supported:
+    - authorization_code
+    - refresh_token
+    - client_credentials
+    code_challenge_methods_supported:
+    - S256
+    note: served identically from api.hubapi.com/.well-known/oauth-authorization-server; this is the MCP
+      authorization server, NOT the classic app one
+  method: probed
+  probed: '2026-08-13'
+methods:
+- name: OAuth 2.0 authorization code
+  use: public apps installed into customer portals
+  header: 'Authorization: Bearer <token>'
+  pkce: S256 supported
+- name: Private app access token
+  use: single-portal integrations
+  header: 'Authorization: Bearer <token>'
+  note: no scope-negotiation flow; scopes are picked in the private-app settings
+- name: HubSpot API key (hapikey)
+  use: legacy
+  status: deprecated
+  note: the query-string apiKey scheme still present in some harvested specs is the retired hapikey mechanism;
+    new integrations must not use it
+live_probe:
+  url: https://api.hubapi.com/crm/v3/objects/contacts?limit=1
+  http_status: 401
+  category: INVALID_AUTHENTICATION
+  headers:
+    x-hubspot-auth-failure: 401 Unauthorized
+    x-hubspot-correlation-id: <uuid>
+  probed: '2026-08-13'
+scopes: scopes/hubspot-scopes.yml

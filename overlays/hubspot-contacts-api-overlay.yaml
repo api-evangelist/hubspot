@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for HubSpot Analytics Events Access Tokens Contacts API
+  version: 1.0.0
+extends: openapi/hubspot-contacts-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: openapi/hubspot-contacts-api-openapi.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: hubspot
+    x-apievangelist-catalog: https://apis.io/provider/hubspot
+    x-apievangelist-artifacts:
+      authentication: authentication/hubspot-authentication.yml
+      scopes: scopes/hubspot-scopes.yml
+      conventions: conventions/hubspot-conventions.yml
+      errors: errors/hubspot-problem-types.yml
+      lifecycle: lifecycle/hubspot-lifecycle.yml
+      rate_limits: rate-limits/hubspot-rate-limits.yml
+      data_model: data-model/hubspot-data-model.yml
+      mcp: mcp/hubspot-mcp.yml
+- target: $.servers
+  update:
+  - url: https://api.hubapi.com
+    description: HubSpot Production API Server
+- target: $.components.securitySchemes.OAuth2
+  update:
+    x-apievangelist-note: 'Authorization code flow; token endpoint https://api.hubapi.com/oauth/v1/token.
+      Private-app access tokens use the same Authorization: Bearer header.'
+x-observations:
+  operations: 6
+  operations_without_tags: 0
+  operations_without_summary: 0

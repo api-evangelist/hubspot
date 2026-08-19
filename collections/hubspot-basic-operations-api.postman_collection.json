@@ -1,0 +1,2094 @@
+{
+  "item": [
+    {
+      "id": "1d8b67f3-aae6-40c4-b19b-2e13e00ae1ca",
+      "name": "Basic Operations",
+      "description": {
+        "content": "Create, read, update, and delete individual call records",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "107cb585-4f02-4707-9b04-70e096b6742f",
+          "name": "Hubspot List All Calls",
+          "request": {
+            "name": "Hubspot List All Calls",
+            "description": {
+              "content": "Returns a paginated list of all call engagements in the CRM.\nUse query parameters to filter by properties, limit results, and paginate through records.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of results per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return with history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of association types to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived calls"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0e1718fc-388d-4bae-972d-bcf835c66222",
+              "name": "Successfully retrieved the list of calls",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"512\",\n      \"properties\": {\n        \"hs_call_title\": \"Discovery Call\",\n        \"hs_call_body\": \"Discussed product requirements\",\n        \"hs_call_duration\": \"1800000\",\n        \"hs_call_direction\": \"OUTBOUND\",\n        \"hs_call_disposition\": \"connected\",\n        \"hs_call_status\": \"COMPLETED\",\n        \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n      \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"513\",\n      \"properties\": {\n        \"hs_call_title\": \"Follow-up Call\",\n        \"hs_call_body\": \"Confirmed next steps\",\n        \"hs_call_duration\": \"900000\",\n        \"hs_call_direction\": \"OUTBOUND\",\n        \"hs_call_disposition\": \"connected\",\n        \"hs_call_status\": \"COMPLETED\",\n        \"hs_timestamp\": \"2024-01-16T14:00:00.000Z\"\n      },\n      \"createdAt\": \"2024-01-16T14:00:00.000Z\",\n      \"updatedAt\": \"2024-01-16T14:30:00.000Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9655cc5e-c892-41c9-a110-db8b293d1918",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4324fc7b-b203-466c-9372-4fbe1ee2c5c1",
+          "name": "Hubspot Create a Call",
+          "request": {
+            "name": "Hubspot Create a Call",
+            "description": {
+              "content": "Creates a new call engagement in the CRM.\nYou can specify call properties and optionally associate the call with other CRM objects.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7ddb7ca8-a2e8-4522-946b-cb3c02aeedb3",
+              "name": "Successfully created the call",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_call_title\": \"Discovery Call\",\n    \"hs_call_body\": \"Discussed product requirements\",\n    \"hs_call_duration\": \"1800000\",\n    \"hs_call_direction\": \"OUTBOUND\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"101\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 194\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"512\",\n  \"properties\": {\n    \"hs_call_title\": \"Discovery Call\",\n    \"hs_call_body\": \"Discussed product requirements\",\n    \"hs_call_duration\": \"1800000\",\n    \"hs_call_direction\": \"OUTBOUND\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T10:30:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "679df45e-276e-48b3-af61-89bf9306bf13",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_call_title\": \"Discovery Call\",\n    \"hs_call_body\": \"Discussed product requirements\",\n    \"hs_call_duration\": \"1800000\",\n    \"hs_call_direction\": \"OUTBOUND\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"101\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 194\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c42a143e-918f-4d05-9a76-a4c3505bfd4d",
+          "name": "Hubspot Get a Call by Id",
+          "request": {
+            "name": "Hubspot Get a Call by Id",
+            "description": {
+              "content": "Retrieves a single call engagement by its unique identifier.\nOptionally include specific properties, property history, and associations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls",
+                ":callId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return with history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of association types to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived calls"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "callId",
+                  "description": "(Required) The unique identifier of the call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "13ab5668-9c14-42aa-85a8-2893ab740523",
+              "name": "Successfully retrieved the call",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"512\",\n  \"properties\": {\n    \"hs_call_title\": \"Discovery Call\",\n    \"hs_call_body\": \"Discussed product requirements\",\n    \"hs_call_duration\": \"1800000\",\n    \"hs_call_direction\": \"OUTBOUND\",\n    \"hs_call_disposition\": \"connected\",\n    \"hs_call_status\": \"COMPLETED\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "43e3d795-9772-42b0-8b4d-a39881377f9e",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f6a0397d-e79a-4f1d-b060-bb4101f40555",
+          "name": "Hubspot Update a Call",
+          "request": {
+            "name": "Hubspot Update a Call",
+            "description": {
+              "content": "Updates an existing call engagement with new property values.\nOnly the properties specified in the request body will be updated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls",
+                ":callId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "callId",
+                  "description": "(Required) The unique identifier of the call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "22d15a16-a116-41ca-a965-a74e22ed27be",
+              "name": "Successfully updated the call",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_call_title\": \"Updated Discovery Call\",\n    \"hs_call_disposition\": \"connected\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"512\",\n  \"properties\": {\n    \"hs_call_title\": \"Updated Discovery Call\",\n    \"hs_call_body\": \"Discussed product requirements\",\n    \"hs_call_duration\": \"1800000\",\n    \"hs_call_direction\": \"OUTBOUND\",\n    \"hs_call_disposition\": \"connected\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T12:00:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33f3e7e7-b8e2-462b-afb2-153842fa0683",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_call_title\": \"Updated Discovery Call\",\n    \"hs_call_disposition\": \"connected\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "476fb9c2-69ca-4229-8135-43ff4c0d6149",
+          "name": "Hubspot Archive a Call",
+          "request": {
+            "name": "Hubspot Archive a Call",
+            "description": {
+              "content": "Archives (soft deletes) a call engagement by moving it to the recycling bin.\nArchived calls can be restored within 90 days.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls",
+                ":callId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "callId",
+                  "description": "(Required) The unique identifier of the call"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5d96128a-5251-401d-9c6d-bda3cb01efc8",
+              "name": "Successfully archived the call (no content returned)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "eaf6d26a-74f9-4d5c-abaf-ad14bcf4f3b5",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) The unique identifier of the call"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "267d3d5f-0f4e-417c-a6af-f1fae4521f68",
+          "name": "Hubspot List All Notes",
+          "request": {
+            "name": "Hubspot List All Notes",
+            "description": {
+              "content": "Returns a paginated list of all note engagements in the CRM.\nUse query parameters to filter by properties, limit results, and paginate through records.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of results per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return with history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of association types to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived notes"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "2768ef48-ff8b-4cbc-bbb6-4a030fea5d3d",
+              "name": "Successfully retrieved the list of notes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"1024\",\n      \"properties\": {\n        \"hs_note_body\": \"Met with client to discuss Q1 goals. They are interested in expanding their subscription.\",\n        \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n        \"hubspot_owner_id\": \"12345\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n      \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n      \"archived\": false\n    },\n    {\n      \"id\": \"1025\",\n      \"properties\": {\n        \"hs_note_body\": \"Follow-up call scheduled for next week.\",\n        \"hs_timestamp\": \"2024-01-16T14:00:00.000Z\",\n        \"hubspot_owner_id\": \"12345\"\n      },\n      \"createdAt\": \"2024-01-16T14:00:00.000Z\",\n      \"updatedAt\": \"2024-01-16T14:30:00.000Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"MTAyNg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1b1f4092-4594-48f6-96ae-e0f32dacea3f",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87de2c83-2298-4c0e-b265-185ae4d953a9",
+          "name": "Hubspot Create a Note",
+          "request": {
+            "name": "Hubspot Create a Note",
+            "description": {
+              "content": "Creates a new note engagement in the CRM.\nYou can specify note properties and optionally associate the note with other CRM objects.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"to\": {\n        \"id\": \"<string>\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        },\n        {\n          \"associationCategory\": \"<string>\",\n          \"associationTypeId\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0eca516d-22de-4170-bb54-ca4f1b3b4215",
+              "name": "Successfully created the note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_note_body\": \"Met with client to discuss Q1 goals. They are interested in expanding their subscription.\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"hubspot_owner_id\": \"12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"101\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 202\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1024\",\n  \"properties\": {\n    \"hs_note_body\": \"Met with client to discuss Q1 goals. They are interested in expanding their subscription.\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"hubspot_owner_id\": \"12345\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T10:30:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "674f1e9a-d62e-4e12-a5eb-053208ac820a",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_note_body\": \"Met with client to discuss Q1 goals. They are interested in expanding their subscription.\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"hubspot_owner_id\": \"12345\"\n  },\n  \"associations\": [\n    {\n      \"to\": {\n        \"id\": \"101\"\n      },\n      \"types\": [\n        {\n          \"associationCategory\": \"HUBSPOT_DEFINED\",\n          \"associationTypeId\": 202\n        }\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a34785fb-4605-42c0-bcbc-01f0d305f44b",
+          "name": "Hubspot Get a Note by Id",
+          "request": {
+            "name": "Hubspot Get a Note by Id",
+            "description": {
+              "content": "Retrieves a single note engagement by its unique identifier.\nOptionally include specific properties, property history, and associations.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes",
+                ":noteId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return"
+                },
+                {
+                  "disabled": false,
+                  "key": "propertiesWithHistory",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of properties to return with history"
+                },
+                {
+                  "disabled": false,
+                  "key": "associations",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of association types to retrieve"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived notes"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "noteId",
+                  "description": "(Required) The unique identifier of the note"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "7a3a741f-ad9b-4bae-a76b-eeb583e3cb29",
+              "name": "Successfully retrieved the note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1024\",\n  \"properties\": {\n    \"hs_note_body\": \"Met with client to discuss Q1 goals. They are interested in expanding their subscription.\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"hubspot_owner_id\": \"12345\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fada2c3-5813-4632-ae44-51a4bdc73ee8",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "propertiesWithHistory",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "associations",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79850c19-9548-415d-883e-e700f4fb3fc9",
+          "name": "Hubspot Update a Note",
+          "request": {
+            "name": "Hubspot Update a Note",
+            "description": {
+              "content": "Updates an existing note engagement with new property values.\nOnly the properties specified in the request body will be updated.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes",
+                ":noteId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "noteId",
+                  "description": "(Required) The unique identifier of the note"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bdb0e65f-bebb-4f0a-ab89-de040a97eda6",
+              "name": "Successfully updated the note",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_note_body\": \"Updated meeting notes - client confirmed interest in premium tier.\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1024\",\n  \"properties\": {\n    \"hs_note_body\": \"Updated meeting notes - client confirmed interest in premium tier.\",\n    \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\",\n    \"hubspot_owner_id\": \"12345\"\n  },\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T12:00:00.000Z\",\n  \"archived\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33257a0b-4ce7-4056-b73a-3bf54d404498",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"hs_note_body\": \"Updated meeting notes - client confirmed interest in premium tier.\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "14fb64b9-5fd5-40fe-9d83-47682e7ef4cd",
+          "name": "Hubspot Archive a Note",
+          "request": {
+            "name": "Hubspot Archive a Note",
+            "description": {
+              "content": "Archives (soft deletes) a note engagement by moving it to the recycling bin.\nArchived notes can be restored within 90 days.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes",
+                ":noteId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "noteId",
+                  "description": "(Required) The unique identifier of the note"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d46b99e5-0c47-47a4-8f01-9b963d98cdd3",
+              "name": "Successfully archived the note (no content returned)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "43ede63c-a181-4227-9a85-b9116b33ffb1",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    ":noteId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "noteId",
+                      "description": "(Required) The unique identifier of the note"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b6a03fcf-eaaa-4859-ad20-4ddc15552a15",
+    "name": "HubSpot Analytics Events Access Tokens Basic Operations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

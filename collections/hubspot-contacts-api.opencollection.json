@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Contacts API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived contacts."
+              }
+            ]
+          },
+          "docs": "Returns a page of contact records. Use the limit and after parameters to paginate through contacts. You can also specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new contact record with the provided properties. The request body should include a properties object containing the field values for the contact you want to create."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the contact to retrieve."
+              },
+              {
+                "name": "properties",
+                "value": "example-value",
+                "type": "query",
+                "description": "A comma-separated list of property names to return."
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to return archived contacts."
+              }
+            ]
+          },
+          "docs": "Returns a single contact record by its ID. You can specify which properties to return using the properties parameter."
+        },
+        {
+          "info": {
+            "name": "Hubspot Update a Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the contact to update."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Performs a partial update of a contact record. Only the properties included in the request body will be updated; other properties will remain unchanged."
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive a Contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the contact to archive."
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a contact record by its ID. Archived contacts can be restored using the HubSpot UI or API. This does not permanently delete the contact from HubSpot."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/contacts/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for contact records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

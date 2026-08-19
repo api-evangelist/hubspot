@@ -1,0 +1,95 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Memberships API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Get List Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/lists/:listId/memberships",
+            "params": [
+              {
+                "name": "listId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the list."
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              }
+            ]
+          },
+          "docs": "Returns the records that are members of a specific CRM list. For static lists, returns manually added members. For dynamic lists, returns records that currently match the list filters."
+        },
+        {
+          "info": {
+            "name": "Hubspot Add Members to a List",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/lists/:listId/memberships/add",
+            "params": [
+              {
+                "name": "listId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the static list to add members to."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds records to a static CRM list by their record IDs. This operation is only available for static lists. Records added will remain members until explicitly removed."
+        },
+        {
+          "info": {
+            "name": "Hubspot Remove Members From a List",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.hubapi.com/crm/v3/lists/:listId/memberships/remove",
+            "params": [
+              {
+                "name": "listId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the static list to remove members from."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes records from a static CRM list by their record IDs. This operation is only available for static lists. The records themselves will not be deleted, only removed from the list."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

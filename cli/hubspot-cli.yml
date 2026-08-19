@@ -1,0 +1,110 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://www.npmjs.com/package/@hubspot/cli (registry metadata + README) and
+  https://github.com/HubSpot/hubspot-cli (commands/ tree, releases)
+name: HubSpot CLI
+binaries: [hs, hscms]
+package: "@hubspot/cli"
+version: 8.12.0
+published: '2026-08-03'
+repository: https://github.com/HubSpot/hubspot-cli
+docs: https://developers.hubspot.com/docs/reference/cli
+docs_note: >-
+  The CLI reference on developers.hubspot.com 307-redirects to
+  app.hubspot.com/myaccounts (a HubSpot login), so the command surface below was
+  read from the public npm README and the public commands/ tree in the
+  HubSpot/hubspot-cli repository rather than from the docs page.
+install:
+- method: npm-global
+  command: npm install -g @hubspot/cli
+- method: npx
+  command: npx @hubspot/cli
+authentication:
+- method: personal-access-key
+  command: hs init
+  alt: hs auth personalaccesskey
+  recommended: true
+- method: oauth2
+  command: hs auth oauth2
+  note: uses a developer app client ID/secret against a test account ID
+config_file: hubspot.config.yml
+exit_codes:
+- code: 0
+  meaning: successful run
+- code: 1
+  meaning: config problem or internal error
+- code: 2
+  meaning: warnings or validation issues
+commands:
+- group: account
+  purpose: manage connected HubSpot accounts in the local config
+  subcommands: [auth, clean, createOverride, info, link, list, remove, removeOverride,
+    rename, unlink, use]
+- group: app
+  purpose: public/private app management
+  subcommands: [logDetails, logs, migrate, secret]
+- group: api
+  purpose: call the HubSpot API directly from the CLI
+- group: auth
+  purpose: authenticate the CLI against an account
+- group: cms
+  purpose: CMS asset development
+  subcommands: [app, convertFields, delete, fetch, function, getReactModule, lighthouseScore,
+    lint, list, module, mv, template, theme, upload, watch, webpack]
+- group: config
+  purpose: manage hubspot.config.yml
+  subcommands: [migrate, set]
+- group: customObject
+  purpose: CRM custom object schemas and records
+  subcommands: [create, createSchema, deleteSchema, fetchAllSchemas, fetchSchema, listSchemas,
+    updateSchema]
+- group: doctor
+  purpose: diagnose local setup problems
+- group: filemanager
+  purpose: file manager assets
+  subcommands: [fetch, upload]
+- group: hubdb
+  purpose: HubDB tables
+  subcommands: [clear, create, delete, fetch, list]
+- group: init
+  purpose: create the local config and authenticate
+- group: mcp
+  purpose: the local Developer MCP server
+  subcommands: [setup, start]
+  note: this is the local-stdio MCP surface referenced in mcp/hubspot-mcp.yml
+- group: project
+  purpose: developer projects (the 2025.2 developer platform)
+  subcommands: [add, appInstallStatus, cloneApp, create, delete, deploy, dev, download,
+    info, installApp, installDeps, lint, list, listBuilds, logs, migrate, open, profile,
+    release, updateDeps, upload, validate, watch]
+- group: sandbox
+  purpose: standard/development sandbox accounts
+  subcommands: [create, delete]
+- group: secret
+  purpose: serverless function secrets
+  subcommands: [addSecret, deleteSecret, listSecret, updateSecret]
+- group: testAccount
+  purpose: developer test accounts
+  subcommands: [create, createConfig, delete, importData]
+- group: completion
+  purpose: emit shell autocompletion for bash/zsh
+- group: open
+  purpose: open HubSpot screens from the terminal
+- group: upgrade
+  purpose: upgrade the CLI
+key_flows:
+- name: authenticate a local project
+  steps: [hs init, hs auth personalaccesskey, hs account use]
+- name: create and iterate on a developer project
+  steps: [hs project create, hs project dev, hs project upload, hs project deploy]
+- name: spin up an isolated test environment
+  steps: [hs sandbox create, hs testAccount create, hs testAccount importData]
+- name: run the local Developer MCP server for agentic tooling
+  steps: [hs mcp setup, hs mcp start]
+recent_releases:
+- {tag: 8.10.0, published: '2026-07-16'}
+- {tag: v8.9.1, published: '2026-07-16'}
+- {tag: v8.9.0, published: '2026-07-16'}
+- {tag: v8.8.0, published: '2026-05-26'}
+- {tag: v8.7.0, published: '2026-05-20'}

@@ -1,0 +1,182 @@
+{
+  "item": [
+    {
+      "id": "4740890b-299d-4926-86f8-742d21d498b4",
+      "name": "Association Type Definitions",
+      "description": {
+        "content": "Retrieve and manage association type definitions across object types",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "631b4e08-0536-43b7-b4ab-e954769d392c",
+          "name": "Hubspot List All Association Definitions",
+          "request": {
+            "name": "Hubspot List All Association Definitions",
+            "description": {
+              "content": "Retrieves all association type definitions available in the account.\nReturns both HubSpot-defined and custom association types across all object types.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v4",
+                "associations",
+                "definitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4ecfaf12-5925-41b2-8d12-b1159181fa95",
+              "name": "Successfully retrieved association definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "associations",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"contact_to_company\",\n      \"fromObjectTypeId\": \"0-1\",\n      \"toObjectTypeId\": \"0-2\",\n      \"name\": \"contact_to_company\",\n      \"label\": \"Company\",\n      \"inverseLabel\": \"Contacts\",\n      \"category\": \"HUBSPOT_DEFINED\"\n    },\n    {\n      \"id\": \"deal_to_contact\",\n      \"fromObjectTypeId\": \"0-3\",\n      \"toObjectTypeId\": \"0-1\",\n      \"name\": \"deal_to_contact\",\n      \"label\": \"Contact\",\n      \"inverseLabel\": \"Deals\",\n      \"category\": \"HUBSPOT_DEFINED\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"https://api.hubapi.com/crm/v4/associations/definitions?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5087f68-06a3-4bc6-9835-da9e3d8fe4bb",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v4",
+                    "associations",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid association type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3ef51a81-fea7-4365-95c6-4b8d6c43f7da",
+    "name": "HubSpot Analytics Events Access Tokens Association Type Definitions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

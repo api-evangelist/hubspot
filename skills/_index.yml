@@ -1,0 +1,36 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  openapi/*.yml (every operationId verified present by grep before it was
+  written into a skill), arazzo/*.yml, conventions/hubspot-conventions.yml,
+  errors/hubspot-problem-types.yml
+note: >-
+  Packaged Agent Skills for HubSpot's marquee flows, mirroring the native
+  workflows in arazzo/. HubSpot publishes no AGENTS.md or first-party skill
+  files on a public surface, so these are generated rather than searched. Every
+  step names a real operationId that exists verbatim in openapi/. The directory
+  also contains skills/noc-skills/, which is an unrelated vendored repository
+  and is NOT an API Evangelist agent skill.
+skills:
+- file: hubspot-create-contact-with-company.md
+  name: Create a HubSpot contact and link it to a company
+  api: openapi/hubspot-contacts-api-openapi.yml
+  operations: [searchContacts, createContact, searchCompanies, createCompany, createContactAssociation]
+- file: hubspot-upsert-contacts-in-bulk.md
+  name: Import or upsert HubSpot contacts in bulk
+  api: openapi/hubspot-batch-api-openapi.yml
+  operations: [batchReadContacts, batchCreateContacts, batchUpdateContacts, searchContacts]
+- file: hubspot-advance-a-deal.md
+  name: Advance a HubSpot deal and log the activity
+  api: openapi/hubspot-deals-api-openapi.yml
+  operations: [searchDeals, getDeal, updateDeal, createNote, createCall, createMeeting,
+    createObjectAssociation]
+- file: hubspot-oauth-token-lifecycle.md
+  name: Run the HubSpot OAuth token lifecycle
+  api: openapi/hubspot-token-management-api-openapi.yml
+  operations: [createOrRefreshAccessToken, getAccessTokenMetadata, getRefreshTokenMetadata,
+    revokeRefreshToken]
+- file: hubspot-handle-webhook-events.md
+  name: Receive and process HubSpot webhook events
+  api: asyncapi/hubspot-webhooks-asyncapi.yml
+  operations: [getContact, getCompany, getDeal, getTicket]

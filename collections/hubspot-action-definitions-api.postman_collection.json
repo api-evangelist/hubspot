@@ -1,0 +1,1600 @@
+{
+  "item": [
+    {
+      "id": "68b4cf0c-5c7e-4b8e-a0a1-9b2e06c12731",
+      "name": "Action Definitions",
+      "description": {
+        "content": "Operations to create and manage custom workflow action definitions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7639c39-4be7-42b0-97ef-c61aecdda20b",
+          "name": "Hubspot List Action Definitions",
+          "request": {
+            "name": "Hubspot List Action Definitions",
+            "description": {
+              "content": "Retrieves a paginated list of all custom action definitions for the specified \napplication. Use query parameters to filter by archived status and control pagination.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "automation",
+                "v4",
+                "actions",
+                ":appId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for the next page of results"
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived action definitions"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier of the HubSpot application"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "000a87b8-aeb2-4498-b396-cbfadb47f4ab",
+              "name": "Successfully retrieved action definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"action-def-001\",\n      \"revisionId\": \"rev-001\",\n      \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n      \"labels\": {\n        \"actionName\": \"Send Custom Notification\",\n        \"appDisplayName\": \"Custom Notifications App\"\n      },\n      \"objectTypes\": [\n        \"CONTACT\",\n        \"COMPANY\"\n      ],\n      \"published\": true\n    },\n    {\n      \"id\": \"action-def-002\",\n      \"revisionId\": \"rev-003\",\n      \"actionUrl\": \"https://api.example.com/workflow-actions/sync\",\n      \"labels\": {\n        \"actionName\": \"Sync to External System\",\n        \"appDisplayName\": \"Data Sync App\"\n      },\n      \"objectTypes\": [\n        \"DEAL\"\n      ],\n      \"published\": true\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aed3a9d9-6bb4-477a-b724-7ad481173048",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8231652-e7ed-41c1-b60b-6138b9d83e18",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0fec7652-4ed8-4d3f-8819-67ea37c61350",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "NTI1Cg%3D%3D"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c5d80185-3712-41ba-8c11-20fc09c296b7",
+          "name": "Hubspot Create an Action Definition",
+          "request": {
+            "name": "Hubspot Create an Action Definition",
+            "description": {
+              "content": "Creates a new custom workflow action definition for the specified application. \nThe action definition includes input fields, output fields, labels, and configuration \nfor how the action appears in the HubSpot workflow editor.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "automation",
+                "v4",
+                "actions",
+                ":appId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier of the HubSpot application"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actionUrl\": \"<uri>\",\n  \"labels\": {\n    \"actionName\": \"<string>\",\n    \"actionDescription\": \"<string>\",\n    \"appDisplayName\": \"<string>\",\n    \"actionCardContent\": \"<string>\"\n  },\n  \"objectTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"isRequired\": \"<boolean>\"\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"isRequired\": \"<boolean>\"\n    }\n  ],\n  \"outputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      }\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      }\n    }\n  ],\n  \"objectRequestOptions\": {\n    \"properties\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"published\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f35c8d0c-acc7-4995-a39a-7c396b23164d",
+              "name": "Successfully created action definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\"\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\"\n  ],\n  \"published\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"action-def-001\",\n  \"revisionId\": \"rev-001\",\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\",\n    \"actionCardContent\": \"Send notification to {{channel}}\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"description\": \"Select the channel to send the notification to\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\",\n            \"displayOrder\": 1\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\",\n            \"displayOrder\": 2\n          },\n          {\n            \"label\": \"Slack\",\n            \"value\": \"slack\",\n            \"displayOrder\": 3\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"message\",\n        \"type\": \"STRING\",\n        \"fieldType\": \"TEXTAREA\",\n        \"label\": \"Message\",\n        \"description\": \"The notification message to send\"\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\",\n        \"OBJECT_PROPERTY\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"outputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"notificationId\",\n        \"type\": \"STRING\",\n        \"label\": \"Notification ID\"\n      }\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\",\n    \"DEAL\"\n  ],\n  \"objectRequestOptions\": {\n    \"properties\": [\n      \"email\",\n      \"firstname\",\n      \"lastname\"\n    ]\n  },\n  \"published\": true,\n  \"functions\": [\n    {\n      \"functionType\": \"PRE_ACTION_EXECUTION\",\n      \"id\": \"func-xyz789\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "990717c7-4cf5-4b30-becb-76b7580b14cf",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\"\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\"\n  ],\n  \"published\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90b2f18c-c9a0-418c-970b-7d62c2e1858b",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\"\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\"\n  ],\n  \"published\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4997d044-ec40-4efb-99f8-afb54c123e7a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\"\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\"\n  ],\n  \"published\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "678b47a0-5728-40d9-92e9-b12b78822a76",
+          "name": "Hubspot Retrieve an Action Definition",
+          "request": {
+            "name": "Hubspot Retrieve an Action Definition",
+            "description": {
+              "content": "Retrieves a specific custom action definition by its ID. Returns the complete \naction definition including all input fields, output fields, and configuration.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "automation",
+                "v4",
+                "actions",
+                ":appId",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to include archived action definitions"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier of the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) The unique identifier of the action definition"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "380b1db0-524b-4329-ba63-5323de523765",
+              "name": "Successfully retrieved action definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"action-def-001\",\n  \"revisionId\": \"rev-001\",\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\",\n    \"actionCardContent\": \"Send notification to {{channel}}\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"description\": \"Select the channel to send the notification to\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\",\n            \"displayOrder\": 1\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\",\n            \"displayOrder\": 2\n          },\n          {\n            \"label\": \"Slack\",\n            \"value\": \"slack\",\n            \"displayOrder\": 3\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"message\",\n        \"type\": \"STRING\",\n        \"fieldType\": \"TEXTAREA\",\n        \"label\": \"Message\",\n        \"description\": \"The notification message to send\"\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\",\n        \"OBJECT_PROPERTY\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"outputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"notificationId\",\n        \"type\": \"STRING\",\n        \"label\": \"Notification ID\"\n      }\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\",\n    \"DEAL\"\n  ],\n  \"objectRequestOptions\": {\n    \"properties\": [\n      \"email\",\n      \"firstname\",\n      \"lastname\"\n    ]\n  },\n  \"published\": true,\n  \"functions\": [\n    {\n      \"functionType\": \"PRE_ACTION_EXECUTION\",\n      \"id\": \"func-xyz789\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4835f715-087c-44c6-b0c1-7cb9f9d1fa63",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48c58198-9584-43a8-9bd8-6972dab0c869",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "563760f5-76a2-4e05-8489-224ad0c93455",
+              "name": "Action definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c60d7652-3eff-493e-b76a-a6ddc5af96c1",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c795b8cb-4ee1-4e96-a8df-37c0e50a0723",
+          "name": "Hubspot Update an Action Definition",
+          "request": {
+            "name": "Hubspot Update an Action Definition",
+            "description": {
+              "content": "Updates an existing custom action definition with the provided changes. \nOnly the specified fields will be updated; other fields remain unchanged.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "automation",
+                "v4",
+                "actions",
+                ":appId",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier of the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) The unique identifier of the action definition"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"actionUrl\": \"<uri>\",\n  \"labels\": {\n    \"actionName\": \"<string>\",\n    \"actionDescription\": \"<string>\",\n    \"appDisplayName\": \"<string>\",\n    \"actionCardContent\": \"<string>\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"isRequired\": \"<boolean>\"\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"isRequired\": \"<boolean>\"\n    }\n  ],\n  \"outputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      }\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"<string>\",\n        \"type\": \"<string>\",\n        \"fieldType\": \"<string>\",\n        \"label\": \"<string>\",\n        \"description\": \"<string>\",\n        \"options\": [\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          },\n          {\n            \"label\": \"<string>\",\n            \"value\": \"<string>\",\n            \"displayOrder\": \"<integer>\"\n          }\n        ]\n      }\n    }\n  ],\n  \"objectTypes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"objectRequestOptions\": {\n    \"properties\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"published\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "91ede096-3df4-402f-84ba-51dcc015149a",
+              "name": "Successfully updated action definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification V2\",\n    \"actionDescription\": \"Updated description for the notification action\"\n  },\n  \"published\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"action-def-001\",\n  \"revisionId\": \"rev-001\",\n  \"actionUrl\": \"https://api.example.com/workflow-actions/execute\",\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification\",\n    \"actionDescription\": \"Sends a custom notification to the specified channel\",\n    \"appDisplayName\": \"Custom Notifications App\",\n    \"actionCardContent\": \"Send notification to {{channel}}\"\n  },\n  \"inputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"channel\",\n        \"type\": \"ENUMERATION\",\n        \"fieldType\": \"SELECT\",\n        \"label\": \"Notification Channel\",\n        \"description\": \"Select the channel to send the notification to\",\n        \"options\": [\n          {\n            \"label\": \"Email\",\n            \"value\": \"email\",\n            \"displayOrder\": 1\n          },\n          {\n            \"label\": \"SMS\",\n            \"value\": \"sms\",\n            \"displayOrder\": 2\n          },\n          {\n            \"label\": \"Slack\",\n            \"value\": \"slack\",\n            \"displayOrder\": 3\n          }\n        ]\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\"\n      ],\n      \"isRequired\": true\n    },\n    {\n      \"typeDefinition\": {\n        \"name\": \"message\",\n        \"type\": \"STRING\",\n        \"fieldType\": \"TEXTAREA\",\n        \"label\": \"Message\",\n        \"description\": \"The notification message to send\"\n      },\n      \"supportedValueTypes\": [\n        \"STATIC_VALUE\",\n        \"OBJECT_PROPERTY\"\n      ],\n      \"isRequired\": true\n    }\n  ],\n  \"outputFields\": [\n    {\n      \"typeDefinition\": {\n        \"name\": \"notificationId\",\n        \"type\": \"STRING\",\n        \"label\": \"Notification ID\"\n      }\n    }\n  ],\n  \"objectTypes\": [\n    \"CONTACT\",\n    \"COMPANY\",\n    \"DEAL\"\n  ],\n  \"objectRequestOptions\": {\n    \"properties\": [\n      \"email\",\n      \"firstname\",\n      \"lastname\"\n    ]\n  },\n  \"published\": true,\n  \"functions\": [\n    {\n      \"functionType\": \"PRE_ACTION_EXECUTION\",\n      \"id\": \"func-xyz789\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b6bc3e3-dc82-4f9a-84a7-3944e61adc2c",
+              "name": "Bad request - Invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification V2\",\n    \"actionDescription\": \"Updated description for the notification action\"\n  },\n  \"published\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eea35b0a-1a00-4d98-9b0c-fa61e9c574ff",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification V2\",\n    \"actionDescription\": \"Updated description for the notification action\"\n  },\n  \"published\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff1d397e-0475-48fc-b700-2497f5857f66",
+              "name": "Action definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification V2\",\n    \"actionDescription\": \"Updated description for the notification action\"\n  },\n  \"published\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f42b9bb-b4d1-42de-9eb0-9dbfbb77f686",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": {\n    \"actionName\": \"Send Custom Notification V2\",\n    \"actionDescription\": \"Updated description for the notification action\"\n  },\n  \"published\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51909039-11f8-445f-be25-1eff73ccf294",
+          "name": "Hubspot Archive an Action Definition",
+          "request": {
+            "name": "Hubspot Archive an Action Definition",
+            "description": {
+              "content": "Archives (soft deletes) a custom action definition. Archived definitions can be \nrestored by updating their archived status. Active workflows using this action \nwill continue to work until modified.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "automation",
+                "v4",
+                "actions",
+                ":appId",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier of the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) The unique identifier of the action definition"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "b906c344-6b7d-4cb6-bea5-a9ad81a9ab01",
+              "name": "Successfully archived action definition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dcd82e3a-1a13-4505-ba2a-0e9d8c648485",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21c453c8-7112-48a4-8303-0bd596889b89",
+              "name": "Action definition not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d7a6503-26c3-4176-baa5-1c94921051d4",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "automation",
+                    "v4",
+                    "actions",
+                    ":appId",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier of the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) The unique identifier of the action definition"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"standard\",\n  \"correlationId\": \"a1b2c3d4-e5f6-7890-abcd-ef1234567890\",\n  \"message\": \"This is an example description.\",\n  \"subCategory\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"code\": \"example-value\",\n      \"in\": \"example-value\",\n      \"subCategory\": \"standard\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d5f15fa2-83fc-46bc-a5be-4328c329c9e6",
+    "name": "HubSpot Analytics Events Access Tokens Action Definitions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+generated: '2026-08-13'
+method: searched
+status: published
+source: https://developers.hubspot.com/mcp
+docs: https://developers.hubspot.com/mcp
+server:
+  name: hubspot
+  vendor: HubSpot, Inc.
+  transport: http
+  url: https://mcp.hubspot.com/anthropic/v1/mcp
+deployment:
+  mode: both
+  endpoint: https://mcp.hubspot.com/anthropic/v1/mcp
+  install: hs mcp setup
+  package: https://www.npmjs.com/package/@hubspot/mcp-server
+  auth: oauth
+  verified: probed
+  note: >-
+    Two distinct HubSpot MCP products exist and they are NOT the same thing.
+    (1) The hosted HubSpot MCP server — a remote HTTPS endpoint an MCP client
+    POSTs to, reached today and answering HTTP 401 with
+    `WWW-Authenticate: Bearer resource_metadata="https://mcp.hubspot.com/.well-known/oauth-protected-resource"`,
+    which is a live OAuth-protected MCP surface, not a dead host.
+    (2) The Developer MCP server — local, started by the HubSpot CLI
+    (`hs mcp setup` / `hs mcp start`, requires Developer Platform v2025.2), which
+    exposes the HubSpot developer platform to agentic dev tools on a machine a
+    human already configured. `@hubspot/mcp-server` on npm (0.4.0, 2025-06-18) is
+    the stdio distribution and has not shipped since 2025.
+authorization:
+  protected_resource_metadata: https://mcp.hubspot.com/.well-known/oauth-protected-resource
+  authorization_server: https://mcp.hubspot.com/.well-known/oauth-authorization-server
+  issuer: https://mcp.hubspot.com
+  authorization_endpoint: https://mcp.hubspot.com/oauth/authorize/user
+  token_endpoint: https://mcp.hubspot.com/oauth/v3/token
+  introspection_endpoint: https://mcp.hubspot.com/oauth/v3/token/introspect
+  grant_types: [authorization_code, refresh_token, client_credentials]
+  code_challenge_methods: [S256]
+  scopes_supported: []
+  note: >-
+    scopes_supported is published EMPTY by HubSpot. Effective authorization is
+    governed by the HubSpot app scopes in scopes/hubspot-scopes.yml, not by an
+    MCP-specific scope list.
+tools:
+  status: gated
+  note: >-
+    tools/list on https://mcp.hubspot.com/anthropic/v1/mcp returns HTTP 401 with
+    an OAuth challenge, so the live tool manifest (and every tool inputSchema)
+    requires an authenticated introspection we do not perform. HubSpot's public
+    MCP page does not enumerate tool names either — it publishes CAPABILITY
+    CATEGORIES. Those categories are recorded below verbatim from the provider
+    page; no tool names are invented here.
+capabilities:
+- access: read-write
+  category: CRM objects
+  objects: [contacts, companies, deals, tickets, carts, products, orders, line items,
+    invoices, quotes, subscriptions, segments]
+- access: read-write
+  category: Engagements
+  objects: [calls, emails, meetings, notes, tasks]
+- access: read-only
+  category: Users and permissions
+  objects: [users, teams, reporting structures, owners, roles, seats]
+- access: read-only
+  category: Marketing and content
+  objects: [campaigns, campaign metrics, landing pages, website pages, blog posts]
+x-evidence:
+- fetched: '2026-08-13'
+  url: https://mcp.hubspot.com/anthropic/v1/mcp
+  method: POST tools/list
+  http_status: 401
+  www_authenticate: Bearer resource_metadata="https://mcp.hubspot.com/.well-known/oauth-protected-resource"
+- fetched: '2026-08-13'
+  url: https://mcp.hubspot.com/.well-known/oauth-protected-resource
+  http_status: 200
+  content_type: application/json
+- fetched: '2026-08-13'
+  url: https://api.hubapi.com/.well-known/oauth-authorization-server
+  http_status: 200
+  note: same document served at mcp.hubspot.com; issuer is https://mcp.hubspot.com

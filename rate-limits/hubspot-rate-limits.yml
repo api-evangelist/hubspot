@@ -4,6 +4,9 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: HubSpot
 providerId: hubspot
 created: '2026-05-04'
+# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
+# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
+method: generated
 modified: '2026-05-04'
 reconciled: true
 tags:
@@ -13,7 +16,7 @@ description: HubSpot REST API rate limits per app per portal. Limits scale with 
   daily caps.
 sources:
   - https://www.hubspot.com/pricing/marketing
-  - https://developers.hubspot.com/docs/api/usage-details
+  - https://developers.hubspot.com/docs/guides/apps/api-usage/usage-details
 headers:
   dailyLimit: X-HubSpot-RateLimit-Daily
   dailyRemaining: X-HubSpot-RateLimit-Daily-Remaining
@@ -52,3 +55,28 @@ limits:
     metric: objects_per_request
     limit: 100
     timeFrame: request
+
+# --- Verification pass 2026-08-13 (enrichment pipeline) ---
+verification:
+  checked: '2026-08-13'
+  docs_url: https://developers.hubspot.com/docs/guides/apps/api-usage/usage-details
+  docs_status: gated
+  docs_detail: >-
+    HubSpot's API usage/limits reference 307-redirects to
+    https://app.hubspot.com/myaccounts (a HubSpot login), so the tier numbers
+    above could NOT be re-verified against the provider and remain
+    method: generated rather than being promoted to searched.
+  live_probe:
+    url: https://api.hubapi.com/crm/v3/objects/contacts?limit=1
+    http_status: 401
+    rate_limit_headers_present: false
+    note: >-
+      HubSpot's budget is scoped per app per portal, so X-HubSpot-RateLimit-*
+      headers are only emitted on authenticated responses. Their absence on an
+      anonymous 401 is expected and is not evidence the headers do not exist.
+  exhausted_status: 429
+  retry_after:
+    header: Retry-After
+    documented_for: >-
+      HTTP 477 (migration in progress), per the public error-handling reference.
+      Not documented for 429.

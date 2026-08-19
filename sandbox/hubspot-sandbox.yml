@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://developers.hubspot.com/blog/your-sandbox-should-look-like-production
+  (2026-07-23), the public commands/ tree of github.com/HubSpot/hubspot-cli, and
+  the @hubspot/cli npm README
+docs: https://developers.hubspot.com/docs/guides/apps/developer-accounts
+docs_status: gated
+docs_note: >-
+  Every developer-account / sandbox page under developers.hubspot.com/docs/guides
+  307-redirects to https://app.hubspot.com/myaccounts (a HubSpot login), so tier
+  requirements, object-record copy caps and expiry windows could NOT be read from
+  a public page and are deliberately left unrecorded rather than guessed.
+model: account-clone
+model_note: >-
+  HubSpot has NO test-vs-live key prefix and NO magic test values. There are no
+  test card numbers, no test tokens and no test clocks. Isolation is achieved by
+  provisioning a SEPARATE HubSpot account (a sandbox or a developer test account)
+  which has its own portal ID and its own credentials; the same production
+  api.hubapi.com base URL and the same auth mechanisms are used against it.
+environments:
+- name: Sandbox
+  kind: account-clone
+  create_cli: hs sandbox create
+  delete_cli: hs sandbox delete
+  description: >-
+    A copy of a production HubSpot account used to test structural changes
+    (workflows, properties, assets) without production impact.
+  copies_from_production:
+  - assets assigned to all brands, with brand assignments preserved
+  - automated transactional emails
+  - email footers and subscription types
+  - workflows, segments and message templates that reference the copied assets
+  - sequences (public beta at 2026-07-23)
+  - CRM saved views (private beta at 2026-07-23)
+  does_not_copy:
+  - sequence performance data and enrolled contacts
+  - visibility rules on subscription types
+  - sequence campaign configuration
+- name: Developer test account
+  kind: developer-provisioned account
+  create_cli: hs testAccount create
+  delete_cli: hs testAccount delete
+  seed_cli: hs testAccount importData
+  config_cli: hs testAccount createConfig
+  description: >-
+    An account created from a HubSpot developer account for building and testing
+    apps/integrations. `hs testAccount importData` seeds it with data, which is
+    the closest thing HubSpot ships to a fixture/trigger tool.
+credentials:
+  separation: separate account, separate credentials
+  key_prefixes: none
+  note: >-
+    HubSpot private-app access tokens and OAuth tokens issued against a sandbox
+    or test account carry no distinguishing prefix — the account (portal) they
+    were issued in is the only thing that tells test from live.
+test_values:
+  cards: none published
+  bank_accounts: none published
+  time_simulation: none published
+  note: >-
+    Recorded as an explicit absence, not an omission. HubSpot Commerce payments
+    are processed by HubSpot Payments/Stripe; HubSpot publishes no first-party
+    test-card table on a public page.

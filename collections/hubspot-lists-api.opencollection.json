@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Lists API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/lists",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "The maximum number of results to return per page."
+              },
+              {
+                "name": "after",
+                "value": "example-value",
+                "type": "query",
+                "description": "The cursor for pagination to get the next page of results."
+              },
+              {
+                "name": "objectTypeId",
+                "value": "500123",
+                "type": "query",
+                "description": "The object type ID to filter lists by (e.g., 0-1 for contacts)."
+              },
+              {
+                "name": "listType",
+                "value": "STATIC",
+                "type": "query",
+                "description": "Filter by list type - STATIC or DYNAMIC."
+              }
+            ]
+          },
+          "docs": "Returns a page of all CRM lists in the portal. Lists can be either static (manually managed membership) or dynamic (filter-based membership). Use the limit and after parameters to paginate results."
+        },
+        {
+          "info": {
+            "name": "Hubspot Create a List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/lists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new CRM list. You can create either a static list with manually managed membership or a dynamic list with filter-based membership that updates automatically as records match the criteria."
+        },
+        {
+          "info": {
+            "name": "Hubspot Get a List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/crm/v3/lists/:listId",
+            "params": [
+              {
+                "name": "listId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the list to retrieve."
+              }
+            ]
+          },
+          "docs": "Returns details of a specific CRM list by its ID, including membership type, filter definitions for dynamic lists, and metadata."
+        },
+        {
+          "info": {
+            "name": "Hubspot Delete a List",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/crm/v3/lists/:listId",
+            "params": [
+              {
+                "name": "listId",
+                "value": "500123",
+                "type": "path",
+                "description": "The ID of the list to delete."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a CRM list by its ID. This removes the list definition but does not delete the CRM records that were members of the list."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

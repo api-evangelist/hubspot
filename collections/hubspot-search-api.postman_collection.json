@@ -1,0 +1,621 @@
+{
+  "item": [
+    {
+      "id": "6a6cb24e-4af5-47b2-9ef1-c70b8cf144d7",
+      "name": "Search",
+      "description": {
+        "content": "Operations for searching CRM objects",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a545150c-a5db-482a-89df-9b042611341c",
+          "name": "Hubspot Search Crm Objects",
+          "request": {
+            "name": "Hubspot Search Crm Objects",
+            "description": {
+              "content": "Searches for CRM object records of the specified type using filter groups, sort criteria, and other query parameters. Supports complex filtering with multiple filter groups (joined with OR logic) where each group contains filters (joined with AND logic). Returns matching records with the specified properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                ":objectType",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "objectType",
+                  "description": "(Required) The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"highValue\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"highValue\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"highValue\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"highValue\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"ASCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "33af3788-2c05-4d04-8883-17b72e68bd44",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    ":objectType",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "objectType",
+                      "description": "(Required) The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"email\",\n          \"operator\": \"CONTAINS_TOKEN\",\n          \"value\": \"@example.com\"\n        }\n      ]\n    }\n  ],\n  \"properties\": [\n    \"email\",\n    \"firstname\",\n    \"lastname\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 10,\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true\n    }\n  ],\n  \"paging\": {\n    \"next\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7847735f-5e3d-4102-994d-da24edd2c226",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    ":objectType",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "objectType",
+                      "description": "(Required) The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"email\",\n          \"operator\": \"CONTAINS_TOKEN\",\n          \"value\": \"@example.com\"\n        }\n      ]\n    }\n  ],\n  \"properties\": [\n    \"email\",\n    \"firstname\",\n    \"lastname\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"in\": \"example-value\",\n      \"code\": \"example-value\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48380a4a-c59a-40c4-b42b-a093805ff891",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    ":objectType",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "objectType",
+                      "description": "(Required) The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"email\",\n          \"operator\": \"CONTAINS_TOKEN\",\n          \"value\": \"@example.com\"\n        }\n      ]\n    }\n  ],\n  \"properties\": [\n    \"email\",\n    \"firstname\",\n    \"lastname\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\",\n  \"errors\": [\n    {\n      \"message\": \"This is an example description.\",\n      \"in\": \"example-value\",\n      \"code\": \"example-value\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "958fe1ce-dd8d-43ca-9dcf-84b4d4b943a5",
+          "name": "Hubspot Search Calls",
+          "request": {
+            "name": "Hubspot Search Calls",
+            "description": {
+              "content": "Searches for call engagements using filters, property values, and full-text search.\nSupports complex filter groups with AND/OR logic.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "calls",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a9dcbc35-8498-496f-8cbf-b2a466d04a56",
+              "name": "Successfully searched calls",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_call_direction\",\n          \"operator\": \"EQ\",\n          \"value\": \"OUTBOUND\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_timestamp\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_call_title\",\n    \"hs_call_direction\",\n    \"hs_timestamp\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 25,\n  \"results\": [\n    {\n      \"id\": \"512\",\n      \"properties\": {\n        \"hs_call_title\": \"Discovery Call\",\n        \"hs_call_direction\": \"OUTBOUND\",\n        \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n      \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b81190e-d2eb-46f9-a7a2-12008b936cb2",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "calls",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hs_call_direction\",\n          \"operator\": \"EQ\",\n          \"value\": \"OUTBOUND\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_timestamp\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_call_title\",\n    \"hs_call_direction\",\n    \"hs_timestamp\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3cbc5204-b580-43d9-a664-9ca0a0a7ac24",
+          "name": "Hubspot Search Notes",
+          "request": {
+            "name": "Hubspot Search Notes",
+            "description": {
+              "content": "Searches for note engagements using filters, property values, and full-text search.\nSupports complex filter groups with AND/OR logic.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "notes",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"highValue\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": 10,\n  \"after\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7600d6d0-2554-40d0-80c9-db95cd5e8b84",
+              "name": "Successfully searched notes",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hubspot_owner_id\",\n          \"operator\": \"EQ\",\n          \"value\": \"12345\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_timestamp\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_note_body\",\n    \"hs_timestamp\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total\": 42,\n  \"results\": [\n    {\n      \"id\": \"1024\",\n      \"properties\": {\n        \"hs_note_body\": \"Met with client to discuss Q1 goals.\",\n        \"hs_timestamp\": \"2024-01-15T10:30:00.000Z\"\n      },\n      \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n      \"updatedAt\": \"2024-01-15T11:00:00.000Z\",\n      \"archived\": false\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"MTAyNA%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48450211-9363-4f83-b8a2-aaae060461ee",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "notes",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"hubspot_owner_id\",\n          \"operator\": \"EQ\",\n          \"value\": \"12345\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"hs_timestamp\",\n      \"direction\": \"DESCENDING\"\n    }\n  ],\n  \"properties\": [\n    \"hs_note_body\",\n    \"hs_timestamp\"\n  ],\n  \"limit\": 10\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0aaeff32-54d9-454e-8725-098d3abb076f",
+    "name": "HubSpot Analytics Events Access Tokens Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

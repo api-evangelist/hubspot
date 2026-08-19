@@ -1,0 +1,82 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Actors API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Actors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Actors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/actors",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of actors per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a list of conversation actors (participants) in your account.\nActors can be visitors, agents, or bots who participate in conversations.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Actor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/actors/:actorId",
+            "params": [
+              {
+                "name": "actorId",
+                "value": "actor_101",
+                "type": "path",
+                "description": "The unique identifier of the actor to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific actor by their unique identifier.\nReturns complete details about the conversation participant.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

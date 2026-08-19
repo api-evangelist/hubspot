@@ -1,0 +1,127 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, repo.packagist.org,
+  search.maven.org, azuresearch-usnc.nuget.org — each queried unauthenticated on
+  2026-08-13; plus github.com/HubSpot
+note: >-
+  HubSpot ships first-party API clients for Node, Python, Ruby and PHP only.
+  Maven Central group com.hubspot carries HubSpot's open-source infrastructure
+  libraries (Singularity, Horizon, algebra, basepom) but NO Java API client, and
+  every HubSpot API client on NuGet is community-authored — so neither Java nor
+  .NET is recorded as an official SDK here. The published Go SDK is a community
+  project, not HubSpot's.
+packages:
+- language: javascript
+  registry: npm
+  name: "@hubspot/api-client"
+  url: https://www.npmjs.com/package/@hubspot/api-client
+  install: npm install @hubspot/api-client
+  official: true
+  version: 14.0.1
+  published: '2026-07-01'
+  role: REST API client
+- language: python
+  registry: pypi
+  name: hubspot-api-client
+  url: https://pypi.org/project/hubspot-api-client/
+  install: pip install hubspot-api-client
+  official: true
+  version: 12.0.0
+  published: '2025-05-07'
+  role: REST API client
+  note: >-
+    Last release 2025-05-07 — over a year behind the Node client (14.0.1,
+    2026-07-01) and behind HubSpot's own 2026-03 date-based API version.
+- language: ruby
+  registry: rubygems
+  name: hubspot-api-client
+  url: https://rubygems.org/gems/hubspot-api-client
+  install: gem install hubspot-api-client
+  official: true
+  version: 20.0.0
+  published: '2025-05-08'
+  role: REST API client
+  note: >-
+    Last release 2025-05-08 — same 2025 freeze as the Python client.
+- language: php
+  registry: packagist
+  name: hubspot/api-client
+  url: https://packagist.org/packages/hubspot/api-client
+  install: composer require hubspot/api-client
+  official: true
+  version: 14.1.0
+  published: '2026-05-12'
+  role: REST API client
+- language: javascript
+  registry: npm
+  name: "@hubspot/cli"
+  url: https://www.npmjs.com/package/@hubspot/cli
+  install: npm install -g @hubspot/cli
+  official: true
+  version: 8.12.0
+  published: '2026-08-03'
+  role: CLI
+  binaries: [hs, hscms]
+  source: https://github.com/HubSpot/hubspot-cli
+- language: javascript
+  registry: npm
+  name: "@hubspot/local-dev-lib"
+  url: https://www.npmjs.com/package/@hubspot/local-dev-lib
+  install: npm install @hubspot/local-dev-lib
+  official: true
+  version: 5.10.2
+  published: '2026-08-12'
+  role: local development library backing the CLI
+- language: javascript
+  registry: npm
+  name: "@hubspot/ui-extensions"
+  url: https://www.npmjs.com/package/@hubspot/ui-extensions
+  install: npm install @hubspot/ui-extensions
+  official: true
+  version: 0.15.1
+  published: '2026-07-31'
+  role: React components for extending the HubSpot UI
+- language: javascript
+  registry: npm
+  name: "@hubspot/calling-extensions-sdk"
+  url: https://www.npmjs.com/package/@hubspot/calling-extensions-sdk
+  install: npm install @hubspot/calling-extensions-sdk
+  official: true
+  version: 0.9.7
+  published: '2025-10-03'
+  role: embed a calling app inside HubSpot
+  source: https://github.com/HubSpot/calling-extensions-sdk
+- language: javascript
+  registry: npm
+  name: "@hubspot/mcp-server"
+  url: https://www.npmjs.com/package/@hubspot/mcp-server
+  install: npx -y @hubspot/mcp-server
+  official: true
+  version: 0.4.0
+  published: '2025-06-18'
+  role: local-stdio MCP server
+  note: >-
+    Published 2025-06-18 and not updated since; the hosted remote MCP server at
+    https://mcp.hubspot.com is the current surface (see mcp/hubspot-mcp.yml).
+    github.com/HubSpot/mcp-server exists but its default branch is empty.
+not_official:
+- language: java
+  registry: maven
+  finding: >-
+    No HubSpot-published Java API client. search.maven.org g:com.hubspot returns
+    60 artifacts, all infrastructure OSS (basepom, Horizon, Singularity,
+    NioImapClient, algebra) — none is a REST client for the HubSpot API.
+- language: csharp
+  registry: nuget
+  finding: >-
+    No first-party HubSpot API client. The .NET packages on NuGet
+    (Chinchilla.HubSpot.NET, HubSpot.NETCORE, SquaredUp.HubSpot.NET,
+    HubSpotClient) are all community-authored. HubSpot.Tether is published by
+    HubSpot, Inc. but is the Tether positioning library, not an API client.
+- language: go
+  registry: pkg.go.dev
+  finding: >-
+    HubSpot's own developer blog (2026-05-14, "Introducing hubspot-go, a
+    community Go SDK for HubSpot") describes the Go SDK as a COMMUNITY project,
+    so it is not recorded as official.

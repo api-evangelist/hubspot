@@ -1,0 +1,1277 @@
+{
+  "item": [
+    {
+      "id": "47f9cdf2-d6d8-41bc-8acb-018ed0959040",
+      "name": "Tickets",
+      "description": {
+        "content": "Operations for managing ticket records",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9ec7c1d6-93d5-43fe-a6c2-732c13a14c7e",
+          "name": "Hubspot List Tickets",
+          "request": {
+            "name": "Hubspot List Tickets",
+            "description": {
+              "content": "Returns a page of ticket records. Use the limit and after parameters to paginate through tickets. You can also specify which properties to return using the properties parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "The maximum number of results to return per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "The cursor for pagination to get the next page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A comma-separated list of property names to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return archived tickets."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3f7765de-55ce-4fa0-b48e-4f66bfc48695",
+              "name": "Successful response with a list of tickets.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"associations\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c22d8c19-4f23-4e26-b29a-6278af0e53df",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "49d8c112-8540-48f4-b0b8-b40642738d8c",
+          "name": "Hubspot Create a Ticket",
+          "request": {
+            "name": "Hubspot Create a Ticket",
+            "description": {
+              "content": "Creates a new ticket record with the provided properties. The request body should include a properties object containing field values such as subject, content, hs_ticket_priority, and hs_pipeline_stage.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd90a4bb-5aee-46c2-89d2-80a8e42a405e",
+              "name": "Ticket created successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18d347a5-0784-45c7-b80b-fa3e21c5ddec",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4e0dcfb-1539-4cda-949b-1f8dea4942e6",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a92d0d5-6143-40a0-82ae-f577aa228dda",
+          "name": "Hubspot Get a Ticket",
+          "request": {
+            "name": "Hubspot Get a Ticket",
+            "description": {
+              "content": "Returns a single ticket record by its ID. You can specify which properties to return using the properties parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets",
+                ":ticketId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "properties",
+                  "value": "<string>",
+                  "description": "A comma-separated list of property names to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "archived",
+                  "value": "false",
+                  "description": "Whether to return archived tickets."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticketId",
+                  "description": "(Required) The ID of the ticket to retrieve."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d21b881c-2224-4d84-9639-3e8d6d273446",
+              "name": "Successful response with the ticket record.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cdc8a393-485d-4c4d-9661-db8b358b455c",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ceea8c32-b316-47e8-94d6-341ac0fb1c70",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "properties",
+                      "value": "example-value"
+                    },
+                    {
+                      "key": "archived",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to retrieve."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6ddd37a-aa8a-405d-90f2-474f61a60ba7",
+          "name": "Hubspot Update a Ticket",
+          "request": {
+            "name": "Hubspot Update a Ticket",
+            "description": {
+              "content": "Performs a partial update of a ticket record. Only the properties included in the request body will be updated; other properties will remain unchanged.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets",
+                ":ticketId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticketId",
+                  "description": "(Required) The ID of the ticket to update."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac55f83c-465d-494e-877c-b57ee8c7ce1f",
+              "name": "Ticket updated successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"500123\",\n  \"properties\": {\n    \"key\": \"value\"\n  },\n  \"createdAt\": \"2025-03-15T14:30:00Z\",\n  \"updatedAt\": \"2025-03-15T14:30:00Z\",\n  \"archived\": true,\n  \"associations\": {\n    \"key\": \"value\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44265b0f-db03-461a-b311-1d3ebfb7f448",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d00aacd-45d5-43f5-8ab6-7e23b57ca97e",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e763e9a1-dd86-4705-a653-ae69ba4ede6c",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to update."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": {\n    \"key\": \"value\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cd35ca72-bb7b-487b-aef5-3f39e8d80bd8",
+          "name": "Hubspot Archive a Ticket",
+          "request": {
+            "name": "Hubspot Archive a Ticket",
+            "description": {
+              "content": "Archives (soft deletes) a ticket record by its ID. Archived tickets can be restored using the HubSpot UI or API.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets",
+                ":ticketId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticketId",
+                  "description": "(Required) The ID of the ticket to archive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d1c6b8be-e749-4438-ae8e-c4cd8c64ef6d",
+              "name": "Ticket archived successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to archive."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8a9f4162-ea5c-4512-b2d2-f55cdb5e14c6",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "49a56d72-1803-4b4d-8f25-872c63c65b6d",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    ":ticketId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticketId",
+                      "description": "(Required) The ID of the ticket to archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a93bbafc-4518-4dd5-8353-6a8fc74bc666",
+          "name": "Hubspot Search Tickets",
+          "request": {
+            "name": "Hubspot Search Tickets",
+            "description": {
+              "content": "Searches for ticket records using filter groups, sorts, and other query parameters. Supports complex filtering with multiple filter groups and operators for precise record retrieval.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "crm",
+                "v3",
+                "objects",
+                "tickets",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"filters\": [\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"propertyName\": \"<string>\",\n          \"operator\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    },\n    {\n      \"propertyName\": \"<string>\",\n      \"direction\": \"<string>\"\n    }\n  ],\n  \"query\": \"<string>\",\n  \"properties\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"limit\": \"<integer>\",\n  \"after\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6181ece3-90cb-4864-80df-a346846dc95f",
+              "name": "Search results returned successfully.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"500123\",\n      \"properties\": {\n        \"key\": \"value\"\n      },\n      \"createdAt\": \"2025-03-15T14:30:00Z\",\n      \"updatedAt\": \"2025-03-15T14:30:00Z\",\n      \"archived\": true,\n      \"associations\": {\n        \"key\": \"value\"\n      }\n    }\n  ],\n  \"paging\": {\n    \"next\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ac50c55-ec90-4bd8-86a5-5e1a1cee8c93",
+              "name": "The request is invalid or missing required parameters.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28cb8d3c-752a-4eab-b872-75373dce7918",
+              "name": "Authentication credentials are missing or invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "crm",
+                    "v3",
+                    "objects",
+                    "tickets",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filterGroups\": [\n    {\n      \"filters\": [\n        {}\n      ]\n    }\n  ],\n  \"sorts\": [\n    {\n      \"propertyName\": \"Example Record\",\n      \"direction\": \"ASCENDING\"\n    }\n  ],\n  \"query\": \"example-value\",\n  \"properties\": [\n    \"example-value\"\n  ],\n  \"limit\": 100,\n  \"after\": \"example-value\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"message\": \"This is an example description.\",\n  \"correlationId\": \"500123\",\n  \"category\": \"standard\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6ada0c6c-4d0d-4379-8dac-54abd269d467",
+    "name": "HubSpot Analytics Events Access Tokens Tickets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

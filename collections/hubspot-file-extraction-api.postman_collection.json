@@ -1,0 +1,326 @@
+{
+  "item": [
+    {
+      "id": "48693136-743f-494d-a7d6-05ffdbdd3f79",
+      "name": "File Extraction",
+      "description": {
+        "content": "Operations for extracting zip archives in the developer file system",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a6623b59-122c-4546-ad1d-19cfe7292d1d",
+          "name": "Hubspot Extract a Zip Archive",
+          "request": {
+            "name": "Hubspot Extract a Zip Archive",
+            "description": {
+              "content": "Initiates asynchronous extraction of a zip file in the developer file system.\nReturns a task ID that can be used to check extraction status via the status endpoint.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cms",
+                "v3",
+                "source-code",
+                "extract",
+                "async"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"path\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d6729e36-7da6-4cd9-818d-3cb24f21e32b",
+              "name": "Extraction task accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cms",
+                    "v3",
+                    "source-code",
+                    "extract",
+                    "async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"path\": \"uploads/theme-update.zip\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"links\": {\n    \"status\": \"/cms/v3/source-code/extract/async/tasks/12345/status\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4994cf5-b78c-4765-ab01-22f6c84eb2bf",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cms",
+                    "v3",
+                    "source-code",
+                    "extract",
+                    "async"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"path\": \"uploads/theme-update.zip\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"context\": {\n    \"missingScopes\": [\n      \"scope1\",\n      \"scope2\"\n    ]\n  },\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "238d86cd-4bb6-43c9-8223-0fdcaeea3cdb",
+          "name": "Hubspot Get Extraction Task Status",
+          "request": {
+            "name": "Hubspot Get Extraction Task Status",
+            "description": {
+              "content": "Retrieves the current status of an asynchronous zip file extraction task.\nPoll this endpoint to determine when extraction is complete.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "cms",
+                "v3",
+                "source-code",
+                "extract",
+                "async",
+                "tasks",
+                ":taskId",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "taskId",
+                  "description": "(Required) The unique identifier of the extraction task"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "7a8d8dda-f44f-4894-86f0-2f054449e848",
+              "name": "Successfully retrieved task status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cms",
+                    "v3",
+                    "source-code",
+                    "extract",
+                    "async",
+                    "tasks",
+                    ":taskId",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "taskId",
+                      "description": "(Required) The unique identifier of the extraction task"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"COMPLETE\",\n  \"requestedAt\": \"2024-01-15T10:30:00Z\",\n  \"startedAt\": \"2024-01-15T10:30:01Z\",\n  \"completedAt\": \"2024-01-15T10:30:15Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d2be356-1f0a-4160-ac75-8aca1500c365",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "cms",
+                    "v3",
+                    "source-code",
+                    "extract",
+                    "async",
+                    "tasks",
+                    ":taskId",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "taskId",
+                      "description": "(Required) The unique identifier of the extraction task"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"context\": {\n    \"missingScopes\": [\n      \"scope1\",\n      \"scope2\"\n    ]\n  },\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8a52d10d-b7a8-4851-bd2d-7b3a384e0488",
+    "name": "HubSpot Analytics Events Access Tokens File Extraction API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

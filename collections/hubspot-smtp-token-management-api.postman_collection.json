@@ -1,0 +1,950 @@
+{
+  "item": [
+    {
+      "id": "bd76a721-df4d-4ba2-acf5-67c5942d70ac",
+      "name": "SMTP Token Management",
+      "description": {
+        "content": "Create, query, and manage SMTP API tokens for transactional email sending",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "485985a1-b612-461f-974d-3b5b3b00fe44",
+          "name": "Hubspot List All Smtp Tokens",
+          "request": {
+            "name": "Hubspot List All Smtp Tokens",
+            "description": {
+              "content": "Returns a paginated list of all SMTP API tokens for the account.\nUse this endpoint to view all configured tokens and their associated campaigns.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketing",
+                "v3",
+                "transactional",
+                "smtp-tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "campaignName",
+                  "value": "<string>",
+                  "description": "Filter tokens by campaign name"
+                },
+                {
+                  "disabled": false,
+                  "key": "emailCampaignId",
+                  "value": "<string>",
+                  "description": "Filter tokens by email campaign ID"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor from previous response"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Maximum number of results per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "72dcb847-193c-4d16-ab3b-d34d865d398c",
+              "name": "Successfully retrieved the list of SMTP tokens",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "campaignName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emailCampaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"id\": \"smtp-token-abc123\",\n      \"campaignName\": \"Password Reset Emails\",\n      \"emailCampaignId\": \"campaign-xyz789\",\n      \"createContact\": true,\n      \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n      \"createdBy\": \"user@example.com\"\n    },\n    {\n      \"id\": \"smtp-token-def456\",\n      \"campaignName\": \"Order Confirmation Emails\",\n      \"emailCampaignId\": \"campaign-uvw456\",\n      \"createContact\": false,\n      \"createdAt\": \"2024-01-10T08:00:00.000Z\",\n      \"createdBy\": \"admin@example.com\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"c210cC10b2tlbi1kZWY0NTY%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2019214a-3221-4778-8cb5-33b9b228481d",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "campaignName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "emailCampaignId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "52595728-c4f6-4082-972e-b8766b164558",
+          "name": "Hubspot Create an Smtp Token",
+          "request": {
+            "name": "Hubspot Create an Smtp Token",
+            "description": {
+              "content": "Creates a new SMTP API token for sending transactional emails.\nThe token can be associated with a specific email campaign and optionally configured to create contacts.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketing",
+                "v3",
+                "transactional",
+                "smtp-tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"campaignName\": \"<string>\",\n  \"createContact\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5aa932a9-44c8-4a0b-803a-072373032956",
+              "name": "Successfully created the SMTP token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"campaignName\": \"Order Confirmation Emails\",\n  \"createContact\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"smtp-token-ghi789\",\n  \"campaignName\": \"Order Confirmation Emails\",\n  \"createContact\": true,\n  \"createdAt\": \"2024-01-20T14:00:00.000Z\",\n  \"createdBy\": \"user@example.com\",\n  \"password\": \"smtp-password-newly-generated\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78108a73-aaf1-4a2a-8102-d602e300048c",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"campaignName\": \"Order Confirmation Emails\",\n  \"createContact\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ef578273-65cb-4e22-a34c-4ba8c399437e",
+          "name": "Hubspot Get an Smtp Token by Id",
+          "request": {
+            "name": "Hubspot Get an Smtp Token by Id",
+            "description": {
+              "content": "Retrieves detailed information about a single SMTP API token by its unique identifier.\nNote: The password is not returned in this response for security reasons.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketing",
+                "v3",
+                "transactional",
+                "smtp-tokens",
+                ":tokenId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tokenId",
+                  "description": "(Required) The unique identifier of the SMTP token"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "515cae7b-40cc-4402-a075-d89749af6380",
+              "name": "Successfully retrieved the SMTP token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"smtp-token-abc123\",\n  \"campaignName\": \"Password Reset Emails\",\n  \"emailCampaignId\": \"campaign-xyz789\",\n  \"createContact\": true,\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"createdBy\": \"user@example.com\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8cca600-250e-499b-8185-5f958f644818",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ee99bb6c-9744-4d53-8ec7-58a61a701530",
+          "name": "Hubspot Delete an Smtp Token",
+          "request": {
+            "name": "Hubspot Delete an Smtp Token",
+            "description": {
+              "content": "Permanently deletes an SMTP API token.\nAny applications using this token will no longer be able to send emails.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketing",
+                "v3",
+                "transactional",
+                "smtp-tokens",
+                ":tokenId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tokenId",
+                  "description": "(Required) The unique identifier of the SMTP token"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a049207e-4b43-4440-a47f-2dc7ac602480",
+              "name": "Successfully deleted the SMTP token (no content returned)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3358893a-80dd-4828-ba31-a951a99338e6",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9164f069-8e36-47ae-8e83-84aa80109517",
+          "name": "Hubspot Reset Smtp Token Password",
+          "request": {
+            "name": "Hubspot Reset Smtp Token Password",
+            "description": {
+              "content": "Resets the password for an existing SMTP API token.\nThe new password will be returned in the response. Store it securely as it cannot be retrieved again.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "marketing",
+                "v3",
+                "transactional",
+                "smtp-tokens",
+                ":tokenId",
+                "password-reset"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tokenId",
+                  "description": "(Required) The unique identifier of the SMTP token"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "analytics.read"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://api.hubapi.com/oauth/v1/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://app.hubspot.com/oauth/authorize"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "4588300d-50dd-439f-b27e-0d479e67bb6e",
+              "name": "Successfully reset the SMTP token password",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId",
+                    "password-reset"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"smtp-token-abc123\",\n  \"campaignName\": \"Password Reset Emails\",\n  \"emailCampaignId\": \"campaign-xyz789\",\n  \"createContact\": true,\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"createdBy\": \"user@example.com\",\n  \"password\": \"smtp-password-reset-value\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47b3d5d6-640b-4d19-9800-c7beddb10955",
+              "name": "An error occurred",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "marketing",
+                    "v3",
+                    "transactional",
+                    "smtp-tokens",
+                    ":tokenId",
+                    "password-reset"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenId",
+                      "description": "(Required) The unique identifier of the SMTP token"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input (details will vary based on the error)\",\n  \"links\": {\n    \"knowledge-base\": \"https://www.hubspot.com/products/service/knowledge-base\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "dd7d4236-5ad0-46ea-87bf-dd58eab752ab",
+    "name": "HubSpot Analytics Events Access Tokens SMTP Token Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

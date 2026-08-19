@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Search API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot Search Crm Objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/:objectType/search",
+            "params": [
+              {
+                "name": "objectType",
+                "value": "contacts",
+                "type": "path",
+                "description": "The type of CRM object to search. Supported values include contacts, companies, deals, tickets, products, line_items, quotes, and custom object type names."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Searches for CRM object records of the specified type using filter groups, sort criteria, and other query parameters. Supports complex filtering with multiple filter groups (joined with OR logic) where each group contains filters (joined with AND logic). Returns matching records with the specified properties."
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/calls/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Searches for call engagements using filters, property values, and full-text search.\nSupports complex filter groups with AND/OR logic.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Search Notes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/crm/v3/objects/notes/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Searches for note engagements using filters, property values, and full-text search.\nSupports complex filter groups with AND/OR logic.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,470 @@
+{
+  "item": [
+    {
+      "id": "e259f721-6200-48e1-a753-bc0a1ed0d904",
+      "name": "Token Management",
+      "description": {
+        "content": "Operations for creating, refreshing, and managing OAuth tokens",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "92237b24-7561-4a69-8985-31e1e4a8527f",
+          "name": "Hubspot Create or Refresh an Access Token",
+          "request": {
+            "name": "Hubspot Create or Refresh an Access Token",
+            "description": {
+              "content": "Exchanges an authorization code for an access token or refreshes an existing access token\nusing a refresh token. This endpoint supports multiple grant types including authorization_code\nand refresh_token flows.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "oauth",
+                "v1",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>",
+                  "description": "(Required) The type of grant being requested"
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "(Required) The client ID of your application"
+                },
+                {
+                  "disabled": false,
+                  "key": "client_secret",
+                  "value": "<string>",
+                  "description": "(Required) The client secret of your application"
+                },
+                {
+                  "disabled": false,
+                  "key": "redirect_uri",
+                  "value": "<string>",
+                  "description": "The redirect URI (required for authorization_code grant)"
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "The authorization code (required for authorization_code grant)"
+                },
+                {
+                  "disabled": false,
+                  "key": "refresh_token",
+                  "value": "<string>",
+                  "description": "The refresh token (required for refresh_token grant)"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "5ea0c03e-0829-4d8b-a511-e954906f3582",
+              "name": "Successfully created or refreshed access token",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "The media type of the request body",
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "The media type the client is willing to accept in the response",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of grant being requested",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "12345678-abcd-efgh-ijkl-9876543210ab"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The refresh token (required for refresh_token grant)",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"CKDZpunPLhICAQEYs-gDIIGOBii1hQIyGQAf3xBKEgsYjYMJVvlHEz9tFHAwSq1TQAM40s0D\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 1800,\n  \"refresh_token\": \"6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e1bc0c1-bd1c-41c0-ba1d-e3717de6939a",
+              "name": "Bad Request - Invalid grant or missing parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "The media type of the request body",
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "The media type the client is willing to accept in the response",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of grant being requested",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "12345678-abcd-efgh-ijkl-9876543210ab"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The refresh token (required for refresh_token grant)",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Missing required parameter\",\n  \"subCategory\": \"MISSING_PARAMETER\",\n  \"errors\": [\n    {\n      \"message\": \"The 'client_secret' parameter is required\",\n      \"code\": \"MISSING_REQUIRED_FIELD\",\n      \"in\": \"body\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14cf6b2c-6698-43ed-ba71-0ba6d9386c22",
+              "name": "Unauthorized - Invalid client credentials",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "The media type of the request body",
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "The media type the client is willing to accept in the response",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of grant being requested",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "12345678-abcd-efgh-ijkl-9876543210ab"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The refresh token (required for refresh_token grant)",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"UNAUTHORIZED\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid or expired token\",\n  \"subCategory\": \"INVALID_TOKEN\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78a674f3-4f87-40fa-8fb2-4e69c780c193",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "v1",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "The media type of the request body",
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "The media type the client is willing to accept in the response",
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of grant being requested",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of your application",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "12345678-abcd-efgh-ijkl-9876543210ab"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The refresh token (required for refresh_token grant)",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "6f18f26a-3e95-4d95-a6e5-3d5c6e5c9e5a"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"SERVER_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"An unexpected error occurred\",\n  \"links\": {\n    \"knowledge-base\": \"https://developers.hubspot.com/docs/api/oauth\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "486312ba-878b-4893-afa8-b395686bcc37",
+    "name": "HubSpot Analytics Events Access Tokens Token Management API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

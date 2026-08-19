@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Inboxes API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Inboxes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List All Inboxes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/inboxes",
+            "params": [
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "Maximum number of results per page (1-100)"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for retrieving the next page of results"
+              },
+              {
+                "name": "sort",
+                "value": "createdAt",
+                "type": "query",
+                "description": "Property name to sort results by"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Set to true to include archived inboxes in results"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a paginated list of all conversation inboxes in your HubSpot account.\nUse query parameters to filter, sort, and paginate results.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Inbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/conversations/v3/conversations/inboxes/:inboxId",
+            "params": [
+              {
+                "name": "inboxId",
+                "value": "12345678",
+                "type": "path",
+                "description": "The unique identifier of the inbox to retrieve"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+              "accessTokenUrl": "https://api.hubapi.com/oauth/v1/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Retrieve a specific conversation inbox by its unique identifier.\nReturns the complete inbox configuration details.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

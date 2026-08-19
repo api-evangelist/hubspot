@@ -1,0 +1,1469 @@
+{
+  "item": [
+    {
+      "id": "3e2222de-6ed9-4066-b140-df6a467a85f3",
+      "name": "Portal Flag States",
+      "description": {
+        "content": "Manage feature flag states for specific portals (HubSpot accounts)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "973610c1-1017-416c-bfd8-e08bc1dd8917",
+          "name": "Hubspot List Portal Flag States",
+          "request": {
+            "name": "Hubspot List Portal Flag States",
+            "description": {
+              "content": "Retrieves a paginated list of portal (account) flag states for a specific feature flag.\nReturns all portals that have an explicit flag state override set.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feature-flags",
+                "v3",
+                ":appId",
+                "flags",
+                ":flagName",
+                "portals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Maximum number of results to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<string>",
+                  "description": "Pagination cursor for fetching the next page of results"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier for the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flagName",
+                  "description": "(Required) The name of the feature flag"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "a3b2414f-0323-4c3e-8291-badefff42aaa",
+              "name": "Successfully retrieved portal flag states",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"portalFlagStates\": [\n    {\n      \"appId\": 12345678,\n      \"flagName\": \"new-dashboard-feature\",\n      \"portalId\": 98765432,\n      \"flagState\": \"ON\"\n    },\n    {\n      \"appId\": 12345678,\n      \"flagName\": \"new-dashboard-feature\",\n      \"portalId\": 87654321,\n      \"flagState\": \"OFF\"\n    }\n  ],\n  \"paging\": {\n    \"next\": {\n      \"after\": \"NTI1Cg%3D%3D\",\n      \"link\": \"https://api.hubapi.com/feature-flags/v3/12345678/flags/new-dashboard-feature/portals?after=NTI1Cg%3D%3D\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1509a9c4-0859-4ebb-bfea-08eb2b59fcc2",
+              "name": "Bad request - Invalid parameters provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0f6a4cf-5d00-4e9b-a322-6e81de5c85bc",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "968922c3-7204-4ba9-81b0-d1a7e6d1b700",
+              "name": "Feature flag not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f95920f8-9597-472c-8090-cb022fccdb7c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "after",
+                      "value": "example-value"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8c5f243f-9a79-4d61-b2ce-fb22ba6914c7",
+          "name": "Hubspot Retrieve a Portal Flag State",
+          "request": {
+            "name": "Hubspot Retrieve a Portal Flag State",
+            "description": {
+              "content": "Retrieves the flag state for a specific portal (account).\nReturns the current flag state override for the specified portal.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feature-flags",
+                "v3",
+                ":appId",
+                "flags",
+                ":flagName",
+                "portals",
+                ":portalId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier for the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flagName",
+                  "description": "(Required) The name of the feature flag"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "portalId",
+                  "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET"
+          },
+          "response": [
+            {
+              "id": "11cdcb9f-3d63-4298-9a52-e853f2791bea",
+              "name": "Successfully retrieved the portal flag state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"appId\": 12345678,\n  \"flagName\": \"new-dashboard-feature\",\n  \"portalId\": 98765432,\n  \"flagState\": \"ON\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f11b7ac2-549b-4901-a316-0f57cd569faf",
+              "name": "Bad request - Invalid parameters provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8c03972-ffae-45b7-824e-a7b5efe3c5bd",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be653ff0-169b-4efd-b60e-b7c1ea609a84",
+              "name": "Portal flag state not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4660147b-36ec-4013-ab71-1a90d04da909",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd58e9ef-5ec0-48b0-8526-4867769ee19f",
+          "name": "Hubspot Set a Portal Flag State",
+          "request": {
+            "name": "Hubspot Set a Portal Flag State",
+            "description": {
+              "content": "Sets the flag state override for a specific portal (account).\nThis overrides the application-level default state for this portal only.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feature-flags",
+                "v3",
+                ":appId",
+                "flags",
+                ":flagName",
+                "portals",
+                ":portalId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier for the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flagName",
+                  "description": "(Required) The name of the feature flag"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "portalId",
+                  "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flagState\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cfd41cb9-6cba-4177-a5f8-62931005ef39",
+              "name": "Successfully set the portal flag state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"flagState\": \"ON\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"appId\": 12345678,\n  \"flagName\": \"new-dashboard-feature\",\n  \"portalId\": 98765432,\n  \"flagState\": \"ON\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "694ac88f-ab09-4a78-a62c-39f2d1e56702",
+              "name": "Bad request - Invalid parameters provided",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"flagState\": \"ON\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8314bfe2-80e2-4ef8-acf1-276a9ae6ed84",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"flagState\": \"ON\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bf46a9c-df81-4b06-85ef-ad30414a3d4f",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"flagState\": \"ON\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6de59e43-6df1-43bd-bea0-6a3be2c8d23a",
+          "name": "Hubspot Delete a Portal Flag State",
+          "request": {
+            "name": "Hubspot Delete a Portal Flag State",
+            "description": {
+              "content": "Removes the flag state override for a specific portal (account).\nThe portal will revert to using the application-level default flag state.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "feature-flags",
+                "v3",
+                ":appId",
+                "flags",
+                ":flagName",
+                "portals",
+                ":portalId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "appId",
+                  "description": "(Required) The unique identifier for the HubSpot application"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "flagName",
+                  "description": "(Required) The name of the feature flag"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "portalId",
+                  "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE"
+          },
+          "response": [
+            {
+              "id": "f38f3cbe-58ad-4629-8874-ccf54d8b596f",
+              "name": "Successfully deleted the portal flag state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"appId\": 12345678,\n  \"flagName\": \"new-dashboard-feature\",\n  \"portalId\": 98765432,\n  \"flagState\": \"ON\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a036d04-c3a4-41f9-b3de-a14ce97c94b9",
+              "name": "Unauthorized - Invalid or missing authentication",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fab07a21-1ed7-4d6f-b32c-618aa692e04d",
+              "name": "Portal flag state not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64cb3e3e-1e66-4931-9ff6-dc363ff2960a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "feature-flags",
+                    "v3",
+                    ":appId",
+                    "flags",
+                    ":flagName",
+                    "portals",
+                    ":portalId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "appId",
+                      "description": "(Required) The unique identifier for the HubSpot application"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "flagName",
+                      "description": "(Required) The name of the feature flag"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "portalId",
+                      "description": "(Required) The unique identifier for the HubSpot portal (account)"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"category\": \"VALIDATION_ERROR\",\n  \"correlationId\": \"aeb5f871-7f07-4993-9211-075dc63e7cbf\",\n  \"message\": \"Invalid input JSON\",\n  \"subCategory\": \"INVALID_PARAMETER\",\n  \"context\": {\n    \"key\": \"value\"\n  },\n  \"links\": {\n    \"key\": \"value\"\n  },\n  \"errors\": [\n    {\n      \"message\": \"flagState is required\",\n      \"code\": \"REQUIRED_FIELD\",\n      \"subCategory\": \"MISSING_FIELD\",\n      \"in\": \"body\",\n      \"context\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.hubapi.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6dcb5792-8bb5-4f4f-a5ed-8e5c8ac2f151",
+    "name": "HubSpot Analytics Events Access Tokens Portal Flag States API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n\n\nContact Support:\n Name: HubSpot Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,99 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  probed /.well-known/ documents (well-known/hubspot-well-known.yml),
+  https://trust.hubspot.com/,
+  https://developers.hubspot.com/docs/reference/api/other-resources/error-handling,
+  and the 56 OpenAPI documents in openapi/
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    All 56 harvested OpenAPI documents declare a single `OAuth2` securityScheme
+    of type oauth2 with the authorizationCode flow
+    (authorize https://app.hubspot.com/oauth/authorize, token
+    https://api.hubapi.com/oauth/v1/token).
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: true
+  evidence: >-
+    HTTP 200 at https://app.hubspot.com/.well-known/oauth-authorization-server
+    (issuer https://app.hubspot.com) and at
+    https://api.hubapi.com/.well-known/oauth-authorization-server
+    (issuer https://mcp.hubspot.com).
+- id: rfc9728-oauth-protected-resource-metadata
+  conforms: true
+  evidence: >-
+    HTTP 200 at https://mcp.hubspot.com/.well-known/oauth-protected-resource,
+    and the MCP endpoint returns
+    `WWW-Authenticate: Bearer resource_metadata="..."` on 401.
+- id: pkce-rfc7636
+  conforms: true
+  evidence: code_challenge_methods_supported ["S256"] in both authorization-server
+    metadata documents.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every HubSpot host probed.
+- id: rfc9116-security-txt
+  conforms: true
+  evidence: >-
+    PGP-signed security.txt served at
+    https://www.hubspot.com/.well-known/security.txt (Contact, Expires, Policy,
+    Acknowledgments, Canonical, Preferred-Languages, Hiring).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Every 4xx/5xx response in every harvested spec is application/json carrying
+    HubSpot's own {status,message,category,correlationId,errors} envelope. No
+    application/problem+json anywhere.
+- id: rfc8594-sunset-header
+  conforms: unknown
+  evidence: >-
+    No Sunset/Deprecation header is documented on a publicly reachable page and
+    none appears in the harvested specs. HubSpot signals end-of-life through the
+    developer changelog and its date-version scheme instead.
+- id: cursor-pagination
+  conforms: true
+  evidence: 'provider-wide `after`/`limit` params and shared Paging/NextPage schemas;
+    see conventions/hubspot-conventions.yml'
+- id: idempotency-key
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header/parameter in any harvested spec and none
+    documented. Only idProperty upsert on selected endpoints.
+- id: openapi-3
+  conforms: true
+  evidence: 56 OpenAPI documents in openapi/, servers[] https://api.hubapi.com.
+- id: asyncapi
+  conforms: true
+  evidence: asyncapi/hubspot-webhooks-asyncapi.yml (AsyncAPI 2.6.0) covering the CRM
+    webhook event surface.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Hosted MCP server at https://mcp.hubspot.com/anthropic/v1/mcp (401 + OAuth
+    challenge) plus a local stdio server via `hs mcp setup`; see
+    mcp/hubspot-mcp.yml.
+- id: a2a
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json both return 404 on
+    api.hubapi.com, api.hubspot.com, mcp.hubspot.com, app.hubspot.com,
+    www.hubspot.com and developers.hubspot.com.
+- id: scim
+  conforms: partial
+  evidence: >-
+    HubSpot ships a Settings User Provisioning API
+    (https://developers.hubspot.com/docs/api-reference/settings-user-provisioning-v3/guide).
+    It is a user-provisioning surface, but HubSpot does not claim SCIM 2.0
+    conformance on a public page, so this is recorded as partial rather than
+    true.
+compliance:
+  published: true
+  url: https://trust.hubspot.com/
+  certifications: [SOC 2, HIPAA, GDPR]
+  evidence: >-
+    Probed https://trust.hubspot.com/ on 2026-08-13; see
+    security/hubspot-trust-center.yml.
+  note: >-
+    Only certifications the probe verified by name on the trust page are listed.
+    HubSpot's trust portal gates the full report library behind an NDA request.

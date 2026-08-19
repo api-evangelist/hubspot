@@ -4,207 +4,153 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: HubSpot
 providerId: hubspot
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: https://www.hubspot.com/pricing/marketing
 reconciled: true
+plan_count: 4
 tags:
   - CRM
   - Marketing
   - Sales
   - Service
-description: HubSpot Marketing Hub plans. Other Hubs (Sales, Service, Operations, CMS, Content) have analogous
-  Free/Starter/Professional/Enterprise tiers.
+description: >-
+  HubSpot Marketing Hub plans, read from the public pricing page on 2026-08-13.
+  This replaces the 2026-05-04 bulk-sweep version, which was method: generated.
+  HubSpot prices by SEAT plus MARKETING CONTACTS, not by API call — there is no
+  API-metered plan and no per-request price. API access is included with the
+  account; the limits that bind an integration are the per-app-per-portal rate
+  limits in rate-limits/hubspot-rate-limits.yml, which scale with the tier
+  below. Other Hubs (Sales, Service, Content, Operations) carry analogous
+  Free/Starter/Professional/Enterprise tiers at different prices.
 sources:
   - https://www.hubspot.com/pricing/marketing
+  - https://legal.hubspot.com/hubspot-product-and-services-catalog
+api_metered: false
 plans:
   - id: hubspot-marketing-free
     name: Marketing Hub Free
     type: freemium
-    description: Free CRM with limited marketing tools.
+    price: '0.00'
+    currency: USD
+    timeFrame: month
+    description: Free HubSpot tools, up to 2 users.
     entries:
-      - label: Marketing contacts
-        name: contacts
+      - label: Users
+        name: users
         type: quota
-        metric: contact
-        limit: 1000
+        metric: user
+        limit: 2
         timeFrame: month
-        geo: global
         unit: 1
         price: '0.00'
         userMultiplied: false
-    elements:
-      - name: Free CRM
-      - name: Forms
-      - name: Email marketing (limited)
-      - name: Live chat
   - id: hubspot-marketing-starter
     name: Marketing Hub Starter
     type: paid
-    description: $9/seat/month annual or $15 monthly. 1,000 contacts.
+    price: '20.00'
+    promotional_price: '7.00'
+    currency: USD
+    timeFrame: month
+    per: seat
+    billing: monthly
+    description: >-
+      Listed as "Starts at $7/mo/seat" promotional, $20/mo/seat regular rate.
     entries:
-      - label: Per seat (annual)
-        name: seat_annual
-        type: subscription
-        metric: seat
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '9.00'
-        userMultiplied: true
-      - label: Per seat (monthly)
-        name: seat_monthly
-        type: subscription
-        metric: seat
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '15.00'
-        userMultiplied: true
       - label: Marketing contacts included
-        name: contacts
+        name: marketing_contacts
         type: quota
         metric: contact
         limit: 1000
         timeFrame: month
-        geo: global
         unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Email automation
-      - name: Landing pages
-      - name: Ad management
-      - name: Forms with progressive profiling
+        price: '20.00'
+        userMultiplied: true
   - id: hubspot-marketing-professional
     name: Marketing Hub Professional
     type: paid
-    description: $890/month annual + $3,000 mandatory onboarding. 3 seats, 2,000 contacts.
+    price: '890.00'
+    promotional_price: '800.00'
+    currency: USD
+    timeFrame: month
+    billing: monthly
+    onboarding_fee: '3000.00'
+    description: >-
+      Listed as "Starts at $800/mo" promotional, $890/mo regular rate. Includes
+      3 Core Seats; additional Core Seats $45/mo. One-time Professional
+      Onboarding fee of $3,000.
     entries:
-      - label: Monthly platform fee
-        name: platform
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '890.00'
-        userMultiplied: false
-      - label: One-time onboarding
-        name: onboarding
-        type: subscription
-        metric: one-time
-        limit: 1
-        timeFrame: one-time
-        geo: global
-        unit: 1
-        price: '3000.00'
-        userMultiplied: false
-      - label: Included seats
-        name: seats
+      - label: Core seats included
+        name: core_seats
         type: quota
         metric: seat
         limit: 3
         timeFrame: month
-        geo: global
         unit: 1
-        price: '0.00'
+        price: '890.00'
         userMultiplied: false
-      - label: Included contacts
-        name: contacts
+      - label: Additional core seat
+        name: additional_core_seat
+        type: overage
+        metric: seat
+        unit: 1
+        price: '45.00'
+        timeFrame: month
+        userMultiplied: true
+      - label: Marketing contacts included
+        name: marketing_contacts
         type: quota
         metric: contact
         limit: 2000
         timeFrame: month
-        geo: global
         unit: 1
         price: '0.00'
         userMultiplied: false
-      - label: Additional seat
-        name: extra_seat
-        type: subscription
-        metric: seat
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '45.00'
-        userMultiplied: false
-      - label: Additional 5,000 contacts
-        name: extra_contacts
-        type: subscription
-        metric: 5000_contacts
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '250.00'
-        userMultiplied: false
-    elements:
-      - name: Marketing automation workflows
-      - name: ABM tools
-      - name: A/B testing
-      - name: SEO recommendations
-      - name: Smart content
   - id: hubspot-marketing-enterprise
     name: Marketing Hub Enterprise
-    type: enterprise
-    description: $3,600/month + $7,000 onboarding. 5 seats, 10,000 contacts.
+    type: paid
+    price: '3600.00'
+    currency: USD
+    timeFrame: month
+    billing: monthly
+    onboarding_fee: '7000.00'
+    description: >-
+      Listed as "Starts at $3,600/mo". Includes 5 Core Seats; additional Core
+      Seats $75/mo. One-time Enterprise Onboarding fee of $7,000.
     entries:
-      - label: Monthly platform fee
-        name: platform
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '3600.00'
-        userMultiplied: false
-      - label: One-time onboarding
-        name: onboarding
-        type: subscription
-        metric: one-time
-        limit: 1
-        timeFrame: one-time
-        geo: global
-        unit: 1
-        price: '7000.00'
-        userMultiplied: false
-      - label: Included seats
-        name: seats
+      - label: Core seats included
+        name: core_seats
         type: quota
         metric: seat
         limit: 5
         timeFrame: month
-        geo: global
         unit: 1
-        price: '0.00'
+        price: '3600.00'
         userMultiplied: false
-      - label: Included contacts
-        name: contacts
+      - label: Additional core seat
+        name: additional_core_seat
+        type: overage
+        metric: seat
+        unit: 1
+        price: '75.00'
+        timeFrame: month
+        userMultiplied: true
+      - label: Marketing contacts included
+        name: marketing_contacts
         type: quota
         metric: contact
         limit: 10000
         timeFrame: month
-        geo: global
         unit: 1
         price: '0.00'
         userMultiplied: false
-      - label: Additional seat
-        name: extra_seat
-        type: subscription
-        metric: seat
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '75.00'
-        userMultiplied: false
-    elements:
-      - name: Custom objects
-      - name: Advanced reporting
-      - name: Single sign-on
-      - name: Permission sets
-      - name: Predictive lead scoring
+notes:
+  - >-
+    Marketing-contact overage pricing is quoted in banded tiers on HubSpot's
+    pricing page rather than as a single per-contact rate, so no overage unit
+    price is asserted here.
+  - >-
+    Prices are US list prices read on 2026-08-13 and marked "Starts at"; HubSpot
+    shows a promotional and a regular rate for Starter and Professional. Both
+    are recorded rather than picking one.

@@ -1,0 +1,163 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "HubSpot Analytics Events Access Tokens Action Definitions API",
+    "version": "3.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Action Definitions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Hubspot List Action Definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "limit",
+                "value": "100",
+                "type": "query",
+                "description": "Maximum number of results to return per page"
+              },
+              {
+                "name": "after",
+                "value": "NTI1Cg%3D%3D",
+                "type": "query",
+                "description": "Pagination cursor for the next page of results"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to include archived action definitions"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of all custom action definitions for the specified \napplication. Use query parameters to filter by archived status and control pagination.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Create an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new custom workflow action definition for the specified application. \nThe action definition includes input fields, output fields, labels, and configuration \nfor how the action appears in the HubSpot workflow editor.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Retrieve an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              },
+              {
+                "name": "archived",
+                "value": "false",
+                "type": "query",
+                "description": "Whether to include archived action definitions"
+              }
+            ]
+          },
+          "docs": "Retrieves a specific custom action definition by its ID. Returns the complete \naction definition including all input fields, output fields, and configuration.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Update an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing custom action definition with the provided changes. \nOnly the specified fields will be updated; other fields remain unchanged.\n"
+        },
+        {
+          "info": {
+            "name": "Hubspot Archive an Action Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.hubapi.com/automation/v4/actions/:appId/:definitionId",
+            "params": [
+              {
+                "name": "appId",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier of the HubSpot application"
+              },
+              {
+                "name": "definitionId",
+                "value": "action-def-001",
+                "type": "path",
+                "description": "The unique identifier of the action definition"
+              }
+            ]
+          },
+          "docs": "Archives (soft deletes) a custom action definition. Archived definitions can be \nrestored by updating their archived status. Active workflows using this action \nwill continue to work until modified.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
