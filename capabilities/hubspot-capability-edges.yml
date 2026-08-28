@@ -1,0 +1,187 @@
+slug: hubspot
+provider: HubSpot
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Banking & Capital Markets
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 18
+edges:
+- tag: Application Feature Flags
+  spec_file: hubspot-application-feature-flags-api-openapi.yml
+  capability_id: BC-4210.50
+  capability_id_l1: BC-4210
+  capability_name: Feature Flag Management
+  confidence: 0.85
+  evidence: PUT /feature-flags/v3/{appId}/flags/{flagName} upsertApplicationFeatureFlag; schemas FlagState,
+    FeatureFlag
+  reason: Operations create, read and delete named feature flags with flag state for an application —
+    this is literally feature flag lifecycle and runtime control.
+- tag: GDPR Compliance
+  spec_file: hubspot-gdpr-compliance-api-openapi.yml
+  capability_id: BC-130.50
+  capability_id_l1: BC-130
+  capability_name: Privacy & Data Protection Management
+  confidence: 0.85
+  evidence: POST /crm/v3/objects/calls/gdpr-delete  Permanently Delete a Call for Gdpr Compliance; schema
+    GdprDeleteRequest
+  reason: Operations perform permanent erasure of personal data records explicitly for GDPR compliance,
+    which is the data-subject-rights / erasure mechanism of privacy and data protection management.
+- tag: Portal Flag States
+  spec_file: hubspot-portal-flag-states-api-openapi.yml
+  capability_id: BC-4210.50
+  capability_id_l1: BC-4210
+  capability_name: Feature Flag Management
+  confidence: 0.85
+  evidence: GET /feature-flags/v3/{appId}/flags/{flagName}/portals  listPortalFlagStates  Hubspot List
+    Portal Flag States
+  reason: Endpoints under /feature-flags/v3 set, read and delete a flag's state per portal (tenant) for
+    an app — textbook feature flag lifecycle and targeting, not a business-domain capability.
+- tag: Contacts
+  spec_file: hubspot-contacts-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.82
+  evidence: POST /crm/v3/objects/contacts "Create a Contact"; schemas Contact, CollectionResponseContact
+  reason: Contact record CRUD/search in the Smart CRM is customer master data management.
+- tag: Deals
+  spec_file: hubspot-deals-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.82
+  evidence: POST /crm/v3/objects/deals "Create a Deal"; schemas Deal, CollectionResponseDeal
+  reason: Deal object CRUD and search is the sales opportunity/deal lifecycle in the CRM pipeline.
+- tag: Landing Pages
+  spec_file: hubspot-landing-pages-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.8
+  evidence: POST /cms/v3/pages/landing-pages  createLandingPage  Create a Landing Page
+  reason: Creating, listing and deleting marketing landing pages is web/digital marketing asset management;
+    landing pages are the canonical demand-capture web asset managed under digital marketing.
+- tag: Batch Portal Operations
+  spec_file: hubspot-batch-portal-operations-api-openapi.yml
+  capability_id: BC-4210.50
+  capability_id_l1: BC-4210
+  capability_name: Feature Flag Management
+  confidence: 0.78
+  evidence: POST /feature-flags/v3/{appId}/flags/{flagName}/portals/batch/upsert  "Hubspot Batch Create
+    or Update Portal Flag States"; schemas FlagState, PortalFlagState
+  reason: Despite the title referencing analytics events, the operations manage feature-flag states per
+    portal for an app — runtime feature flag lifecycle control, i.e. Feature Flag Management. Not analytics.
+- tag: Blog Posts
+  spec_file: hubspot-blog-posts-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.78
+  evidence: POST /cms/v3/blogs/posts "Create a Blog Post"; schema BlogPost, BlogPostInput
+  reason: Authoring and lifecycle of blog content in the CMS maps to content production/distribution under
+    Content Marketing Management.
+- tag: Companies
+  spec_file: hubspot-companies-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.78
+  evidence: GET /crm/v3/objects/companies "List Companies", POST /crm/v3/objects/companies/search "Search
+    Companies"
+  reason: CRUD and search over CRM company records is customer/account master data maintenance in the
+    CRM, i.e. Customer Data Management.
+- tag: Lists
+  spec_file: hubspot-lists-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.75
+  evidence: POST /crm/v3/lists  createList  Create a List
+  reason: HubSpot CRM lists are the segmentation construct over the customer record (the vendor description
+    cites 'lists and segments'), so list creation/retrieval realises customer segmentation management.
+- tag: Tickets
+  spec_file: hubspot-tickets-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.72
+  evidence: POST /crm/v3/objects/tickets createTicket  Hubspot Create a Ticket; schema CollectionResponseTicket
+  reason: Support ticket objects created, updated, searched and archived — customer service case handling.
+    L2 between Inquiry Management and Complaints & Issue Management is not fully determinable, so confidence
+    is moderate on the chosen L2.
+- tag: Associations
+  spec_file: hubspot-associations-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.7
+  evidence: PUT /crm/v3/objects/contacts/{contactId}/associations/{toObjectType}/{toObjectId}/{associationType}
+    createContactAssociation
+  reason: Creates, lists and deletes relationships linking contacts, companies, deals and tickets — maintaining
+    the linked customer master record in the CRM.
+- tag: Blog Authors
+  spec_file: hubspot-blog-authors-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.7
+  evidence: GET /cms/v3/blogs/authors "List All Blog Authors", POST "Create a Blog Author"
+  reason: CRUD over CMS blog author records supporting editorial/content production, which sits under
+    Content Marketing Management. Slight ambiguity as it is CMS metadata rather than campaign content
+    itself.
+- tag: Drafts and Revisions
+  spec_file: hubspot-drafts-and-revisions-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.7
+  evidence: POST /cms/v3/blogs/posts/{objectId}/draft/push-live "Push Draft to Live"; GET .../revisions
+    "Get Revision History"
+  reason: Draft/publish and revision restore workflow for blog content is content production and publication
+    governance under Content Marketing Management.
+- tag: Inboxes
+  spec_file: hubspot-inboxes-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.7
+  evidence: GET /conversations/v3/conversations/inboxes  listInboxes  List All Inboxes
+  reason: Conversations inboxes are the shared service inboxes into which customer contacts arrive, so
+    the surface sits in customer service management; the two read-only operations are too thin to pin
+    a specific sub-capability (inquiry routing vs contact-centre operations).
+- tag: Memberships
+  spec_file: hubspot-memberships-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.7
+  evidence: PUT /crm/v3/lists/{listId}/memberships/add  addListMembers  Add Members to a List
+  reason: Adding, removing and reading members of a CRM list is the population mechanic of customer segments,
+    hence customer segmentation management.
+- tag: Messages
+  spec_file: hubspot-messages-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.7
+  evidence: POST /conversations/v3/conversations/threads/{threadId}/messages  sendMessage  Send a Message
+  reason: Reading and sending messages within conversation threads (with MessageRecipient, Actor, MessageStatus
+    schemas) is inbound/outbound customer contact handling in the conversations inbox, i.e. customer inquiry
+    management; some chance it is better read as generic omnichannel messaging plumbing.
+- tag: Publishing and Scheduling
+  spec_file: hubspot-publishing-and-scheduling-api-openapi.yml
+  capability_id: BC-400.70
+  capability_id_l1: BC-400
+  capability_name: Content Marketing Management
+  confidence: 0.7
+  evidence: POST /cms/v3/blogs/posts/schedule  scheduleBlogPost  Hubspot Schedule a Blog Post
+  reason: Schedules publication of a blog post — editorial scheduling and content distribution. Despite
+    the misleading spec title about Analytics Events, the operation is CMS blog publishing.
