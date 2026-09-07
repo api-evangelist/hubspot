@@ -1,0 +1,297 @@
+openapi: 3.0.1
+info:
+  title: HubSpot Test At Tests
+  description: Basepom for all HubSpot Projects
+  version: 2026-09-beta
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://private.hubapi.com
+tags:
+- name: Basic
+- name: Search
+paths:
+  /public/api/versioning/test/2026-09-beta/widgets:
+    get:
+      tags:
+      - Basic
+      summary: List widgets
+      description: Retrieve a list of widgets available in the PublicApiVersioningTestService. This endpoint
+        is useful for obtaining an overview of all widgets currently accessible through the API. It requires
+        appropriate authentication and authorization to access the data.
+      operationId: get-/public/api/versioning/test/2026-09-beta/widgets
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestListWidgetResponse'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - contacts-access
+    post:
+      tags:
+      - Search
+      summary: Create Widget
+      description: Create a new widget in the HubSpot account using the Public API Versioning Test Service.
+        This endpoint requires a JSON request body and supports various authentication methods, including
+        OAuth2 and API keys.
+      operationId: post-/public/api/versioning/test/2026-09-beta/widgets
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - contacts-access
+  /public/api/versioning/test/2026-09-beta/widgets/{widgetId}:
+    get:
+      tags:
+      - Search
+      summary: Retrieve widget
+      description: Retrieve a specific widget by its unique identifier from the PublicApiVersioningTestService.
+        This endpoint is useful for accessing detailed information about a particular widget, which can
+        be used for display or further processing in your application.
+      operationId: get-/public/api/versioning/test/2026-09-beta/widgets/{widgetId}
+      parameters:
+      - name: widgetId
+        in: path
+        description: The unique identifier of the widget to retrieve.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - contacts-access
+    put:
+      tags:
+      - Basic
+      summary: Update widget
+      description: Update an existing widget identified by its widgetId. This operation requires a valid
+        widgetId and a request body containing the updated widget data. Use this endpoint to modify the
+        details of a specific widget in your HubSpot account.
+      operationId: put-/public/api/versioning/test/2026-09-beta/widgets/{widgetId}
+      parameters:
+      - name: widgetId
+        in: path
+        description: The unique identifier of the widget to update.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - contacts-access
+    delete:
+      tags:
+      - Search
+      summary: Delete widget
+      description: Delete a specific widget identified by its widgetId from the system. This operation
+        is useful for removing widgets that are no longer needed or relevant. Upon successful deletion,
+        no content is returned.
+      operationId: delete-/public/api/versioning/test/2026-09-beta/widgets/{widgetId}
+      parameters:
+      - name: widgetId
+        in: path
+        description: The unique identifier of the widget to delete.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - contacts-access
+components:
+  schemas:
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category, represented as a string.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: An object providing context about the error condition, where each property is an
+            array of strings.
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request, formatted as a UUID. Include this value with
+            any error reports or support tickets.
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: An array providing further information about the error, with each item being an
+            ErrorDetail object.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error
+            or recommended remediation steps, represented as an object with string properties.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where
+            appropriate. It is a string.
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error, represented
+            as a string.
+      description: Represents an error response returned by the API when an operation fails. This component
+        is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition, represented as an object where each key is a
+            string and each value is an array of strings.
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where
+            appropriate. This is a required property.
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error.
+      description: Represents detailed information about an error that occurred in the API. This component
+        is used to provide additional context and specifics about errors, typically as part of an error
+        response.
+    TestListWidgetResponse:
+      required:
+      - widgets
+      type: object
+      properties:
+        widgets:
+          type: array
+          description: An array of strings representing the list of widget identifiers. This property
+            is required.
+          items:
+            type: string
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            contacts-access: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE
