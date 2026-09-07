@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Event Types API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -46,64 +46,20 @@ paths:
         '500':
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    EventTypeCollectionExample:
-      summary: Successful retrieval of event types
-      value:
-        eventTypes:
-        - page_view
-        - form_submission
-        - email_open
-        - email_click
-        - meeting_booked
-    ErrorExample:
-      summary: Validation error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input parameters
-        subCategory: INVALID_PARAMETER
-        context:
-          invalidFields:
-          - objectType
-        links:
-          documentation: https://developers.hubspot.com/docs/api/events
-        errors:
-        - message: objectType must be a valid CRM object type
-          code: INVALID_OBJECT_TYPE
-          in: query
   schemas:
-    ErrorDetail:
+    EventTypeCollection:
       type: object
-      description: Detailed information about a specific error
+      description: Collection of available event type names
       properties:
-        message:
-          type: string
-          description: Human-readable error message
-          example: This is an example description.
-        code:
-          type: string
-          description: Machine-readable error code
-          example: example-value
-        subCategory:
-          type: string
-          description: Specific error subcategory
-          example: standard
-        in:
-          type: string
-          description: Location where the error occurred (e.g., query, path, body)
-          example: example-value
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Additional context about the specific error
+        eventTypes:
+          type: array
+          items:
+            type: string
+          description: List of available event type names
           example:
-            key: value
+          - standard
       required:
-      - message
+      - eventTypes
     Error:
       type: object
       description: Standard error response returned when an API request fails
@@ -157,19 +113,63 @@ components:
       - category
       - correlationId
       - message
-    EventTypeCollection:
+    ErrorDetail:
       type: object
-      description: Collection of available event type names
+      description: Detailed information about a specific error
       properties:
-        eventTypes:
-          type: array
-          items:
-            type: string
-          description: List of available event type names
+        message:
+          type: string
+          description: Human-readable error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location where the error occurred (e.g., query, path, body)
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Additional context about the specific error
           example:
-          - standard
+            key: value
       required:
-      - eventTypes
+      - message
+  examples:
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        subCategory: INVALID_PARAMETER
+        context:
+          invalidFields:
+          - objectType
+        links:
+          documentation: https://developers.hubspot.com/docs/api/events
+        errors:
+        - message: objectType must be a valid CRM object type
+          code: INVALID_OBJECT_TYPE
+          in: query
+    EventTypeCollectionExample:
+      summary: Successful retrieval of event types
+      value:
+        eventTypes:
+        - page_view
+        - form_submission
+        - email_open
+        - email_click
+        - meeting_booked
   responses:
     ErrorResponse:
       description: An error occurred while processing the request

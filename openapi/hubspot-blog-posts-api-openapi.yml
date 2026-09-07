@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Blog Posts API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -250,52 +250,6 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   examples:
-    BlogPostInputExample:
-      summary: Blog post creation input
-      value:
-        name: How to Use HubSpot APIs
-        slug: how-to-use-hubspot-apis
-        htmlTitle: How to Use HubSpot APIs | Developer Guide
-        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
-        postSummary: A comprehensive guide to getting started with HubSpot APIs.
-        blogAuthorId: '12345678901'
-        contentGroupId: '9876543210'
-        featuredImage: https://example.com/images/hubspot-apis.jpg
-        featuredImageAltText: HubSpot API documentation
-        metaDescription: Learn how to integrate with HubSpot using APIs
-        tagIds:
-        - 101
-        - 102
-        - 103
-        useFeaturedImage: true
-    BlogPostExample:
-      summary: Complete blog post
-      value:
-        id: '123456789012'
-        name: How to Use HubSpot APIs
-        slug: how-to-use-hubspot-apis
-        htmlTitle: How to Use HubSpot APIs | Developer Guide
-        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
-        postSummary: A comprehensive guide to getting started with HubSpot APIs.
-        blogAuthorId: '12345678901'
-        authorName: Jane Smith
-        contentGroupId: '9876543210'
-        state: PUBLISHED
-        publishDate: '2024-01-15T10:00:00Z'
-        created: '2024-01-10T09:00:00Z'
-        updated: '2024-01-15T10:00:00Z'
-        currentlyPublished: true
-        domain: blog.example.com
-        featuredImage: https://example.com/images/hubspot-apis.jpg
-        featuredImageAltText: HubSpot API documentation
-        metaDescription: Learn how to integrate with HubSpot using APIs
-        language: en
-        tagIds:
-        - 101
-        - 102
-        - 103
-        useFeaturedImage: true
-        url: https://blog.example.com/how-to-use-hubspot-apis
     ErrorExample:
       summary: Validation error
       value:
@@ -328,27 +282,74 @@ components:
           next:
             after: NTI1Cg%3D%3D
             link: /cms/v3/blogs/posts?after=NTI1Cg%3D%3D
+    BlogPostExample:
+      summary: Complete blog post
+      value:
+        id: '123456789012'
+        name: How to Use HubSpot APIs
+        slug: how-to-use-hubspot-apis
+        htmlTitle: How to Use HubSpot APIs | Developer Guide
+        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
+        postSummary: A comprehensive guide to getting started with HubSpot APIs.
+        blogAuthorId: '12345678901'
+        authorName: Jane Smith
+        contentGroupId: '9876543210'
+        state: PUBLISHED
+        publishDate: '2024-01-15T10:00:00Z'
+        created: '2024-01-10T09:00:00Z'
+        updated: '2024-01-15T10:00:00Z'
+        currentlyPublished: true
+        domain: blog.example.com
+        featuredImage: https://example.com/images/hubspot-apis.jpg
+        featuredImageAltText: HubSpot API documentation
+        metaDescription: Learn how to integrate with HubSpot using APIs
+        language: en
+        tagIds:
+        - 101
+        - 102
+        - 103
+        useFeaturedImage: true
+        url: https://blog.example.com/how-to-use-hubspot-apis
+    BlogPostInputExample:
+      summary: Blog post creation input
+      value:
+        name: How to Use HubSpot APIs
+        slug: how-to-use-hubspot-apis
+        htmlTitle: How to Use HubSpot APIs | Developer Guide
+        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
+        postSummary: A comprehensive guide to getting started with HubSpot APIs.
+        blogAuthorId: '12345678901'
+        contentGroupId: '9876543210'
+        featuredImage: https://example.com/images/hubspot-apis.jpg
+        featuredImageAltText: HubSpot API documentation
+        metaDescription: Learn how to integrate with HubSpot using APIs
+        tagIds:
+        - 101
+        - 102
+        - 103
+        useFeaturedImage: true
   schemas:
-    ErrorDetail:
+    Error:
       type: object
-      description: Detailed error information
+      description: Standard error response
       properties:
+        category:
+          type: string
+          description: Error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique tracking identifier
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
           description: Error message
           example: This is an example description.
-        code:
-          type: string
-          description: Error code
-          example: example-value
         subCategory:
           type: string
           description: Error subcategory
           example: standard
-        in:
-          type: string
-          description: Location of error
-          example: example-value
         context:
           type: object
           additionalProperties:
@@ -357,7 +358,26 @@ components:
               type: string
           example:
             key: value
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
       required:
+      - category
+      - correlationId
       - message
     BlogPost:
       type: object
@@ -514,68 +534,14 @@ components:
       - name
       - created
       - updated
-    PagingPrevious:
+    Paging:
       type: object
-      description: Pagination cursor for previous page
+      description: Pagination information
       properties:
-        before:
-          type: string
-          description: Cursor token for the previous page
-          example: example-value
-        link:
-          type: string
-          description: API link to the previous page
-          example: https://app.hubspot.com/contacts/12345
-    Error:
-      type: object
-      description: Standard error response
-      properties:
-        category:
-          type: string
-          description: Error category
-          example: standard
-        correlationId:
-          type: string
-          format: uuid
-          description: Unique tracking identifier
-          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        message:
-          type: string
-          description: Error message
-          example: This is an example description.
-        subCategory:
-          type: string
-          description: Error subcategory
-          example: standard
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-          - message: This is an example description.
-            code: example-value
-            subCategory: standard
-            in: example-value
-            context:
-              key: value
-      required:
-      - category
-      - correlationId
-      - message
+        next:
+          $ref: '#/components/schemas/PagingNext'
+        prev:
+          $ref: '#/components/schemas/PagingPrevious'
     BlogPostCollection:
       type: object
       description: Paginated collection of blog posts
@@ -628,14 +594,48 @@ components:
       required:
       - total
       - results
-    Paging:
+    ErrorDetail:
       type: object
-      description: Pagination information
+      description: Detailed error information
       properties:
-        next:
-          $ref: '#/components/schemas/PagingNext'
-        prev:
-          $ref: '#/components/schemas/PagingPrevious'
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of error
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: API link to the next page
+          example: https://app.hubspot.com/contacts/12345
     BlogPostInput:
       type: object
       description: Input data for creating or updating a blog post
@@ -707,17 +707,17 @@ components:
       required:
       - name
       - contentGroupId
-    PagingNext:
+    PagingPrevious:
       type: object
-      description: Pagination cursor for next page
+      description: Pagination cursor for previous page
       properties:
-        after:
+        before:
           type: string
-          description: Cursor token for the next page
+          description: Cursor token for the previous page
           example: example-value
         link:
           type: string
-          description: API link to the next page
+          description: API link to the previous page
           example: https://app.hubspot.com/contacts/12345
   responses:
     ErrorResponse:

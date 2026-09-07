@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Associations API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -1075,36 +1075,33 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
+    Paging_3:
       type: object
+      description: Pagination information.
       properties:
-        status:
-          type: string
-          example: active
-        message:
-          type: string
-          example: This is an example description.
-        correlationId:
-          type: string
-          example: '500123'
-        category:
-          type: string
-          example: standard
-    Association_5:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: The cursor to use to get the next page of results.
+          example:
+            after: example-value
+    CollectionResponseAssociation_2:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_2'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_2'
+    Association_4:
       type: object
       description: An association between two CRM objects.
       properties:
@@ -1114,7 +1111,19 @@ components:
         type:
           type: string
           example: standard
-    Paging_4:
+    CollectionResponseAssociation:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging_2:
       type: object
       description: Pagination information.
       properties:
@@ -1135,33 +1144,22 @@ components:
         type:
           type: string
           example: standard
-    CollectionResponseAssociation_3:
+    Error:
       type: object
-      description: A list of associations.
       properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_3'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_3'
-    CollectionResponseAssociation_2:
-      type: object
-      description: A list of associations.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_2'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_2'
-    Paging_2:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    Paging_5:
       type: object
       description: Pagination information.
       properties:
@@ -1172,16 +1170,7 @@ components:
               type: string
           example:
             after: example-value
-    Association:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    Association_4:
+    Association_3:
       type: object
       description: An association between two CRM objects.
       properties:
@@ -1201,43 +1190,7 @@ components:
               type: string
           example:
             after: example-value
-    Paging_5:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
-    CollectionResponseAssociation_4:
-      type: object
-      description: A list of associations.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_4'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_4'
-    Paging_3:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-              description: The cursor to use to get the next page of results.
-          example:
-            after: example-value
-    Association_3:
+    Association_5:
       type: object
       description: An association between two CRM objects.
       properties:
@@ -1260,18 +1213,65 @@ components:
             type: standard
         paging:
           $ref: '#/components/schemas/Paging_5'
-    CollectionResponseAssociation:
+    Association:
       type: object
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Paging_4:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    CollectionResponseAssociation_3:
+      type: object
+      description: A list of associations.
       properties:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Association'
+            $ref: '#/components/schemas/Association_3'
           example:
           - id: '500123'
             type: standard
         paging:
-          $ref: '#/components/schemas/Paging'
+          $ref: '#/components/schemas/Paging_3'
+    CollectionResponseAssociation_4:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_4'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_4'
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     OAuth2:
       type: oauth2

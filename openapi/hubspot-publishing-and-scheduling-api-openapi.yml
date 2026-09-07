@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Publishing and Scheduling API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -48,37 +48,16 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  examples:
+    ErrorExample:
+      summary: Validation error
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
   schemas:
-    ErrorDetail:
-      type: object
-      description: Detailed error information
-      properties:
-        message:
-          type: string
-          description: Error message
-          example: This is an example description.
-        code:
-          type: string
-          description: Error code
-          example: example-value
-        subCategory:
-          type: string
-          description: Error subcategory
-          example: standard
-        in:
-          type: string
-          description: Location of error
-          example: example-value
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-      required:
-      - message
     Error:
       type: object
       description: Standard error response
@@ -129,6 +108,36 @@ components:
       - category
       - correlationId
       - message
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of error
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
     ScheduleRequest:
       type: object
       description: Request to schedule a blog post for publication
@@ -155,15 +164,6 @@ components:
           examples:
             ValidationError:
               $ref: '#/components/examples/ErrorExample'
-  examples:
-    ErrorExample:
-      summary: Validation error
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input parameters
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
   securitySchemes:
     OAuth2:
       type: oauth2

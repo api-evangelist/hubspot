@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Object Associations API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -211,6 +211,20 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   examples:
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+    CreateAssociationInputExample:
+      summary: Example create association input
+      value:
+        to:
+          id: '67890'
+        types:
+        - associationCategory: HUBSPOT_DEFINED
+          associationTypeId: 1
     AssociationResultExample:
       summary: Example association result
       value:
@@ -227,47 +241,40 @@ components:
           - associationCategory: USER_DEFINED
             associationTypeId: 101
             label: Partner Company
-    ErrorExample:
-      summary: Example error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid association type
-    CreateAssociationInputExample:
-      summary: Example create association input
-      value:
-        to:
-          id: '67890'
-        types:
-        - associationCategory: HUBSPOT_DEFINED
-          associationTypeId: 1
   schemas:
-    ErrorDetail:
+    AssociationType:
       type: object
-      description: Details about a specific error
+      description: Defines the type of association
       properties:
-        message:
+        associationCategory:
           type: string
-          example: This is an example description.
-        code:
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          description: Category of the association type
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          description: Numeric identifier for the association type
+          example: 500123
+        label:
           type: string
-          example: example-value
-        subCategory:
-          type: string
-          example: standard
-        in:
-          type: string
-          example: example-value
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
+          description: Human-readable label for the association
+          example: Example Record
       required:
-      - message
+      - associationCategory
+      - associationTypeId
+    ObjectReference:
+      type: object
+      description: Reference to a CRM object by ID
+      properties:
+        id:
+          type: string
+          description: ID of the object
+          example: '500123'
+      required:
+      - id
     CreateAssociationInput:
       type: object
       description: Input for creating an association
@@ -331,72 +338,6 @@ components:
       - category
       - correlationId
       - message
-    AssociationTypeInput:
-      type: object
-      description: Input for specifying an association type
-      properties:
-        associationCategory:
-          type: string
-          enum:
-          - HUBSPOT_DEFINED
-          - USER_DEFINED
-          - INTEGRATOR_DEFINED
-          example: HUBSPOT_DEFINED
-        associationTypeId:
-          type: integer
-          example: 500123
-      required:
-      - associationCategory
-      - associationTypeId
-    Association:
-      type: object
-      description: Represents an association between two CRM objects
-      properties:
-        toObjectId:
-          type: string
-          description: ID of the target object
-          example: '500123'
-        associationTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssociationType'
-          description: Types of associations between the objects
-          example:
-          - associationCategory: HUBSPOT_DEFINED
-            associationTypeId: 500123
-            label: Example Record
-      required:
-      - toObjectId
-      - associationTypes
-    Paging:
-      type: object
-      description: Pagination information
-      properties:
-        next:
-          $ref: '#/components/schemas/PagingNext'
-    AssociationType:
-      type: object
-      description: Defines the type of association
-      properties:
-        associationCategory:
-          type: string
-          enum:
-          - HUBSPOT_DEFINED
-          - USER_DEFINED
-          - INTEGRATOR_DEFINED
-          description: Category of the association type
-          example: HUBSPOT_DEFINED
-        associationTypeId:
-          type: integer
-          description: Numeric identifier for the association type
-          example: 500123
-        label:
-          type: string
-          description: Human-readable label for the association
-          example: Example Record
-      required:
-      - associationCategory
-      - associationTypeId
     AssociationResult:
       type: object
       description: Result of an association query
@@ -419,6 +360,52 @@ components:
       required:
       - from
       - to
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    Association:
+      type: object
+      description: Represents an association between two CRM objects
+      properties:
+        toObjectId:
+          type: string
+          description: ID of the target object
+          example: '500123'
+        associationTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+          description: Types of associations between the objects
+          example:
+          - associationCategory: HUBSPOT_DEFINED
+            associationTypeId: 500123
+            label: Example Record
+      required:
+      - toObjectId
+      - associationTypes
     PagingNext:
       type: object
       description: Pagination cursor for next page
@@ -431,16 +418,29 @@ components:
           type: string
           description: Link to the next page
           example: https://app.hubspot.com/contacts/12345
-    ObjectReference:
+    Paging:
       type: object
-      description: Reference to a CRM object by ID
+      description: Pagination information
       properties:
-        id:
+        next:
+          $ref: '#/components/schemas/PagingNext'
+    AssociationTypeInput:
+      type: object
+      description: Input for specifying an association type
+      properties:
+        associationCategory:
           type: string
-          description: ID of the object
-          example: '500123'
+          enum:
+          - HUBSPOT_DEFINED
+          - USER_DEFINED
+          - INTEGRATOR_DEFINED
+          example: HUBSPOT_DEFINED
+        associationTypeId:
+          type: integer
+          example: 500123
       required:
-      - id
+      - associationCategory
+      - associationTypeId
   responses:
     ErrorResponse:
       description: An error occurred

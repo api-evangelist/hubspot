@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Domain Management API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -130,66 +130,10 @@ paths:
         - cms.domains.write
 components:
   parameters:
-    SortParam:
-      name: sort
+    UpdatedAtParam:
+      name: updatedAt
       in: query
-      description: Properties to sort by, with optional direction prefix (- for descending)
-      required: false
-      schema:
-        type: array
-        items:
-          type: string
-    ArchivedParam:
-      name: archived
-      in: query
-      description: Whether to return only archived domains
-      required: false
-      schema:
-        type: boolean
-        default: false
-    AfterParam:
-      name: after
-      in: query
-      description: The paging cursor token from a previous response for pagination
-      required: false
-      schema:
-        type: string
-    CreatedAtParam:
-      name: createdAt
-      in: query
-      description: Only return domains created at this exact date and time
-      required: false
-      schema:
-        type: string
-        format: date-time
-    DomainIdParam:
-      name: domainId
-      in: path
-      description: The unique identifier of the domain
-      required: true
-      schema:
-        type: string
-      example: '3210329704'
-    CreatedBeforeParam:
-      name: createdBefore
-      in: query
-      description: Only return domains created before this date and time
-      required: false
-      schema:
-        type: string
-        format: date-time
-    UpdatedBeforeParam:
-      name: updatedBefore
-      in: query
-      description: Only return domains updated before this date and time
-      required: false
-      schema:
-        type: string
-        format: date-time
-    CreatedAfterParam:
-      name: createdAfter
-      in: query
-      description: Only return domains created after this date and time
+      description: Only return domains updated at this exact date and time
       required: false
       schema:
         type: string
@@ -213,92 +157,167 @@ components:
       schema:
         type: string
         format: date-time
-    UpdatedAtParam:
-      name: updatedAt
+    CreatedAfterParam:
+      name: createdAfter
       in: query
-      description: Only return domains updated at this exact date and time
+      description: Only return domains created after this date and time
       required: false
       schema:
         type: string
         format: date-time
-  examples:
-    ListDomainsSuccessResponse:
-      summary: Successful response with multiple domains
-      value:
-        total: 2
-        results:
-        - id: '1234'
-          domain: 234.hs-sites.com
-          createdAt: '2017-07-24T17:24:09.141Z'
-          updatedAt: '2017-07-25T18:20:00.000Z'
-          isResolving: true
-          isManuallyMarkedAsResolving: false
-          isSslEnabled: true
-          isSslOnly: false
-          isPrimaryBlogPost: true
-          isPrimarySitePage: false
-          isPrimaryLandingPage: false
-          isPrimaryEmail: false
-          isPrimaryKnowledge: false
-          isUsedForBlogPost: true
-          isUsedForSitePage: false
-          isUsedForLandingPage: false
-          isUsedForEmail: false
-          isUsedForKnowledge: false
-          expectedCname: 234.group34.sites.hubspot.net
-          redirectTo: ''
-        - id: '4321'
-          domain: test.demo.com
-          createdAt: '2017-07-11T13:00:52.928Z'
-          updatedAt: '2019-10-08T16:54:57.165Z'
-          isResolving: true
-          isManuallyMarkedAsResolving: false
-          isSslEnabled: true
-          isSslOnly: false
-          isPrimaryBlogPost: true
-          isPrimarySitePage: false
-          isPrimaryLandingPage: false
-          isPrimaryEmail: false
-          isPrimaryKnowledge: false
-          isUsedForBlogPost: true
-          isUsedForSitePage: false
-          isUsedForLandingPage: false
-          isUsedForEmail: false
-          isUsedForKnowledge: false
-          expectedCname: 234.group34.sites.hubspot.net
-          redirectTo: ''
-    GetDomainSuccessResponse:
-      summary: Successful response for a single domain
-      value:
-        id: '3210329704'
-        domain: 99558489.hubspot.com
-        createdAt: '2017-07-11T13:00:52.928Z'
-        updatedAt: '2019-10-08T16:54:57.165Z'
-        isResolving: true
-        isManuallyMarkedAsResolving: false
-        isSslEnabled: true
-        isSslOnly: false
-        isPrimaryBlogPost: true
-        isPrimarySitePage: false
-        isPrimaryLandingPage: false
-        isPrimaryEmail: false
-        isPrimaryKnowledge: false
-        isUsedForBlogPost: true
-        isUsedForSitePage: false
-        isUsedForLandingPage: false
-        isUsedForEmail: false
-        isUsedForKnowledge: false
-        expectedCname: 99558489.group39.sites.hubspot.net
-        redirectTo: ''
-    ErrorResponse:
-      summary: Example error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input (details will vary based on the error)
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    DomainIdParam:
+      name: domainId
+      in: path
+      description: The unique identifier of the domain
+      required: true
+      schema:
+        type: string
+      example: '3210329704'
+    UpdatedBeforeParam:
+      name: updatedBefore
+      in: query
+      description: Only return domains updated before this date and time
+      required: false
+      schema:
+        type: string
+        format: date-time
+    CreatedAtParam:
+      name: createdAt
+      in: query
+      description: Only return domains created at this exact date and time
+      required: false
+      schema:
+        type: string
+        format: date-time
+    AfterParam:
+      name: after
+      in: query
+      description: The paging cursor token from a previous response for pagination
+      required: false
+      schema:
+        type: string
+    ArchivedParam:
+      name: archived
+      in: query
+      description: Whether to return only archived domains
+      required: false
+      schema:
+        type: boolean
+        default: false
+    SortParam:
+      name: sort
+      in: query
+      description: Properties to sort by, with optional direction prefix (- for descending)
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+    CreatedBeforeParam:
+      name: createdBefore
+      in: query
+      description: Only return domains created before this date and time
+      required: false
+      schema:
+        type: string
+        format: date-time
   schemas:
+    DomainCollectionResponse:
+      type: object
+      description: A paginated collection of domains
+      required:
+      - total
+      - results
+      properties:
+        total:
+          type: integer
+          format: int32
+          description: The total number of domains
+          example: 2
+        results:
+          type: array
+          description: The list of domains
+          items:
+            $ref: '#/components/schemas/Domain'
+          example:
+          - id: '3210329704'
+            domain: 99558489.hubspot.com
+            createdAt: '2017-07-11T13:00:52.928Z'
+            updatedAt: '2019-10-08T16:54:57.165Z'
+            isResolving: true
+            isManuallyMarkedAsResolving: false
+            isSslEnabled: true
+            isSslOnly: false
+            isPrimaryBlogPost: true
+            isPrimarySitePage: false
+            isPrimaryLandingPage: false
+            isPrimaryEmail: false
+            isPrimaryKnowledge: false
+            isUsedForBlogPost: true
+            isUsedForSitePage: false
+            isUsedForLandingPage: false
+            isUsedForEmail: false
+            isUsedForKnowledge: false
+            expectedCname: 99558489.group39.sites.hubspot.net
+            redirectTo: ''
+            secondaryToDomain: example.hubspot.com
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+    Error:
+      type: object
+      description: Represents an error response from the API
+      required:
+      - category
+      - correlationId
+      - message
+      properties:
+        category:
+          type: string
+          description: The error category
+          example: VALIDATION_ERROR
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for the request, useful for debugging
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message:
+          type: string
+          description: A human-readable message describing the error
+          example: Invalid input (details will vary based on the error)
+        subCategory:
+          type: string
+          description: A more specific category for the error
+          example: standard
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            missingScopes:
+            - scope1
+            - scope2
+        links:
+          type: object
+          description: Links to documentation or remediation steps
+          additionalProperties:
+            type: string
+          example:
+            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+        errors:
+          type: array
+          description: A list of specific error details
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
     ErrorDetail:
       type: object
       description: Detailed information about a specific error
@@ -330,6 +349,12 @@ components:
               type: string
           example:
             key: value
+    ForwardPaging:
+      type: object
+      description: Pagination information for forward navigation
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
     Domain:
       type: object
       description: Represents a domain connected to a HubSpot CMS site
@@ -443,108 +468,83 @@ components:
           type: string
           description: A direct link to the next page
           example: ?after=NTI1Cg%3D%3D
-    DomainCollectionResponse:
-      type: object
-      description: A paginated collection of domains
-      required:
-      - total
-      - results
-      properties:
-        total:
-          type: integer
-          format: int32
-          description: The total number of domains
-          example: 2
+  examples:
+    ListDomainsSuccessResponse:
+      summary: Successful response with multiple domains
+      value:
+        total: 2
         results:
-          type: array
-          description: The list of domains
-          items:
-            $ref: '#/components/schemas/Domain'
-          example:
-          - id: '3210329704'
-            domain: 99558489.hubspot.com
-            createdAt: '2017-07-11T13:00:52.928Z'
-            updatedAt: '2019-10-08T16:54:57.165Z'
-            isResolving: true
-            isManuallyMarkedAsResolving: false
-            isSslEnabled: true
-            isSslOnly: false
-            isPrimaryBlogPost: true
-            isPrimarySitePage: false
-            isPrimaryLandingPage: false
-            isPrimaryEmail: false
-            isPrimaryKnowledge: false
-            isUsedForBlogPost: true
-            isUsedForSitePage: false
-            isUsedForLandingPage: false
-            isUsedForEmail: false
-            isUsedForKnowledge: false
-            expectedCname: 99558489.group39.sites.hubspot.net
-            redirectTo: ''
-            secondaryToDomain: example.hubspot.com
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-    Error:
-      type: object
-      description: Represents an error response from the API
-      required:
-      - category
-      - correlationId
-      - message
-      properties:
-        category:
-          type: string
-          description: The error category
-          example: VALIDATION_ERROR
-        correlationId:
-          type: string
-          format: uuid
-          description: A unique identifier for the request, useful for debugging
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message:
-          type: string
-          description: A human-readable message describing the error
-          example: Invalid input (details will vary based on the error)
-        subCategory:
-          type: string
-          description: A more specific category for the error
-          example: standard
-        context:
-          type: object
-          description: Additional context about the error
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            missingScopes:
-            - scope1
-            - scope2
+        - id: '1234'
+          domain: 234.hs-sites.com
+          createdAt: '2017-07-24T17:24:09.141Z'
+          updatedAt: '2017-07-25T18:20:00.000Z'
+          isResolving: true
+          isManuallyMarkedAsResolving: false
+          isSslEnabled: true
+          isSslOnly: false
+          isPrimaryBlogPost: true
+          isPrimarySitePage: false
+          isPrimaryLandingPage: false
+          isPrimaryEmail: false
+          isPrimaryKnowledge: false
+          isUsedForBlogPost: true
+          isUsedForSitePage: false
+          isUsedForLandingPage: false
+          isUsedForEmail: false
+          isUsedForKnowledge: false
+          expectedCname: 234.group34.sites.hubspot.net
+          redirectTo: ''
+        - id: '4321'
+          domain: test.demo.com
+          createdAt: '2017-07-11T13:00:52.928Z'
+          updatedAt: '2019-10-08T16:54:57.165Z'
+          isResolving: true
+          isManuallyMarkedAsResolving: false
+          isSslEnabled: true
+          isSslOnly: false
+          isPrimaryBlogPost: true
+          isPrimarySitePage: false
+          isPrimaryLandingPage: false
+          isPrimaryEmail: false
+          isPrimaryKnowledge: false
+          isUsedForBlogPost: true
+          isUsedForSitePage: false
+          isUsedForLandingPage: false
+          isUsedForEmail: false
+          isUsedForKnowledge: false
+          expectedCname: 234.group34.sites.hubspot.net
+          redirectTo: ''
+    ErrorResponse:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
         links:
-          type: object
-          description: Links to documentation or remediation steps
-          additionalProperties:
-            type: string
-          example:
-            knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-        errors:
-          type: array
-          description: A list of specific error details
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-          - message: This is an example description.
-            code: example-value
-            in: example-value
-            subCategory: standard
-            context:
-              key: value
-    ForwardPaging:
-      type: object
-      description: Pagination information for forward navigation
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    GetDomainSuccessResponse:
+      summary: Successful response for a single domain
+      value:
+        id: '3210329704'
+        domain: 99558489.hubspot.com
+        createdAt: '2017-07-11T13:00:52.928Z'
+        updatedAt: '2019-10-08T16:54:57.165Z'
+        isResolving: true
+        isManuallyMarkedAsResolving: false
+        isSslEnabled: true
+        isSslOnly: false
+        isPrimaryBlogPost: true
+        isPrimarySitePage: false
+        isPrimaryLandingPage: false
+        isPrimaryEmail: false
+        isPrimaryKnowledge: false
+        isUsedForBlogPost: true
+        isUsedForSitePage: false
+        isUsedForLandingPage: false
+        isUsedForEmail: false
+        isUsedForKnowledge: false
+        expectedCname: 99558489.group39.sites.hubspot.net
+        redirectTo: ''
   securitySchemes:
     OAuth2:
       type: oauth2

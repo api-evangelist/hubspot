@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Drafts and Revisions API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -184,27 +184,65 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  examples:
+    ErrorExample:
+      summary: Validation error
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    BlogPostExample:
+      summary: Complete blog post
+      value:
+        id: '123456789012'
+        name: How to Use HubSpot APIs
+        slug: how-to-use-hubspot-apis
+        htmlTitle: How to Use HubSpot APIs | Developer Guide
+        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
+        postSummary: A comprehensive guide to getting started with HubSpot APIs.
+        blogAuthorId: '12345678901'
+        authorName: Jane Smith
+        contentGroupId: '9876543210'
+        state: PUBLISHED
+        publishDate: '2024-01-15T10:00:00Z'
+        created: '2024-01-10T09:00:00Z'
+        updated: '2024-01-15T10:00:00Z'
+        currentlyPublished: true
+        domain: blog.example.com
+        featuredImage: https://example.com/images/hubspot-apis.jpg
+        featuredImageAltText: HubSpot API documentation
+        metaDescription: Learn how to integrate with HubSpot using APIs
+        language: en
+        tagIds:
+        - 101
+        - 102
+        - 103
+        useFeaturedImage: true
+        url: https://blog.example.com/how-to-use-hubspot-apis
   schemas:
-    ErrorDetail:
+    Error:
       type: object
-      description: Detailed error information
+      description: Standard error response
       properties:
+        category:
+          type: string
+          description: Error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: Unique tracking identifier
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
           description: Error message
           example: This is an example description.
-        code:
-          type: string
-          description: Error code
-          example: example-value
         subCategory:
           type: string
           description: Error subcategory
           example: standard
-        in:
-          type: string
-          description: Location of error
-          example: example-value
         context:
           type: object
           additionalProperties:
@@ -213,37 +251,27 @@ components:
               type: string
           example:
             key: value
-      required:
-      - message
-    VersionHistory:
-      type: object
-      description: Version history entry for a blog post
-      properties:
-        id:
-          type: string
-          description: Version ID
-          example: '500123'
-        object:
-          $ref: '#/components/schemas/BlogPost'
-        user:
+        links:
           type: object
-          properties:
-            id:
-              type: string
-            email:
-              type: string
-            fullName:
-              type: string
-          description: User who made the change
+          additionalProperties:
+            type: string
           example:
-            id: '500123'
-            email: jsmith@example.com
-            fullName: Example Record
-        timestamp:
-          type: string
-          format: date-time
-          description: ISO 8601 timestamp of the version
-          example: '2025-03-15T14:30:00Z'
+            key: value
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            subCategory: standard
+            in: example-value
+            context:
+              key: value
+      required:
+      - category
+      - correlationId
+      - message
     BlogPost:
       type: object
       description: Represents a blog post with all content and metadata
@@ -399,68 +427,6 @@ components:
       - name
       - created
       - updated
-    PagingPrevious:
-      type: object
-      description: Pagination cursor for previous page
-      properties:
-        before:
-          type: string
-          description: Cursor token for the previous page
-          example: example-value
-        link:
-          type: string
-          description: API link to the previous page
-          example: https://app.hubspot.com/contacts/12345
-    Error:
-      type: object
-      description: Standard error response
-      properties:
-        category:
-          type: string
-          description: Error category
-          example: standard
-        correlationId:
-          type: string
-          format: uuid
-          description: Unique tracking identifier
-          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        message:
-          type: string
-          description: Error message
-          example: This is an example description.
-        subCategory:
-          type: string
-          description: Error subcategory
-          example: standard
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-          - message: This is an example description.
-            code: example-value
-            subCategory: standard
-            in: example-value
-            context:
-              key: value
-      required:
-      - category
-      - correlationId
-      - message
     Paging:
       type: object
       description: Pagination information
@@ -469,6 +435,36 @@ components:
           $ref: '#/components/schemas/PagingNext'
         prev:
           $ref: '#/components/schemas/PagingPrevious'
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      properties:
+        message:
+          type: string
+          description: Error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location of error
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
     PagingNext:
       type: object
       description: Pagination cursor for next page
@@ -481,6 +477,47 @@ components:
           type: string
           description: API link to the next page
           example: https://app.hubspot.com/contacts/12345
+    PagingPrevious:
+      type: object
+      description: Pagination cursor for previous page
+      properties:
+        before:
+          type: string
+          description: Cursor token for the previous page
+          example: example-value
+        link:
+          type: string
+          description: API link to the previous page
+          example: https://app.hubspot.com/contacts/12345
+    VersionHistory:
+      type: object
+      description: Version history entry for a blog post
+      properties:
+        id:
+          type: string
+          description: Version ID
+          example: '500123'
+        object:
+          $ref: '#/components/schemas/BlogPost'
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            email:
+              type: string
+            fullName:
+              type: string
+          description: User who made the change
+          example:
+            id: '500123'
+            email: jsmith@example.com
+            fullName: Example Record
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the version
+          example: '2025-03-15T14:30:00Z'
   responses:
     ErrorResponse:
       description: An error occurred
@@ -491,43 +528,6 @@ components:
           examples:
             ValidationError:
               $ref: '#/components/examples/ErrorExample'
-  examples:
-    BlogPostExample:
-      summary: Complete blog post
-      value:
-        id: '123456789012'
-        name: How to Use HubSpot APIs
-        slug: how-to-use-hubspot-apis
-        htmlTitle: How to Use HubSpot APIs | Developer Guide
-        postBody: <p>Learn how to integrate with HubSpot using our powerful APIs...</p>
-        postSummary: A comprehensive guide to getting started with HubSpot APIs.
-        blogAuthorId: '12345678901'
-        authorName: Jane Smith
-        contentGroupId: '9876543210'
-        state: PUBLISHED
-        publishDate: '2024-01-15T10:00:00Z'
-        created: '2024-01-10T09:00:00Z'
-        updated: '2024-01-15T10:00:00Z'
-        currentlyPublished: true
-        domain: blog.example.com
-        featuredImage: https://example.com/images/hubspot-apis.jpg
-        featuredImageAltText: HubSpot API documentation
-        metaDescription: Learn how to integrate with HubSpot using APIs
-        language: en
-        tagIds:
-        - 101
-        - 102
-        - 103
-        useFeaturedImage: true
-        url: https://blog.example.com/how-to-use-hubspot-apis
-    ErrorExample:
-      summary: Validation error
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input parameters
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Batch Portal Operations API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -86,11 +86,11 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: &id001
+                    context:
                       key: value
-                    links: &id002
+                    links:
                       key: value
-                    errors: &id003
+                    errors:
                     - message: flagState is required
                       code: REQUIRED_FIELD
                       subCategory: MISSING_FIELD
@@ -112,9 +112,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id001
-                    links: *id002
-                    errors: *id003
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
         '500':
           description: Internal server error
           content:
@@ -130,9 +138,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id001
-                    links: *id002
-                    errors: *id003
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
   /feature-flags/v3/{appId}/flags/{flagName}/portals/batch/delete:
     post:
       tags:
@@ -203,11 +219,11 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: &id004
+                    context:
                       key: value
-                    links: &id005
+                    links:
                       key: value
-                    errors: &id006
+                    errors:
                     - message: flagState is required
                       code: REQUIRED_FIELD
                       subCategory: MISSING_FIELD
@@ -229,9 +245,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id004
-                    links: *id005
-                    errors: *id006
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
         '500':
           description: Internal server error
           content:
@@ -247,11 +271,43 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id004
-                    links: *id005
-                    errors: *id006
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
 components:
+  parameters:
+    FlagNamePath:
+      name: flagName
+      in: path
+      required: true
+      description: The name of the feature flag
+      schema:
+        type: string
+      example: new-dashboard-feature
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier for the HubSpot application
+      schema:
+        type: integer
+        format: int64
+      example: 12345678
   examples:
+    BatchDeleteInputExample:
+      summary: Example batch delete input
+      value:
+        inputs:
+        - portalId: 98765432
+        - portalId: 87654321
     BatchPortalFlagStateResponseWithErrorsExample:
       summary: Example batch response with errors
       value:
@@ -270,12 +326,6 @@ components:
             - '99999999'
         startedAt: '2024-01-15T10:30:00Z'
         completedAt: '2024-01-15T10:30:01Z'
-    BatchDeleteInputExample:
-      summary: Example batch delete input
-      value:
-        inputs:
-        - portalId: 98765432
-        - portalId: 87654321
     BatchPortalFlagStateInputExample:
       summary: Example batch portal flag state input
       value:
@@ -299,64 +349,35 @@ components:
           flagState: 'OFF'
         startedAt: '2024-01-15T10:30:00Z'
         completedAt: '2024-01-15T10:30:01Z'
-  parameters:
-    AppIdPath:
-      name: appId
-      in: path
-      required: true
-      description: The unique identifier for the HubSpot application
-      schema:
-        type: integer
-        format: int64
-      example: 12345678
-    FlagNamePath:
-      name: flagName
-      in: path
-      required: true
-      description: The name of the feature flag
-      schema:
-        type: string
-      example: new-dashboard-feature
   schemas:
-    ErrorDetail:
+    BatchPortalFlagStateInputItem:
       type: object
-      description: Detailed error information for specific validation failures
+      description: Individual item in a batch upsert request
       required:
-      - message
+      - portalId
+      - flagState
       properties:
-        message:
-          type: string
-          description: Specific error message
-          example: flagState is required
-        code:
-          type: string
-          description: Error code
-          example: REQUIRED_FIELD
-        subCategory:
-          type: string
-          description: Error sub-category
-          example: MISSING_FIELD
-        in:
-          type: string
-          description: Location of the error (e.g., path, body, query)
-          example: body
-        context:
-          type: object
-          description: Additional context for the error
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        portalId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot portal (account)
+          example: 98765432
+        flagState:
+          $ref: '#/components/schemas/FlagState'
+    BatchPortalFlagStateInput:
+      type: object
+      description: Input payload for batch creating or updating portal flag states
+      required:
+      - inputs
+      properties:
+        inputs:
+          type: array
+          description: List of portal flag state inputs
+          items:
+            $ref: '#/components/schemas/BatchPortalFlagStateInputItem'
           example:
-            key: value
-    FlagState:
-      type: string
-      description: The state of a feature flag
-      enum:
-      - 'ON'
-      - 'OFF'
-      - ABSENT
-      example: 'ON'
+          - portalId: 98765432
+            flagState: {}
     BatchDeleteInput:
       type: object
       description: Input payload for batch deleting portal flag states
@@ -370,35 +391,40 @@ components:
             $ref: '#/components/schemas/BatchDeleteInputItem'
           example:
           - portalId: 98765432
-    BatchError:
+    BatchPortalFlagStateResponse:
       type: object
-      description: Represents an error that occurred for a specific item in a batch operation
+      description: Response for successful batch portal flag state operations
       required:
       - status
-      - category
-      - message
+      - results
       properties:
         status:
           type: string
-          description: Error status code
-          example: error
-        category:
-          type: string
-          description: Error category
-          example: VALIDATION_ERROR
-        message:
-          type: string
-          description: Human-readable error message
-          example: Invalid portal ID
-        context:
-          type: object
-          description: Additional context about the error
-          additionalProperties:
-            type: array
-            items:
-              type: string
+          description: The overall status of the batch operation
+          enum:
+          - COMPLETE
+          - PENDING
+          example: COMPLETE
+        results:
+          type: array
+          description: List of portal flag states that were successfully affected
+          items:
+            $ref: '#/components/schemas/PortalFlagState'
           example:
-            key: value
+          - appId: 12345678
+            flagName: new-dashboard-feature
+            portalId: 98765432
+            flagState: {}
+        startedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the batch operation started
+          example: '2024-01-15T10:30:00Z'
+        completedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the batch operation completed
+          example: '2024-01-15T10:30:01Z'
     Error:
       type: object
       description: Represents an error response from the API
@@ -452,6 +478,99 @@ components:
             in: body
             context:
               key: value
+    FlagState:
+      type: string
+      description: The state of a feature flag
+      enum:
+      - 'ON'
+      - 'OFF'
+      - ABSENT
+      example: 'ON'
+    ErrorDetail:
+      type: object
+      description: Detailed error information for specific validation failures
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Specific error message
+          example: flagState is required
+        code:
+          type: string
+          description: Error code
+          example: REQUIRED_FIELD
+        subCategory:
+          type: string
+          description: Error sub-category
+          example: MISSING_FIELD
+        in:
+          type: string
+          description: Location of the error (e.g., path, body, query)
+          example: body
+        context:
+          type: object
+          description: Additional context for the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    PortalFlagState:
+      type: object
+      description: Represents the flag state override for a specific portal (account)
+      required:
+      - appId
+      - flagName
+      - portalId
+      - flagState
+      properties:
+        appId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot application
+          example: 12345678
+        flagName:
+          type: string
+          description: The name of the feature flag
+          example: new-dashboard-feature
+        portalId:
+          type: integer
+          format: int64
+          description: The unique identifier for the HubSpot portal (account)
+          example: 98765432
+        flagState:
+          $ref: '#/components/schemas/FlagState'
+    BatchError:
+      type: object
+      description: Represents an error that occurred for a specific item in a batch operation
+      required:
+      - status
+      - category
+      - message
+      properties:
+        status:
+          type: string
+          description: Error status code
+          example: error
+        category:
+          type: string
+          description: Error category
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid portal ID
+        context:
+          type: object
+          description: Additional context about the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
     BatchPortalFlagStateResponseWithErrors:
       type: object
       description: Response for batch operations that had some failures
@@ -497,79 +616,6 @@ components:
           format: date-time
           description: Timestamp when the batch operation completed
           example: '2025-03-15T14:30:00Z'
-    BatchPortalFlagStateResponse:
-      type: object
-      description: Response for successful batch portal flag state operations
-      required:
-      - status
-      - results
-      properties:
-        status:
-          type: string
-          description: The overall status of the batch operation
-          enum:
-          - COMPLETE
-          - PENDING
-          example: COMPLETE
-        results:
-          type: array
-          description: List of portal flag states that were successfully affected
-          items:
-            $ref: '#/components/schemas/PortalFlagState'
-          example:
-          - appId: 12345678
-            flagName: new-dashboard-feature
-            portalId: 98765432
-            flagState: {}
-        startedAt:
-          type: string
-          format: date-time
-          description: Timestamp when the batch operation started
-          example: '2024-01-15T10:30:00Z'
-        completedAt:
-          type: string
-          format: date-time
-          description: Timestamp when the batch operation completed
-          example: '2024-01-15T10:30:01Z'
-    PortalFlagState:
-      type: object
-      description: Represents the flag state override for a specific portal (account)
-      required:
-      - appId
-      - flagName
-      - portalId
-      - flagState
-      properties:
-        appId:
-          type: integer
-          format: int64
-          description: The unique identifier for the HubSpot application
-          example: 12345678
-        flagName:
-          type: string
-          description: The name of the feature flag
-          example: new-dashboard-feature
-        portalId:
-          type: integer
-          format: int64
-          description: The unique identifier for the HubSpot portal (account)
-          example: 98765432
-        flagState:
-          $ref: '#/components/schemas/FlagState'
-    BatchPortalFlagStateInputItem:
-      type: object
-      description: Individual item in a batch upsert request
-      required:
-      - portalId
-      - flagState
-      properties:
-        portalId:
-          type: integer
-          format: int64
-          description: The unique identifier for the HubSpot portal (account)
-          example: 98765432
-        flagState:
-          $ref: '#/components/schemas/FlagState'
     BatchDeleteInputItem:
       type: object
       description: Individual item in a batch delete request
@@ -581,20 +627,6 @@ components:
           format: int64
           description: The unique identifier for the HubSpot portal (account)
           example: 98765432
-    BatchPortalFlagStateInput:
-      type: object
-      description: Input payload for batch creating or updating portal flag states
-      required:
-      - inputs
-      properties:
-        inputs:
-          type: array
-          description: List of portal flag state inputs
-          items:
-            $ref: '#/components/schemas/BatchPortalFlagStateInputItem'
-          example:
-          - portalId: 98765432
-            flagState: {}
   securitySchemes:
     OAuth2:
       type: oauth2

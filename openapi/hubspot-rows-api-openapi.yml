@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Rows API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -273,42 +273,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request is invalid or missing required parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      description: An error response.
-      properties:
-        status:
-          type: string
-          example: active
-        message:
-          type: string
-          example: This is an example description.
-        correlationId:
-          type: string
-          example: '500123'
-        category:
-          type: string
-          example: standard
     CollectionResponseHubDBRow:
       type: object
       description: A paginated list of HubDB table rows.
@@ -325,17 +290,22 @@ components:
             updatedAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
-    Paging:
+    Error:
       type: object
-      description: Pagination information.
+      description: An error response.
       properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
     HubDBRowCreateRequest:
       type: object
       description: Request body for creating or updating a HubDB table row.
@@ -370,6 +340,36 @@ components:
           format: date-time
           description: The date and time the row was last updated.
           example: '2025-03-15T14:30:00Z'
+    Paging:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     OAuth2:
       type: oauth2

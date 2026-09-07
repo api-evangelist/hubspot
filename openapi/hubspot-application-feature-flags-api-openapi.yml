@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Application Feature Flags API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -76,11 +76,11 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: &id001
+                    context:
                       key: value
-                    links: &id002
+                    links:
                       key: value
-                    errors: &id003
+                    errors:
                     - message: flagState is required
                       code: REQUIRED_FIELD
                       subCategory: MISSING_FIELD
@@ -102,9 +102,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id001
-                    links: *id002
-                    errors: *id003
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
         '500':
           description: Internal server error
           content:
@@ -120,9 +128,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id001
-                    links: *id002
-                    errors: *id003
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
     put:
       tags:
       - Application Feature Flags
@@ -183,11 +199,11 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: &id004
+                    context:
                       key: value
-                    links: &id005
+                    links:
                       key: value
-                    errors: &id006
+                    errors:
                     - message: flagState is required
                       code: REQUIRED_FIELD
                       subCategory: MISSING_FIELD
@@ -209,9 +225,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id004
-                    links: *id005
-                    errors: *id006
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
         '500':
           description: Internal server error
           content:
@@ -227,9 +251,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id004
-                    links: *id005
-                    errors: *id006
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
     delete:
       tags:
       - Application Feature Flags
@@ -280,11 +312,11 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: &id007
+                    context:
                       key: value
-                    links: &id008
+                    links:
                       key: value
-                    errors: &id009
+                    errors:
                     - message: flagState is required
                       code: REQUIRED_FIELD
                       subCategory: MISSING_FIELD
@@ -306,9 +338,17 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id007
-                    links: *id008
-                    errors: *id009
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
         '500':
           description: Internal server error
           content:
@@ -324,11 +364,27 @@ paths:
                     correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
                     message: Invalid input JSON
                     subCategory: INVALID_PARAMETER
-                    context: *id007
-                    links: *id008
-                    errors: *id009
+                    context:
+                      key: value
+                    links:
+                      key: value
+                    errors:
+                    - message: flagState is required
+                      code: REQUIRED_FIELD
+                      subCategory: MISSING_FIELD
+                      in: body
+                      context:
+                        key: value
 components:
   parameters:
+    FlagNamePath:
+      name: flagName
+      in: path
+      required: true
+      description: The name of the feature flag
+      schema:
+        type: string
+      example: new-dashboard-feature
     AppIdPath:
       name: appId
       in: path
@@ -338,54 +394,30 @@ components:
         type: integer
         format: int64
       example: 12345678
-    FlagNamePath:
-      name: flagName
-      in: path
-      required: true
-      description: The name of the feature flag
-      schema:
-        type: string
-      example: new-dashboard-feature
+  examples:
+    ErrorExample:
+      summary: Example error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input JSON
+        subCategory: INVALID_PARAMETER
+        errors:
+        - message: flagState is required
+          code: REQUIRED_FIELD
+          in: body
+    FeatureFlagExample:
+      summary: Example feature flag configuration
+      value:
+        appId: 12345678
+        flagName: new-dashboard-feature
+        defaultState: 'OFF'
+        overrideState: ABSENT
+    FeatureFlagInputExample:
+      summary: Example feature flag input
+      value:
+        defaultState: 'ON'
   schemas:
-    ErrorDetail:
-      type: object
-      description: Detailed error information for specific validation failures
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Specific error message
-          example: flagState is required
-        code:
-          type: string
-          description: Error code
-          example: REQUIRED_FIELD
-        subCategory:
-          type: string
-          description: Error sub-category
-          example: MISSING_FIELD
-        in:
-          type: string
-          description: Location of the error (e.g., path, body, query)
-          example: body
-        context:
-          type: object
-          description: Additional context for the error
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-    FeatureFlagInput:
-      type: object
-      description: Input payload for creating or updating a feature flag
-      required:
-      - defaultState
-      properties:
-        defaultState:
-          $ref: '#/components/schemas/FlagState'
     Error:
       type: object
       description: Represents an error response from the API
@@ -439,6 +471,53 @@ components:
             in: body
             context:
               key: value
+    FlagState:
+      type: string
+      description: The state of a feature flag
+      enum:
+      - 'ON'
+      - 'OFF'
+      - ABSENT
+      example: 'ON'
+    ErrorDetail:
+      type: object
+      description: Detailed error information for specific validation failures
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Specific error message
+          example: flagState is required
+        code:
+          type: string
+          description: Error code
+          example: REQUIRED_FIELD
+        subCategory:
+          type: string
+          description: Error sub-category
+          example: MISSING_FIELD
+        in:
+          type: string
+          description: Location of the error (e.g., path, body, query)
+          example: body
+        context:
+          type: object
+          description: Additional context for the error
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+    FeatureFlagInput:
+      type: object
+      description: Input payload for creating or updating a feature flag
+      required:
+      - defaultState
+      properties:
+        defaultState:
+          $ref: '#/components/schemas/FlagState'
     FeatureFlag:
       type: object
       description: Represents a feature flag configuration for an application
@@ -460,37 +539,6 @@ components:
           $ref: '#/components/schemas/FlagState'
         overrideState:
           $ref: '#/components/schemas/FlagState'
-    FlagState:
-      type: string
-      description: The state of a feature flag
-      enum:
-      - 'ON'
-      - 'OFF'
-      - ABSENT
-      example: 'ON'
-  examples:
-    ErrorExample:
-      summary: Example error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input JSON
-        subCategory: INVALID_PARAMETER
-        errors:
-        - message: flagState is required
-          code: REQUIRED_FIELD
-          in: body
-    FeatureFlagInputExample:
-      summary: Example feature flag input
-      value:
-        defaultState: 'ON'
-    FeatureFlagExample:
-      summary: Example feature flag configuration
-      value:
-        appId: 12345678
-        flagName: new-dashboard-feature
-        defaultState: 'OFF'
-        overrideState: ABSENT
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Association Label Management API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -232,12 +232,18 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 components:
   examples:
-    CreateLabelInputExample:
-      summary: Example create label input
+    ErrorExample:
+      summary: Example error response
       value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid association type
+    AssociationLabelExample:
+      summary: Example association label
+      value:
+        typeId: 101
         label: Primary Contact
-        name: primary_contact
-        inverseLabel: Main Company
+        category: USER_DEFINED
     AssociationLabelCollectionExample:
       summary: Example collection of association labels
       value:
@@ -252,45 +258,30 @@ components:
           next:
             after: NTI1Cg%3D%3D
             link: https://api.hubapi.com/crm/v4/associations/contacts/companies/labels?after=NTI1Cg%3D%3D
-    AssociationLabelExample:
-      summary: Example association label
+    CreateLabelInputExample:
+      summary: Example create label input
       value:
-        typeId: 101
         label: Primary Contact
-        category: USER_DEFINED
-    ErrorExample:
-      summary: Example error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid association type
+        name: primary_contact
+        inverseLabel: Main Company
   schemas:
-    ErrorDetail:
+    AssociationLabelCollection:
       type: object
-      description: Details about a specific error
+      description: Collection of association labels
       properties:
-        message:
-          type: string
-          example: This is an example description.
-        code:
-          type: string
-          example: example-value
-        subCategory:
-          type: string
-          example: standard
-        in:
-          type: string
-          example: example-value
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationLabel'
+          description: Array of association labels
           example:
-            key: value
+          - typeId: 500123
+            label: Example Record
+            category: HUBSPOT_DEFINED
+        paging:
+          $ref: '#/components/schemas/Paging'
       required:
-      - message
+      - results
     CreateLabelInput:
       type: object
       description: Input for creating an association label
@@ -356,41 +347,12 @@ components:
       - category
       - correlationId
       - message
-    AssociationLabelCollection:
-      type: object
-      description: Collection of association labels
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssociationLabel'
-          description: Array of association labels
-          example:
-          - typeId: 500123
-            label: Example Record
-            category: HUBSPOT_DEFINED
-        paging:
-          $ref: '#/components/schemas/Paging'
-      required:
-      - results
     Paging:
       type: object
       description: Pagination information
       properties:
         next:
           $ref: '#/components/schemas/PagingNext'
-    PagingNext:
-      type: object
-      description: Pagination cursor for next page
-      properties:
-        after:
-          type: string
-          description: Cursor token for the next page
-          example: example-value
-        link:
-          type: string
-          description: Link to the next page
-          example: https://app.hubspot.com/contacts/12345
     AssociationLabel:
       type: object
       description: A label that can be applied to associations
@@ -415,6 +377,44 @@ components:
       - typeId
       - label
       - category
+    ErrorDetail:
+      type: object
+      description: Details about a specific error
+      properties:
+        message:
+          type: string
+          example: This is an example description.
+        code:
+          type: string
+          example: example-value
+        subCategory:
+          type: string
+          example: standard
+        in:
+          type: string
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
+    PagingNext:
+      type: object
+      description: Pagination cursor for next page
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: Link to the next page
+          example: https://app.hubspot.com/contacts/12345
   responses:
     ErrorResponse:
       description: An error occurred

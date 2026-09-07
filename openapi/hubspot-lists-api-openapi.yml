@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Lists API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -200,6 +200,54 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    ListCreateRequest:
+      type: object
+      description: Request body for creating a new CRM list.
+      required:
+      - name
+      - objectTypeId
+      - processingType
+      properties:
+        name:
+          type: string
+          description: The name of the list.
+          example: Example Record
+        objectTypeId:
+          type: string
+          description: The object type ID for the list (e.g., 0-1 for contacts).
+          example: '500123'
+        processingType:
+          type: string
+          enum:
+          - MANUAL
+          - DYNAMIC
+          - SNAPSHOT
+          description: The type of list processing.
+          example: MANUAL
+        filterBranch:
+          type: object
+          description: The filter branch definition for dynamic lists.
+          example: {}
+    CollectionResponseList:
+      type: object
+      description: A paginated list of CRM lists.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/List'
+          example:
+          - listId: '500123'
+            name: Example Record
+            listType: STATIC
+            objectTypeId: '500123'
+            processingStatus: active
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            filterBranch: {}
+            memberCount: 10
+        paging:
+          $ref: '#/components/schemas/Paging'
     List:
       type: object
       description: A HubSpot CRM list.
@@ -245,26 +293,6 @@ components:
           type: integer
           description: The current number of members in the list.
           example: 10
-    CollectionResponseList:
-      type: object
-      description: A paginated list of CRM lists.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/List'
-          example:
-          - listId: '500123'
-            name: Example Record
-            listType: STATIC
-            objectTypeId: '500123'
-            processingStatus: active
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            filterBranch: {}
-            memberCount: 10
-        paging:
-          $ref: '#/components/schemas/Paging'
     Error:
       type: object
       description: An error response.
@@ -281,34 +309,6 @@ components:
         category:
           type: string
           example: standard
-    ListCreateRequest:
-      type: object
-      description: Request body for creating a new CRM list.
-      required:
-      - name
-      - objectTypeId
-      - processingType
-      properties:
-        name:
-          type: string
-          description: The name of the list.
-          example: Example Record
-        objectTypeId:
-          type: string
-          description: The object type ID for the list (e.g., 0-1 for contacts).
-          example: '500123'
-        processingType:
-          type: string
-          enum:
-          - MANUAL
-          - DYNAMIC
-          - SNAPSHOT
-          description: The type of list processing.
-          example: MANUAL
-        filterBranch:
-          type: object
-          description: The filter branch definition for dynamic lists.
-          example: {}
     Paging:
       type: object
       description: Pagination information.
@@ -321,6 +321,12 @@ components:
           example:
             after: example-value
   responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -329,12 +335,6 @@ components:
             $ref: '#/components/schemas/Error'
     BadRequest:
       description: The request is invalid or missing required parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials are missing or invalid.
       content:
         application/json:
           schema:

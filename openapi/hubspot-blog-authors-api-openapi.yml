@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Blog Authors API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -255,96 +255,52 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  examples:
-    BlogAuthorExample:
-      summary: Complete blog author profile
-      value:
-        id: '12345678901'
-        name: Jane Smith
-        slug: jane-smith
-        email: jane.smith@example.com
-        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
-        website: https://janesmith.com
-        twitter: '@janesmith'
-        linkedin: https://linkedin.com/in/janesmith
-        avatar: https://example.com/avatars/jane-smith.jpg
-        language: en
-        created: '2024-01-15T10:30:00Z'
-        updated: '2024-01-20T14:45:00Z'
-    BlogAuthorCollectionExample:
-      summary: Paginated list of blog authors
-      value:
-        total: 25
-        results:
-        - id: '12345678901'
-          name: Jane Smith
-          slug: jane-smith
-          email: jane.smith@example.com
-          bio: Senior content strategist
-          language: en
-          created: '2024-01-15T10:30:00Z'
-          updated: '2024-01-20T14:45:00Z'
-        - id: '12345678902'
-          name: John Doe
-          slug: john-doe
-          email: john.doe@example.com
-          bio: Technical writer and developer advocate
-          language: en
-          created: '2024-01-10T09:00:00Z'
-          updated: '2024-01-18T11:30:00Z'
-        paging:
-          next:
-            after: NTI1Cg%3D%3D
-            link: /cms/v3/blogs/authors?after=NTI1Cg%3D%3D
-    ErrorExample:
-      summary: Validation error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input (details will vary based on the error)
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    BlogAuthorInputExample:
-      summary: Blog author creation input
-      value:
-        name: Jane Smith
-        slug: jane-smith
-        email: jane.smith@example.com
-        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
-        website: https://janesmith.com
-        twitter: '@janesmith'
   schemas:
-    ErrorDetail:
+    BlogAuthorInput:
       type: object
-      description: Detailed information about a specific error
+      description: Input data for creating or updating a blog author
       properties:
-        message:
+        name:
           type: string
-          description: Human-readable error message
-          example: This is an example description.
-        code:
+          description: Full display name of the author
+          example: Example Record
+        slug:
           type: string
-          description: Machine-readable error code
+          description: URL-friendly identifier for the author
           example: example-value
-        subCategory:
+        email:
           type: string
-          description: Specific error subcategory
-          example: standard
-        in:
+          format: email
+          description: Author's email address
+          example: jsmith@example.com
+        bio:
           type: string
-          description: Location where the error occurred
+          description: Author biography or description
           example: example-value
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Additional context about the error
-          example:
-            key: value
+        website:
+          type: string
+          format: uri
+          description: Author's personal website URL
+          example: https://app.hubspot.com/contacts/12345
+        twitter:
+          type: string
+          description: Author's Twitter/X handle
+          example: example-value
+        facebook:
+          type: string
+          description: Author's Facebook profile URL
+          example: example-value
+        linkedin:
+          type: string
+          description: Author's LinkedIn profile URL
+          example: https://app.hubspot.com/contacts/12345
+        avatar:
+          type: string
+          format: uri
+          description: URL to the author's avatar image
+          example: https://app.hubspot.com/contacts/12345
       required:
-      - message
+      - name
     Error:
       type: object
       description: Standard error response returned when an API request fails
@@ -432,6 +388,55 @@ components:
       required:
       - total
       - results
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: This is an example description.
+        code:
+          type: string
+          description: Machine-readable error code
+          example: example-value
+        subCategory:
+          type: string
+          description: Specific error subcategory
+          example: standard
+        in:
+          type: string
+          description: Location where the error occurred
+          example: example-value
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Additional context about the error
+          example:
+            key: value
+      required:
+      - message
+    PagingNext:
+      type: object
+      description: Pagination cursor for retrieving the next page of results
+      properties:
+        after:
+          type: string
+          description: Cursor token for the next page
+          example: example-value
+        link:
+          type: string
+          description: API link to the next page of results
+          example: https://app.hubspot.com/contacts/12345
+    Paging:
+      type: object
+      description: Pagination information for navigating result sets
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
     BlogAuthor:
       type: object
       description: Represents a blog author profile with biographical and social information
@@ -507,69 +512,64 @@ components:
       - name
       - created
       - updated
-    Paging:
-      type: object
-      description: Pagination information for navigating result sets
-      properties:
-        next:
-          $ref: '#/components/schemas/PagingNext'
-    PagingNext:
-      type: object
-      description: Pagination cursor for retrieving the next page of results
-      properties:
-        after:
-          type: string
-          description: Cursor token for the next page
-          example: example-value
-        link:
-          type: string
-          description: API link to the next page of results
-          example: https://app.hubspot.com/contacts/12345
-    BlogAuthorInput:
-      type: object
-      description: Input data for creating or updating a blog author
-      properties:
-        name:
-          type: string
-          description: Full display name of the author
-          example: Example Record
-        slug:
-          type: string
-          description: URL-friendly identifier for the author
-          example: example-value
-        email:
-          type: string
-          format: email
-          description: Author's email address
-          example: jsmith@example.com
-        bio:
-          type: string
-          description: Author biography or description
-          example: example-value
-        website:
-          type: string
-          format: uri
-          description: Author's personal website URL
-          example: https://app.hubspot.com/contacts/12345
-        twitter:
-          type: string
-          description: Author's Twitter/X handle
-          example: example-value
-        facebook:
-          type: string
-          description: Author's Facebook profile URL
-          example: example-value
-        linkedin:
-          type: string
-          description: Author's LinkedIn profile URL
-          example: https://app.hubspot.com/contacts/12345
-        avatar:
-          type: string
-          format: uri
-          description: URL to the author's avatar image
-          example: https://app.hubspot.com/contacts/12345
-      required:
-      - name
+  examples:
+    BlogAuthorCollectionExample:
+      summary: Paginated list of blog authors
+      value:
+        total: 25
+        results:
+        - id: '12345678901'
+          name: Jane Smith
+          slug: jane-smith
+          email: jane.smith@example.com
+          bio: Senior content strategist
+          language: en
+          created: '2024-01-15T10:30:00Z'
+          updated: '2024-01-20T14:45:00Z'
+        - id: '12345678902'
+          name: John Doe
+          slug: john-doe
+          email: john.doe@example.com
+          bio: Technical writer and developer advocate
+          language: en
+          created: '2024-01-10T09:00:00Z'
+          updated: '2024-01-18T11:30:00Z'
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /cms/v3/blogs/authors?after=NTI1Cg%3D%3D
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input (details will vary based on the error)
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    BlogAuthorInputExample:
+      summary: Blog author creation input
+      value:
+        name: Jane Smith
+        slug: jane-smith
+        email: jane.smith@example.com
+        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
+        website: https://janesmith.com
+        twitter: '@janesmith'
+    BlogAuthorExample:
+      summary: Complete blog author profile
+      value:
+        id: '12345678901'
+        name: Jane Smith
+        slug: jane-smith
+        email: jane.smith@example.com
+        bio: Jane is a senior content strategist with 10 years of experience in digital marketing.
+        website: https://janesmith.com
+        twitter: '@janesmith'
+        linkedin: https://linkedin.com/in/janesmith
+        avatar: https://example.com/avatars/jane-smith.jpg
+        language: en
+        created: '2024-01-15T10:30:00Z'
+        updated: '2024-01-20T14:45:00Z'
   responses:
     ErrorResponse:
       description: An error occurred while processing the request

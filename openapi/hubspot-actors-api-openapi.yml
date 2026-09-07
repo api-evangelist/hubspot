@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Actors API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -105,37 +105,43 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
-  schemas:
-    ErrorDetail:
-      type: object
-      description: Detailed information about a specific error.
-      properties:
-        message:
-          type: string
-          description: Human-readable error message
-          example: Invalid thread ID format
-        code:
-          type: string
-          description: Error code
-          example: INVALID_FORMAT
-        subCategory:
-          type: string
-          description: Error subcategory
-          example: PARAMETER_ERROR
-        in:
-          type: string
-          description: Location where error occurred
-          example: path
+  examples:
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
         context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-      required:
-      - message
+          invalidFields:
+          - threadId
+    ActorExample:
+      summary: A complete actor record
+      value:
+        id: actor_101
+        actorId: actor_101
+        name: John Customer
+        email: john@example.com
+        type: VISITOR
+    ActorCollectionExample:
+      summary: Paginated list of actors
+      value:
+        results:
+        - id: actor_101
+          actorId: actor_101
+          name: John Customer
+          email: john@example.com
+          type: VISITOR
+        - id: actor_agent_123
+          actorId: actor_agent_123
+          name: Support Agent
+          email: support@example.com
+          type: AGENT
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /conversations/v3/conversations/actors?after=NTI1Cg%3D%3D
+  schemas:
     ActorCollection:
       type: object
       description: Paginated collection of actors
@@ -155,6 +161,33 @@ components:
           $ref: '#/components/schemas/Paging'
       required:
       - results
+    Actor:
+      type: object
+      description: Represents a participant in a conversation (visitor, agent, or bot).
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the actor
+          example: actor_101
+        actorId:
+          type: string
+          description: Actor ID reference
+          example: actor_101
+        name:
+          type: string
+          description: Display name of the actor
+          example: John Customer
+        email:
+          type: string
+          format: email
+          description: Email address of the actor
+          example: john@example.com
+        type:
+          type: string
+          description: Type of actor (e.g., VISITOR, AGENT, BOT)
+          example: VISITOR
+      required:
+      - id
     Error:
       type: object
       description: Standard error response structure.
@@ -205,6 +238,36 @@ components:
       - category
       - correlationId
       - message
+    ErrorDetail:
+      type: object
+      description: Detailed information about a specific error.
+      properties:
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid thread ID format
+        code:
+          type: string
+          description: Error code
+          example: INVALID_FORMAT
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: PARAMETER_ERROR
+        in:
+          type: string
+          description: Location where error occurred
+          example: path
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
     Paging:
       type: object
       description: Pagination information for list responses.
@@ -223,33 +286,6 @@ components:
           type: string
           description: API link to the next page
           example: /conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D
-    Actor:
-      type: object
-      description: Represents a participant in a conversation (visitor, agent, or bot).
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the actor
-          example: actor_101
-        actorId:
-          type: string
-          description: Actor ID reference
-          example: actor_101
-        name:
-          type: string
-          description: Display name of the actor
-          example: John Customer
-        email:
-          type: string
-          format: email
-          description: Email address of the actor
-          example: john@example.com
-        type:
-          type: string
-          description: Type of actor (e.g., VISITOR, AGENT, BOT)
-          example: VISITOR
-      required:
-      - id
   responses:
     ErrorResponse:
       description: An error occurred while processing the request
@@ -260,42 +296,6 @@ components:
           examples:
             ValidationError:
               $ref: '#/components/examples/ErrorExample'
-  examples:
-    ActorCollectionExample:
-      summary: Paginated list of actors
-      value:
-        results:
-        - id: actor_101
-          actorId: actor_101
-          name: John Customer
-          email: john@example.com
-          type: VISITOR
-        - id: actor_agent_123
-          actorId: actor_agent_123
-          name: Support Agent
-          email: support@example.com
-          type: AGENT
-        paging:
-          next:
-            after: NTI1Cg%3D%3D
-            link: /conversations/v3/conversations/actors?after=NTI1Cg%3D%3D
-    ErrorExample:
-      summary: Validation error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input parameters
-        context:
-          invalidFields:
-          - threadId
-    ActorExample:
-      summary: A complete actor record
-      value:
-        id: actor_101
-        actorId: actor_101
-        name: John Customer
-        email: john@example.com
-        type: VISITOR
   securitySchemes:
     OAuth2:
       type: oauth2

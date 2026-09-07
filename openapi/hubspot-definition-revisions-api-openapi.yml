@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Definition Revisions API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -69,16 +69,16 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: &id001
+                    errors:
                     - message: This is an example description.
                       code: example-value
                       in: example-value
                       subCategory: standard
                       context:
                         key: value
-                    context: &id002
+                    context:
                       key: value
-                    links: &id003
+                    links:
                       key: value
         '401':
           description: Unauthorized - Invalid or missing authentication
@@ -95,9 +95,17 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id001
-                    context: *id002
-                    links: *id003
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
         '404':
           description: Action definition not found
           content:
@@ -113,9 +121,17 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id001
-                    context: *id002
-                    links: *id003
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
         '500':
           description: Internal server error
           content:
@@ -131,9 +147,17 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id001
-                    context: *id002
-                    links: *id003
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
   /automation/v4/actions/{appId}/{definitionId}/revisions/{revisionId}:
     get:
       tags:
@@ -185,16 +209,16 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: &id004
+                    errors:
                     - message: This is an example description.
                       code: example-value
                       in: example-value
                       subCategory: standard
                       context:
                         key: value
-                    context: &id005
+                    context:
                       key: value
-                    links: &id006
+                    links:
                       key: value
         '401':
           description: Unauthorized - Invalid or missing authentication
@@ -211,9 +235,17 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id004
-                    context: *id005
-                    links: *id006
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
         '404':
           description: Revision not found
           content:
@@ -229,9 +261,17 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id004
-                    context: *id005
-                    links: *id006
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
         '500':
           description: Internal server error
           content:
@@ -247,10 +287,60 @@ paths:
                     correlationId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
                     message: This is an example description.
                     subCategory: standard
-                    errors: *id004
-                    context: *id005
-                    links: *id006
+                    errors:
+                    - message: This is an example description.
+                      code: example-value
+                      in: example-value
+                      subCategory: standard
+                      context:
+                        key: value
+                    context:
+                      key: value
+                    links:
+                      key: value
 components:
+  parameters:
+    LimitQuery:
+      name: limit
+      in: query
+      description: Maximum number of results to return per page
+      schema:
+        type: integer
+        default: 100
+        maximum: 500
+      example: 100
+    AppIdPath:
+      name: appId
+      in: path
+      required: true
+      description: The unique identifier of the HubSpot application
+      schema:
+        type: integer
+        format: int32
+      example: 12345
+    DefinitionIdPath:
+      name: definitionId
+      in: path
+      required: true
+      description: The unique identifier of the action definition
+      schema:
+        type: string
+      example: action-def-001
+    RevisionIdPath:
+      name: revisionId
+      in: path
+      required: true
+      description: The unique identifier of the revision
+      schema:
+        type: string
+      example: rev-001
+    AfterQuery:
+      name: after
+      in: query
+      description: Pagination cursor for the next page of results
+      schema:
+        type: string
+      example: NTI1Cg%3D%3D
   schemas:
     ActionFunctionReference:
       type: object
@@ -272,139 +362,102 @@ components:
           type: string
           description: The unique identifier of the function
           example: '500123'
-    OutputField:
+    FieldOption:
       type: object
-      description: An output field returned by the action
+      description: An option for an enumeration field
       required:
-      - typeDefinition
+      - label
+      - value
       properties:
-        typeDefinition:
-          $ref: '#/components/schemas/FieldTypeDefinition'
-    ActionDefinitionRevision:
-      type: object
-      description: A revision of an action definition
-      required:
-      - revisionId
-      - definition
-      - createdAt
-      properties:
-        revisionId:
-          type: string
-          description: The unique identifier of the revision
-          example: '500123'
-        definition:
-          $ref: '#/components/schemas/ActionDefinition'
-        createdAt:
-          type: string
-          format: date-time
-          description: When the revision was created
-          example: '2025-03-15T14:30:00Z'
-    FieldTypeDefinition:
-      type: object
-      description: Definition of a field's type and configuration
-      required:
-      - name
-      - type
-      properties:
-        name:
-          type: string
-          description: The programmatic name of the field
-          example: Example Record
-        type:
-          type: string
-          enum:
-          - STRING
-          - NUMBER
-          - BOOL
-          - DATE
-          - DATETIME
-          - ENUMERATION
-          - PHONE_NUMBER
-          - CURRENCY
-          description: The data type of the field
-          example: STRING
-        fieldType:
-          type: string
-          enum:
-          - TEXT
-          - TEXTAREA
-          - NUMBER
-          - SELECT
-          - BOOLEANCHECKBOX
-          - DATE
-          - FILE
-          description: The UI field type for input
-          example: TEXT
         label:
           type: string
-          description: Human-readable label for the field
+          description: Display label for the option
           example: Example Record
-        description:
+        value:
           type: string
-          description: Description of the field
-          example: This is an example description.
-        options:
-          type: array
-          description: Options for enumeration fields
-          items:
-            $ref: '#/components/schemas/FieldOption'
-          example:
-          - label: Example Record
-            value: example-value
-            displayOrder: 100
-    ErrorDetail:
+          description: The value of the option
+          example: example-value
+        displayOrder:
+          type: integer
+          description: Order in which to display the option
+          example: 100
+    Error:
       type: object
-      description: Detailed error information
+      description: An error response
       required:
+      - category
+      - correlationId
       - message
       properties:
+        category:
+          type: string
+          description: The error category
+          example: standard
+        correlationId:
+          type: string
+          format: uuid
+          description: A unique identifier for this error instance
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         message:
           type: string
-          description: The error message
+          description: A human-readable error message
           example: This is an example description.
-        code:
-          type: string
-          description: An error code
-          example: example-value
-        in:
-          type: string
-          description: The location of the error
-          example: example-value
         subCategory:
           type: string
-          description: A specific error subcategory
+          description: A more specific error category
           example: standard
+        errors:
+          type: array
+          description: Detailed error information
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          example:
+          - message: This is an example description.
+            code: example-value
+            in: example-value
+            subCategory: standard
+            context:
+              key: value
         context:
           type: object
+          description: Additional context about the error
           additionalProperties:
             type: array
             items:
               type: string
           example:
             key: value
-    ObjectRequestOptions:
-      type: object
-      description: Options for requesting CRM object data
-      properties:
-        properties:
-          type: array
-          description: CRM properties to include in the action execution request
-          items:
+        links:
+          type: object
+          description: Related links
+          additionalProperties:
             type: string
           example:
-          - example-value
-    Paging:
+            key: value
+    InputField:
       type: object
-      description: Pagination information
+      description: An input field for the action
+      required:
+      - typeDefinition
+      - supportedValueTypes
       properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-              description: Cursor for the next page
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+        supportedValueTypes:
+          type: array
+          description: The types of values that can be provided for this field
+          items:
+            type: string
+            enum:
+            - STATIC_VALUE
+            - OBJECT_PROPERTY
+            - OUTPUT_FROM_PREVIOUS_ACTION
           example:
-            after: example-value
+          - STATIC_VALUE
+        isRequired:
+          type: boolean
+          description: Whether this field is required
+          example: true
     ActionDefinitionRevisionCollection:
       type: object
       description: A paginated collection of action definition revisions
@@ -422,6 +475,26 @@ components:
             createdAt: '2025-03-15T14:30:00Z'
         paging:
           $ref: '#/components/schemas/Paging'
+    OutputField:
+      type: object
+      description: An output field returned by the action
+      required:
+      - typeDefinition
+      properties:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+    Paging:
+      type: object
+      description: Pagination information
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: Cursor for the next page
+          example:
+            after: example-value
     ActionDefinition:
       type: object
       description: A custom workflow action definition
@@ -491,6 +564,36 @@ components:
           example:
           - functionType: PRE_ACTION_EXECUTION
             id: '500123'
+    ErrorDetail:
+      type: object
+      description: Detailed error information
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: The error message
+          example: This is an example description.
+        code:
+          type: string
+          description: An error code
+          example: example-value
+        in:
+          type: string
+          description: The location of the error
+          example: example-value
+        subCategory:
+          type: string
+          description: A specific error subcategory
+          example: standard
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
     ActionLabels:
       type: object
       description: Human-readable labels for the action
@@ -513,144 +616,89 @@ components:
           type: string
           description: Content to display on the action card in the workflow editor
           example: example-value
-    Error:
+    FieldTypeDefinition:
       type: object
-      description: An error response
+      description: Definition of a field's type and configuration
       required:
-      - category
-      - correlationId
-      - message
+      - name
+      - type
       properties:
-        category:
+        name:
           type: string
-          description: The error category
-          example: standard
-        correlationId:
+          description: The programmatic name of the field
+          example: Example Record
+        type:
           type: string
-          format: uuid
-          description: A unique identifier for this error instance
-          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        message:
+          enum:
+          - STRING
+          - NUMBER
+          - BOOL
+          - DATE
+          - DATETIME
+          - ENUMERATION
+          - PHONE_NUMBER
+          - CURRENCY
+          description: The data type of the field
+          example: STRING
+        fieldType:
           type: string
-          description: A human-readable error message
-          example: This is an example description.
-        subCategory:
-          type: string
-          description: A more specific error category
-          example: standard
-        errors:
-          type: array
-          description: Detailed error information
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          example:
-          - message: This is an example description.
-            code: example-value
-            in: example-value
-            subCategory: standard
-            context:
-              key: value
-        context:
-          type: object
-          description: Additional context about the error
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-        links:
-          type: object
-          description: Related links
-          additionalProperties:
-            type: string
-          example:
-            key: value
-    FieldOption:
-      type: object
-      description: An option for an enumeration field
-      required:
-      - label
-      - value
-      properties:
+          enum:
+          - TEXT
+          - TEXTAREA
+          - NUMBER
+          - SELECT
+          - BOOLEANCHECKBOX
+          - DATE
+          - FILE
+          description: The UI field type for input
+          example: TEXT
         label:
           type: string
-          description: Display label for the option
+          description: Human-readable label for the field
           example: Example Record
-        value:
+        description:
           type: string
-          description: The value of the option
-          example: example-value
-        displayOrder:
-          type: integer
-          description: Order in which to display the option
-          example: 100
-    InputField:
-      type: object
-      description: An input field for the action
-      required:
-      - typeDefinition
-      - supportedValueTypes
-      properties:
-        typeDefinition:
-          $ref: '#/components/schemas/FieldTypeDefinition'
-        supportedValueTypes:
+          description: Description of the field
+          example: This is an example description.
+        options:
           type: array
-          description: The types of values that can be provided for this field
+          description: Options for enumeration fields
+          items:
+            $ref: '#/components/schemas/FieldOption'
+          example:
+          - label: Example Record
+            value: example-value
+            displayOrder: 100
+    ObjectRequestOptions:
+      type: object
+      description: Options for requesting CRM object data
+      properties:
+        properties:
+          type: array
+          description: CRM properties to include in the action execution request
           items:
             type: string
-            enum:
-            - STATIC_VALUE
-            - OBJECT_PROPERTY
-            - OUTPUT_FROM_PREVIOUS_ACTION
           example:
-          - STATIC_VALUE
-        isRequired:
-          type: boolean
-          description: Whether this field is required
-          example: true
-  parameters:
-    AppIdPath:
-      name: appId
-      in: path
-      required: true
-      description: The unique identifier of the HubSpot application
-      schema:
-        type: integer
-        format: int32
-      example: 12345
-    DefinitionIdPath:
-      name: definitionId
-      in: path
-      required: true
-      description: The unique identifier of the action definition
-      schema:
-        type: string
-      example: action-def-001
-    AfterQuery:
-      name: after
-      in: query
-      description: Pagination cursor for the next page of results
-      schema:
-        type: string
-      example: NTI1Cg%3D%3D
-    RevisionIdPath:
-      name: revisionId
-      in: path
-      required: true
-      description: The unique identifier of the revision
-      schema:
-        type: string
-      example: rev-001
-    LimitQuery:
-      name: limit
-      in: query
-      description: Maximum number of results to return per page
-      schema:
-        type: integer
-        default: 100
-        maximum: 500
-      example: 100
+          - example-value
+    ActionDefinitionRevision:
+      type: object
+      description: A revision of an action definition
+      required:
+      - revisionId
+      - definition
+      - createdAt
+      properties:
+        revisionId:
+          type: string
+          description: The unique identifier of the revision
+          example: '500123'
+        definition:
+          $ref: '#/components/schemas/ActionDefinition'
+        createdAt:
+          type: string
+          format: date-time
+          description: When the revision was created
+          example: '2025-03-15T14:30:00Z'
   examples:
     ActionDefinitionRevisionSuccessExample:
       summary: Example action definition revision

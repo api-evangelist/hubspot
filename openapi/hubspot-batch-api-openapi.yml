@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Batch API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -1378,6 +1378,146 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    BatchCreateInput_2:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_2'
+          example:
+          - properties:
+              key: value
+    Paging_3:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+              description: The cursor to use to get the next page of results.
+          example:
+            after: example-value
+    BatchUpdateInput_4:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    Error:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    Association_3:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Meeting:
+      type: object
+      description: A HubSpot meeting engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the meeting.
+          example: '500123'
+        properties:
+          type: object
+          description: The meeting's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    EmailEngagement:
+      type: object
+      description: A HubSpot email engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the email engagement.
+          example: '500123'
+        properties:
+          type: object
+          description: The email engagement's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    Association:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
     BatchUpdateInput:
       type: object
       properties:
@@ -1396,6 +1536,522 @@ components:
           - id: '500123'
             properties:
               key: value
+    Ticket:
+      type: object
+      description: A HubSpot ticket record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the ticket.
+          example: '500123'
+        properties:
+          type: object
+          description: The ticket's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the ticket was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the ticket was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the ticket has been archived.
+          example: true
+        associations:
+          type: object
+          description: The ticket's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_5'
+          example:
+            key: value
+    CollectionResponseAssociation_5:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_5'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_5'
+    CollectionResponseAssociation_4:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_4'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_4'
+    Paging_4:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    CollectionResponseAssociation_3:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_3'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_3'
+    BatchResponseEmailEngagement:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailEngagement'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Company:
+      type: object
+      description: A HubSpot company record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the company.
+          example: '500123'
+        properties:
+          type: object
+          description: The company's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the company was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the company was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the company has been archived.
+          example: true
+        associations:
+          type: object
+          description: The company's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation_2'
+          example:
+            key: value
+    BatchReadInput_4:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchUpdateInput_3:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    BatchReadInput:
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    CollectionResponseAssociation_2:
+      type: object
+      description: A list of associations.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association_2'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging_2'
+    BatchResponseSubscription:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subscription'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    SimplePublicObjectInput_4:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    SimplePublicObjectInput_3:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          description: The properties to set on the object.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    BatchResponseContact:
+      type: object
+      description: Results from a batch operation on contacts.
+      properties:
+        status:
+          type: string
+          description: The status of the batch operation.
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Association_5:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    BatchResponseTask:
+      type: object
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    Paging:
+      type: object
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    Task:
+      type: object
+      description: A HubSpot task engagement record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the task.
+          example: '500123'
+        properties:
+          type: object
+          description: The task's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    BatchReadInput_3:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          description: The properties to return for each record.
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          description: The IDs of the records to read.
+          example:
+          - id: '500123'
+    BatchUpdateInput_5:
+      type: object
+      description: Input for a batch update operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              properties:
+                type: object
+                additionalProperties:
+                  type: string
+          example:
+          - id: '500123'
+            properties:
+              key: value
+    BatchResponseDeal:
+      type: object
+      description: Results from a batch operation on deals.
+      properties:
+        status:
+          type: string
+          example: active
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deal'
+          example:
+          - id: '500123'
+            properties:
+              key: value
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+            associations:
+              key: value
+        completedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+    BatchCreateInput_5:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_5'
+          example:
+          - properties:
+              key: value
+    Subscription:
+      type: object
+      description: A HubSpot commerce subscription record.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the subscription.
+          example: '500123'
+        properties:
+          type: object
+          description: The subscription's properties as key-value pairs.
+          additionalProperties:
+            type: string
+          example:
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          example: true
+        associations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
+    BatchCreateInput_3:
+      type: object
+      description: Input for a batch create operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObjectInput_3'
+          example:
+          - properties:
+              key: value
+    Association_4:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
+    Paging_2:
+      type: object
+      description: Pagination information.
+      properties:
+        next:
+          type: object
+          properties:
+            after:
+              type: string
+          example:
+            after: example-value
+    BatchReadInput_5:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
     BatchResponseCompany:
       type: object
       description: Results from a batch operation on companies.
@@ -1430,19 +2086,39 @@ components:
           example:
           - properties:
               key: value
-    BatchCreateInput_2:
+    BatchReadInput_2:
+      type: object
+      description: Input for a batch read operation.
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+          example:
+          - example-value
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchCreateInput_4:
       type: object
       description: Input for a batch create operation.
       properties:
         inputs:
           type: array
           items:
-            $ref: '#/components/schemas/SimplePublicObjectInput_2'
+            $ref: '#/components/schemas/SimplePublicObjectInput_4'
           example:
           - properties:
               key: value
-    BatchResponseSubscription:
+    BatchResponseTicket:
       type: object
+      description: Results from a batch operation on tickets.
       properties:
         status:
           type: string
@@ -1450,7 +2126,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Subscription'
+            $ref: '#/components/schemas/Ticket'
           example:
           - id: '500123'
             properties:
@@ -1464,39 +2140,9 @@ components:
           type: string
           format: date-time
           example: '2025-03-15T14:30:00Z'
-    Association_5:
-      type: object
-      description: An association between two CRM objects.
-      properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    Paging_4:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
     SimplePublicObjectInput_5:
       type: object
       description: Input for creating or updating a CRM object.
-      properties:
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          example:
-            key: value
-    SimplePublicObjectInput:
-      type: object
       properties:
         properties:
           type: object
@@ -1540,39 +2186,41 @@ components:
             $ref: '#/components/schemas/CollectionResponseAssociation_3'
           example:
             key: value
-    Association_2:
-      type: object
-      description: An association between two CRM objects.
-      properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    Association:
+    SimplePublicObjectInput:
       type: object
       properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    CollectionResponseAssociation_4:
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            key: value
+    CollectionResponseAssociation:
       type: object
-      description: A list of associations.
       properties:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Association_4'
+            $ref: '#/components/schemas/Association'
           example:
           - id: '500123'
             type: standard
         paging:
-          $ref: '#/components/schemas/Paging_4'
-    BatchUpdateInput_5:
+          $ref: '#/components/schemas/Paging'
+    BatchArchiveInput:
+      type: object
+      description: Input for a batch archive operation.
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: '500123'
+    BatchUpdateInput_2:
       type: object
       description: Input for a batch update operation.
       properties:
@@ -1591,80 +2239,27 @@ components:
           - id: '500123'
             properties:
               key: value
-    BatchReadInput_2:
+    Association_2:
       type: object
-      description: Input for a batch read operation.
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-          example:
-          - example-value
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          example:
-          - id: '500123'
-    Ticket:
-      type: object
-      description: A HubSpot ticket record.
+      description: An association between two CRM objects.
       properties:
         id:
           type: string
-          description: The unique identifier for the ticket.
           example: '500123'
-        properties:
-          type: object
-          description: The ticket's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
+        type:
           type: string
-          format: date-time
-          description: The date and time the ticket was created.
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          description: The date and time the ticket was last updated.
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          description: Whether the ticket has been archived.
-          example: true
-        associations:
-          type: object
-          description: The ticket's associations with other CRM objects.
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation_5'
-          example:
-            key: value
-    BatchReadInput_5:
+          example: standard
+    Paging_5:
       type: object
-      description: Input for a batch read operation.
+      description: Pagination information.
       properties:
-        properties:
-          type: array
-          items:
-            type: string
+        next:
+          type: object
+          properties:
+            after:
+              type: string
           example:
-          - example-value
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          example:
-          - id: '500123'
+            after: example-value
     BatchResponseMeeting:
       type: object
       properties:
@@ -1688,173 +2283,6 @@ components:
           type: string
           format: date-time
           example: '2025-03-15T14:30:00Z'
-    EmailEngagement:
-      type: object
-      description: A HubSpot email engagement record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the email engagement.
-          example: '500123'
-        properties:
-          type: object
-          description: The email engagement's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          example: true
-        associations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation'
-          example:
-            key: value
-    BatchResponseTicket:
-      type: object
-      description: Results from a batch operation on tickets.
-      properties:
-        status:
-          type: string
-          example: active
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ticket'
-          example:
-          - id: '500123'
-            properties:
-              key: value
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-            associations:
-              key: value
-        completedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-    Subscription:
-      type: object
-      description: A HubSpot commerce subscription record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the subscription.
-          example: '500123'
-        properties:
-          type: object
-          description: The subscription's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          example: true
-        associations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation'
-          example:
-            key: value
-    BatchResponseEmailEngagement:
-      type: object
-      properties:
-        status:
-          type: string
-          example: active
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailEngagement'
-          example:
-          - id: '500123'
-            properties:
-              key: value
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-            associations:
-              key: value
-        completedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-    Paging:
-      type: object
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
-    BatchCreateInput_4:
-      type: object
-      description: Input for a batch create operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplePublicObjectInput_4'
-          example:
-          - properties:
-              key: value
-    Paging_5:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
-    CollectionResponseAssociation_5:
-      type: object
-      description: A list of associations.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_5'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_5'
-    SimplePublicObjectInput_2:
-      type: object
-      description: Input for creating or updating a CRM object.
-      properties:
-        properties:
-          type: object
-          description: The properties to set on the object.
-          additionalProperties:
-            type: string
-          example:
-            key: value
     Deal:
       type: object
       description: A HubSpot deal record.
@@ -1891,316 +2319,7 @@ components:
             $ref: '#/components/schemas/CollectionResponseAssociation_4'
           example:
             key: value
-    BatchReadInput_3:
-      type: object
-      description: Input for a batch read operation.
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-          description: The properties to return for each record.
-          example:
-          - example-value
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          description: The IDs of the records to read.
-          example:
-          - id: '500123'
-    BatchArchiveInput:
-      type: object
-      description: Input for a batch archive operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          example:
-          - id: '500123'
-    BatchUpdateInput_2:
-      type: object
-      description: Input for a batch update operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              properties:
-                type: object
-                additionalProperties:
-                  type: string
-          example:
-          - id: '500123'
-            properties:
-              key: value
-    BatchCreateInput_5:
-      type: object
-      description: Input for a batch create operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplePublicObjectInput_5'
-          example:
-          - properties:
-              key: value
-    BatchResponseTask:
-      type: object
-      properties:
-        status:
-          type: string
-          example: active
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-          example:
-          - id: '500123'
-            properties:
-              key: value
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-            associations:
-              key: value
-        completedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-    SimplePublicObjectInput_4:
-      type: object
-      description: Input for creating or updating a CRM object.
-      properties:
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          example:
-            key: value
-    Meeting:
-      type: object
-      description: A HubSpot meeting engagement record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the meeting.
-          example: '500123'
-        properties:
-          type: object
-          description: The meeting's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          example: true
-        associations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation'
-          example:
-            key: value
-    Paging_2:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-          example:
-            after: example-value
-    BatchResponseDeal:
-      type: object
-      description: Results from a batch operation on deals.
-      properties:
-        status:
-          type: string
-          example: active
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Deal'
-          example:
-          - id: '500123'
-            properties:
-              key: value
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-            associations:
-              key: value
-        completedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-    Task:
-      type: object
-      description: A HubSpot task engagement record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the task.
-          example: '500123'
-        properties:
-          type: object
-          description: The task's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          example: true
-        associations:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation'
-          example:
-            key: value
-    BatchUpdateInput_4:
-      type: object
-      description: Input for a batch update operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              properties:
-                type: object
-                additionalProperties:
-                  type: string
-          example:
-          - id: '500123'
-            properties:
-              key: value
-    Paging_3:
-      type: object
-      description: Pagination information.
-      properties:
-        next:
-          type: object
-          properties:
-            after:
-              type: string
-              description: The cursor to use to get the next page of results.
-          example:
-            after: example-value
-    BatchReadInput:
-      type: object
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-          example:
-          - example-value
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          example:
-          - id: '500123'
-    Association_4:
-      type: object
-      description: An association between two CRM objects.
-      properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    Association_3:
-      type: object
-      description: An association between two CRM objects.
-      properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
-    BatchReadInput_4:
-      type: object
-      description: Input for a batch read operation.
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-          example:
-          - example-value
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-          example:
-          - id: '500123'
-    BatchResponseContact:
-      type: object
-      description: Results from a batch operation on contacts.
-      properties:
-        status:
-          type: string
-          description: The status of the batch operation.
-          example: active
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Contact'
-          example:
-          - id: '500123'
-            properties:
-              key: value
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-            associations:
-              key: value
-        completedAt:
-          type: string
-          format: date-time
-          example: '2025-03-15T14:30:00Z'
-    SimplePublicObjectInput_3:
+    SimplePublicObjectInput_2:
       type: object
       description: Input for creating or updating a CRM object.
       properties:
@@ -2211,125 +2330,6 @@ components:
             type: string
           example:
             key: value
-    Error:
-      type: object
-      properties:
-        status:
-          type: string
-          example: active
-        message:
-          type: string
-          example: This is an example description.
-        correlationId:
-          type: string
-          example: '500123'
-        category:
-          type: string
-          example: standard
-    CollectionResponseAssociation_3:
-      type: object
-      description: A list of associations.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_3'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_3'
-    CollectionResponseAssociation_2:
-      type: object
-      description: A list of associations.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association_2'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging_2'
-    Company:
-      type: object
-      description: A HubSpot company record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the company.
-          example: '500123'
-        properties:
-          type: object
-          description: The company's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time the company was created.
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          description: The date and time the company was last updated.
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          description: Whether the company has been archived.
-          example: true
-        associations:
-          type: object
-          description: The company's associations with other CRM objects.
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation_2'
-          example:
-            key: value
-    BatchCreateInput_3:
-      type: object
-      description: Input for a batch create operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplePublicObjectInput_3'
-          example:
-          - properties:
-              key: value
-    BatchUpdateInput_3:
-      type: object
-      description: Input for a batch update operation.
-      properties:
-        inputs:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              properties:
-                type: object
-                additionalProperties:
-                  type: string
-          example:
-          - id: '500123'
-            properties:
-              key: value
-    CollectionResponseAssociation:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association'
-          example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging'
   responses:
     BadRequest:
       description: The request is invalid or missing required parameters.

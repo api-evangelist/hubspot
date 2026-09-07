@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Contacts API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -321,6 +321,29 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    FilterGroup:
+      type: object
+      description: A group of filters combined with AND logic.
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+          example:
+          - propertyName: Example Record
+            operator: EQ
+            value: example-value
+    SimplePublicObjectInput:
+      type: object
+      description: Input for creating or updating a CRM object.
+      properties:
+        properties:
+          type: object
+          description: The properties to set on the object.
+          additionalProperties:
+            type: string
+          example:
+            key: value
     CollectionResponseContact:
       type: object
       description: A paginated list of contact records.
@@ -340,81 +363,6 @@ components:
               key: value
         paging:
           $ref: '#/components/schemas/Paging'
-    FilterGroup:
-      type: object
-      description: A group of filters combined with AND logic.
-      properties:
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Filter'
-          example:
-          - propertyName: Example Record
-            operator: EQ
-            value: example-value
-    Error:
-      type: object
-      description: An error response.
-      properties:
-        status:
-          type: string
-          example: active
-        message:
-          type: string
-          example: This is an example description.
-        correlationId:
-          type: string
-          example: '500123'
-        category:
-          type: string
-          example: standard
-    SimplePublicObjectInput:
-      type: object
-      description: Input for creating or updating a CRM object.
-      properties:
-        properties:
-          type: object
-          description: The properties to set on the object.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-    Contact:
-      type: object
-      description: A HubSpot contact record.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the contact.
-          example: '500123'
-        properties:
-          type: object
-          description: The contact's properties as key-value pairs.
-          additionalProperties:
-            type: string
-          example:
-            key: value
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time the contact was created.
-          example: '2025-03-15T14:30:00Z'
-        updatedAt:
-          type: string
-          format: date-time
-          description: The date and time the contact was last updated.
-          example: '2025-03-15T14:30:00Z'
-        archived:
-          type: boolean
-          description: Whether the contact has been archived.
-          example: true
-        associations:
-          type: object
-          description: The contact's associations with other CRM objects.
-          additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociation'
-          example:
-            key: value
     SearchRequest:
       type: object
       description: A search request for CRM objects.
@@ -458,16 +406,19 @@ components:
         after:
           type: string
           example: example-value
-    Association:
+    CollectionResponseAssociation:
       type: object
-      description: An association between two CRM objects.
+      description: A list of associations.
       properties:
-        id:
-          type: string
-          example: '500123'
-        type:
-          type: string
-          example: standard
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+          example:
+          - id: '500123'
+            type: standard
+        paging:
+          $ref: '#/components/schemas/Paging'
     Filter:
       type: object
       description: A single filter condition.
@@ -498,6 +449,32 @@ components:
           type: string
           description: The value to compare against.
           example: example-value
+    Error:
+      type: object
+      description: An error response.
+      properties:
+        status:
+          type: string
+          example: active
+        message:
+          type: string
+          example: This is an example description.
+        correlationId:
+          type: string
+          example: '500123'
+        category:
+          type: string
+          example: standard
+    Association:
+      type: object
+      description: An association between two CRM objects.
+      properties:
+        id:
+          type: string
+          example: '500123'
+        type:
+          type: string
+          example: standard
     Paging:
       type: object
       description: Pagination information.
@@ -510,20 +487,49 @@ components:
               description: The cursor to use to get the next page of results.
           example:
             after: example-value
-    CollectionResponseAssociation:
+    Contact:
       type: object
-      description: A list of associations.
+      description: A HubSpot contact record.
       properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Association'
+        id:
+          type: string
+          description: The unique identifier for the contact.
+          example: '500123'
+        properties:
+          type: object
+          description: The contact's properties as key-value pairs.
+          additionalProperties:
+            type: string
           example:
-          - id: '500123'
-            type: standard
-        paging:
-          $ref: '#/components/schemas/Paging'
+            key: value
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the contact was created.
+          example: '2025-03-15T14:30:00Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: The date and time the contact was last updated.
+          example: '2025-03-15T14:30:00Z'
+        archived:
+          type: boolean
+          description: Whether the contact has been archived.
+          example: true
+        associations:
+          type: object
+          description: The contact's associations with other CRM objects.
+          additionalProperties:
+            $ref: '#/components/schemas/CollectionResponseAssociation'
+          example:
+            key: value
   responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
@@ -532,12 +538,6 @@ components:
             $ref: '#/components/schemas/Error'
     BadRequest:
       description: The request is invalid or missing required parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials are missing or invalid.
       content:
         application/json:
           schema:

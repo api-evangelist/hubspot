@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Site Pages API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -361,26 +361,60 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: The request is invalid or missing required parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication credentials are missing or invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    CollectionResponsePage:
+      type: object
+      description: A paginated list of CMS pages.
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Page'
+          example:
+          - id: '500123'
+            name: Example Record
+            htmlTitle: Example Record
+            slug: example-value
+            state: DRAFT
+            currentState: active
+            contentTypeCategory: 100
+            publishDate: '2025-03-15T14:30:00Z'
+            metaDescription: This is an example description.
+            url: https://app.hubspot.com/contacts/12345
+            domain: example.hubspot.com
+            language: en
+            templatePath: /content/templates/example
+            createdAt: '2025-03-15T14:30:00Z'
+            updatedAt: '2025-03-15T14:30:00Z'
+            archived: true
+        paging:
+          $ref: '#/components/schemas/Paging'
+    PageUpdateRequest:
+      type: object
+      description: Request body for updating a CMS page.
+      properties:
+        name:
+          type: string
+          description: The internal name of the page.
+          example: Example Record
+        htmlTitle:
+          type: string
+          description: The HTML title tag content.
+          example: Example Record
+        slug:
+          type: string
+          description: The URL slug for the page.
+          example: example-value
+        metaDescription:
+          type: string
+          description: The meta description for SEO.
+          example: This is an example description.
+        layoutSections:
+          type: object
+          description: The layout sections and widget data for the page content.
+          additionalProperties: true
+          example:
+            key: value
     Error:
       type: object
       description: An error response.
@@ -397,6 +431,47 @@ components:
         category:
           type: string
           example: standard
+    PageCreateRequest:
+      type: object
+      description: Request body for creating a CMS page.
+      required:
+      - name
+      - slug
+      properties:
+        name:
+          type: string
+          description: The internal name of the page.
+          example: Example Record
+        htmlTitle:
+          type: string
+          description: The HTML title tag content.
+          example: Example Record
+        slug:
+          type: string
+          description: The URL slug for the page.
+          example: example-value
+        metaDescription:
+          type: string
+          description: The meta description for SEO.
+          example: This is an example description.
+        domain:
+          type: string
+          description: The domain to host the page on.
+          example: example.hubspot.com
+        language:
+          type: string
+          description: The language code for the page content.
+          example: en
+        templatePath:
+          type: string
+          description: The path to the template to use for the page.
+          example: /content/templates/example
+        layoutSections:
+          type: object
+          description: The layout sections and widget data for the page content.
+          additionalProperties: true
+          example:
+            key: value
     Paging:
       type: object
       description: Pagination information.
@@ -483,100 +558,25 @@ components:
           type: boolean
           description: Whether the page has been archived.
           example: true
-    PageCreateRequest:
-      type: object
-      description: Request body for creating a CMS page.
-      required:
-      - name
-      - slug
-      properties:
-        name:
-          type: string
-          description: The internal name of the page.
-          example: Example Record
-        htmlTitle:
-          type: string
-          description: The HTML title tag content.
-          example: Example Record
-        slug:
-          type: string
-          description: The URL slug for the page.
-          example: example-value
-        metaDescription:
-          type: string
-          description: The meta description for SEO.
-          example: This is an example description.
-        domain:
-          type: string
-          description: The domain to host the page on.
-          example: example.hubspot.com
-        language:
-          type: string
-          description: The language code for the page content.
-          example: en
-        templatePath:
-          type: string
-          description: The path to the template to use for the page.
-          example: /content/templates/example
-        layoutSections:
-          type: object
-          description: The layout sections and widget data for the page content.
-          additionalProperties: true
-          example:
-            key: value
-    PageUpdateRequest:
-      type: object
-      description: Request body for updating a CMS page.
-      properties:
-        name:
-          type: string
-          description: The internal name of the page.
-          example: Example Record
-        htmlTitle:
-          type: string
-          description: The HTML title tag content.
-          example: Example Record
-        slug:
-          type: string
-          description: The URL slug for the page.
-          example: example-value
-        metaDescription:
-          type: string
-          description: The meta description for SEO.
-          example: This is an example description.
-        layoutSections:
-          type: object
-          description: The layout sections and widget data for the page content.
-          additionalProperties: true
-          example:
-            key: value
-    CollectionResponsePage:
-      type: object
-      description: A paginated list of CMS pages.
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Page'
-          example:
-          - id: '500123'
-            name: Example Record
-            htmlTitle: Example Record
-            slug: example-value
-            state: DRAFT
-            currentState: active
-            contentTypeCategory: 100
-            publishDate: '2025-03-15T14:30:00Z'
-            metaDescription: This is an example description.
-            url: https://app.hubspot.com/contacts/12345
-            domain: example.hubspot.com
-            language: en
-            templatePath: /content/templates/example
-            createdAt: '2025-03-15T14:30:00Z'
-            updatedAt: '2025-03-15T14:30:00Z'
-            archived: true
-        paging:
-          $ref: '#/components/schemas/Paging'
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: The request is invalid or missing required parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: HubSpot Analytics Events Access Tokens Threads API
   description: "The HubSpot Analytics Events API allows you to retrieve event completion data \nfrom your HubSpot account. Use this API to query event instances associated with \nCRM objects, filter by event types, and analyze user behavior and engagement patterns.\n\n## Key Features\n- Retrieve event instances for CRM objects\n- Filter events by type, date range, and object\n- Paginate through large result sets\n- Query available event types\n"
@@ -230,6 +230,59 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
 components:
+  examples:
+    ErrorExample:
+      summary: Validation error response
+      value:
+        category: VALIDATION_ERROR
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        message: Invalid input parameters
+        context:
+          invalidFields:
+          - threadId
+    UpdateThreadRequestExample:
+      summary: Example request to update a thread
+      value:
+        status: CLOSED
+        assignedTo: user_789
+    ThreadExample:
+      summary: A complete thread record
+      value:
+        id: '987654321'
+        inboxId: '12345678'
+        status: OPEN
+        spam: false
+        associatedContactId: '101'
+        assignedTo: user_456
+        originalChannelId: channel_789
+        originalChannelAccountId: account_123
+        latestMessageTimestamp: '2024-01-20T10:30:00Z'
+        latestMessageSentTimestamp: '2024-01-20T10:25:00Z'
+        latestMessageReceivedTimestamp: '2024-01-20T10:30:00Z'
+        createdAt: '2024-01-15T09:00:00Z'
+        archived: false
+    ThreadCollectionExample:
+      summary: Paginated list of threads
+      value:
+        results:
+        - id: '987654321'
+          inboxId: '12345678'
+          status: OPEN
+          spam: false
+          associatedContactId: '101'
+          createdAt: '2024-01-15T09:00:00Z'
+          archived: false
+        - id: '987654322'
+          inboxId: '12345678'
+          status: CLOSED
+          spam: false
+          associatedContactId: '102'
+          createdAt: '2024-01-14T11:00:00Z'
+          archived: false
+        paging:
+          next:
+            after: NTI1Cg%3D%3D
+            link: /conversations/v3/conversations/threads?after=NTI1Cg%3D%3D
   schemas:
     ThreadCollection:
       type: object
@@ -259,36 +312,6 @@ components:
           $ref: '#/components/schemas/Paging'
       required:
       - results
-    ErrorDetail:
-      type: object
-      description: Detailed information about a specific error.
-      properties:
-        message:
-          type: string
-          description: Human-readable error message
-          example: Invalid thread ID format
-        code:
-          type: string
-          description: Error code
-          example: INVALID_FORMAT
-        subCategory:
-          type: string
-          description: Error subcategory
-          example: PARAMETER_ERROR
-        in:
-          type: string
-          description: Location where error occurred
-          example: path
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          example:
-            key: value
-      required:
-      - message
     Error:
       type: object
       description: Standard error response structure.
@@ -427,12 +450,36 @@ components:
       - inboxId
       - status
       - createdAt
-    Paging:
+    ErrorDetail:
       type: object
-      description: Pagination information for list responses.
+      description: Detailed information about a specific error.
       properties:
-        next:
-          $ref: '#/components/schemas/PagingNext'
+        message:
+          type: string
+          description: Human-readable error message
+          example: Invalid thread ID format
+        code:
+          type: string
+          description: Error code
+          example: INVALID_FORMAT
+        subCategory:
+          type: string
+          description: Error subcategory
+          example: PARAMETER_ERROR
+        in:
+          type: string
+          description: Location where error occurred
+          example: path
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          example:
+            key: value
+      required:
+      - message
     PagingNext:
       type: object
       description: Pagination cursor information for retrieving the next page.
@@ -445,59 +492,12 @@ components:
           type: string
           description: API link to the next page
           example: /conversations/v3/conversations/inboxes?after=NTI1Cg%3D%3D
-  examples:
-    ThreadCollectionExample:
-      summary: Paginated list of threads
-      value:
-        results:
-        - id: '987654321'
-          inboxId: '12345678'
-          status: OPEN
-          spam: false
-          associatedContactId: '101'
-          createdAt: '2024-01-15T09:00:00Z'
-          archived: false
-        - id: '987654322'
-          inboxId: '12345678'
-          status: CLOSED
-          spam: false
-          associatedContactId: '102'
-          createdAt: '2024-01-14T11:00:00Z'
-          archived: false
-        paging:
-          next:
-            after: NTI1Cg%3D%3D
-            link: /conversations/v3/conversations/threads?after=NTI1Cg%3D%3D
-    ThreadExample:
-      summary: A complete thread record
-      value:
-        id: '987654321'
-        inboxId: '12345678'
-        status: OPEN
-        spam: false
-        associatedContactId: '101'
-        assignedTo: user_456
-        originalChannelId: channel_789
-        originalChannelAccountId: account_123
-        latestMessageTimestamp: '2024-01-20T10:30:00Z'
-        latestMessageSentTimestamp: '2024-01-20T10:25:00Z'
-        latestMessageReceivedTimestamp: '2024-01-20T10:30:00Z'
-        createdAt: '2024-01-15T09:00:00Z'
-        archived: false
-    ErrorExample:
-      summary: Validation error response
-      value:
-        category: VALIDATION_ERROR
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        message: Invalid input parameters
-        context:
-          invalidFields:
-          - threadId
-    UpdateThreadRequestExample:
-      summary: Example request to update a thread
-      value:
-        status: CLOSED
-        assignedTo: user_789
+    Paging:
+      type: object
+      description: Pagination information for list responses.
+      properties:
+        next:
+          $ref: '#/components/schemas/PagingNext'
   responses:
     ErrorResponse:
       description: An error occurred while processing the request
