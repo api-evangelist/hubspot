@@ -1,0 +1,629 @@
+openapi: 3.2.0
+info:
+  title: Communication Preferences Subscriptions Status API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: STARTER
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Status
+paths:
+  /communication-preferences/2026-09/links/generate:
+    post:
+      tags:
+      - Status
+      summary: Generate subscription links
+      description: Generate communication preference links for a subscriber. This endpoint allows you to create URLs for managing preferences and unsubscribing, tailored to a specific subscriber. It is useful for integrating communication preference management into your applications.
+      operationId: post-/communication-preferences/2026-09/links/generate_/communication-preferences/v4/links/generate
+      parameters:
+      - name: channel
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+      - name: businessUnitId
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkGenerationRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkGenerationResponse'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - communication_preferences.read_write
+  /communication-preferences/2026-09/statuses/{subscriberIdString}:
+    get:
+      tags:
+      - Status
+      summary: Get subscription preferences for a specific contact
+      description: Retrieve a contact's current email subscription preferences.
+      operationId: get-/communication-preferences/2026-09/statuses/{subscriberIdString}
+      parameters:
+      - name: subscriberIdString
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: channel
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+      - name: businessUnitId
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponseWithResultsPublicStatus'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - communication_preferences.read_write
+    post:
+      tags:
+      - Status
+      summary: Update a contact's subscription status
+      description: Set the subscription status of a specific contact.
+      operationId: post-/communication-preferences/2026-09/statuses/{subscriberIdString}
+      parameters:
+      - name: subscriberIdString
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartialPublicStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponseWithResultsPublicStatus'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - communication_preferences.read_write
+  /communication-preferences/2026-09/statuses/{subscriberIdString}/unsubscribe-all:
+    get:
+      tags:
+      - Status
+      summary: Retrieve a contact's unsubscribed status
+      description: Check whether a contact has unsubscribed from all email subscriptions. If a contact has not opted out of all communications, the response `results` array will be empty.
+      operationId: get-/communication-preferences/2026-09/statuses/{subscriberIdString}/unsubscribe-all
+      parameters:
+      - name: subscriberIdString
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: channel
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+      - name: businessUnitId
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: verbose
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponseWithResultsPublicWideStatus'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - communication_preferences.read_write
+components:
+  schemas:
+    LinkGenerationRequest:
+      required:
+      - subscriberIdString
+      type: object
+      properties:
+        language:
+          type: string
+          description: The language in which the generated link should be presented, represented as a string.
+        subscriberIdString:
+          type: string
+          description: A string representing the unique identifier of the subscriber. This property is required.
+        subscriptionId:
+          type: integer
+          description: The unique identifier for the subscription, represented as an integer in int64 format.
+          format: int64
+    ActionResponseWithResultsPublicWideStatus:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: The date and time when the operation was completed.
+          format: date-time
+        errors:
+          type: array
+          description: An array of error objects detailing any issues encountered during the operation.
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: An object containing related links, where each key is a link name and each value is a URL.
+        numErrors:
+          type: integer
+          description: The number of errors encountered during the operation.
+          format: int32
+        requestedAt:
+          type: string
+          description: The date and time when the request was made.
+          format: date-time
+        results:
+          type: array
+          description: An array containing the results of the operation.
+          items:
+            $ref: '#/components/schemas/PublicWideStatus'
+        startedAt:
+          type: string
+          description: The date and time when the operation started.
+          format: date-time
+        status:
+          type: string
+          description: The current status of the operation, which can be PENDING, PROCESSING, CANCELED, or COMPLETE.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PartialPublicStatusRequest:
+      required:
+      - channel
+      - statusState
+      - subscriptionId
+      type: object
+      properties:
+        channel:
+          type: string
+          description: The type of communication channel, with 'EMAIL' as the only supported option.
+          enum:
+          - EMAIL
+        legalBasis:
+          type: string
+          description: The legal basis for communication, with options including 'LEGITIMATE_INTEREST_PQL', 'LEGITIMATE_INTEREST_CLIENT', 'PERFORMANCE_OF_CONTRACT', 'CONSENT_WITH_NOTICE', 'NON_GDPR', 'PROCESS_AND_STORE', and 'LEGITIMATE_INTEREST_OTHER'.
+          enum:
+          - CONSENT_WITH_NOTICE
+          - LEGITIMATE_INTEREST_CLIENT
+          - LEGITIMATE_INTEREST_OTHER
+          - LEGITIMATE_INTEREST_PQL
+          - NON_GDPR
+          - PERFORMANCE_OF_CONTRACT
+          - PROCESS_AND_STORE
+        legalBasisExplanation:
+          type: string
+          description: An explanation for the legal basis used for communication.
+        statusState:
+          type: string
+          description: The current subscription status of the contact, which can be 'SUBSCRIBED', 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
+          enum:
+          - NOT_SPECIFIED
+          - SUBSCRIBED
+          - UNSUBSCRIBED
+        subscriptionId:
+          type: integer
+          description: The unique identifier of the subscription to be updated.
+          format: int64
+    StandardError:
+      required:
+      - category
+      - context
+      - errors
+      - links
+      - message
+      - status
+      type: object
+      properties:
+        category:
+          type: string
+          description: A string that categorizes the type of error.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: An object containing additional context about the error condition, with keys as context names and values as arrays of strings.
+        errors:
+          type: array
+          description: An array of ErrorDetail objects providing further information about the error.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        id:
+          type: string
+          description: A string representing the unique identifier of the error.
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: An object mapping link names to associated URIs that contain documentation about the error or recommended remediation steps.
+        message:
+          type: string
+          description: A string containing a human-readable message describing the error.
+        status:
+          type: string
+          description: A string indicating the status of the error.
+        subCategory:
+          type: object
+          properties: {}
+          description: An object providing more specific categorization of the error.
+      description: Ye olde error
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicStatus:
+      required:
+      - channel
+      - source
+      - status
+      - subscriberIdString
+      - subscriptionId
+      - timestamp
+      type: object
+      properties:
+        businessUnitId:
+          type: integer
+          description: The ID of the business unit associated with the subscription.
+          format: int64
+        channel:
+          type: string
+          description: The type of communication channel, with 'EMAIL' as the only supported option.
+          enum:
+          - EMAIL
+        legalBasis:
+          type: string
+          description: The legal basis for communication, with options including 'LEGITIMATE_INTEREST_PQL', 'LEGITIMATE_INTEREST_CLIENT', 'PERFORMANCE_OF_CONTRACT', 'CONSENT_WITH_NOTICE', 'NON_GDPR', 'PROCESS_AND_STORE', and 'LEGITIMATE_INTEREST_OTHER'.
+          enum:
+          - CONSENT_WITH_NOTICE
+          - LEGITIMATE_INTEREST_CLIENT
+          - LEGITIMATE_INTEREST_OTHER
+          - LEGITIMATE_INTEREST_PQL
+          - NON_GDPR
+          - PERFORMANCE_OF_CONTRACT
+          - PROCESS_AND_STORE
+        legalBasisExplanation:
+          type: string
+          description: An explanation for the legal basis used for communication.
+        setStatusSuccessReason:
+          type: string
+          description: The reason for the successful change in subscription status, such as 'RESUBSCRIBE_OCCURRED' or 'NO_STATUS_CHANGE'.
+          enum:
+          - NO_STATUS_CHANGE
+          - REQUESTED_CHANGE_OCCURRED
+          - RESUBSCRIBE_OCCURRED
+          - UNSUBSCRIBE_FROM_ALL_OCCURRED
+        source:
+          type: string
+          description: The origin or method through which the subscription status was set.
+        status:
+          type: string
+          description: The current subscription status of the contact, which can be 'SUBSCRIBED', 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
+          enum:
+          - NOT_SPECIFIED
+          - SUBSCRIBED
+          - UNSUBSCRIBED
+        subscriberIdString:
+          type: string
+          description: The contact's email address.
+        subscriptionId:
+          type: integer
+          description: The unique identifier of the subscription.
+          format: int64
+        subscriptionName:
+          type: string
+          description: The name of the subscription.
+        timestamp:
+          type: string
+          description: The date and time when the subscription status was last updated.
+          format: date-time
+    PublicWideStatus:
+      required:
+      - channel
+      - status
+      - subscriberIdString
+      - timestamp
+      - wideStatusType
+      type: object
+      properties:
+        businessUnitId:
+          type: integer
+          description: The ID of the business unit associated with the status.
+          format: int64
+        channel:
+          type: string
+          description: The type of communication channel, with 'EMAIL' as the only supported option.
+          enum:
+          - EMAIL
+        status:
+          type: string
+          description: The subscription status of the contact, which can be 'SUBSCRIBED', 'UNSUBSCRIBED', or 'NOT_SPECIFIED'.
+          enum:
+          - NOT_SPECIFIED
+          - SUBSCRIBED
+          - UNSUBSCRIBED
+        subscriberIdString:
+          type: string
+          description: The email address of the contact.
+        timestamp:
+          type: string
+          description: The date and time when the status was recorded.
+          format: date-time
+        wideStatusType:
+          type: string
+          description: The type of wide status, which can be 'PORTAL_WIDE' or 'BUSINESS_UNIT_WIDE'.
+          enum:
+          - BUSINESS_UNIT_WIDE
+          - PORTAL_WIDE
+    LinkGenerationResponse:
+      required:
+      - managePreferencesUrl
+      - subscriberIdString
+      - unsubscribeAllUrl
+      type: object
+      properties:
+        managePreferencesUrl:
+          type: string
+          description: The URL where the subscriber can manage their communication preferences.
+        subscriberIdString:
+          type: string
+          description: A string representing the unique identifier of the subscriber.
+        unsubscribeAllUrl:
+          type: string
+          description: A string containing the URL for unsubscribing the subscriber from all communications.
+        unsubscribeSingleUrl:
+          type: string
+          description: A string containing the URL to unsubscribe the subscriber from a single communication.
+    ActionResponseWithResultsPublicStatus:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: The date and time when the operation was completed.
+          format: date-time
+        errors:
+          type: array
+          description: A list of errors that occurred during the operation.
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Contains URLs related to the response, such as documentation or resources.
+        numErrors:
+          type: integer
+          description: The number of errors that occurred during the operation.
+          format: int32
+        requestedAt:
+          type: string
+          description: The date and time when the request was made.
+          format: date-time
+        results:
+          type: array
+          description: An array of results from the operation.
+          items:
+            $ref: '#/components/schemas/PublicStatus'
+        startedAt:
+          type: string
+          description: The date and time when the operation started.
+          format: date-time
+        status:
+          type: string
+          description: 'Indicates the current status of the operation, with possible values: PENDING, PROCESSING, CANCELED, COMPLETE.'
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            communication_preferences.read_write: ''
+            communication_preferences.statuses.batch.read: ''
+            communication_preferences.statuses.batch.write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-product-tier-requirements:
+  marketing: STARTER
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

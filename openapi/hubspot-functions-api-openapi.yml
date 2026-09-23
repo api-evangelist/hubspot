@@ -1,0 +1,551 @@
+openapi: 3.2.0
+info:
+  title: Automation Actions V4 Functions API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: PROFESSIONAL
+    sales: PROFESSIONAL
+    service: PROFESSIONAL
+    cms: PROFESSIONAL
+    commerce: PROFESSIONAL
+    crmHub: PROFESSIONAL
+    dataHub: PROFESSIONAL
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Functions
+paths:
+  /automation/actions/2026-09/{appId}/{definitionId}/functions:
+    get:
+      tags:
+      - Functions
+      summary: Retrieve functions for a given definition
+      description: Retrieve all functions included in a definition.
+      operationId: get-/automation/actions/2026-09/{appId}/{definitionId}/functions_getPage
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePublicActionFunctionIdentifierNoPaging'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-read
+  /automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}:
+    get:
+      tags:
+      - Functions
+      summary: Retrieve functions by a type for a given definition
+      description: Retrieve functions of a specific type for a given definition.
+      operationId: get-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}_getByFunctionType
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicActionFunction'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-read
+    put:
+      tags:
+      - Functions
+      summary: Insert a function for a definition
+      description: Add a function for a given definition.
+      operationId: put-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}_createOrReplaceByFunctionType
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-write
+    delete:
+      tags:
+      - Functions
+      summary: Delete a function for a definition
+      description: Delete a function within a given definition.
+      operationId: delete-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}_archiveByFunctionType
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-write
+  /automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}/{functionId}:
+    get:
+      tags:
+      - Functions
+      summary: Retrieve a function from a given definition
+      description: Retrieve a specific function from a given definition.
+      operationId: get-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}/{functionId}_getById
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicActionFunction'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-read
+    put:
+      tags:
+      - Functions
+      summary: Update a function for a definition
+      description: Update a function for a given definition by ID.
+      operationId: put-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}/{functionId}_createOrReplace
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-write
+    delete:
+      tags:
+      - Functions
+      summary: Archive a function for a definition
+      description: Archive a function for a specific definition.
+      operationId: delete-/automation/actions/2026-09/{appId}/{definitionId}/functions/{functionType}/{functionId}_archive
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: functionType
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-write
+components:
+  schemas:
+    PublicActionFunction:
+      required:
+      - functionSource
+      - functionType
+      type: object
+      properties:
+        functionSource:
+          type: string
+          description: The source code or script that defines the function's behavior.
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the action function.
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PublicActionFunctionIdentifier:
+      required:
+      - functionType
+      type: object
+      properties:
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the function.
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    CollectionResponsePublicActionFunctionIdentifierNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            automation: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: PROFESSIONAL
+  sales: PROFESSIONAL
+  service: PROFESSIONAL
+  cms: PROFESSIONAL
+  commerce: PROFESSIONAL
+  crmHub: PROFESSIONAL
+  dataHub: PROFESSIONAL

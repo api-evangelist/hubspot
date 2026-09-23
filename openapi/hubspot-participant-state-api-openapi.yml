@@ -1,0 +1,555 @@
+openapi: 3.2.0
+info:
+  title: Marketing Marketing Events Participant State API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Participant State
+paths:
+  /marketing/marketing-events/2026-09/participations/contacts/{contactIdentifier}/breakdown:
+    get:
+      tags:
+      - Participant State
+      summary: Read participations breakdown by Contact identifier
+      description: Read Contact's participations by identifier - email or internal id.
+      operationId: get-/marketing/marketing-events/2026-09/participations/contacts/{contactIdentifier}/breakdown_getParticipationsBreakdownByContactId
+      parameters:
+      - name: contactIdentifier
+        in: path
+        description: The identifier of the Contact. It may be email or internal id.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor indicating the position of the last retrieved item.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit for response size. The default value is 10, the max number is 100
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: state
+        in: query
+        description: The participation state value. It may be REGISTERED, CANCELLED, ATTENDED, NO_SHOW
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalParticipationBreakdown'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+  /marketing/marketing-events/2026-09/participations/{externalAccountId}/{externalEventId}:
+    get:
+      tags:
+      - Participant State
+      summary: Read participations counters by Marketing Event external identifier
+      description: Read Marketing event's participations counters by externalAccountId and externalEventId pair.
+      operationId: get-/marketing/marketing-events/2026-09/participations/{externalAccountId}/{externalEventId}_getParticipationsCountersByEventExternalId
+      parameters:
+      - name: externalAccountId
+        in: path
+        description: The accountId that is associated with this marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceCounters'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+  /marketing/marketing-events/2026-09/participations/{externalAccountId}/{externalEventId}/breakdown:
+    get:
+      tags:
+      - Participant State
+      summary: Read participations breakdown by Marketing Event external identifier
+      description: Read Marketing event's participations breakdown with optional filters by externalAccountId and externalEventId pair.
+      operationId: get-/marketing/marketing-events/2026-09/participations/{externalAccountId}/{externalEventId}/breakdown_getParticipationsBreakdownByExternalEventId
+      parameters:
+      - name: externalAccountId
+        in: path
+        description: The accountId that is associated with this marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The cursor indicating the position of the last retrieved item.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: contactIdentifier
+        in: query
+        description: The identifier of the Contact. It may be email or internal id.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit for response size. The default value is 10, the max number is 100
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: state
+        in: query
+        description: The participation state value. It may be REGISTERED, CANCELLED, ATTENDED, NO_SHOW
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalParticipationBreakdown'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+  /marketing/marketing-events/2026-09/participations/{marketingEventId}:
+    get:
+      tags:
+      - Participant State
+      summary: Read participations counters by Marketing Event internal identifier
+      description: Read Marketing event's participations counters by internal identifier marketingEventId.
+      operationId: get-/marketing/marketing-events/2026-09/participations/{marketingEventId}_getParticipationsCountersByMarketingEventId
+      parameters:
+      - name: marketingEventId
+        in: path
+        description: The internal id of the marketing event in HubSpot.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceCounters'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+  /marketing/marketing-events/2026-09/participations/{marketingEventId}/breakdown:
+    get:
+      tags:
+      - Participant State
+      summary: Read participations breakdown by Marketing Event internal identifier
+      description: Read Marketing event's participations breakdown with optional filters by internal identifier marketingEventId.
+      operationId: get-/marketing/marketing-events/2026-09/participations/{marketingEventId}/breakdown_getParticipationsBreakdownByMarketingEventId
+      parameters:
+      - name: marketingEventId
+        in: path
+        description: The internal id of the marketing event in HubSpot.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: after
+        in: query
+        description: The cursor indicating the position of the last retrieved item.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: contactIdentifier
+        in: query
+        description: The identifier of the Contact. It may be email or internal id.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The limit for response size. The default value is 10, the max number is 100
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: state
+        in: query
+        description: The participation state value. It may be REGISTERED, CANCELLED, ATTENDED, NO_SHOW
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalParticipationBreakdown'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+components:
+  schemas:
+    AttendanceCounters:
+      required:
+      - attended
+      - cancelled
+      - noShows
+      - registered
+      type: object
+      properties:
+        attended:
+          type: integer
+          description: Number of attended contact records of a marketing event
+          format: int32
+        cancelled:
+          type: integer
+          description: Number of cancelled contact records of a marketing event
+          format: int32
+        noShows:
+          type: integer
+          description: Number of no-show contact records of a marketing event
+          format: int32
+        registered:
+          type: integer
+          description: Number of registered contact records of a marketing event
+          format: int32
+    MarketingEventAssociation:
+      required:
+      - marketingEventId
+      - name
+      type: object
+      properties:
+        externalAccountId:
+          type: string
+          description: The account ID that is associated with this marketing event in the external event application
+        externalEventId:
+          type: string
+          description: The event ID that is associated with this marketing event in the external event application
+        marketingEventId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot
+        name:
+          type: string
+          description: The name of the marketing event in HubSpot
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    ParticipationAssociations:
+      required:
+      - contact
+      - marketingEvent
+      type: object
+      properties:
+        contact:
+          $ref: '#/components/schemas/ContactAssociation'
+        marketingEvent:
+          $ref: '#/components/schemas/MarketingEventAssociation'
+    ContactAssociation:
+      required:
+      - contactId
+      - email
+      type: object
+      properties:
+        contactId:
+          type: string
+          description: The internal ID of the contact in HubSpot
+        email:
+          type: string
+          description: The email of the contact in HubSpot
+        firstname:
+          type: string
+          description: The first name of the contact in HubSpot
+        lastname:
+          type: string
+          description: The last name of the contact in HubSpot
+    CollectionResponseWithTotalParticipationBreakdown:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationBreakdown'
+        total:
+          type: integer
+          format: int32
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: The ID element at the start of the page
+        link:
+          type: string
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ParticipationBreakdown:
+      required:
+      - associations
+      - createdAt
+      - id
+      - properties
+      type: object
+      properties:
+        associations:
+          $ref: '#/components/schemas/ParticipationAssociations'
+        createdAt:
+          type: string
+          description: The creation time and date of the target marketing event
+          format: date-time
+        id:
+          type: string
+          description: The internal ID of the target marketing event
+        properties:
+          $ref: '#/components/schemas/ParticipationProperties'
+    ParticipationProperties:
+      required:
+      - attendanceState
+      - occurredAt
+      type: object
+      properties:
+        attendanceDurationSeconds:
+          type: integer
+          description: The number of seconds the participation lasted
+          format: int32
+        attendancePercentage:
+          type: string
+          description: Percentage of the participation duration relative to the event duration
+        attendanceState:
+          type: string
+          description: The state of the participation
+          enum:
+          - ATTENDED
+          - CANCELLED
+          - EMPTY
+          - NO_SHOW
+          - REGISTERED
+        occurredAt:
+          type: integer
+          description: Timestamp of when the participation occurred
+          format: int64
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.marketing_events.read: ''
+            crm.objects.marketing_events.write: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

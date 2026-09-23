@@ -1,0 +1,316 @@
+openapi: 3.2.0
+info:
+  title: Marketing Marketing Events Identifiers API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Identifiers
+paths:
+  /marketing/marketing-events/2026-09/events/search:
+    get:
+      tags:
+      - Identifiers
+      summary: Find App-Specific Marketing Events by External Event Id
+      description: 'Retrieves Marketing Events where the externalEventId matches the value provided in the request, limited to events created by the app making the request.
+
+
+        Marketing Events created by other apps will not be included in the results.'
+      operationId: get-/marketing/marketing-events/2026-09/events/search_doSearch
+      parameters:
+      - name: q
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseSearchPublicResponseWrapperNoPaging'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+  /marketing/marketing-events/2026-09/{externalEventId}/identifiers:
+    get:
+      tags:
+      - Identifiers
+      summary: Find Marketing Events by External Event Id
+      description: 'This endpoint searches the portal for all Marketing Events whose externalEventId matches the value provided in the request.
+
+
+        It retrieves the objectId and additional event details for each matching Marketing Event.
+
+
+        Since multiple Marketing Events can have the same externalEventId, the endpoint returns all matching results.
+
+
+        Note: Marketing Events become searchable by externalEventId a few minutes after creation.'
+      operationId: get-/marketing/marketing-events/2026-09/{externalEventId}/identifiers_searchPortalEvents
+      parameters:
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalMarketingEventIdentifiersResponse'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.read
+components:
+  schemas:
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    MarketingEventIdentifiersResponse:
+      required:
+      - externalEventId
+      - marketingEventName
+      - objectId
+      type: object
+      properties:
+        appInfo:
+          $ref: '#/components/schemas/AppInfo'
+        externalAccountId:
+          type: string
+          description: The accountId that is associated with this marketing event in the external event application
+        externalEventId:
+          type: string
+          description: The ID that is associated with this marketing event in the external event application
+        marketingEventName:
+          type: string
+          description: The name of the marketing event
+        objectId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot CRM
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    AppInfo:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the application
+        name:
+          type: string
+          description: The name of the application
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: The ID element at the start of the page
+        link:
+          type: string
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    CollectionResponseWithTotalMarketingEventIdentifiersResponse:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketingEventIdentifiersResponse'
+        total:
+          type: integer
+          format: int32
+    CollectionResponseSearchPublicResponseWrapperNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchPublicResponseWrapper'
+    SearchPublicResponseWrapper:
+      required:
+      - appId
+      - externalAccountId
+      - externalEventId
+      - objectId
+      type: object
+      properties:
+        appId:
+          type: integer
+          description: The ID of the source application of the marketing event
+          format: int32
+        externalAccountId:
+          type: string
+          description: The account ID associated with this marketing event in the external application
+        externalEventId:
+          type: string
+          description: The ID of the marketing event in the external event application
+        objectId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.marketing_events.read: ''
+            crm.objects.marketing_events.write: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

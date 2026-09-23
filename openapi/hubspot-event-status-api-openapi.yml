@@ -1,0 +1,514 @@
+openapi: 3.2.0
+info:
+  title: Marketing Marketing Events Event Status API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Event Status
+paths:
+  /marketing/marketing-events/2026-09/events/{externalEventId}/cancel:
+    post:
+      tags:
+      - Event Status
+      summary: Mark a marketing event as cancelled
+      description: Mark a marketing event as cancelled.
+      operationId: post-/marketing/marketing-events/2026-09/events/{externalEventId}/cancel_cancel
+      parameters:
+      - name: externalEventId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalAccountId
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketingEventDefaultResponse'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+  /marketing/marketing-events/2026-09/events/{externalEventId}/complete:
+    post:
+      tags:
+      - Event Status
+      summary: Mark a marketing event as completed
+      operationId: post-/marketing/marketing-events/2026-09/events/{externalEventId}/complete_complete
+      parameters:
+      - name: externalEventId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalAccountId
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketingEventCompleteRequestParams'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketingEventDefaultResponse'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+components:
+  schemas:
+    MaskedSubstrings:
+      required:
+      - substrings
+      type: object
+      properties:
+        substrings:
+          type: array
+          items:
+            $ref: '#/components/schemas/MaskedSubstring'
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    MarketingEventDefaultResponse:
+      required:
+      - customProperties
+      - eventName
+      - eventOrganizer
+      type: object
+      properties:
+        customProperties:
+          type: array
+          description: 'A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account''s definition of the MarketingEvent Object. If they don''t they will be filtered out and not set.
+
+            In order to do this you''ll need to create a new PropertyGroup on the HubSpot account''s MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
+
+            '
+          items:
+            $ref: '#/components/schemas/PropertyValue'
+        endDateTime:
+          type: string
+          description: The end date and time of the marketing event.
+          format: date-time
+        eventCancelled:
+          type: boolean
+          description: Indicates if the marketing event has been cancelled.
+        eventCompleted:
+          type: boolean
+          description: Indicates if the marketing event has been completed.
+        eventDescription:
+          type: string
+          description: The description of the marketing event.
+        eventName:
+          type: string
+          description: The name of the marketing event.
+        eventOrganizer:
+          type: string
+          description: The name of the organizer of the marketing event.
+        eventType:
+          type: string
+          description: The type of the marketing event.
+        eventUrl:
+          type: string
+          description: The URL in the external event application where the marketing event can be managed.
+        objectId:
+          type: string
+          description: The ID of the marketing event CRM object
+        startDateTime:
+          type: string
+          description: The start date and time of the marketing event.
+          format: date-time
+    MaskedSubstring:
+      required:
+      - end
+      - start
+      type: object
+      properties:
+        end:
+          type: integer
+          format: int32
+        start:
+          type: integer
+          format: int32
+    MarketingEventCompleteRequestParams:
+      required:
+      - endDateTime
+      - startDateTime
+      type: object
+      properties:
+        endDateTime:
+          type: string
+          description: The end date and time of the marketing event in ISO 8601 format
+          format: date-time
+        startDateTime:
+          type: string
+          description: The start date and time of the marketing event in ISO 8601 format
+          format: date-time
+    PropertyValue:
+      required:
+      - dataSensitivity
+      - isEncrypted
+      - isLargeValue
+      - maskedSubstrings
+      - name
+      - persistenceTimestamp
+      - requestId
+      - selectedByUser
+      - selectedByUserTimestamp
+      - source
+      - sourceId
+      - sourceLabel
+      - sourceMetadata
+      - sourceUpstreamDeployable
+      - sourceVid
+      - timestamp
+      - unit
+      - updatedByUserId
+      - useTimestampAsPersistenceTimestamp
+      - value
+      type: object
+      properties:
+        dataSensitivity:
+          type: string
+          description: Level of data sensitivity
+          enum:
+          - high
+          - none
+          - standard
+        isEncrypted:
+          type: boolean
+          description: Indicates whether the property is encrypted
+        isLargeValue:
+          type: boolean
+          description: Indicates whether the property value is stored as a large value in the storage
+        maskedSubstrings:
+          $ref: '#/components/schemas/MaskedSubstrings'
+        name:
+          type: string
+          description: Name of custom property
+        persistenceTimestamp:
+          type: integer
+          description: The timestamp that indicates when the value being written is persisted in storage
+          format: int64
+        requestId:
+          type: string
+          description: The ID of the request
+        selectedByUser:
+          type: boolean
+          description: Indicates whether the property is selected
+        selectedByUserTimestamp:
+          type: integer
+          description: Timestamp of when the property was selected by the user
+          format: int64
+        source:
+          type: string
+          description: Source of the property
+          enum:
+          - ACADEMY
+          - ACCEPTANCE_TEST
+          - ACTIVITY_AUTO_ASSOCIATE
+          - ACTIVITY_LOG_REVERT
+          - ADS
+          - AI_GROUP
+          - ANALYTICS
+          - API
+          - APPROVALS
+          - ASSISTS
+          - ASSOCIATIONS
+          - AUTO_ASSOCIATE_BY_DOMAIN
+          - AUTOMATION_JOURNEY
+          - AUTOMATION_PLATFORM
+          - AVATARS_SERVICE
+          - BATCH_UPDATE
+          - BCC_TO_CRM
+          - BEHAVIORAL_EVENTS
+          - BET_ASSIGNMENT
+          - BET_CRM_CONNECTOR
+          - BIDEN
+          - BILLING
+          - BOT
+          - BREEZE_AGENT
+          - CALCULATED
+          - CENTRAL_EXCHANGE_RATES
+          - CHATSPOT
+          - CLONE_OBJECTS
+          - COMMUNICATOR
+          - COMPANIES
+          - COMPANY_FAMILIES
+          - COMPANY_INSIGHTS
+          - CONNECTED_ACCOUNT
+          - CONTACTS
+          - CONTACTS_WEB
+          - CONTENT_MEMBERSHIP
+          - CONVERSATIONAL_ENRICHMENT
+          - CONVERSATIONS
+          - CRM_PROCESSES_PLATFORM
+          - CRM_UI
+          - CRM_UI_BULK_ACTION
+          - CUSTOMER_AGENT
+          - CUSTOMER_PORTAL
+          - DATA_ENRICHMENT
+          - DATA_QUALITY
+          - DATASET
+          - DEALS
+          - DEFAULT
+          - DELETE_OBJECTS
+          - DI_WRITE_TO_CRM
+          - EMAIL
+          - EMAIL_INBOX_IMPORT
+          - EMAIL_INTEGRATION
+          - ENGAGEMENTS
+          - EXTENSION
+          - FILE_MANAGER
+          - FLYWHEEL_PRODUCT_DATA_SYNC
+          - FORECASTING
+          - FORM
+          - FORWARD_TO_CRM
+          - GMAIL_INTEGRATION
+          - GOALS
+          - HEISENBERG
+          - HELP_DESK
+          - HELP_DESK_AI
+          - IMPORT
+          - INTEGRATION
+          - INTEGRATIONS_PLATFORM
+          - INTEGRATIONS_SYNC
+          - INTENT
+          - INTERNAL_PROCESSING
+          - LEADIN
+          - LEGAL_BASIS_REMEDIATION
+          - MARKET_SOURCING
+          - MARKETPLACE
+          - MARKETS
+          - MEETINGS
+          - MERGE_COMPANIES
+          - MERGE_CONTACTS
+          - MERGE_OBJECTS
+          - MERGE_REVERT_OBJECTS
+          - MICROAPPS
+          - MIGRATION
+          - MOBILE_ANDROID
+          - MOBILE_IOS
+          - PAYMENTS
+          - PIPELINE_SETTINGS
+          - PLAYBOOKS
+          - PORTAL_OBJECT_SYNC
+          - PORTAL_USER_ASSOCIATOR
+          - PRESENTATIONS
+          - PRIMARY_AUTOMATION
+          - PROPERTY_DEFAULT_VALUE
+          - PROPERTY_RESTORE
+          - PROPERTY_SETTINGS
+          - PROSPECTING_AGENT
+          - QUOTAS
+          - QUOTES
+          - RECYCLING_BIN
+          - RESTORE_OBJECTS
+          - REVENUE_PLATFORM
+          - SALES
+          - SALES_MESSAGES
+          - SALESFORCE
+          - SEQUENCES
+          - SETTINGS
+          - SIDEKICK
+          - SIGNALS
+          - SLACK_INTEGRATION
+          - SMART_DATA_CAPTURE
+          - SOCIAL
+          - SUCCESS
+          - TALLY
+          - TASK
+          - UNKNOWN
+          - WAL_INCREMENTAL
+          - WORK_UI
+          - WORKFLOW_CONTACT_DELETE_ACTION
+          - WORKFLOWS
+        sourceId:
+          type: string
+          description: ID of the source of the property
+        sourceLabel:
+          type: string
+          description: Label of the source of the property
+        sourceMetadata:
+          type: string
+          description: Source metadata encoded as a base64 string
+        sourceUpstreamDeployable:
+          type: string
+          description: Indicates which upstream service made the property change
+        sourceVid:
+          type: array
+          description: The unique identifier associated with the source.
+          items:
+            type: integer
+            format: int64
+        timestamp:
+          type: integer
+          description: Timestamp of the request
+          format: int64
+        unit:
+          type: string
+          description: The unit
+        updatedByUserId:
+          type: integer
+          description: The ID of the user who last updated the property
+          format: int32
+        useTimestampAsPersistenceTimestamp:
+          type: boolean
+          description: Indicates if the persistence timestamp is the same as storage version timestamp
+        value:
+          type: string
+          description: Custom property value
+      description: Represents a single custom property of a marketing event, storing its name, value, metadata (like source, timestamp, and sensitivity), and related audit information for tracking changes.
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.marketing_events.read: ''
+            crm.objects.marketing_events.write: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

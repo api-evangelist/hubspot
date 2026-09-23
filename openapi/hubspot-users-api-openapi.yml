@@ -1,0 +1,312 @@
+openapi: 3.2.0
+info:
+  title: User Provisioning Users API
+  description: Basepom for all HubSpot Projects
+  version: 2026-03
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+  x-hubspot-api-use-case: You manage employee access data in a system outside of HubSpot, and you want to ensure that specific users are dynamically allocated to the right teams in your HubSpot account.
+  x-hubspot-introduction: Use the user provisioning API to create and manage users in your HubSpot account, along with their associated teams and roles.
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Users
+paths:
+  /settings/users/2026-03/{userId}:
+    get:
+      tags:
+      - Users
+      summary: Retrieves a user
+      description: Retrieves a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.
+      operationId: get-/settings/users/2026-03/{userId}_getById
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: idProperty
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+          - USER_ID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserMarch2026'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - settings.users.read
+      - oauth2:
+        - crm.objects.users.read
+    put:
+      tags:
+      - Users
+      summary: Modifies a user
+      description: Modifies a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.
+      operationId: put-/settings/users/2026-03/{userId}_update
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: idProperty
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+          - USER_ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicUserUpdateMarch2026'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicUserMarch2026'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.users.write
+      - oauth2:
+        - settings.users.write
+    delete:
+      tags:
+      - Users
+      summary: Removes a user
+      description: Removes a user identified by `userId`. `userId` refers to the user's ID by default, or optionally email as specified by the `IdProperty` query param.
+      operationId: delete-/settings/users/2026-03/{userId}_archive
+      parameters:
+      - name: userId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: idProperty
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          enum:
+          - EMAIL
+          - USER_ID
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.users.write
+      - oauth2:
+        - settings.users.write
+components:
+  schemas:
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PublicUserMarch2026:
+      required:
+      - email
+      - id
+      - roleIds
+      - superAdmin
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+        primaryTeamId:
+          type: string
+        roleId:
+          type: string
+        roleIds:
+          type: array
+          items:
+            type: string
+        secondaryTeamIds:
+          type: array
+          items:
+            type: string
+        sendWelcomeEmail:
+          type: boolean
+        superAdmin:
+          type: boolean
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicUserUpdateMarch2026:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        primaryTeamId:
+          type: string
+        roleId:
+          type: string
+        secondaryTeamIds:
+          type: array
+          items:
+            type: string
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.users.write: ''
+            settings.users.read: ''
+            settings.users.teams.read: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

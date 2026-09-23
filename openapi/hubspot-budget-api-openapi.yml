@@ -1,0 +1,623 @@
+openapi: 3.2.0
+info:
+  title: Marketing Campaigns Public Budget API
+  description: Basepom for all HubSpot Projects
+  version: 2026-03
+  x-hubspot-product-tier-requirements:
+    marketing: PROFESSIONAL
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Budget
+paths:
+  /marketing/campaigns/2026-03/{campaignGuid}/budget:
+    post:
+      tags:
+      - Budget
+      summary: Add budget item
+      description: Add a new budget item to the campaign
+      operationId: post-/marketing/campaigns/2026-03/{campaignGuid}/budget
+      parameters:
+      - name: campaignGuid
+        in: path
+        description: 'The UUID of the campaign, required
+
+          Example: 9dbec438-53e2-4b28-8c0f-38f56574a6e8'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicBudgetItemInput'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          headers:
+            Location:
+              description: URL of the newly created resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicBudgetItem'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - marketing.campaigns.write
+  /marketing/campaigns/2026-03/{campaignGuid}/budget/totals:
+    get:
+      tags:
+      - Budget
+      summary: Read budget
+      description: 'Retrieve detailed information about the budget and spend items for a specified campaign, including the total budget, total spend, and remaining budget.
+
+        Budget and Spend items may be returned in any order, but the order field specifies their sequence based on the creation date. The item with order 0 is the oldest, and items with higher order values are newer'
+      operationId: get-/marketing/campaigns/2026-03/{campaignGuid}/budget/totals
+      parameters:
+      - name: campaignGuid
+        in: path
+        description: 'The UUID of the campaign, required
+
+          Example: 9dbec438-53e2-4b28-8c0f-38f56574a6e8'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicBudgetTotals'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - marketing.campaigns.read
+  /marketing/campaigns/2026-03/{campaignGuid}/budget/{budgetId}:
+    get:
+      tags:
+      - Budget
+      summary: Get budget item
+      description: Get a specific budget item by ID
+      operationId: get-/marketing/campaigns/2026-03/{campaignGuid}/budget/{budgetId}
+      parameters:
+      - name: budgetId
+        in: path
+        description: 'The ID of the budget item, required. Example: 352                   '
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: campaignGuid
+        in: path
+        description: 'The UUID of the campaign, required
+
+          Example: 9dbec438-53e2-4b28-8c0f-38f56574a6e8'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicBudgetItem'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - marketing.campaigns.read
+    put:
+      tags:
+      - Budget
+      summary: Update budget item
+      description: Update a specific budget item by ID
+      operationId: put-/marketing/campaigns/2026-03/{campaignGuid}/budget/{budgetId}
+      parameters:
+      - name: budgetId
+        in: path
+        description: 'The ID of the budget item, required. Example: 352                   '
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: campaignGuid
+        in: path
+        description: 'The UUID of the campaign, required
+
+          Example: 9dbec438-53e2-4b28-8c0f-38f56574a6e8'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicBudgetItemInput'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicBudgetItem'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - marketing.campaigns.write
+    delete:
+      tags:
+      - Budget
+      summary: Delete budget item
+      description: Delete a specific budget item by ID
+      operationId: delete-/marketing/campaigns/2026-03/{campaignGuid}/budget/{budgetId}
+      parameters:
+      - name: budgetId
+        in: path
+        description: 'The ID of the budget item, required. Example: 352                   '
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: campaignGuid
+        in: path
+        description: 'The UUID of the campaign, required
+
+          Example: 9dbec438-53e2-4b28-8c0f-38f56574a6e8'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - marketing.campaigns.write
+components:
+  schemas:
+    PublicSpendItem:
+      required:
+      - amount
+      - createdAt
+      - id
+      - name
+      - order
+      - updatedAt
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The monetary value associated with the spend item.
+        createdAt:
+          type: integer
+          description: The timestamp indicating when the spend item was created.
+          format: int64
+        description:
+          type: string
+          description: A detailed explanation or notes about the spend item.
+        id:
+          type: string
+          description: Unique identifier for the spend item.
+        name:
+          type: string
+          description: The name assigned to the spend item.
+        order:
+          type: integer
+          description: The sequence order of the spend item, where 0 is the oldest.
+          format: int32
+        updatedAt:
+          type: integer
+          description: The timestamp indicating when the spend item was last updated.
+          format: int64
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PublicBudgetItem:
+      required:
+      - amount
+      - createdAt
+      - id
+      - name
+      - order
+      - updatedAt
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The monetary amount allocated for the budget item.
+        createdAt:
+          type: integer
+          description: The timestamp when the budget item was created.
+          format: int64
+        description:
+          type: string
+          description: A description of the budget item.
+        id:
+          type: string
+          description: The unique identifier for the budget item.
+        name:
+          type: string
+          description: The name of the budget item.
+        order:
+          type: integer
+          description: The order of the budget item, indicating its sequence based on creation date.
+          format: int32
+        updatedAt:
+          type: integer
+          description: The timestamp when the budget item was last updated.
+          format: int64
+    PublicBudgetItemInput:
+      required:
+      - amount
+      - name
+      - order
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The monetary value assigned to the budget item.
+        description:
+          type: string
+          description: A detailed explanation or notes about the budget item.
+        name:
+          type: string
+          description: The name of the budget item.
+        order:
+          type: integer
+          description: The sequence number indicating the order of the budget item.
+          format: int32
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicBudgetTotals:
+      required:
+      - budgetItems
+      - currencyCode
+      - spendItems
+      type: object
+      properties:
+        budgetItems:
+          type: array
+          description: An array of budget items associated with the campaign. Each item is represented by a PublicBudgetItem object.
+          items:
+            $ref: '#/components/schemas/PublicBudgetItem'
+        budgetTotal:
+          type: number
+          description: The total budget allocated for the campaign.
+        currencyCode:
+          type: string
+          description: The currency code used for the budget and spend amounts, following ISO 4217 standards.
+          enum:
+          - AED
+          - AFN
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AUD
+          - AWG
+          - AZN
+          - BAM
+          - BBD
+          - BDT
+          - BGN
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BOV
+          - BRL
+          - BSD
+          - BTN
+          - BWP
+          - BYN
+          - BZD
+          - CAD
+          - CDF
+          - CHE
+          - CHF
+          - CHW
+          - CLF
+          - CLP
+          - CNY
+          - COP
+          - COU
+          - CRC
+          - CUC
+          - CUP
+          - CVE
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EGP
+          - ERN
+          - ETB
+          - EUR
+          - FJD
+          - FKP
+          - GBP
+          - GEL
+          - GHS
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HKD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - IQD
+          - IRR
+          - ISK
+          - JMD
+          - JOD
+          - JPY
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LYD
+          - MAD
+          - MDL
+          - MGA
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRU
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MXV
+          - MYR
+          - MZN
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - NZD
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDG
+          - SEK
+          - SGD
+          - SHP
+          - SLL
+          - SOS
+          - SRD
+          - SSP
+          - STN
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJS
+          - TMT
+          - TND
+          - TOP
+          - TRY
+          - TTD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - USD
+          - USN
+          - UYI
+          - UYU
+          - UZS
+          - VEF
+          - VND
+          - VUV
+          - WST
+          - XAF
+          - XAG
+          - XAU
+          - XBA
+          - XBB
+          - XBC
+          - XBD
+          - XCD
+          - XDR
+          - XOF
+          - XPD
+          - XPF
+          - XPT
+          - XSU
+          - XUA
+          - YER
+          - ZAR
+          - ZMW
+          - ZWL
+        remainingBudget:
+          type: number
+          description: The remaining budget available for the campaign after accounting for all spend items.
+        spendItems:
+          type: array
+          description: An array of spend items associated with the campaign. Each item is represented by a PublicSpendItem object.
+          items:
+            $ref: '#/components/schemas/PublicSpendItem'
+        spendTotal:
+          type: number
+          description: The total amount spent across all spend items in the campaign.
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            marketing.campaigns.read: ''
+            marketing.campaigns.revenue.read: ''
+            marketing.campaigns.write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-product-tier-requirements:
+  marketing: PROFESSIONAL
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

@@ -1,0 +1,715 @@
+openapi: 3.2.0
+info:
+  title: Hubspot Channel accounts API
+  x-refined-note:
+  - x-hubspot-api-use-case differs across the merged source definitions and was not carried
+  - x-hubspot-introduction differs across the merged source definitions and was not carried
+  - x-hubspot-product-tier-requirements differs across the merged source definitions and was not carried
+  - x-hubspot-related-documentation differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Channel accounts across 2 of this provider''s published API definitions: hubspot-conversations-conversations-openapi.json, hubspot-conversations-custom-channels-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Channel accounts
+paths:
+  /conversations/v3/conversations/channel-accounts:
+    get:
+      tags:
+      - Channel accounts
+      summary: Get channel accounts
+      description: Retrieve a list of channel accounts, with optional filters and sorting.
+      operationId: get-/conversations/v3/conversations/channel-accounts
+      parameters:
+      - name: after
+        in: query
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return only results that have been archived.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: channelId
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: defaultPageLength
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: inboxId
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+      - name: limit
+        in: query
+        description: The maximum number of results to display per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: sort
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalPublicChannelAccount'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.read
+      x-hubspot-user-level-auth:
+        internalOnly: false
+    servers:
+    - url: https://api.hubapi.com
+  /conversations/v3/conversations/channel-accounts/{channelAccountId}:
+    get:
+      tags:
+      - Channel accounts
+      summary: Get a single channel account
+      description: Retrieve details of a single channel account using the channel account ID.
+      operationId: get-/conversations/v3/conversations/channel-accounts/{channelAccountId}
+      parameters:
+      - name: channelAccountId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: archived
+        in: query
+        description: Whether to return only results that have been archived.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicChannelAccount'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.read
+      x-hubspot-user-level-auth:
+        internalOnly: false
+    servers:
+    - url: https://api.hubapi.com
+  /conversations/custom-channels/2026-09/{channelId}/channel-account-staging-tokens/{accountToken}:
+    patch:
+      tags:
+      - Channel accounts
+      summary: Update a channel account staging token
+      description: Update a channel account staging token's account name and delivery identifier. This information will be applied to the channel account created from this staging token. This is used for public apps.
+      operationId: patch-/conversations/custom-channels/2026-09/{channelId}/channel-account-staging-tokens/{accountToken}
+      parameters:
+      - name: accountToken
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: channelId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicChannelAccountStagingTokenUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicChannelAccountStagingToken'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.custom_channels.read
+      - oauth2:
+        - conversations.custom_channels.write
+    servers:
+    - url: https://api.hubapi.com
+  /conversations/custom-channels/2026-09/{channelId}/channel-accounts:
+    get:
+      tags:
+      - Channel accounts
+      summary: Get accounts for a channel
+      description: Retrieve a list of accounts for a custom channel.
+      operationId: get-/conversations/custom-channels/2026-09/{channelId}/channel-accounts
+      parameters:
+      - name: channelId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: after
+        in: query
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: archived
+        in: query
+        description: Whether to return only results that have been archived.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: defaultPageLength
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: deliveryIdentifierType
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - HS_EMAIL_ADDRESS
+            - HS_PHONE_NUMBER
+            - HS_SHORT_CODE
+            - CHANNEL_SPECIFIC_OPAQUE_ID
+      - name: deliveryIdentifierValue
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to display per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: sort
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalPublicChannelAccount'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.custom_channels.read
+      - oauth2:
+        - conversations.custom_channels.write
+    post:
+      tags:
+      - Channel accounts
+      summary: Create a channel account
+      description: Create a new account for a channel. Multiple accounts can communicate over a single channel using different delivery identifiers.
+      operationId: post-/conversations/custom-channels/2026-09/{channelId}/channel-accounts
+      parameters:
+      - name: channelId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicChannelAccountEgg'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          headers:
+            Location:
+              description: URL of the newly created resource
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicChannelAccount_2'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.custom_channels.read
+      - oauth2:
+        - conversations.custom_channels.write
+    servers:
+    - url: https://api.hubapi.com
+  /conversations/custom-channels/2026-09/{channelId}/channel-accounts/{channelAccountId}:
+    patch:
+      tags:
+      - Channel accounts
+      summary: Update a channel account
+      description: This API is used to update the name of the channel account and it's isAuthorized status. Setting to isAuthorized flag to False disables the channel account.
+      operationId: patch-/conversations/custom-channels/2026-09/{channelId}/channel-accounts/{channelAccountId}
+      parameters:
+      - name: channelAccountId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: channelId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicChannelAccountUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicChannelAccount_2'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - conversations.custom_channels.read
+      - oauth2:
+        - conversations.custom_channels.write
+    servers:
+    - url: https://api.hubapi.com
+components:
+  schemas:
+    PublicDeliveryIdentifier:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of identifier. HS_EMAIL_ADDRESS for email addresses; HS_PHONE_NUMBER for a phone number; CHANNEL_SPECIFIC_OPAQUE_ID for channels that use their own proprietary identifiers, like Facebook Messenger or LiveChat.
+          enum:
+          - CHANNEL_SPECIFIC_OPAQUE_ID
+          - HS_EMAIL_ADDRESS
+          - HS_PHONE_NUMBER
+          - HS_SHORT_CODE
+        value:
+          type: string
+          description: A string representation of the PublicDeliveryIdentifier, either an an E.164 phone number, an email address, or a channel-specific identifier.
+    PublicChannelAccount:
+      required:
+      - active
+      - archived
+      - authorized
+      - channelId
+      - createdAt
+      - id
+      - inboxId
+      - name
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Whether the channel account is turned on.
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        authorized:
+          type: boolean
+        channelId:
+          type: string
+          description: The ID of the channel that the channel account is an instance of.
+        createdAt:
+          type: string
+          format: date-time
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier'
+        id:
+          type: string
+          description: The ID of the channel account.
+        inboxId:
+          type: string
+          description: The ID of the conversations inbox that contains the channel account.
+        name:
+          type: string
+          description: The name of the channel account.
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    CollectionResponseWithTotalPublicChannelAccount:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicChannelAccount'
+        total:
+          type: integer
+          format: int32
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    PublicDeliveryIdentifier_2:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - CHANNEL_SPECIFIC_OPAQUE_ID
+          - HS_EMAIL_ADDRESS
+          - HS_PHONE_NUMBER
+          - HS_SHORT_CODE
+        value:
+          type: string
+    PublicChannelAccountUpdateRequest:
+      type: object
+      properties:
+        authorized:
+          type: boolean
+        name:
+          type: string
+    PublicChannelAccount_2:
+      required:
+      - active
+      - archived
+      - authorized
+      - channelId
+      - createdAt
+      - id
+      - inboxId
+      - name
+      type: object
+      properties:
+        active:
+          type: boolean
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        authorized:
+          type: boolean
+        channelId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+        id:
+          type: string
+        inboxId:
+          type: string
+        name:
+          type: string
+    PublicChannelAccountStagingToken:
+      required:
+      - accountToken
+      - createdAt
+      - genericChannelId
+      - inboxId
+      - userId
+      type: object
+      properties:
+        accountName:
+          type: string
+        accountToken:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+        genericChannelId:
+          type: integer
+          format: int32
+        inboxId:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int32
+    PublicChannelAccountStagingTokenUpdateRequest:
+      type: object
+      properties:
+        accountName:
+          type: string
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+    PublicChannelAccountEgg:
+      required:
+      - authorized
+      - inboxId
+      - name
+      type: object
+      properties:
+        authorized:
+          type: boolean
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+        inboxId:
+          type: string
+        name:
+          type: string
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            conversations.read: ''
+            conversations.write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-refined-from:
+- hubspot-conversations-conversations-openapi.json
+- hubspot-conversations-custom-channels-openapi.json
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

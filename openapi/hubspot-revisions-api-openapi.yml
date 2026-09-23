@@ -1,0 +1,2881 @@
+openapi: 3.2.0
+info:
+  title: Hubspot Revisions API
+  version: 2026-09
+  x-refined-note:
+  - x-hubspot-api-use-case differs across the merged source definitions and was not carried
+  - x-hubspot-introduction differs across the merged source definitions and was not carried
+  - x-hubspot-product-tier-requirements differs across the merged source definitions and was not carried
+  description: 'Operations tagged Revisions across 2 of this provider''s published API definitions: hubspot-automation-actions-v4-openapi.json, hubspot-cms-posts-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: Revisions
+paths:
+  /automation/actions/2026-09/{appId}/{definitionId}/revisions:
+    get:
+      tags:
+      - Revisions
+      summary: Retrieve revisions for a given definition
+      description: Retrieve the versions of a definition by ID.
+      operationId: get-/automation/actions/2026-09/{appId}/{definitionId}/revisions_getPage
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to display per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePublicActionRevisionForwardPaging'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-read
+    servers:
+    - url: https://api.hubapi.com
+  /automation/actions/2026-09/{appId}/{definitionId}/revisions/{revisionId}:
+    get:
+      tags:
+      - Revisions
+      summary: Retrieve a specific revision of a definition
+      description: Retrieve a specific revision of a definition by revision ID.
+      operationId: get-/automation/actions/2026-09/{appId}/{definitionId}/revisions/{revisionId}_getById
+      parameters:
+      - name: appId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: definitionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: revisionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicActionRevision'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - developers-read
+    servers:
+    - url: https://api.hubapi.com
+  /cms/blogs/2026-09/posts/{objectId}/revisions:
+    get:
+      tags:
+      - Revisions
+      summary: Retrieves all previous versions of a post
+      description: Retrieve all the previous versions of a blog post.
+      operationId: get-/cms/blogs/2026-09/posts/{objectId}/revisions_getPreviousVersions
+      parameters:
+      - name: objectId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: after
+        in: query
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: before
+        in: query
+        description: ''
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of results to display per page.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalBlogPostVersion'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - content
+    servers:
+    - url: https://api.hubapi.com
+  /cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}:
+    get:
+      tags:
+      - Revisions
+      summary: Retrieve a previous version of a blog post
+      description: Retrieve a previous version of a blog post.
+      operationId: get-/cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}_getPreviousVersion
+      parameters:
+      - name: objectId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: revisionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BlogPostVersion'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - content
+    servers:
+    - url: https://api.hubapi.com
+  /cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}/restore:
+    post:
+      tags:
+      - Revisions
+      summary: Restore a previous version
+      description: Restores a blog post to one of its previous versions.
+      operationId: post-/cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}/restore_restorePreviousVersion
+      parameters:
+      - name: objectId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: revisionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BlogPost'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - content
+    servers:
+    - url: https://api.hubapi.com
+  /cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}/restore-to-draft:
+    post:
+      tags:
+      - Revisions
+      summary: Restore a draft to a previous version
+      description: Takes a specified version of a blog post, sets it as the new draft version of the blog post.
+      operationId: post-/cms/blogs/2026-09/posts/{objectId}/revisions/{revisionId}/restore-to-draft_restorePreviousVersionToDraft
+      parameters:
+      - name: objectId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: revisionId
+        in: path
+        description: ''
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BlogPost'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - content
+    servers:
+    - url: https://api.hubapi.com
+components:
+  schemas:
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    DoubleFieldSchema:
+      title: DOUBLE
+      required:
+      - type
+      type: object
+      properties:
+        maximum:
+          type: number
+          description: The maximum allowable value for the double field.
+        minimum:
+          type: number
+          description: The minimum allowable value for the double field.
+        type:
+          type: string
+          description: Indicates the field type as DOUBLE.
+          default: DOUBLE
+          enum:
+          - DOUBLE
+      x-hubspot-sub-type-impl: true
+    PublicExecutionTranslationRule:
+      required:
+      - conditions
+      - labelName
+      type: object
+      properties:
+        conditions:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: Defines the conditions that must be met for the execution rule to apply.
+        labelName:
+          type: string
+          description: Specifies the name of the label associated with the execution rule.
+    PublicActionFunctionIdentifier:
+      required:
+      - functionType
+      type: object
+      properties:
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the function.
+    IntegerFieldSchema:
+      title: INTEGER
+      required:
+      - type
+      type: object
+      properties:
+        maximum:
+          type: integer
+          description: The maximum value allowed for the integer field.
+          format: int32
+        minimum:
+          type: integer
+          description: The minimum value allowed for the integer field.
+          format: int32
+        type:
+          type: string
+          description: The type of the field, which is set to INTEGER.
+          default: INTEGER
+          enum:
+          - INTEGER
+      x-hubspot-sub-type-impl: true
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicActionRevision:
+      required:
+      - createdAt
+      - definition
+      - id
+      - revisionId
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: The date and time when the action revision was created.
+          format: date-time
+        definition:
+          $ref: '#/components/schemas/PublicActionDefinition'
+        id:
+          type: string
+          description: The unique identifier for the action revision.
+        revisionId:
+          type: string
+          description: The unique identifier for the specific revision of the action.
+    PublicOption:
+      required:
+      - label
+      - value
+      type: object
+      properties:
+        description:
+          type: string
+          description: A description of the option.
+        displayOrder:
+          type: integer
+          description: The position of the option relative to others in the list.
+          format: int32
+        label:
+          type: string
+          description: A user-friendly label that identifies the option.
+        value:
+          type: string
+          description: The actual value of the option.
+    ObjectFieldSchema:
+      title: OBJECT
+      required:
+      - properties
+      - type
+      type: object
+      properties:
+        properties:
+          type: object
+          properties: {}
+          description: Contains the properties of the object.
+        type:
+          type: string
+          description: Specifies the type of the field, which is 'OBJECT' by default.
+          default: OBJECT
+          enum:
+          - OBJECT
+      x-hubspot-sub-type-impl: true
+    PublicSingleFieldDependency:
+      title: SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that controls the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being 'SINGLE_FIELD'.
+          default: SINGLE_FIELD
+          enum:
+          - SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
+      x-hubspot-sub-type-impl: true
+    LongFieldSchema:
+      title: LONG
+      required:
+      - type
+      type: object
+      properties:
+        maximum:
+          type: integer
+          description: The maximum value allowed for the long field.
+          format: int64
+        minimum:
+          type: integer
+          description: The minimum value allowed for the long field.
+          format: int64
+        type:
+          type: string
+          description: The type of the field, which is LONG by default.
+          default: LONG
+          enum:
+          - LONG
+      x-hubspot-sub-type-impl: true
+    PublicConditionalSingleFieldDependency:
+      title: CONDITIONAL_SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - controllingFieldValue
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that determines the dependency.
+        controllingFieldValue:
+          type: string
+          description: The value of the controlling field that triggers the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
+          default: CONDITIONAL_SINGLE_FIELD
+          enum:
+          - CONDITIONAL_SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
+      x-hubspot-sub-type-impl: true
+    CollectionResponsePublicActionRevisionForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionRevision'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    FieldTypeDefinition:
+      required:
+      - externalOptions
+      - name
+      - options
+      - schema
+      - type
+      - useChirp
+      type: object
+      properties:
+        description:
+          type: string
+          description: A detailed explanation of the field's purpose and usage.
+        externalOptions:
+          type: boolean
+          description: Indicates whether the field's options are sourced externally.
+        externalOptionsReferenceType:
+          type: string
+          description: Specifies the type of external reference for options.
+        fieldType:
+          type: string
+          description: Describes the field's type in the UI, with accepted values like booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, textarea, unknown.
+          enum:
+          - booleancheckbox
+          - calculation_equation
+          - calculation_read_time
+          - calculation_rollup
+          - calculation_score
+          - checkbox
+          - date
+          - file
+          - html
+          - number
+          - phonenumber
+          - radio
+          - select
+          - text
+          - textarea
+          - unknown
+        helpText:
+          type: string
+          description: Additional information or guidance about the field.
+        label:
+          type: string
+          description: The user-friendly label for the field.
+        name:
+          type: string
+          description: The unique identifier for the field.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+        optionsUrl:
+          type: string
+          description: A URL that provides options for the field.
+        referencedObjectType:
+          type: string
+          description: Indicates the type of object that the field references, with accepted values like OWNER.
+          enum:
+          - ABANDONED_CART
+          - ACCEPTANCE_TEST
+          - AD
+          - AD_ACCOUNT
+          - AD_CAMPAIGN
+          - AD_GROUP
+          - AI_FORECAST
+          - ALL_PAGES
+          - APPROVAL
+          - APPROVAL_STEP
+          - ATTRIBUTION
+          - AUDIENCE
+          - AUTOMATION_JOURNEY
+          - AUTOMATION_PLATFORM_FLOW
+          - AUTOMATION_PLATFORM_FLOW_ACTION
+          - BET_ALERT
+          - BET_DELIVERABLE_SERVICE
+          - BLOG_LISTING_PAGE
+          - BLOG_POST
+          - CALL
+          - CAMPAIGN
+          - CAMPAIGN_BUDGET_ITEM
+          - CAMPAIGN_SPEND_ITEM
+          - CAMPAIGN_STEP
+          - CAMPAIGN_TEMPLATE
+          - CAMPAIGN_TEMPLATE_STEP
+          - CART
+          - CASE_STUDY
+          - CHATFLOW
+          - CLIP
+          - CMS_URL
+          - COMBO_EVENT_CONFIGURATION
+          - COMMERCE_PAYMENT
+          - COMMUNICATION
+          - COMPANY
+          - CONTACT
+          - CONTACT_CREATE_ATTRIBUTION
+          - CONTENT
+          - CONTENT_AUDIT
+          - CONTENT_AUDIT_PAGE
+          - CONVERSATION
+          - CONVERSATION_INBOX
+          - CONVERSATION_SESSION
+          - CRM_OBJECTS_DUMMY_TYPE
+          - CRM_PIPELINES_DUMMY_TYPE
+          - CTA
+          - CTA_VARIANT
+          - DATA_PRIVACY_CONSENT
+          - DATA_SYNC_STATE
+          - DEAL
+          - DEAL_CREATE_ATTRIBUTION
+          - DEAL_REGISTRATION
+          - DEAL_SPLIT
+          - DISCOUNT
+          - DISCOUNT_CODE
+          - DISCOUNT_TEMPLATE
+          - EMAIL
+          - ENGAGEMENT
+          - EXPORT
+          - EXTERNAL_WEB_URL
+          - FEE
+          - FEEDBACK_SUBMISSION
+          - FEEDBACK_SURVEY
+          - FILE_MANAGER_FILE
+          - FILE_MANAGER_FOLDER
+          - FOLDER
+          - FORECAST
+          - FORM
+          - FORM_SUBMISSION_INBOUNDDB
+          - GOAL_TARGET
+          - GOAL_TARGET_GROUP
+          - GOAL_TEMPLATE
+          - GSC_PROPERTY
+          - HUB
+          - IMPORT
+          - INVOICE
+          - KEYWORD
+          - KNOWLEDGE_ARTICLE
+          - LANDING_PAGE
+          - LEAD
+          - LINE_ITEM
+          - MARKETING_CALENDAR
+          - MARKETING_CAMPAIGN_UTM
+          - MARKETING_EMAIL
+          - MARKETING_EVENT
+          - MARKETING_EVENT_ATTENDANCE
+          - MARKETING_SMS
+          - MEDIA_BRIDGE
+          - MEETING_EVENT
+          - MIC
+          - NOTE
+          - OBJECT_LIST
+          - ORDER
+          - OWNER
+          - PARTNER_ACCOUNT
+          - PARTNER_CLIENT
+          - PARTNER_CLIENT_REVENUE
+          - PARTNER_SERVICE
+          - PAYMENT_LINK
+          - PAYMENT_SCHEDULE
+          - PAYMENT_SCHEDULE_INSTALLMENT
+          - PERMISSIONS_TESTING
+          - PLAYBOOK
+          - PLAYBOOK_QUESTION
+          - PLAYBOOK_SUBMISSION
+          - PLAYBOOK_SUBMISSION_ANSWER
+          - PLAYLIST
+          - PLAYLIST_FOLDER
+          - PODCAST_EPISODE
+          - PORTAL
+          - PORTAL_OBJECT_SYNC_MESSAGE
+          - POSTAL_MAIL
+          - PRIVACY_SCANNER_COOKIE
+          - PRODUCT
+          - PRODUCT_OR_FOLDER
+          - PROPERTY_INFO
+          - PROSPECTING_AGENT_CONTACT_ASSIGNMENT
+          - PUBLISHING_TASK
+          - QUARANTINED_SUBMISSION
+          - QUOTA
+          - QUOTE
+          - QUOTE_FIELD
+          - QUOTE_MODULE
+          - QUOTE_MODULE_FIELD
+          - QUOTE_TEMPLATE
+          - RESTORABLE_CRM_OBJECT
+          - ROSTER
+          - ROSTER_MEMBER
+          - SALES_DOCUMENT
+          - SALES_TASK
+          - SALES_WORKLOAD
+          - SALESFORCE_SYNC_ERROR
+          - SCHEDULING_PAGE
+          - SCHEMAS_BACKEND_TEST
+          - SCORE_CONFIGURATION
+          - SEQUENCE
+          - SEQUENCE_ENROLLMENT
+          - SEQUENCE_STEP
+          - SEQUENCE_STEP_ENROLLMENT
+          - SERVICE
+          - SITE_PAGE
+          - SNIPPET
+          - SOCIAL_BROADCAST
+          - SOCIAL_CHANNEL
+          - SOCIAL_POST
+          - SOCIAL_PROFILE
+          - SOX_PROTECTED_DUMMY_TYPE
+          - SOX_PROTECTED_TEST_TYPE
+          - SUBMISSION_TAG
+          - SUBSCRIPTION
+          - TASK
+          - TASK_TEMPLATE
+          - TAX
+          - TEMPLATE
+          - TICKET
+          - UNKNOWN
+          - UNSUBSCRIBE
+          - USER
+          - VIEW
+          - VIEW_BLOCK
+          - WEB_INTERACTIVE
+        schema:
+          description: Defines the structure and constraints of the field.
+          oneOf:
+          - $ref: '#/components/schemas/IntegerFieldSchema'
+          - $ref: '#/components/schemas/LongFieldSchema'
+          - $ref: '#/components/schemas/DoubleFieldSchema'
+          - $ref: '#/components/schemas/StringFieldSchema'
+          - $ref: '#/components/schemas/BooleanFieldSchema'
+          - $ref: '#/components/schemas/ArrayFieldSchema'
+          - $ref: '#/components/schemas/ObjectFieldSchema'
+          - $ref: '#/components/schemas/UnknownFieldSchema'
+        type:
+          type: string
+          description: Specifies the data type of the field, with accepted values like bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, string.
+          enum:
+          - bool
+          - currency_number
+          - date
+          - datetime
+          - enumeration
+          - json
+          - number
+          - object_coordinates
+          - phone_number
+          - string
+          - time_range
+        useChirp:
+          type: boolean
+          description: Specifies whether the field uses the Chirp feature.
+    PublicActionDefinition:
+      required:
+      - actionUrl
+      - functions
+      - id
+      - inputFields
+      - labels
+      - objectTypes
+      - published
+      - revisionId
+      type: object
+      properties:
+        actionUrl:
+          type: string
+        archivedAt:
+          type: integer
+          format: int64
+        executionRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicExecutionTranslationRule'
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+        id:
+          type: string
+        inputFieldDependencies:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PublicSingleFieldDependency'
+            - $ref: '#/components/schemas/PublicConditionalSingleFieldDependency'
+        inputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicInputFieldDefinition'
+        labels:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PublicActionLabels'
+        objectRequestOptions:
+          $ref: '#/components/schemas/PublicObjectRequestOptions'
+        objectTypes:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputFieldDefinition'
+        published:
+          type: boolean
+        revisionId:
+          type: string
+    BooleanFieldSchema:
+      title: BOOLEAN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Specifies the field type as BOOLEAN, indicating that the field can hold a true or false value.
+          default: BOOLEAN
+          enum:
+          - BOOLEAN
+      x-hubspot-sub-type-impl: true
+    UnknownFieldSchema:
+      title: UNKNOWN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          default: UNKNOWN
+          enum:
+          - UNKNOWN
+      x-hubspot-sub-type-impl: true
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    Option:
+      required:
+      - description
+      - displayOrder
+      - doubleData
+      - hidden
+      - label
+      - readOnly
+      - value
+      type: object
+      properties:
+        description:
+          type: string
+          description: A description of the option.
+        displayOrder:
+          type: integer
+          description: The position of the item relative to others in the list.
+          format: int32
+        doubleData:
+          type: number
+          description: A numerical value associated with the option.
+        hidden:
+          type: boolean
+          description: Whether the option is displayed in HubSpot's UI.
+        label:
+          type: string
+          description: A user-friendly label that identifies the option.
+        readOnly:
+          type: boolean
+          description: Whether the option is read-only.
+        value:
+          type: string
+          description: The actual value of the option.
+      description: A HubSpot property option
+    PublicObjectRequestOptions:
+      required:
+      - properties
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+    PublicFieldTypeDefinition:
+      required:
+      - name
+      - options
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: A detailed explanation of the field's purpose.
+        fieldType:
+          type: string
+          description: The type of field, with accepted values including booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, and textarea.
+          enum:
+          - booleancheckbox
+          - calculation_equation
+          - checkbox
+          - date
+          - file
+          - html
+          - number
+          - phonenumber
+          - radio
+          - select
+          - text
+          - textarea
+        helpText:
+          type: string
+          description: Additional information or guidance about the field.
+        label:
+          type: string
+          description: A user-friendly name for the field.
+        name:
+          type: string
+          description: The internal name used to identify the field.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicOption'
+        optionsUrl:
+          type: string
+          description: A URL that provides options for the field.
+        referencedObjectType:
+          type: string
+          description: The type of object that the field references, with accepted values including OWNER.
+          enum:
+          - OWNER
+        type:
+          type: string
+          description: The data type of the field, with accepted values including bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, and string.
+          enum:
+          - bool
+          - date
+          - datetime
+          - enumeration
+          - json
+          - number
+          - object_coordinates
+          - phone_number
+          - string
+    PublicInputFieldDefinition:
+      required:
+      - isRequired
+      - typeDefinition
+      type: object
+      properties:
+        isRequired:
+          type: boolean
+          description: Indicates whether the input field is mandatory.
+        supportedValueTypes:
+          type: array
+          items:
+            type: string
+            enum:
+            - STATIC_VALUE
+            - OBJECT_PROPERTY
+        typeDefinition:
+          $ref: '#/components/schemas/PublicFieldTypeDefinition'
+    ArrayFieldSchema:
+      title: ARRAY
+      required:
+      - items
+      - type
+      type: object
+      properties:
+        items:
+          description: Defines the type of elements contained within the array, which can be an integer, long, double, string, boolean, another array, or an object.
+          oneOf:
+          - $ref: '#/components/schemas/IntegerFieldSchema'
+          - $ref: '#/components/schemas/LongFieldSchema'
+          - $ref: '#/components/schemas/DoubleFieldSchema'
+          - $ref: '#/components/schemas/StringFieldSchema'
+          - $ref: '#/components/schemas/BooleanFieldSchema'
+          - $ref: '#/components/schemas/ArrayFieldSchema'
+          - $ref: '#/components/schemas/ObjectFieldSchema'
+          - $ref: '#/components/schemas/UnknownFieldSchema'
+        type:
+          type: string
+          description: Specifies that the field is of type 'ARRAY'.
+          default: ARRAY
+          enum:
+          - ARRAY
+      x-hubspot-sub-type-impl: true
+    StringFieldSchema:
+      title: STRING
+      required:
+      - type
+      type: object
+      properties:
+        format:
+          type: string
+          description: 'Specifies the format of the string, with accepted values: DATE, DATE_TIME, OBJECT_COORDINATE, TIME, URI.'
+          enum:
+          - DATE
+          - DATE_TIME
+          - MONTH_AND_DAY
+          - OBJECT_COORDINATE
+          - TIME
+          - URI
+        type:
+          type: string
+          description: Indicates that the type is a string, with the default value being STRING.
+          default: STRING
+          enum:
+          - STRING
+      x-hubspot-sub-type-impl: true
+    OutputFieldDefinition:
+      required:
+      - typeDefinition
+      type: object
+      properties:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+    PublicActionLabels:
+      required:
+      - actionName
+      type: object
+      properties:
+        actionCardContent:
+          type: string
+          description: Content displayed on the action card.
+        actionDescription:
+          type: string
+          description: A description of what the action does.
+        actionName:
+          type: string
+          description: The name of the action.
+        appDisplayName:
+          type: string
+          description: The display name of the application associated with the action.
+        executionRules:
+          type: object
+          additionalProperties:
+            type: string
+          description: Rules that govern the execution of the action.
+        inputFieldDescriptions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Descriptions for each input field.
+        inputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the input fields.
+        inputFieldOptionLabels:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+          description: Labels for the options available in input fields.
+        outputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the output fields.
+    BlogPostVersion:
+      required:
+      - id
+      - object
+      - updatedAt
+      - user
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          $ref: '#/components/schemas/BlogPost'
+        updatedAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/VersionUser'
+    VersionBlogPost:
+      required:
+      - id
+      - object
+      - updatedAt
+      - user
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the version.
+        object:
+          $ref: '#/components/schemas/BlogPost'
+        updatedAt:
+          type: string
+          description: The timestamp (ISO8601 format) when this version of the Blog Post was updated.
+          format: date-time
+        user:
+          $ref: '#/components/schemas/VersionUser'
+    CollectionResponseWithTotalBlogPostVersion:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionBlogPost'
+        total:
+          type: integer
+          format: int32
+    LayoutSection:
+      required:
+      - cells
+      - cssClass
+      - cssId
+      - cssStyle
+      - label
+      - name
+      - params
+      - rowMetaData
+      - rows
+      - styles
+      - type
+      - w
+      - x
+      type: object
+      properties:
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/LayoutSection'
+        cssClass:
+          type: string
+          description: The CSS class applied to the layout section.
+        cssId:
+          type: string
+          description: The CSS ID applied to the layout section.
+        cssStyle:
+          type: string
+          description: Custom CSS styles applied to the layout section.
+        label:
+          type: string
+          description: The label for the layout section.
+        name:
+          type: string
+          description: The name assigned to the layout section.
+        params:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        rowMetaData:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowMetaData'
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/LayoutSection'
+        styles:
+          $ref: '#/components/schemas/Styles'
+        type:
+          type: string
+          description: The type of the layout section.
+        w:
+          type: integer
+          description: The width of the layout section.
+          format: int32
+        x:
+          type: integer
+          description: The x-coordinate position of the layout section.
+          format: int32
+    BackgroundImage:
+      required:
+      - backgroundPosition
+      - backgroundSize
+      - imageUrl
+      type: object
+      properties:
+        backgroundPosition:
+          type: string
+          description: Defines the position of the background image.
+        backgroundSize:
+          type: string
+          description: Specifies the size of the background image.
+        imageUrl:
+          type: string
+          description: The URL of the background image.
+    RGBAColor:
+      required:
+      - a
+      - b
+      - g
+      - r
+      type: object
+      properties:
+        a:
+          type: number
+          description: Alpha.
+        b:
+          type: integer
+          description: Blue.
+          format: int32
+        g:
+          type: integer
+          description: Green.
+          format: int32
+        r:
+          type: integer
+          description: Red.
+          format: int32
+    Styles:
+      required:
+      - backgroundColor
+      - backgroundGradient
+      - backgroundImage
+      - flexboxPositioning
+      - forceFullWidthSection
+      - maxWidthSectionCentering
+      - verticalAlignment
+      type: object
+      properties:
+        backgroundColor:
+          $ref: '#/components/schemas/RGBAColor'
+        backgroundGradient:
+          $ref: '#/components/schemas/Gradient'
+        backgroundImage:
+          $ref: '#/components/schemas/BackgroundImage'
+        breakpointStyles:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BreakpointStyles'
+          description: Breakpoint CSS styles for margin, padding, etc...
+        flexboxPositioning:
+          type: string
+          description: Indicates whether flexbox positioning is enabled for the section.
+          enum:
+          - BOTTOM_CENTER
+          - BOTTOM_LEFT
+          - BOTTOM_RIGHT
+          - MIDDLE_CENTER
+          - MIDDLE_LEFT
+          - MIDDLE_RIGHT
+          - TOP_CENTER
+          - TOP_LEFT
+          - TOP_RIGHT
+        forceFullWidthSection:
+          type: boolean
+          description: Determines if the section should be forced to full width.
+        maxWidthSectionCentering:
+          type: integer
+          description: Defines the maximum width for centering the section.
+          format: int32
+        verticalAlignment:
+          type: string
+          description: Specifies the vertical alignment of elements within the section.
+          enum:
+          - BOTTOM
+          - MIDDLE
+          - TOP
+    SideOrCorner:
+      required:
+      - horizontalSide
+      - verticalSide
+      type: object
+      properties:
+        horizontalSide:
+          type: string
+          description: Specifies the horizontal side of an element.
+          enum:
+          - CENTER
+          - LEFT
+          - RIGHT
+        verticalSide:
+          type: string
+          description: Specifies the vertical side of an element.
+          enum:
+          - BOTTOM
+          - MIDDLE
+          - TOP
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    Margin:
+      required:
+      - bottom
+      - top
+      type: object
+      properties:
+        bottom:
+          $ref: '#/components/schemas/Size'
+        top:
+          $ref: '#/components/schemas/Size'
+    Padding:
+      required:
+      - bottom
+      - left
+      - right
+      - top
+      type: object
+      properties:
+        bottom:
+          $ref: '#/components/schemas/Size'
+        left:
+          $ref: '#/components/schemas/Size'
+        right:
+          $ref: '#/components/schemas/Size'
+        top:
+          $ref: '#/components/schemas/Size'
+    Gradient:
+      required:
+      - angle
+      - colors
+      - sideOrCorner
+      type: object
+      properties:
+        angle:
+          $ref: '#/components/schemas/Angle'
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorStop'
+        sideOrCorner:
+          $ref: '#/components/schemas/SideOrCorner'
+    Size:
+      required:
+      - units
+      - value
+      type: object
+      properties:
+        units:
+          type: string
+          enum:
+          - CH
+          - CM
+          - EM
+          - EX
+          - IN
+          - LH
+          - MM
+          - PC
+          - PERCENTAGE
+          - PT
+          - PX
+          - Q
+          - REM
+          - VH
+          - VMAX
+          - VMIN
+          - VW
+        value:
+          type: number
+    BlogPost:
+      required:
+      - abStatus
+      - abTestId
+      - archivedAt
+      - archivedInDashboard
+      - attachedStylesheets
+      - authorName
+      - blogAuthorId
+      - campaign
+      - categoryId
+      - contentGroupId
+      - contentTypeCategory
+      - created
+      - createdById
+      - currentState
+      - currentlyPublished
+      - domain
+      - dynamicPageDataSourceId
+      - dynamicPageDataSourceType
+      - dynamicPageHubDbTableId
+      - enableDomainStylesheets
+      - enableGoogleAmpOutputOverride
+      - enableLayoutStylesheets
+      - featuredImage
+      - featuredImageAltText
+      - folderId
+      - footerHtml
+      - headHtml
+      - htmlTitle
+      - id
+      - includeDefaultCustomCss
+      - language
+      - layoutSections
+      - linkRelCanonicalUrl
+      - mabExperimentId
+      - metaDescription
+      - name
+      - pageExpiryDate
+      - pageExpiryEnabled
+      - pageExpiryRedirectId
+      - pageExpiryRedirectUrl
+      - password
+      - postBody
+      - postSummary
+      - publicAccessRules
+      - publicAccessRulesEnabled
+      - publishDate
+      - publishImmediately
+      - publishedAt
+      - rssBody
+      - rssSummary
+      - slug
+      - state
+      - tagIds
+      - themeSettingsValues
+      - translatedFromId
+      - translations
+      - updated
+      - updatedById
+      - url
+      - useFeaturedImage
+      - widgetContainers
+      - widgets
+      type: object
+      properties:
+        abStatus:
+          type: string
+          description: 'The status of the AB test associated with this blog post, if applicable
+
+
+            Available options: automated_loser_variant, automated_master, automated_variant, loser_variant, mab_master, mab_variant, master, variant'
+          enum:
+          - automated_loser_variant
+          - automated_master
+          - automated_variant
+          - loser_variant
+          - mab_master
+          - mab_variant
+          - master
+          - variant
+        abTestId:
+          type: string
+          description: The ID of the AB test associated with this page, if applicable
+        archivedAt:
+          type: integer
+          description: The timestamp (ISO8601 format) when this Blog Post was deleted.
+          format: int64
+        archivedInDashboard:
+          type: boolean
+          description: If True, the post will not show up in your dashboard, although the post could still be live.
+        attachedStylesheets:
+          type: array
+          description: List of stylesheets to attach to this blog post. These stylesheets are attached to just this page. Order of precedence is bottom to top, just like in the HTML.
+          items:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+        authorName:
+          type: string
+          description: The name of the user that updated this Blog Post.
+        blogAuthorId:
+          type: string
+          description: The ID of the Blog Author associated with this Blog Post.
+        campaign:
+          type: string
+          description: The GUID of the marketing campaign this Blog Post is a part of.
+        categoryId:
+          type: integer
+          description: ID of the type of object this is. Should always .
+          format: int32
+        contentGroupId:
+          type: string
+          description: The ID of the parent Blog this Blog Post is associated with.
+        contentTypeCategory:
+          type: string
+          description: An ENUM descibing the type of this object. Should always be BLOG_POST.
+          enum:
+          - '0'
+          - '1'
+          - '10'
+          - '11'
+          - '12'
+          - '13'
+          - '14'
+          - '15'
+          - '16'
+          - '17'
+          - '18'
+          - '19'
+          - '2'
+          - '20'
+          - '21'
+          - '22'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+          - '8'
+          - '9'
+        created:
+          type: string
+          description: The timestamp (ISO8601 format) when this Blog Post was created.
+          format: date-time
+        createdById:
+          type: string
+          description: The ID of the user that created this Blog Post.
+        currentState:
+          type: string
+          description: A generated ENUM descibing the current state of this Blog Post. Should always match state.
+          enum:
+          - AGENT_GENERATED
+          - AUTOMATED
+          - AUTOMATED_AB
+          - AUTOMATED_AB_VARIANT
+          - AUTOMATED_DRAFT
+          - AUTOMATED_DRAFT_AB
+          - AUTOMATED_DRAFT_ABVARIANT
+          - AUTOMATED_FOR_FORM
+          - AUTOMATED_FOR_FORM_BUFFER
+          - AUTOMATED_FOR_FORM_DRAFT
+          - AUTOMATED_FOR_FORM_LEGACY
+          - AUTOMATED_LOSER_ABVARIANT
+          - AUTOMATED_SENDING
+          - BLOG_EMAIL_DRAFT
+          - BLOG_EMAIL_PUBLISHED
+          - DRAFT
+          - DRAFT_AB
+          - DRAFT_AB_VARIANT
+          - ERROR
+          - LOSER_AB_VARIANT
+          - PAGE_STUB
+          - PRE_PROCESSING
+          - PROCESSING
+          - PUBLISHED
+          - PUBLISHED_AB
+          - PUBLISHED_AB_VARIANT
+          - PUBLISHED_OR_SCHEDULED
+          - RSS_TO_EMAIL_DRAFT
+          - RSS_TO_EMAIL_PUBLISHED
+          - SCHEDULED
+          - SCHEDULED_AB
+          - SCHEDULED_OR_PUBLISHED
+        currentlyPublished:
+          type: boolean
+          description: Whether the post is published (true or false)
+        domain:
+          type: string
+          description: The domain this Blog Post will resolve to. If null, the Blog Post will default to the domain of the ParentBlog.
+        dynamicPageDataSourceId:
+          type: string
+          description: The identifier for the data source used by the dynamic page.
+        dynamicPageDataSourceType:
+          type: integer
+          description: The type of data source used by the dynamic page.
+          format: int32
+        dynamicPageHubDbTableId:
+          type: string
+          description: The ID of the HubDB table this Blog Post references, if applicable
+        enableDomainStylesheets:
+          type: boolean
+          description: Boolean to determine whether or not the styles from the template should be applied.
+        enableGoogleAmpOutputOverride:
+          type: boolean
+          description: Boolean to allow overriding the AMP settings for the blog.
+        enableLayoutStylesheets:
+          type: boolean
+          description: Boolean to determine whether or not the styles from the template should be applied.
+        featuredImage:
+          type: string
+          description: The featuredImage of this Blog Post.
+        featuredImageAltText:
+          type: string
+          description: Alt Text of the featuredImage.
+        folderId:
+          type: string
+          description: Unique identifier of associated folder
+        footerHtml:
+          type: string
+          description: Custom HTML for embed codes, javascript that should be placed before the </body> tag of the page.
+        headHtml:
+          type: string
+          description: Custom HTML for embed codes, javascript, etc. that goes in the <head> tag of the page.
+        htmlTitle:
+          type: string
+          description: The html title of this Blog Post.
+        id:
+          type: string
+          description: The unique ID of the Blog Post.
+        includeDefaultCustomCss:
+          type: boolean
+          description: Boolean to determine whether or not the Primary CSS Files should be applied.
+        language:
+          type: string
+          description: The explicitly defined ISO 639 language code of the Blog Post. If null, the Blog Post will default to the language of the ParentBlog.
+          enum:
+          - aa
+          - ab
+          - ae
+          - af
+          - af-na
+          - af-za
+          - agq
+          - agq-cm
+          - ak
+          - ak-gh
+          - am
+          - am-et
+          - an
+          - ann
+          - ann-ng
+          - ar
+          - ar-001
+          - ar-ae
+          - ar-bh
+          - ar-dj
+          - ar-dz
+          - ar-eg
+          - ar-eh
+          - ar-er
+          - ar-il
+          - ar-iq
+          - ar-jo
+          - ar-km
+          - ar-kw
+          - ar-lb
+          - ar-ly
+          - ar-ma
+          - ar-mr
+          - ar-om
+          - ar-ps
+          - ar-qa
+          - ar-sa
+          - ar-sd
+          - ar-so
+          - ar-ss
+          - ar-sy
+          - ar-td
+          - ar-tn
+          - ar-ye
+          - as
+          - as-in
+          - asa
+          - asa-tz
+          - ast
+          - ast-es
+          - av
+          - ay
+          - az
+          - az-az
+          - ba
+          - bal
+          - bal-pk
+          - bas
+          - bas-cm
+          - be
+          - be-by
+          - bem
+          - bem-zm
+          - bez
+          - bez-tz
+          - bg
+          - bg-bg
+          - bgc
+          - bgc-in
+          - bho
+          - bho-in
+          - bi
+          - blo
+          - blo-bj
+          - bm
+          - bm-ml
+          - bn
+          - bn-bd
+          - bn-in
+          - bo
+          - bo-cn
+          - bo-in
+          - br
+          - br-fr
+          - brx
+          - brx-in
+          - bs
+          - bs-ba
+          - ca
+          - ca-ad
+          - ca-es
+          - ca-fr
+          - ca-it
+          - ccp
+          - ccp-bd
+          - ccp-in
+          - ce
+          - ce-ru
+          - ceb
+          - ceb-ph
+          - cgg
+          - cgg-ug
+          - ch
+          - chr
+          - chr-us
+          - ckb
+          - ckb-iq
+          - ckb-ir
+          - co
+          - cr
+          - cs
+          - cs-cz
+          - csw
+          - csw-ca
+          - cu
+          - cu-ru
+          - cv
+          - cv-ru
+          - cy
+          - cy-gb
+          - da
+          - da-dk
+          - da-gl
+          - dav
+          - dav-ke
+          - de
+          - de-at
+          - de-be
+          - de-ch
+          - de-de
+          - de-gr
+          - de-it
+          - de-li
+          - de-lu
+          - dje
+          - dje-ne
+          - doi
+          - doi-in
+          - dsb
+          - dsb-de
+          - dua
+          - dua-cm
+          - dv
+          - dyo
+          - dyo-sn
+          - dz
+          - dz-bt
+          - ebu
+          - ebu-ke
+          - ee
+          - ee-gh
+          - ee-tg
+          - el
+          - el-cy
+          - el-gr
+          - en
+          - en-001
+          - en-150
+          - en-ae
+          - en-ag
+          - en-ai
+          - en-as
+          - en-at
+          - en-au
+          - en-bb
+          - en-be
+          - en-bi
+          - en-bm
+          - en-bs
+          - en-bw
+          - en-bz
+          - en-ca
+          - en-cc
+          - en-ch
+          - en-ck
+          - en-cm
+          - en-cn
+          - en-cx
+          - en-cy
+          - en-cz
+          - en-de
+          - en-dg
+          - en-dk
+          - en-dm
+          - en-ee
+          - en-eg
+          - en-er
+          - en-es
+          - en-fi
+          - en-fj
+          - en-fk
+          - en-fm
+          - en-fr
+          - en-gb
+          - en-gd
+          - en-gg
+          - en-gh
+          - en-gi
+          - en-gm
+          - en-gs
+          - en-gu
+          - en-gy
+          - en-hk
+          - en-hu
+          - en-id
+          - en-ie
+          - en-il
+          - en-im
+          - en-in
+          - en-io
+          - en-it
+          - en-je
+          - en-jm
+          - en-ke
+          - en-ki
+          - en-kn
+          - en-ky
+          - en-lc
+          - en-lr
+          - en-ls
+          - en-lu
+          - en-mg
+          - en-mh
+          - en-mo
+          - en-mp
+          - en-ms
+          - en-mt
+          - en-mu
+          - en-mv
+          - en-mw
+          - en-mx
+          - en-my
+          - en-na
+          - en-nf
+          - en-ng
+          - en-nl
+          - en-no
+          - en-nr
+          - en-nu
+          - en-nz
+          - en-pg
+          - en-ph
+          - en-pk
+          - en-pl
+          - en-pn
+          - en-pr
+          - en-pt
+          - en-pw
+          - en-ro
+          - en-rw
+          - en-sb
+          - en-sc
+          - en-sd
+          - en-se
+          - en-sg
+          - en-sh
+          - en-si
+          - en-sk
+          - en-sl
+          - en-ss
+          - en-sx
+          - en-sz
+          - en-tc
+          - en-th
+          - en-tk
+          - en-tn
+          - en-to
+          - en-tt
+          - en-tv
+          - en-tz
+          - en-ug
+          - en-um
+          - en-us
+          - en-vc
+          - en-vg
+          - en-vi
+          - en-vn
+          - en-vu
+          - en-ws
+          - en-za
+          - en-zm
+          - en-zw
+          - eo
+          - eo-001
+          - es
+          - es-419
+          - es-ar
+          - es-bo
+          - es-br
+          - es-bz
+          - es-cl
+          - es-co
+          - es-cr
+          - es-cu
+          - es-do
+          - es-ea
+          - es-ec
+          - es-es
+          - es-gq
+          - es-gt
+          - es-hn
+          - es-ic
+          - es-mx
+          - es-ni
+          - es-pa
+          - es-pe
+          - es-ph
+          - es-pr
+          - es-py
+          - es-sv
+          - es-us
+          - es-uy
+          - es-ve
+          - et
+          - et-ee
+          - eu
+          - eu-es
+          - ewo
+          - ewo-cm
+          - fa
+          - fa-af
+          - fa-ir
+          - ff
+          - ff-bf
+          - ff-cm
+          - ff-gh
+          - ff-gm
+          - ff-gn
+          - ff-gw
+          - ff-lr
+          - ff-mr
+          - ff-ne
+          - ff-ng
+          - ff-sl
+          - ff-sn
+          - fi
+          - fi-fi
+          - fil
+          - fil-ph
+          - fj
+          - fo
+          - fo-dk
+          - fo-fo
+          - fr
+          - fr-be
+          - fr-bf
+          - fr-bi
+          - fr-bj
+          - fr-bl
+          - fr-ca
+          - fr-cd
+          - fr-cf
+          - fr-cg
+          - fr-ch
+          - fr-ci
+          - fr-cm
+          - fr-dj
+          - fr-dz
+          - fr-fr
+          - fr-ga
+          - fr-gf
+          - fr-gn
+          - fr-gp
+          - fr-gq
+          - fr-ht
+          - fr-km
+          - fr-lu
+          - fr-ma
+          - fr-mc
+          - fr-mf
+          - fr-mg
+          - fr-ml
+          - fr-mq
+          - fr-mr
+          - fr-mu
+          - fr-nc
+          - fr-ne
+          - fr-pf
+          - fr-pm
+          - fr-re
+          - fr-rw
+          - fr-sc
+          - fr-sn
+          - fr-sy
+          - fr-td
+          - fr-tg
+          - fr-tn
+          - fr-vu
+          - fr-wf
+          - fr-yt
+          - frr
+          - frr-de
+          - fur
+          - fur-it
+          - fy
+          - fy-nl
+          - ga
+          - ga-gb
+          - ga-ie
+          - gaa
+          - gaa-gh
+          - gd
+          - gd-gb
+          - gl
+          - gl-es
+          - gn
+          - gsw
+          - gsw-ch
+          - gsw-fr
+          - gsw-li
+          - gu
+          - gu-in
+          - guz
+          - guz-ke
+          - gv
+          - gv-im
+          - ha
+          - ha-gh
+          - ha-ne
+          - ha-ng
+          - haw
+          - haw-us
+          - he
+          - he-il
+          - hi
+          - hi-in
+          - hmn
+          - ho
+          - hr
+          - hr-ba
+          - hr-hr
+          - hsb
+          - hsb-de
+          - ht
+          - ht-ht
+          - hu
+          - hu-hu
+          - hy
+          - hy-am
+          - hz
+          - ia
+          - ia-001
+          - id
+          - id-id
+          - ie
+          - ie-ee
+          - ig
+          - ig-ng
+          - ii
+          - ii-cn
+          - ik
+          - io
+          - is
+          - is-is
+          - it
+          - it-ch
+          - it-it
+          - it-sm
+          - it-va
+          - iu
+          - ja
+          - ja-jp
+          - jgo
+          - jgo-cm
+          - jmc
+          - jmc-tz
+          - jv
+          - jv-id
+          - ka
+          - ka-ge
+          - kab
+          - kab-dz
+          - kam
+          - kam-ke
+          - kar
+          - kde
+          - kde-tz
+          - kea
+          - kea-cv
+          - kg
+          - kgp
+          - kgp-br
+          - kh
+          - khq
+          - khq-ml
+          - ki
+          - ki-ke
+          - kj
+          - kk
+          - kk-kz
+          - kkj
+          - kkj-cm
+          - kl
+          - kl-gl
+          - kln
+          - kln-ke
+          - km
+          - km-kh
+          - kn
+          - kn-in
+          - ko
+          - ko-cn
+          - ko-kp
+          - ko-kr
+          - kok
+          - kok-in
+          - kr
+          - ks
+          - ks-in
+          - ksb
+          - ksb-tz
+          - ksf
+          - ksf-cm
+          - ksh
+          - ksh-de
+          - ku
+          - ku-tr
+          - kv
+          - kw
+          - kw-gb
+          - kxv
+          - kxv-in
+          - ky
+          - ky-kg
+          - la
+          - lag
+          - lag-tz
+          - lb
+          - lb-lu
+          - lg
+          - lg-ug
+          - li
+          - lij
+          - lij-it
+          - lkt
+          - lkt-us
+          - lmo
+          - lmo-it
+          - ln
+          - ln-ao
+          - ln-cd
+          - ln-cf
+          - ln-cg
+          - lo
+          - lo-la
+          - lrc
+          - lrc-iq
+          - lrc-ir
+          - lt
+          - lt-lt
+          - lu
+          - lu-cd
+          - luo
+          - luo-ke
+          - luy
+          - luy-ke
+          - lv
+          - lv-lv
+          - mai
+          - mai-in
+          - mas
+          - mas-ke
+          - mas-tz
+          - mdf
+          - mdf-ru
+          - mer
+          - mer-ke
+          - mfe
+          - mfe-mu
+          - mg
+          - mg-mg
+          - mgh
+          - mgh-mz
+          - mgo
+          - mgo-cm
+          - mh
+          - mi
+          - mi-nz
+          - mk
+          - mk-mk
+          - ml
+          - ml-in
+          - mn
+          - mn-mn
+          - mni
+          - mni-in
+          - mr
+          - mr-in
+          - ms
+          - ms-bn
+          - ms-id
+          - ms-my
+          - ms-sg
+          - mt
+          - mt-mt
+          - mua
+          - mua-cm
+          - my
+          - my-mm
+          - mzn
+          - mzn-ir
+          - na
+          - naq
+          - naq-na
+          - nb
+          - nb-no
+          - nb-sj
+          - nd
+          - nd-zw
+          - nds
+          - nds-de
+          - nds-nl
+          - ne
+          - ne-in
+          - ne-np
+          - ng
+          - nl
+          - nl-aw
+          - nl-be
+          - nl-bq
+          - nl-ch
+          - nl-cw
+          - nl-lu
+          - nl-nl
+          - nl-sr
+          - nl-sx
+          - nmg
+          - nmg-cm
+          - nn
+          - nn-no
+          - nnh
+          - nnh-cm
+          - 'no'
+          - no-no
+          - nqo
+          - nqo-gn
+          - nr
+          - nso
+          - nso-za
+          - nus
+          - nus-ss
+          - nv
+          - ny
+          - nyn
+          - nyn-ug
+          - oc
+          - oc-es
+          - oc-fr
+          - oj
+          - om
+          - om-et
+          - om-ke
+          - or
+          - or-in
+          - os
+          - os-ge
+          - os-ru
+          - pa
+          - pa-in
+          - pa-pk
+          - pcm
+          - pcm-ng
+          - pi
+          - pis
+          - pis-sb
+          - pl
+          - pl-pl
+          - prg
+          - prg-001
+          - ps
+          - ps-af
+          - ps-pk
+          - pt
+          - pt-ao
+          - pt-br
+          - pt-ch
+          - pt-cv
+          - pt-gq
+          - pt-gw
+          - pt-lu
+          - pt-mo
+          - pt-mz
+          - pt-pt
+          - pt-st
+          - pt-tl
+          - qu
+          - qu-bo
+          - qu-ec
+          - qu-pe
+          - raj
+          - raj-in
+          - rm
+          - rm-ch
+          - rn
+          - rn-bi
+          - ro
+          - ro-md
+          - ro-ro
+          - rof
+          - rof-tz
+          - ru
+          - ru-by
+          - ru-kg
+          - ru-kz
+          - ru-md
+          - ru-ru
+          - ru-ua
+          - rw
+          - rw-rw
+          - rwk
+          - rwk-tz
+          - sa
+          - sa-in
+          - sah
+          - sah-ru
+          - saq
+          - saq-ke
+          - sat
+          - sat-in
+          - sbp
+          - sbp-tz
+          - sc
+          - sc-it
+          - sd
+          - sd-in
+          - sd-pk
+          - se
+          - se-fi
+          - se-no
+          - se-se
+          - seh
+          - seh-mz
+          - ses
+          - ses-ml
+          - sg
+          - sg-cf
+          - shi
+          - shi-ma
+          - si
+          - si-lk
+          - sk
+          - sk-sk
+          - sl
+          - sl-si
+          - sm
+          - smn
+          - smn-fi
+          - sms
+          - sms-fi
+          - sn
+          - sn-zw
+          - so
+          - so-dj
+          - so-et
+          - so-ke
+          - so-so
+          - sq
+          - sq-al
+          - sq-mk
+          - sq-xk
+          - sr
+          - sr-ba
+          - sr-cs
+          - sr-me
+          - sr-rs
+          - sr-xk
+          - ss
+          - st
+          - st-ls
+          - st-za
+          - su
+          - su-id
+          - sv
+          - sv-ax
+          - sv-fi
+          - sv-se
+          - sw
+          - sw-cd
+          - sw-ke
+          - sw-tz
+          - sw-ug
+          - sy
+          - syr
+          - syr-iq
+          - syr-sy
+          - szl
+          - szl-pl
+          - ta
+          - ta-in
+          - ta-lk
+          - ta-my
+          - ta-sg
+          - te
+          - te-in
+          - teo
+          - teo-ke
+          - teo-ug
+          - tg
+          - tg-tj
+          - th
+          - th-th
+          - ti
+          - ti-er
+          - ti-et
+          - tk
+          - tk-tm
+          - tl
+          - tn
+          - tn-bw
+          - tn-za
+          - to
+          - to-to
+          - tok
+          - tok-001
+          - tr
+          - tr-cy
+          - tr-tr
+          - ts
+          - tt
+          - tt-ru
+          - tw
+          - twq
+          - twq-ne
+          - ty
+          - tzm
+          - tzm-ma
+          - ug
+          - ug-cn
+          - uk
+          - uk-ua
+          - ur
+          - ur-in
+          - ur-pk
+          - uz
+          - uz-af
+          - uz-uz
+          - vai
+          - vai-lr
+          - ve
+          - vec
+          - vec-it
+          - vi
+          - vi-vn
+          - vmw
+          - vmw-mz
+          - vo
+          - vo-001
+          - vun
+          - vun-tz
+          - wa
+          - wae
+          - wae-ch
+          - wo
+          - wo-sn
+          - xh
+          - xh-za
+          - xnr
+          - xnr-in
+          - xog
+          - xog-ug
+          - yav
+          - yav-cm
+          - yi
+          - yi-001
+          - yi-ua
+          - yo
+          - yo-bj
+          - yo-ng
+          - yrl
+          - yrl-br
+          - yrl-co
+          - yrl-ve
+          - yue
+          - yue-cn
+          - yue-hk
+          - yue-mo
+          - za
+          - za-cn
+          - zgh
+          - zgh-ma
+          - zh
+          - zh-cn
+          - zh-hans
+          - zh-hant
+          - zh-hk
+          - zh-mo
+          - zh-my
+          - zh-sg
+          - zh-tw
+          - zu
+          - zu-za
+        layoutSections:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LayoutSection'
+          description: A structure detailing the layout sections of the blog post.
+        linkRelCanonicalUrl:
+          type: string
+          description: Optional override to set the URL to be used in the rel=canonical link tag on the page.
+        mabExperimentId:
+          type: string
+          description: Unique identifier of the MAB Experiment
+        metaDescription:
+          type: string
+          description: A description that goes in <meta> tag on the page.
+        name:
+          type: string
+          description: The internal name of the Blog Post.
+        pageExpiryDate:
+          type: integer
+          description: The date at which this blog post should expire and begin redirecting to another url or page.
+          format: int64
+        pageExpiryEnabled:
+          type: boolean
+          description: Boolean describing if the page expiration feature is enabled for this blog post.
+        pageExpiryRedirectId:
+          type: integer
+          description: The ID of another page this blog post's url should redirect to once this blog post expires. Should only set this or pageExpiryRedirectUrl.
+          format: int64
+        pageExpiryRedirectUrl:
+          type: string
+          description: The URL this blog post's url should redirect to once it expires. Should only set this or pageExpiryRedirectId.
+        password:
+          type: string
+          description: Set this to create a password protected page. Entering the password will be required to view the page.
+        postBody:
+          type: string
+          description: The HTML of the main post body.
+        postSummary:
+          type: string
+          description: The summary of the blog post that will appear on the main listing page.
+        publicAccessRules:
+          type: array
+          description: Rules for require member registration to access private content.
+          items:
+            $ref: '#/components/schemas/PublicAccessRule'
+        publicAccessRulesEnabled:
+          type: boolean
+          description: Boolean to determine whether or not to respect publicAccessRules.
+        publishDate:
+          type: string
+          description: The date (ISO8601 format) the blog post is to be published at.
+          format: date-time
+        publishImmediately:
+          type: boolean
+          description: Set this to true if you want to be published immediately when the schedule publish endpoint is called, and to ignore the publish_date setting.
+        publishedAt:
+          type: string
+          format: date-time
+        rssBody:
+          type: string
+          description: The contents of the RSS body for this Blog Post.
+        rssSummary:
+          type: string
+          description: The contents of the RSS summary for this Blog Post.
+        slug:
+          type: string
+          description: The path of the this blog post. This field is appended to the domain to construct the url of this post.
+        state:
+          maxLength: 25
+          type: string
+          description: An ENUM descibing the current state of this Blog Post.
+        tagIds:
+          type: array
+          description: List of IDs for the tags associated with this Blog Post.
+          items:
+            type: integer
+            format: int64
+        themeSettingsValues:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: A collection of settings specific to the theme applied to the blog post.
+        translatedFromId:
+          type: string
+          description: ID of the primary blog post this object was translated from.
+        translations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ContentLanguageVariation'
+          description: A map of translations for the blog post, each associated with a specific language variation.
+        updated:
+          type: string
+          description: The timestamp (ISO8601 format) when this Blog Post was updated.
+          format: date-time
+        updatedById:
+          type: string
+          description: The ID of the user that updated this Blog Post.
+        url:
+          type: string
+          description: A generated field representing the URL of this blog post.
+        useFeaturedImage:
+          type: boolean
+          description: Boolean to determine if this post should use a featuredImage.
+        widgetContainers:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: A data structure containing the data for all the modules inside the containers for this post. This will only be populated if the page has widget containers.
+        widgets:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: A data structure containing the data for all the modules for this page.
+    RowMetaData:
+      required:
+      - cssClass
+      - styles
+      type: object
+      properties:
+        cssClass:
+          type: string
+          description: The CSS class applied to the row.
+        styles:
+          $ref: '#/components/schemas/Styles'
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    ContentLanguageVariation:
+      required:
+      - archivedInDashboard
+      - authorName
+      - campaign
+      - campaignName
+      - created
+      - id
+      - name
+      - password
+      - publicAccessRules
+      - publicAccessRulesEnabled
+      - publishDate
+      - slug
+      - state
+      - updated
+      type: object
+      properties:
+        archivedInDashboard:
+          type: boolean
+          description: If True, the variant will not show up in your dashboard, although the post could still be live.
+        authorName:
+          type: string
+          description: The name of the user who last published the blog post. For posts that haven't been published yet, this property will reflect the user who initially created the draft.
+        campaign:
+          type: string
+          description: The GUID of the marketing campaign this page is a part of.
+        campaignName:
+          type: string
+          description: Name of the associated marketing campaign.
+        created:
+          type: string
+          description: The timestamp (ISO8601 format) when this Blog Post was created.
+          format: date-time
+        id:
+          type: integer
+          description: ID of object to set as primary in multi-language group.
+          format: int64
+        name:
+          type: string
+          description: The internal name of the content language variation.
+        password:
+          type: string
+          description: Set this to create a password protected page. Entering the password will be required to view the page.
+        publicAccessRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAccessRule'
+        publicAccessRulesEnabled:
+          type: boolean
+          description: Boolean to determine whether or not to respect publicAccessRules.
+        publishDate:
+          type: string
+          description: The date (ISO8601 format) the page is to be published at.
+          format: date-time
+        slug:
+          type: string
+          description: The path of the this page. This field is appended to the domain to construct the url of this page.
+        state:
+          type: string
+          description: 'An ENUM describing the current state of this page.
+
+
+            Maximum string length: 25'
+        tagIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        updated:
+          type: string
+          description: The timestamp (ISO8601 format) when this Blog Post was updated.
+          format: date-time
+    ColorStop:
+      required:
+      - color
+      type: object
+      properties:
+        color:
+          $ref: '#/components/schemas/RGBAColor'
+    BreakpointStyles:
+      required:
+      - hidden
+      - margin
+      - padding
+      type: object
+      properties:
+        hidden:
+          type: boolean
+          description: Boolean indicating if the breakpoint is visible.
+        margin:
+          $ref: '#/components/schemas/Margin'
+        padding:
+          $ref: '#/components/schemas/Padding'
+    VersionUser:
+      required:
+      - email
+      - fullName
+      - id
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address of the user.
+        fullName:
+          type: string
+          description: The first and last name of the User.
+        id:
+          type: string
+          description: The unique ID of the User.
+    PublicAccessRule:
+      type: object
+      properties: {}
+    Angle:
+      required:
+      - units
+      - value
+      type: object
+      properties:
+        units:
+          type: string
+          description: The unit of measurement for the angle.
+          enum:
+          - DEGREES
+          - GRADIANS
+          - RADIANS
+          - TURNS
+        value:
+          type: number
+          description: The numerical representation of the angle.
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            automation: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-refined-from:
+- hubspot-automation-actions-v4-openapi.json
+- hubspot-cms-posts-openapi.json
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE

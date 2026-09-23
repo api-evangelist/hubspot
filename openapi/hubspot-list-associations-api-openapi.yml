@@ -1,0 +1,454 @@
+openapi: 3.2.0
+info:
+  title: Marketing Marketing Events List Associations API
+  description: Basepom for all HubSpot Projects
+  version: 2026-09
+  x-hubspot-product-tier-requirements:
+    marketing: FREE
+    sales: FREE
+    service: FREE
+    cms: FREE
+    commerce: FREE
+    crmHub: FREE
+    dataHub: FREE
+servers:
+- url: https://api.hubapi.com
+tags:
+- name: List Associations
+paths:
+  /marketing/marketing-events/2026-09/associations/{externalAccountId}/{externalEventId}/lists:
+    get:
+      tags:
+      - List Associations
+      summary: Get lists associated with a marketing event
+      description: Gets lists associated with a marketing event by external account id and external event id
+      operationId: get-/marketing/marketing-events/2026-09/associations/{externalAccountId}/{externalEventId}/lists_getAllByExternalAccountAndEventIds
+      parameters:
+      - name: externalAccountId
+        in: path
+        description: The accountId that is associated with this marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalPublicList'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+  /marketing/marketing-events/2026-09/associations/{externalAccountId}/{externalEventId}/lists/{listId}:
+    put:
+      tags:
+      - List Associations
+      summary: Associate a list with a marketing event
+      description: Associates a list with a marketing event by external account id, external event id, and ILS list id
+      operationId: put-/marketing/marketing-events/2026-09/associations/{externalAccountId}/{externalEventId}/lists/{listId}_associateByExternalAccountAndEventIds
+      parameters:
+      - name: externalAccountId
+        in: path
+        description: The accountId that is associated with this marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: listId
+        in: path
+        description: The ILS ID of the list.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+    delete:
+      tags:
+      - List Associations
+      summary: Disassociate a list from a marketing event
+      description: Disassociates a list from a marketing event by external account id, external event id, and ILS list id
+      operationId: delete-/marketing/marketing-events/2026-09/associations/{externalAccountId}/{externalEventId}/lists/{listId}_disassociateByExternalAccountAndEventIds
+      parameters:
+      - name: externalAccountId
+        in: path
+        description: The accountId that is associated with this marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: externalEventId
+        in: path
+        description: The id of the marketing event in the external event application.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: listId
+        in: path
+        description: The ILS ID of the list.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+  /marketing/marketing-events/2026-09/associations/{marketingEventId}/lists:
+    get:
+      tags:
+      - List Associations
+      summary: Get lists associated with a marketing event
+      description: Gets lists associated with a marketing event by marketing event id
+      operationId: get-/marketing/marketing-events/2026-09/associations/{marketingEventId}/lists_getAllByMarketingEventId
+      parameters:
+      - name: marketingEventId
+        in: path
+        description: The internal id of the marketing event in HubSpot.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponseWithTotalPublicList'
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+  /marketing/marketing-events/2026-09/associations/{marketingEventId}/lists/{listId}:
+    put:
+      tags:
+      - List Associations
+      summary: Associate a list with a marketing event
+      description: Associates a list with a marketing event by marketing event id and ILS list id
+      operationId: put-/marketing/marketing-events/2026-09/associations/{marketingEventId}/lists/{listId}_associateByMarketingEventId
+      parameters:
+      - name: listId
+        in: path
+        description: The ILS ID of the list.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: marketingEventId
+        in: path
+        description: The internal id of the marketing event in HubSpot.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+    delete:
+      tags:
+      - List Associations
+      summary: Disassociate a list from a marketing event
+      description: Disassociates a list from a marketing event by marketing event id and ILS list id
+      operationId: delete-/marketing/marketing-events/2026-09/associations/{marketingEventId}/lists/{listId}_disassociateByMarketingEventId
+      parameters:
+      - name: listId
+        in: path
+        description: The ILS ID of the list.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: marketingEventId
+        in: path
+        description: The internal id of the marketing event in HubSpot.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          description: ''
+          $ref: '#/components/responses/Error'
+      security:
+      - oauth2:
+        - crm.objects.marketing_events.write
+components:
+  schemas:
+    CollectionResponseWithTotalPublicList:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicList'
+        total:
+          type: integer
+          format: int32
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    PublicList:
+      required:
+      - listId
+      - listVersion
+      - name
+      - objectTypeId
+      - processingStatus
+      - processingType
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp of the creation of the list
+          format: date-time
+        createdById:
+          type: string
+          description: The ID of the user who created the list
+        deletedAt:
+          type: string
+          description: Timestamp of the deletion of the list
+          format: date-time
+        filtersUpdatedAt:
+          type: string
+          description: Timestamp of the last update of the list filters
+          format: date-time
+        listId:
+          type: string
+          description: An internal ID of the list
+        listVersion:
+          type: integer
+          description: A number that represents a version of the list
+          format: int32
+        name:
+          type: string
+          description: The name of the list
+        objectTypeId:
+          type: string
+          description: The internal ID of the object type of the list
+        processingStatus:
+          type: string
+          description: Represents the current processing status of the list
+        processingType:
+          type: string
+          description: Processing type of the list
+        size:
+          type: integer
+          description: The size of the result list
+          format: int64
+        updatedAt:
+          type: string
+          description: Timestamp of the last update of the list
+          format: date-time
+        updatedById:
+          type: string
+          description: The ID of the user who last updated the list
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: The ID element at the start of the page
+        link:
+          type: string
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    developer_hapikey:
+      type: apiKey
+      name: hapikey
+      in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://app.hubspot.com/oauth/authorize
+          tokenUrl: https://api.hubapi.com/oauth/v1/token
+          scopes:
+            crm.objects.marketing_events.read: ''
+            crm.objects.marketing_events.write: ''
+            developers-read: ''
+            developers-write: ''
+    private_apps:
+      type: apiKey
+      name: private-app
+      in: header
+    private_apps_legacy:
+      type: apiKey
+      name: private-app-legacy
+      in: header
+x-hubspot-available-client-libraries:
+- Node
+- Python
+- Ruby
+- PHP
+x-hubspot-product-tier-requirements:
+  marketing: FREE
+  sales: FREE
+  service: FREE
+  cms: FREE
+  commerce: FREE
+  crmHub: FREE
+  dataHub: FREE
