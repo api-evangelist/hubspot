@@ -1,0 +1,181 @@
+# Vendor facets — HubSpot, as a support vendor (Service Hub knowledge base) and a hosting vendor
+# (Content Hub CMS serving marketing and docs sites). Headline: one 2-point pointer check
+# (support_channel, ~45% catalog pass rate, not saturated) from the knowledge base; getting-started and
+# auth pages only where the provider writes them. Hosting itself earns nothing, and HubSpot has no
+# native llms.txt — its own answer is "upload the file you wrote and redirect to it".
+vendor: hubspot
+name: HubSpot
+website: https://www.hubspot.com
+areas:
+- support
+- hosting
+registry_keys:
+- hubspot
+rubric_schema_version: 0.22.0
+generated: '2026-09-25'
+features_refreshed: '2026-09-25'
+basis: capability
+summary: >-
+  HubSpot's Service Hub knowledge base gives a provider one check: declared, it is a support channel,
+  2 points in developer ergonomics. Knowledge-base articles or CMS pages can hold a getting-started guide
+  and an authentication page, but only the provider writing and declaring them moves those checks. Hosting
+  a site on Content Hub earns nothing by itself, and HubSpot does not generate an llms.txt: a provider
+  who wants one writes it, uploads it to the file manager and redirects /llms.txt to it, so the credit
+  is the provider's authorship, not HubSpot's.
+features:
+- id: knowledge-base
+  name: Service Hub knowledge base
+  description: >-
+    Hosted knowledge base on a connected custom domain with public, access-group or SSO-only visibility
+    and support forms; Service Hub Professional and Enterprise.
+  source: https://knowledge.hubspot.com/knowledge-base/customize-knowledge-base-settings
+  tier: paid
+- id: cms-hosting
+  name: Content Hub CMS hosting
+  description: >-
+    Hosted website CMS with free hosting, SSL/CDN, themes, landing pages and blog, on which providers
+    run marketing and sometimes developer-docs sites.
+  source: https://www.hubspot.com/products/content
+  tier: all
+- id: llms-txt-workaround
+  name: llms.txt via file manager and redirect
+  description: >-
+    No native llms.txt; HubSpot's documented workaround is to generate the file elsewhere, host it in
+    the file manager and add a /llms.txt redirect (community idea, "Alternative Solution", Dec 2025).
+  source: https://community.hubspot.com/t/support-llms-txt-in-hubspot-cms/130015
+  tier: all
+- id: hubspot-mcp
+  name: Remote HubSpot MCP server
+  description: >-
+    HubSpot-hosted MCP server at mcp.hubspot.com exposing the account's CRM data to users' AI tools via
+    OAuth.
+  source: https://developers.hubspot.com/ai-tools/mcp
+  tier: all
+maps:
+- feature: knowledge-base
+  check: support_channel
+  layer: composite
+  credit: 1.0
+  provider_must: Declare the knowledge base in apis.yml common[] as HelpCenter or Support.
+  catalog_pass_rate: 0.45
+  facet: developer_ergonomics
+  points: 2
+  baseline_pass_rate: 0.69
+- feature: knowledge-base
+  check: getting_started_present
+  layer: composite
+  conditional: true
+  condition: >-
+    Only if the provider writes a getting-started guide for its API, as a knowledge-base article or a
+    CMS page, and declares it as GettingStarted. HubSpot supplies the page, not the guide.
+  provider_must: Write the guide and declare its URL as GettingStarted.
+  catalog_pass_rate: 0.206
+  facet: developer_ergonomics
+  points: 5
+  baseline_pass_rate: 0.636
+- feature: knowledge-base
+  check: authentication_documented
+  layer: composite
+  conditional: true
+  condition: >-
+    Only if the provider documents its API authentication on a knowledge-base article or CMS page and
+    declares it as Authentication.
+  provider_must: Write the page and declare its URL as Authentication.
+  catalog_pass_rate: 0.368
+  facet: developer_ergonomics
+  points: 5
+  baseline_pass_rate: 0.94
+  saturated: true
+  saturated_note: >-
+    94% of providers with a contract, docs and a reference already earn this; the vendor cannot move it
+    for most of its buyers.
+earns_nothing:
+- feature: cms-hosting
+  check: documentation_present
+  why: >-
+    Hosting is infrastructure; a docs site on HubSpot CMS earns documentation_present only through the
+    provider's own declared pointer, exactly as it would anywhere else.
+- feature: llms-txt-workaround
+  check: llms_txt_published
+  why: >-
+    HubSpot generates nothing; the provider writes the file and HubSpot serves it as a static upload,
+    so the credit is authored by the provider.
+- feature: hubspot-mcp
+  check: mcp_server
+  layer: agent_readiness
+  why: >-
+    It exposes the provider's HubSpot CRM to its own users on a HubSpot host; it is not an MCP server
+    for the provider's API.
+out_of_reach:
+  checks:
+  - status_page_present
+  - change_log_present
+  - contract_present
+  - api_reference_present
+  - sdk_count_1
+  note: >-
+    Neither the knowledge base nor the CMS produces a status page, contract, reference or SDK for the
+    provider's API; a changelog on the CMS is the provider's own page.
+surface:
+  developer_ergonomics:
+    reachable: 12.0
+    total: 42
+  agent_readiness:
+    reachable: 0
+    total: 139
+hard_rule: >-
+  A model, not a score. Adopting this vendor changes a provider's Kin Score only when the provider publishes
+  the resulting artifacts on its own surface; nothing here writes a score, and no sponsorship or partnership
+  can.
+method: searched
+source:
+- https://community.hubspot.com/t/support-llms-txt-in-hubspot-cms/130015
+- https://developers.hubspot.com/ai-tools/mcp
+- https://knowledge.hubspot.com/knowledge-base/customize-knowledge-base-settings
+- https://www.hubspot.com/products/content
+measured:
+  cohort:
+    method: vendors-catalog.json detections (CNAME / header / URL shape / markup), never a name match
+    detected: 15
+    in_baseline: 4
+  control:
+    basis: providers earning contract_present + documentation_present + api_reference_present, minus the
+      cohort
+    n: 5212
+  metric: >-
+    cohort_pct / control_pct = mean share of the check's points earned (derived and platform credit weighted),
+    x100
+  measured_on: '2026-09-25'
+  status: 'not measurable: 4 detected customers clear the baseline (need 20)'
+simulation:
+  simulated_on: '2026-09-25'
+  rubric: 0.23.0
+  population: providers publishing a contract (contract_present earned), replayable exactly
+  providers: 8977
+  providers_unreplayable: 987
+  providers_moved: 3995
+  conditional_rows: excluded (they depend on what the API already does)
+  composite_lift:
+    median: 0.0
+    p75: 0.9
+    p90: 1.0
+    max: 1.0
+    mean_among_movers: 0.9
+  agent_readiness_lift:
+    median: 0.0
+    p75: 0.0
+    p90: 0.0
+    max: 0.0
+    mean_among_movers: 0.0
+  facet_lift_median_among_movers:
+    developer_ergonomics: 4.8
+  composite_band_moves:
+    thin -> developing: 217
+    emerging -> thin: 66
+    developing -> strong: 34
+    strong -> exemplar: 8
+    minimal -> emerging: 1
+  agent_readiness_band_moves: {}
+  method: >-
+    each provider's own kin/checks file, the vendor's maps at their stated credit, the scorer's composite
+    formula; from -> to, nothing written
