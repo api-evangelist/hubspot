@@ -932,60 +932,20 @@ paths:
     - url: https://api.hubapi.com
 components:
   schemas:
-    BatchResponseContentFolder:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: Time of batch operation completion.
-          format: date-time
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Links associated with batch operation.
-        requestedAt:
-          type: string
-          description: Time of batch operation request.
-          format: date-time
-        results:
-          type: array
-          description: Results of batch operation.
-          items:
-            $ref: '#/components/schemas/ContentFolder'
-        startedAt:
-          type: string
-          description: Time of batch operation start.
-          format: date-time
-        status:
-          type: string
-          description: Status of batch operation.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    CollectionResponseWithTotalContentFolderForwardPaging:
+    CollectionResponseWithTotalContentFolderVersion:
       required:
       - results
       - total
       type: object
       properties:
         paging:
-          $ref: '#/components/schemas/ForwardPaging'
+          $ref: '#/components/schemas/Paging'
         results:
           type: array
-          description: Collection of content folders.
           items:
-            $ref: '#/components/schemas/ContentFolder'
+            $ref: '#/components/schemas/ContentFolderVersion'
         total:
           type: integer
-          description: Total number of content folders.
           format: int32
     ContentFolder:
       required:
@@ -1024,53 +984,6 @@ components:
           type: string
           description: The timestamp indicating when the content folder was last updated.
           format: date-time
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    CollectionResponseWithTotalContentFolderVersion:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContentFolderVersion'
-        total:
-          type: integer
-          format: int32
-    ForwardPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
     PreviousPage:
       required:
       - before
@@ -1083,130 +996,6 @@ components:
           type: string
           description: A URL that can be used to retrieve the previous pages' results.
       description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    VersionUser:
-      required:
-      - email
-      - fullName
-      - id
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email address of the user.
-        fullName:
-          type: string
-          description: First and last name of the user.
-        id:
-          type: string
-          description: ID of the user.
-    StandardError:
-      required:
-      - category
-      - context
-      - errors
-      - links
-      - message
-      - status
-      type: object
-      properties:
-        category:
-          type: string
-          description: Error category.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Error context.
-        errors:
-          type: array
-          description: List of error details.
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        id:
-          type: string
-          description: Error ID.
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Error links.
-        message:
-          type: string
-          description: Error message.
-        status:
-          type: string
-          description: Error status.
-        subCategory:
-          type: object
-          properties: {}
-          description: Error subcategory.
-      description: Ye olde error
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    ContentFolderVersion:
-      required:
-      - id
-      - object
-      - updatedAt
-      - user
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          $ref: '#/components/schemas/ContentFolder'
-        updatedAt:
-          type: string
-          format: date-time
-        user:
-          $ref: '#/components/schemas/VersionUser'
     BatchInputString:
       required:
       - inputs
@@ -1217,6 +1006,18 @@ components:
           description: Strings to input.
           items:
             type: string
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     BatchResponseContentFolderWithErrors:
       required:
       - completedAt
@@ -1264,18 +1065,157 @@ components:
           - COMPLETE
           - PENDING
           - PROCESSING
-    NextPage:
+    ErrorDetail:
       required:
-      - after
+      - message
       type: object
       properties:
-        after:
+        code:
           type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
           type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    CollectionResponseWithTotalContentFolderForwardPaging:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          description: Collection of content folders.
+          items:
+            $ref: '#/components/schemas/ContentFolder'
+        total:
+          type: integer
+          description: Total number of content folders.
+          format: int32
+    ContentFolderVersion:
+      required:
+      - id
+      - object
+      - updatedAt
+      - user
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          $ref: '#/components/schemas/ContentFolder'
+        updatedAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/VersionUser'
+    StandardError:
+      required:
+      - category
+      - context
+      - errors
+      - links
+      - message
+      - status
+      type: object
+      properties:
+        category:
+          type: string
+          description: Error category.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Error context.
+        errors:
+          type: array
+          description: List of error details.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        id:
+          type: string
+          description: Error ID.
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Error links.
+        message:
+          type: string
+          description: Error message.
+        status:
+          type: string
+          description: Error status.
+        subCategory:
+          type: object
+          properties: {}
+          description: Error subcategory.
+      description: Ye olde error
     Paging:
       type: object
       properties:
@@ -1283,16 +1223,125 @@ components:
           $ref: '#/components/schemas/NextPage'
         prev:
           $ref: '#/components/schemas/PreviousPage'
-    FolderUpdateInput:
+    VersionUser:
+      required:
+      - email
+      - fullName
+      - id
       type: object
       properties:
+        email:
+          type: string
+          description: Email address of the user.
+        fullName:
+          type: string
+          description: First and last name of the user.
+        id:
+          type: string
+          description: ID of the user.
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    BatchResponseContentFolder:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: Time of batch operation completion.
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Links associated with batch operation.
+        requestedAt:
+          type: string
+          description: Time of batch operation request.
+          format: date-time
+        results:
+          type: array
+          description: Results of batch operation.
+          items:
+            $ref: '#/components/schemas/ContentFolder'
+        startedAt:
+          type: string
+          description: Time of batch operation start.
+          format: date-time
+        status:
+          type: string
+          description: Status of batch operation.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    Folder:
+      required:
+      - archived
+      - createdAt
+      - id
+      - updatedAt
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: Marks whether the folder is deleted or not.
+        archivedAt:
+          type: string
+          description: Timestamp of folder deletion.
+          format: date-time
+        createdAt:
+          type: string
+          description: Timestamp of folder creation.
+          format: date-time
+        id:
+          type: string
+          description: ID of the folder.
         name:
           type: string
-          description: New name. If specified the folder's name and fullPath will change. All children of the folder will be updated accordingly.
+          description: Name of the folder.
         parentFolderId:
-          type: integer
-          description: New parent folderId. If changed, the folder and all it's children will be moved into the specified folder. parentFolderId and parentFolderPath cannot be specified at the same time.
-          format: int64
+          type: string
+          description: ID of the parent folder.
+        path:
+          type: string
+          description: Path of the folder in the file manager.
+        updatedAt:
+          type: string
+          description: Timestamp of the latest update to the folder.
+          format: date-time
+    CollectionResponseFolder:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+    FolderUpdateTaskLocator:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the task
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
     FolderUpdateInputWithId:
       required:
       - id
@@ -1308,19 +1357,16 @@ components:
           type: integer
           description: New parent folderId. If changed, the folder and all it's children will be moved into the specified folder. parentFolderId and parentFolderPath cannot be specified at the same time.
           format: int64
-    FolderUpdateTaskLocator:
-      required:
-      - id
+    FolderUpdateInput:
       type: object
       properties:
-        id:
+        name:
           type: string
-          description: ID of the task
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
+          description: New name. If specified the folder's name and fullPath will change. All children of the folder will be updated accordingly.
+        parentFolderId:
+          type: integer
+          description: New parent folderId. If changed, the folder and all it's children will be moved into the specified folder. parentFolderId and parentFolderPath cannot be specified at the same time.
+          format: int64
     StandardError_2:
       required:
       - category
@@ -1365,52 +1411,6 @@ components:
           properties: {}
           description: A more specific error category within each main category.
       description: Ye olde error
-    CollectionResponseFolder:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Folder'
-    Folder:
-      required:
-      - archived
-      - createdAt
-      - id
-      - updatedAt
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Marks whether the folder is deleted or not.
-        archivedAt:
-          type: string
-          description: Timestamp of folder deletion.
-          format: date-time
-        createdAt:
-          type: string
-          description: Timestamp of folder creation.
-          format: date-time
-        id:
-          type: string
-          description: ID of the folder.
-        name:
-          type: string
-          description: Name of the folder.
-        parentFolderId:
-          type: string
-          description: ID of the parent folder.
-        path:
-          type: string
-          description: Path of the folder in the file manager.
-        updatedAt:
-          type: string
-          description: Timestamp of the latest update to the folder.
-          format: date-time
     FolderActionResponse:
       required:
       - completedAt

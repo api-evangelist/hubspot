@@ -1373,6 +1373,99 @@ paths:
     - url: https://private.hubapi.com
 components:
   schemas:
+    PublicObjectWarning:
+      required:
+      - category
+      - context
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+        context:
+          type: object
+          additionalProperties:
+            type: string
+        message:
+          type: string
+    ValueWithTimestamp:
+      required:
+      - sourceType
+      - timestamp
+      - value
+      type: object
+      properties:
+        sourceId:
+          type: string
+          description: The unique ID of the property.
+        sourceLabel:
+          type: string
+          description: A human-readable label.
+        sourceType:
+          type: string
+          description: The property type.
+        timestamp:
+          type: string
+          description: The timestamp when the property was updated, in ISO 8601 format.
+          format: date-time
+        updatedByUserId:
+          type: integer
+          description: The ID of the user who last updated the property.
+          format: int32
+        value:
+          type: string
+          description: The property value.
+      description: Property model that includes timestamp.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    FilterGroup:
+      required:
+      - filters
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    CollectionResponseWithTotalSimplePublicObject:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePublicObject'
+        total:
+          type: integer
+          description: The number of available results
+          format: int32
+      description: Represents a list of simple objects returned from an API request, along with the total count of objects available.
     ErrorDetail:
       required:
       - message
@@ -1399,21 +1492,48 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicObjectWarning:
-      required:
-      - category
-      - context
-      - message
+    Paging:
       type: object
       properties:
-        category:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    PublicObjectSearchRequest:
+      required:
+      - after
+      - filterGroups
+      - limit
+      - properties
+      - sorts
+      type: object
+      properties:
+        after:
           type: string
-        context:
-          type: object
-          additionalProperties:
+          description: A paging cursor token for retrieving subsequent pages.
+        filterGroups:
+          type: array
+          description: Up to 6 groups of filters defining additional query criteria.
+          items:
+            $ref: '#/components/schemas/FilterGroup'
+        limit:
+          type: integer
+          description: The maximum results to return, up to 200 objects.
+          format: int32
+        properties:
+          type: array
+          description: A list of property names to include in the response.
+          items:
             type: string
-        message:
+        query:
           type: string
+          description: The search query string, up to 3000 characters.
+        sorts:
+          type: array
+          description: Specifies sorting order based on object properties.
+          items:
+            type: string
+      description: Describes a search request
     Filter:
       required:
       - operator
@@ -1452,18 +1572,53 @@ components:
           items:
             type: string
       description: 'Defines a single condition for searching CRM objects, specifying the property to filter on, the operator to use (such as equals, greater than, or contains), and the value(s) to compare against. '
-    PreviousPage:
+    Error:
       required:
-      - before
+      - category
+      - correlationId
+      - message
       type: object
       properties:
-        before:
+        category:
           type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
           type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
     SimplePublicObject:
       required:
       - archived
@@ -1514,101 +1669,7 @@ components:
           items:
             $ref: '#/components/schemas/PublicObjectWarning'
       description: A simple public object.
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PublicObjectSearchRequest:
-      required:
-      - after
-      - filterGroups
-      - limit
-      - properties
-      - sorts
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        filterGroups:
-          type: array
-          description: Up to 6 groups of filters defining additional query criteria.
-          items:
-            $ref: '#/components/schemas/FilterGroup'
-        limit:
-          type: integer
-          description: The maximum results to return, up to 200 objects.
-          format: int32
-        properties:
-          type: array
-          description: A list of property names to include in the response.
-          items:
-            type: string
-        query:
-          type: string
-          description: The search query string, up to 3000 characters.
-        sorts:
-          type: array
-          description: Specifies sorting order based on object properties.
-          items:
-            type: string
-      description: Describes a search request
-    CollectionResponseWithTotalSimplePublicObject:
+    CollectionResponseWithTotalSimplePublicObject_2:
       required:
       - results
       - total
@@ -1619,56 +1680,12 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/SimplePublicObject'
+            $ref: '#/components/schemas/SimplePublicObject_2'
         total:
           type: integer
-          description: The number of available results
+          description: The total number of objects in the collection.
           format: int32
       description: Represents a list of simple objects returned from an API request, along with the total count of objects available.
-    FilterGroup:
-      required:
-      - filters
-      type: object
-      properties:
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Filter'
-    ValueWithTimestamp:
-      required:
-      - sourceType
-      - timestamp
-      - value
-      type: object
-      properties:
-        sourceId:
-          type: string
-          description: The unique ID of the property.
-        sourceLabel:
-          type: string
-          description: A human-readable label.
-        sourceType:
-          type: string
-          description: The property type.
-        timestamp:
-          type: string
-          description: The timestamp when the property was updated, in ISO 8601 format.
-          format: date-time
-        updatedByUserId:
-          type: integer
-          description: The ID of the user who last updated the property.
-          format: int32
-        value:
-          type: string
-          description: The property value.
-      description: Property model that includes timestamp.
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
     SimplePublicObject_2:
       required:
       - archived
@@ -1719,23 +1736,6 @@ components:
           items:
             $ref: '#/components/schemas/PublicObjectWarning'
       description: A simple public object.
-    CollectionResponseWithTotalSimplePublicObject_2:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SimplePublicObject_2'
-        total:
-          type: integer
-          description: The total number of objects in the collection.
-          format: int32
-      description: Represents a list of simple objects returned from an API request, along with the total count of objects available.
     SimplePublicObject_3:
       required:
       - archived
@@ -2036,6 +2036,104 @@ components:
           items:
             $ref: '#/components/schemas/PublicObjectWarning'
       description: A simple public object.
+    PublicObjectWarning_2:
+      required:
+      - category
+      - context
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: A string representing the category of the warning.
+        context:
+          type: object
+          additionalProperties:
+            type: string
+          description: An object providing additional context for the warning, with string properties.
+        message:
+          type: string
+          description: A string containing the warning message.
+    ValueWithTimestamp_2:
+      required:
+      - sourceType
+      - timestamp
+      - value
+      type: object
+      properties:
+        sourceId:
+          type: string
+          description: A string representing the unique identifier of the source.
+        sourceLabel:
+          type: string
+          description: A string providing a label or description for the source.
+        sourceType:
+          type: string
+          description: A string indicating the type of source from which the value originated.
+        timestamp:
+          type: string
+          description: The date and time when the value was recorded, in ISO 8601 format.
+          format: date-time
+        updatedByUserId:
+          type: integer
+          description: An integer representing the ID of the user who last updated the value.
+          format: int32
+        value:
+          type: string
+          description: A string representing the data value.
+      description: Property model that includes timestamp.
+    PreviousPage_2:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A string token used to identify the position of the previous page in the pagination sequence.
+        link:
+          type: string
+          description: A string URL that provides a direct link to access the previous page of results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    FilterGroup_2:
+      required:
+      - filters
+      type: object
+      properties:
+        filters:
+          type: array
+          description: An array of filter objects that define the criteria for filtering data. Each filter specifies a property, an operator, and a value or range of values to match against.
+          items:
+            $ref: '#/components/schemas/Filter_2'
+    NextPage_2:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A string token used as a cursor to fetch the next page of results.
+        link:
+          type: string
+          description: A string URL that provides a direct link to the next page of results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    CollectionResponseWithTotalSimplePublicObject_3:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          description: An array containing the simple public objects that are part of the collection.
+          items:
+            $ref: '#/components/schemas/SimplePublicObject_9'
+        total:
+          type: integer
+          description: An integer representing the total number of simple public objects in the collection.
+          format: int32
+      description: Represents a list of simple objects returned from an API request, along with the total count of objects available.
     ErrorDetail_2:
       required:
       - message
@@ -2062,24 +2160,41 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error. This is a string property.
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicObjectWarning_2:
+    PublicObjectSearchRequest_2:
       required:
-      - category
-      - context
-      - message
+      - after
+      - filterGroups
+      - limit
+      - properties
+      - sorts
       type: object
       properties:
-        category:
+        after:
           type: string
-          description: A string representing the category of the warning.
-        context:
-          type: object
-          additionalProperties:
+          description: A string representing the paging cursor token to fetch the next set of results.
+        filterGroups:
+          type: array
+          description: An array of FilterGroup objects that define the criteria for filtering the search results.
+          items:
+            $ref: '#/components/schemas/FilterGroup_2'
+        limit:
+          type: integer
+          description: An integer specifying the maximum number of results to return.
+          format: int32
+        properties:
+          type: array
+          description: An array of strings indicating which properties of the objects should be returned in the search results.
+          items:
             type: string
-          description: An object providing additional context for the warning, with string properties.
-        message:
+        query:
           type: string
-          description: A string containing the warning message.
+          description: A string representing the search query to filter the objects.
+        sorts:
+          type: array
+          description: An array of strings specifying the fields by which the search results should be sorted.
+          items:
+            type: string
+      description: Describes a search request
     Filter_2:
       required:
       - operator
@@ -2118,18 +2233,53 @@ components:
           items:
             type: string
       description: 'Defines a single condition for searching CRM objects, specifying the property to filter on, the operator to use (such as equals, greater than, or contains), and the value(s) to compare against. '
-    PreviousPage_2:
+    Error_2:
       required:
-      - before
+      - category
+      - correlationId
+      - message
       type: object
       properties:
-        before:
+        category:
           type: string
-          description: A string token used to identify the position of the previous page in the pagination sequence.
-        link:
+          description: The error category, providing a general classification of the error.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition, represented as an object with additional properties that are arrays of strings.
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
           type: string
-          description: A string URL that provides a direct link to access the previous page of results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+          description: 'A unique identifier for the request. Include this value with any error reports or support tickets. Format: UUID.'
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: Further information about the error, provided as an array of ErrorDetail objects.
+          items:
+            $ref: '#/components/schemas/ErrorDetail_2'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate.
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error.
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
     SimplePublicObject_9:
       required:
       - archived
@@ -2181,156 +2331,6 @@ components:
           items:
             $ref: '#/components/schemas/PublicObjectWarning_2'
       description: A simple public object.
-    Error_2:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category, providing a general classification of the error.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition, represented as an object with additional properties that are arrays of strings.
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: 'A unique identifier for the request. Include this value with any error reports or support tickets. Format: UUID.'
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: Further information about the error, provided as an array of ErrorDetail objects.
-          items:
-            $ref: '#/components/schemas/ErrorDetail_2'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate.
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error.
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage_2:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A string token used as a cursor to fetch the next page of results.
-        link:
-          type: string
-          description: A string URL that provides a direct link to the next page of results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PublicObjectSearchRequest_2:
-      required:
-      - after
-      - filterGroups
-      - limit
-      - properties
-      - sorts
-      type: object
-      properties:
-        after:
-          type: string
-          description: A string representing the paging cursor token to fetch the next set of results.
-        filterGroups:
-          type: array
-          description: An array of FilterGroup objects that define the criteria for filtering the search results.
-          items:
-            $ref: '#/components/schemas/FilterGroup_2'
-        limit:
-          type: integer
-          description: An integer specifying the maximum number of results to return.
-          format: int32
-        properties:
-          type: array
-          description: An array of strings indicating which properties of the objects should be returned in the search results.
-          items:
-            type: string
-        query:
-          type: string
-          description: A string representing the search query to filter the objects.
-        sorts:
-          type: array
-          description: An array of strings specifying the fields by which the search results should be sorted.
-          items:
-            type: string
-      description: Describes a search request
-    CollectionResponseWithTotalSimplePublicObject_3:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          description: An array containing the simple public objects that are part of the collection.
-          items:
-            $ref: '#/components/schemas/SimplePublicObject_9'
-        total:
-          type: integer
-          description: An integer representing the total number of simple public objects in the collection.
-          format: int32
-      description: Represents a list of simple objects returned from an API request, along with the total count of objects available.
-    FilterGroup_2:
-      required:
-      - filters
-      type: object
-      properties:
-        filters:
-          type: array
-          description: An array of filter objects that define the criteria for filtering data. Each filter specifies a property, an operator, and a value or range of values to match against.
-          items:
-            $ref: '#/components/schemas/Filter_2'
-    ValueWithTimestamp_2:
-      required:
-      - sourceType
-      - timestamp
-      - value
-      type: object
-      properties:
-        sourceId:
-          type: string
-          description: A string representing the unique identifier of the source.
-        sourceLabel:
-          type: string
-          description: A string providing a label or description for the source.
-        sourceType:
-          type: string
-          description: A string indicating the type of source from which the value originated.
-        timestamp:
-          type: string
-          description: The date and time when the value was recorded, in ISO 8601 format.
-          format: date-time
-        updatedByUserId:
-          type: integer
-          description: An integer representing the ID of the user who last updated the value.
-          format: int32
-        value:
-          type: string
-          description: A string representing the data value.
-      description: Property model that includes timestamp.
     SimplePublicObject_10:
       required:
       - archived
@@ -2873,6 +2873,30 @@ components:
         sort:
           type: string
           description: Sort field and order
+    ListSearchResponse:
+      required:
+      - hasMore
+      - lists
+      - offset
+      - total
+      type: object
+      properties:
+        hasMore:
+          type: boolean
+          description: Whether or not there are more results to page through.
+        lists:
+          type: array
+          description: The lists that matched the search criteria.
+          items:
+            $ref: '#/components/schemas/PublicObjectListSearchResult'
+        offset:
+          type: integer
+          description: Value to be passed in a future request to paginate through list search results.
+          format: int32
+        total:
+          type: integer
+          description: The total number of lists that match the search criteria.
+          format: int32
     PublicObjectListSearchResult:
       required:
       - additionalProperties
@@ -2930,30 +2954,6 @@ components:
         updatedById:
           type: string
           description: The ID of the user that last updated the list.
-    ListSearchResponse:
-      required:
-      - hasMore
-      - lists
-      - offset
-      - total
-      type: object
-      properties:
-        hasMore:
-          type: boolean
-          description: Whether or not there are more results to page through.
-        lists:
-          type: array
-          description: The lists that matched the search criteria.
-          items:
-            $ref: '#/components/schemas/PublicObjectListSearchResult'
-        offset:
-          type: integer
-          description: Value to be passed in a future request to paginate through list search results.
-          format: int32
-        total:
-          type: integer
-          description: The total number of lists that match the search criteria.
-          format: int32
     SimplePublicObject_20:
       required:
       - archived
@@ -3654,6 +3654,32 @@ components:
           items:
             $ref: '#/components/schemas/PublicObjectWarning'
       description: A simple public object.
+    ErrorDetail_3:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition, represented as an object where each key is a string and each value is an array of strings.
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate. This is a required property.
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error.
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     Error_3:
       required:
       - category
@@ -3701,32 +3727,6 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    ErrorDetail_3:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition, represented as an object where each key is a string and each value is an array of strings.
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate. This is a required property.
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error.
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   responses:
     Error:
       description: An error occurred.

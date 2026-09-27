@@ -410,6 +410,56 @@ components:
         value:
           type: string
           description: A string representation of the PublicDeliveryIdentifier, either an an E.164 phone number, an email address, or a channel-specific identifier.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     PublicChannelAccount:
       required:
       - active
@@ -449,59 +499,6 @@ components:
         name:
           type: string
           description: The name of the channel account.
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    CollectionResponseWithTotalPublicChannelAccount:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicChannelAccount'
-        total:
-          type: integer
-          format: int32
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     Error:
       required:
       - category
@@ -549,18 +546,21 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
+    CollectionResponseWithTotalPublicChannelAccount:
       required:
-      - after
+      - results
+      - total
       type: object
       properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicChannelAccount'
+        total:
+          type: integer
+          format: int32
     Paging:
       type: object
       properties:
@@ -583,13 +583,13 @@ components:
           - HS_SHORT_CODE
         value:
           type: string
-    PublicChannelAccountUpdateRequest:
+    PublicChannelAccountStagingTokenUpdateRequest:
       type: object
       properties:
-        authorized:
-          type: boolean
-        name:
+        accountName:
           type: string
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
     PublicChannelAccount_2:
       required:
       - active
@@ -624,6 +624,21 @@ components:
           type: string
         name:
           type: string
+    PublicChannelAccountEgg:
+      required:
+      - authorized
+      - inboxId
+      - name
+      type: object
+      properties:
+        authorized:
+          type: boolean
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+        inboxId:
+          type: string
+        name:
+          type: string
     PublicChannelAccountStagingToken:
       required:
       - accountToken
@@ -651,26 +666,11 @@ components:
         userId:
           type: integer
           format: int32
-    PublicChannelAccountStagingTokenUpdateRequest:
-      type: object
-      properties:
-        accountName:
-          type: string
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
-    PublicChannelAccountEgg:
-      required:
-      - authorized
-      - inboxId
-      - name
+    PublicChannelAccountUpdateRequest:
       type: object
       properties:
         authorized:
           type: boolean
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
-        inboxId:
-          type: string
         name:
           type: string
   responses:

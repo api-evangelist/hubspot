@@ -898,11 +898,18 @@ paths:
         - hubdb.tables.write
 components:
   schemas:
-    BoundedPaging:
+    NextPage:
+      required:
+      - after
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/BoundedNextPage'
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     ErrorDetail:
       required:
       - message
@@ -929,6 +936,77 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    ColumnRequest:
+      required:
+      - id
+      - label
+      - name
+      - options
+      - type
+      type: object
+      properties:
+        foreignColumnId:
+          type: integer
+          description: The id of the column from another table to which the column refers/points to.
+          format: int32
+        foreignTableId:
+          type: integer
+          description: The id of another table to which the column refers/points to.
+          format: int64
+        id:
+          type: integer
+          description: Column Id
+          format: int32
+        label:
+          type: string
+          description: Label of the column
+        maxNumberOfCharacters:
+          type: integer
+          description: Defines the maximum number of characters allowed in the column.
+          format: int32
+        maxNumberOfOptions:
+          type: integer
+          description: Specifies the maximum number of options that can be set for select and multi-select columns.
+          format: int32
+        name:
+          type: string
+          description: Name of the column
+        options:
+          type: array
+          description: Options to choose for select and multi-select columns
+          items:
+            $ref: '#/components/schemas/Option'
+        type:
+          type: string
+          description: Type of the column
+          enum:
+          - BOOLEAN
+          - CODE
+          - COMPOSITE
+          - CTA
+          - CURRENCY
+          - DATE
+          - DATETIME
+          - EMBED
+          - FILE
+          - FOREIGN_ID
+          - HUBSPOT_VIDEO
+          - IMAGE
+          - JSON
+          - LOCATION
+          - MULTISELECT
+          - 'NULL'
+          - NUMBER
+          - RICHTEXT
+          - SELECT
+          - TEXT
+          - URL
+          - VIDEO
+    UnifiedCollectionResponseWithTotalBaseHubDbTableRowV3:
+      properties: {}
+      oneOf:
+      - $ref: '#/components/schemas/RandomAccessCollectionResponseWithTotalHubDbTableRowV3'
+      - $ref: '#/components/schemas/StreamingCollectionResponseWithTotalHubDbTableRowV3'
     HubDbTableV3:
       required:
       - allowChildTables
@@ -1019,30 +1097,6 @@ components:
         useForPages:
           type: boolean
           description: Specifies whether the table can be used for creation of dynamic pages
-    ImportResult:
-      required:
-      - duplicateRows
-      - errors
-      - rowLimitExceeded
-      - rowsImported
-      type: object
-      properties:
-        duplicateRows:
-          type: integer
-          description: Specifies number of duplicate rows
-          format: int32
-        errors:
-          type: array
-          description: List of errors during import
-          items:
-            $ref: '#/components/schemas/Error'
-        rowLimitExceeded:
-          type: boolean
-          description: Specifies whether row limit exceeded during import
-        rowsImported:
-          type: integer
-          description: Specifies number of rows imported
-          format: int32
     CollectionResponseWithTotalHubDbTableV3:
       required:
       - results
@@ -1057,83 +1111,6 @@ components:
             $ref: '#/components/schemas/HubDbTableV3'
         total:
           type: integer
-          format: int32
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    HubDbTableCloneRequest:
-      required:
-      - copyRows
-      - isHubspotDefined
-      type: object
-      properties:
-        copyRows:
-          type: boolean
-          description: Specifies whether to copy the rows during clone
-        isHubspotDefined:
-          type: boolean
-          description: Indicates whether the table is defined by HubSpot.
-        newLabel:
-          type: string
-          description: The new label for the cloned table
-        newName:
-          type: string
-          description: The new name for the cloned table
-    BoundedNextPage:
-      required:
-      - offset
-      type: object
-      properties:
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next set of results.
-        offset:
-          type: integer
-          description: The offset value indicating the starting point for the next set of results.
           format: int32
     Column:
       required:
@@ -1242,6 +1219,77 @@ components:
           type: integer
           description: Column width for HubDB UI
           format: int32
+    BoundedNextPage:
+      required:
+      - offset
+      type: object
+      properties:
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next set of results.
+        offset:
+          type: integer
+          description: The offset value indicating the starting point for the next set of results.
+          format: int32
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     ForeignId:
       required:
       - id
@@ -1258,55 +1306,125 @@ components:
         type:
           type: string
           description: Type of the foreign ID.
-    PreviousPage:
+    HubDbTableV3Request:
       required:
-      - before
+      - allowChildTables
+      - allowPublicApiAccess
+      - columns
+      - dynamicMetaTags
+      - enableChildTablePages
+      - label
+      - name
+      - useForPages
       type: object
       properties:
-        before:
+        allowChildTables:
+          type: boolean
+          description: Specifies whether child tables can be created
+        allowPublicApiAccess:
+          type: boolean
+          description: Specifies whether the table can be read by public without authorization
+        columns:
+          type: array
+          description: List of columns in the table
+          items:
+            $ref: '#/components/schemas/ColumnRequest'
+        dynamicMetaTags:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
+        enableChildTablePages:
+          type: boolean
+          description: Specifies creation of multi-level dynamic pages using child tables
+        label:
           type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
+          description: Label of the table
+        name:
           type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
-      required:
-      - after
+          description: Name of the table
+        useForPages:
+          type: boolean
+          description: Specifies whether the table can be used for creation of dynamic pages
+    Paging:
       type: object
       properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    SimpleUser:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
       required:
-      - email
-      - firstName
-      - id
-      - lastName
+      - results
+      - total
+      - type
       type: object
       properties:
-        email:
+        paging:
+          $ref: '#/components/schemas/BoundedPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
+        total:
+          type: integer
+          description: The total number of rows available in the collection.
+          format: int32
+        type:
           type: string
-          description: The email address of the user.
-        firstName:
+          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
+          default: RANDOM_ACCESS
+          enum:
+          - RANDOM_ACCESS
+      x-hubspot-sub-type-impl: true
+    BoundedPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/BoundedNextPage'
+    HubDbTableCloneRequest:
+      required:
+      - copyRows
+      - isHubspotDefined
+      type: object
+      properties:
+        copyRows:
+          type: boolean
+          description: Specifies whether to copy the rows during clone
+        isHubspotDefined:
+          type: boolean
+          description: Indicates whether the table is defined by HubSpot.
+        newLabel:
           type: string
-          description: The first name of the user.
-        id:
+          description: The new label for the cloned table
+        newName:
           type: string
-          description: The unique identifier for the user.
-        lastName:
+          description: The new name for the cloned table
+    StreamingCollectionResponseWithTotalHubDbTableRowV3:
+      required:
+      - results
+      - total
+      - type
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
+        total:
+          type: integer
+          description: The total number of rows available in the collection.
+          format: int32
+        type:
           type: string
-          description: The last name of the user.
-    UnifiedCollectionResponseWithTotalBaseHubDbTableRowV3:
-      properties: {}
-      oneOf:
-      - $ref: '#/components/schemas/RandomAccessCollectionResponseWithTotalHubDbTableRowV3'
-      - $ref: '#/components/schemas/StreamingCollectionResponseWithTotalHubDbTableRowV3'
+          description: Indicates the type of response, which is 'STREAMING' by default.
+          default: STREAMING
+          enum:
+          - STREAMING
+      x-hubspot-sub-type-impl: true
     Option:
       required:
       - createdAt
@@ -1355,168 +1473,50 @@ components:
           description: The ID of the user who last updated the option.
           format: int32
       description: A HubSpot property option
-    HubDbTableV3Request:
+    SimpleUser:
       required:
-      - allowChildTables
-      - allowPublicApiAccess
-      - columns
-      - dynamicMetaTags
-      - enableChildTablePages
-      - label
-      - name
-      - useForPages
-      type: object
-      properties:
-        allowChildTables:
-          type: boolean
-          description: Specifies whether child tables can be created
-        allowPublicApiAccess:
-          type: boolean
-          description: Specifies whether the table can be read by public without authorization
-        columns:
-          type: array
-          description: List of columns in the table
-          items:
-            $ref: '#/components/schemas/ColumnRequest'
-        dynamicMetaTags:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int32
-          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
-        enableChildTablePages:
-          type: boolean
-          description: Specifies creation of multi-level dynamic pages using child tables
-        label:
-          type: string
-          description: Label of the table
-        name:
-          type: string
-          description: Name of the table
-        useForPages:
-          type: boolean
-          description: Specifies whether the table can be used for creation of dynamic pages
-    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
-      required:
-      - results
-      - total
-      - type
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/BoundedPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
-        total:
-          type: integer
-          description: The total number of rows available in the collection.
-          format: int32
-        type:
-          type: string
-          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
-          default: RANDOM_ACCESS
-          enum:
-          - RANDOM_ACCESS
-      x-hubspot-sub-type-impl: true
-    StreamingCollectionResponseWithTotalHubDbTableRowV3:
-      required:
-      - results
-      - total
-      - type
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
-        total:
-          type: integer
-          description: The total number of rows available in the collection.
-          format: int32
-        type:
-          type: string
-          description: Indicates the type of response, which is 'STREAMING' by default.
-          default: STREAMING
-          enum:
-          - STREAMING
-      x-hubspot-sub-type-impl: true
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    ColumnRequest:
-      required:
+      - email
+      - firstName
       - id
-      - label
-      - name
-      - options
-      - type
+      - lastName
       type: object
       properties:
-        foreignColumnId:
-          type: integer
-          description: The id of the column from another table to which the column refers/points to.
-          format: int32
-        foreignTableId:
-          type: integer
-          description: The id of another table to which the column refers/points to.
-          format: int64
+        email:
+          type: string
+          description: The email address of the user.
+        firstName:
+          type: string
+          description: The first name of the user.
         id:
-          type: integer
-          description: Column Id
-          format: int32
-        label:
           type: string
-          description: Label of the column
-        maxNumberOfCharacters:
-          type: integer
-          description: Defines the maximum number of characters allowed in the column.
-          format: int32
-        maxNumberOfOptions:
-          type: integer
-          description: Specifies the maximum number of options that can be set for select and multi-select columns.
-          format: int32
-        name:
+          description: The unique identifier for the user.
+        lastName:
           type: string
-          description: Name of the column
-        options:
+          description: The last name of the user.
+    ImportResult:
+      required:
+      - duplicateRows
+      - errors
+      - rowLimitExceeded
+      - rowsImported
+      type: object
+      properties:
+        duplicateRows:
+          type: integer
+          description: Specifies number of duplicate rows
+          format: int32
+        errors:
           type: array
-          description: Options to choose for select and multi-select columns
+          description: List of errors during import
           items:
-            $ref: '#/components/schemas/Option'
-        type:
-          type: string
-          description: Type of the column
-          enum:
-          - BOOLEAN
-          - CODE
-          - COMPOSITE
-          - CTA
-          - CURRENCY
-          - DATE
-          - DATETIME
-          - EMBED
-          - FILE
-          - FOREIGN_ID
-          - HUBSPOT_VIDEO
-          - IMAGE
-          - JSON
-          - LOCATION
-          - MULTISELECT
-          - 'NULL'
-          - NUMBER
-          - RICHTEXT
-          - SELECT
-          - TEXT
-          - URL
-          - VIDEO
+            $ref: '#/components/schemas/Error'
+        rowLimitExceeded:
+          type: boolean
+          description: Specifies whether row limit exceeded during import
+        rowsImported:
+          type: integer
+          description: Specifies number of rows imported
+          format: int32
   responses:
     Error:
       description: An error occurred.

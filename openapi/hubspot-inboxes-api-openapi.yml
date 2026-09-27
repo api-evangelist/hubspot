@@ -127,6 +127,64 @@ paths:
         internalOnly: false
 components:
   schemas:
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    PublicInbox:
+      required:
+      - archived
+      - createdAt
+      - id
+      - name
+      - type
+      - updatedAt
+      type: object
+      properties:
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          description: When the inbox was created.
+          format: date-time
+        id:
+          type: string
+          description: The ID of the inbox.
+        name:
+          type: string
+          description: The name of the inbox.
+        type:
+          type: string
+          description: Specifies whether this refers to a Conversations Inbox or to the Help Desk. Valid values are INBOX or HELP_DESK
+          enum:
+          - HELP_DESK
+          - INBOX
+        updatedAt:
+          type: string
+          format: date-time
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     ErrorDetail:
       required:
       - message
@@ -153,18 +211,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     CollectionResponseWithTotalPublicInbox:
       required:
       - results
@@ -227,52 +273,6 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PublicInbox:
-      required:
-      - archived
-      - createdAt
-      - id
-      - name
-      - type
-      - updatedAt
-      type: object
-      properties:
-        archived:
-          type: boolean
-        archivedAt:
-          type: string
-          format: date-time
-        createdAt:
-          type: string
-          description: When the inbox was created.
-          format: date-time
-        id:
-          type: string
-          description: The ID of the inbox.
-        name:
-          type: string
-          description: The name of the inbox.
-        type:
-          type: string
-          description: Specifies whether this refers to a Conversations Inbox or to the Help Desk. Valid values are INBOX or HELP_DESK
-          enum:
-          - HELP_DESK
-          - INBOX
-        updatedAt:
-          type: string
-          format: date-time
     Paging:
       type: object
       properties:

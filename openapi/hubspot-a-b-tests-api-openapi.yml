@@ -190,6 +190,45 @@ paths:
         - content
 components:
   schemas:
+    AbTestRerunRequestVNext:
+      required:
+      - abTestId
+      - variationId
+      type: object
+      properties:
+        abTestId:
+          type: string
+          description: ID of the test to rerun.
+        variationId:
+          type: string
+          description: ID of the object to reactivate as a test variation.
+    ColorStop:
+      required:
+      - color
+      type: object
+      properties:
+        color:
+          $ref: '#/components/schemas/RGBAColor'
+    SideOrCorner:
+      required:
+      - horizontalSide
+      - verticalSide
+      type: object
+      properties:
+        horizontalSide:
+          type: string
+          description: Specifies the horizontal side of an element.
+          enum:
+          - CENTER
+          - LEFT
+          - RIGHT
+        verticalSide:
+          type: string
+          description: Specifies the vertical side of an element.
+          enum:
+          - BOTTOM
+          - MIDDLE
+          - TOP
     ErrorDetail:
       required:
       - message
@@ -216,118 +255,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    LayoutSection:
-      required:
-      - cells
-      - cssClass
-      - cssId
-      - cssStyle
-      - label
-      - name
-      - params
-      - rowMetaData
-      - rows
-      - styles
-      - type
-      - w
-      - x
-      type: object
-      properties:
-        cells:
-          type: array
-          items:
-            $ref: '#/components/schemas/LayoutSection'
-        cssClass:
-          type: string
-          description: The CSS class applied to the layout section.
-        cssId:
-          type: string
-          description: The CSS ID applied to the layout section.
-        cssStyle:
-          type: string
-          description: Custom CSS styles applied to the layout section.
-        label:
-          type: string
-          description: The label for the layout section.
-        name:
-          type: string
-          description: The internal name of the page.
-        params:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-          description: Parameters associated with the layout section.
-        rowMetaData:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowMetaData'
-        rows:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              $ref: '#/components/schemas/LayoutSection'
-        styles:
-          $ref: '#/components/schemas/Styles'
-        type:
-          type: string
-          description: The type of the layout section.
-        w:
-          type: integer
-          description: The width of the layout section.
-          format: int32
-        x:
-          type: integer
-          description: The x-coordinate position of the layout section.
-          format: int32
     BackgroundImage:
       required:
       - backgroundPosition
@@ -344,6 +271,27 @@ components:
         imageUrl:
           type: string
           description: The URL of the background image.
+    Margin:
+      required:
+      - bottom
+      - top
+      type: object
+      properties:
+        bottom:
+          $ref: '#/components/schemas/Size'
+        top:
+          $ref: '#/components/schemas/Size'
+    RowMetaData:
+      required:
+      - cssClass
+      - styles
+      type: object
+      properties:
+        cssClass:
+          type: string
+          description: The CSS class applied to the row metadata.
+        styles:
+          $ref: '#/components/schemas/Styles'
     Page:
       required:
       - abStatus
@@ -1563,213 +1511,6 @@ components:
             type: object
             properties: {}
           description: A data structure containing the data for all the modules for this page.
-    RGBAColor:
-      required:
-      - a
-      - b
-      - g
-      - r
-      type: object
-      properties:
-        a:
-          type: number
-          description: Alpha.
-        b:
-          type: integer
-          description: Blue.
-          format: int32
-        g:
-          type: integer
-          description: Green.
-          format: int32
-        r:
-          type: integer
-          description: Red.
-          format: int32
-    Styles:
-      required:
-      - backgroundColor
-      - backgroundGradient
-      - backgroundImage
-      - flexboxPositioning
-      - forceFullWidthSection
-      - maxWidthSectionCentering
-      - verticalAlignment
-      type: object
-      properties:
-        backgroundColor:
-          $ref: '#/components/schemas/RGBAColor'
-        backgroundGradient:
-          $ref: '#/components/schemas/Gradient'
-        backgroundImage:
-          $ref: '#/components/schemas/BackgroundImage'
-        breakpointStyles:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/BreakpointStyles'
-        flexboxPositioning:
-          type: string
-          description: Indicates whether flexbox positioning is enabled for the section.
-          enum:
-          - BOTTOM_CENTER
-          - BOTTOM_LEFT
-          - BOTTOM_RIGHT
-          - MIDDLE_CENTER
-          - MIDDLE_LEFT
-          - MIDDLE_RIGHT
-          - TOP_CENTER
-          - TOP_LEFT
-          - TOP_RIGHT
-        forceFullWidthSection:
-          type: boolean
-          description: Determines if the section should be forced to full width.
-        maxWidthSectionCentering:
-          type: integer
-          description: Defines the maximum width for centering the section.
-          format: int32
-        verticalAlignment:
-          type: string
-          description: Specifies the vertical alignment of elements within the section.
-          enum:
-          - BOTTOM
-          - MIDDLE
-          - TOP
-    SideOrCorner:
-      required:
-      - horizontalSide
-      - verticalSide
-      type: object
-      properties:
-        horizontalSide:
-          type: string
-          description: Specifies the horizontal side of an element.
-          enum:
-          - CENTER
-          - LEFT
-          - RIGHT
-        verticalSide:
-          type: string
-          description: Specifies the vertical side of an element.
-          enum:
-          - BOTTOM
-          - MIDDLE
-          - TOP
-    Margin:
-      required:
-      - bottom
-      - top
-      type: object
-      properties:
-        bottom:
-          $ref: '#/components/schemas/Size'
-        top:
-          $ref: '#/components/schemas/Size'
-    Padding:
-      required:
-      - bottom
-      - left
-      - right
-      - top
-      type: object
-      properties:
-        bottom:
-          $ref: '#/components/schemas/Size'
-        left:
-          $ref: '#/components/schemas/Size'
-        right:
-          $ref: '#/components/schemas/Size'
-        top:
-          $ref: '#/components/schemas/Size'
-    Gradient:
-      required:
-      - angle
-      - colors
-      - sideOrCorner
-      type: object
-      properties:
-        angle:
-          $ref: '#/components/schemas/Angle'
-        colors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ColorStop'
-        sideOrCorner:
-          $ref: '#/components/schemas/SideOrCorner'
-    AbTestRerunRequestVNext:
-      required:
-      - abTestId
-      - variationId
-      type: object
-      properties:
-        abTestId:
-          type: string
-          description: ID of the test to rerun.
-        variationId:
-          type: string
-          description: ID of the object to reactivate as a test variation.
-    Size:
-      required:
-      - units
-      - value
-      type: object
-      properties:
-        units:
-          type: string
-          enum:
-          - CH
-          - CM
-          - EM
-          - EX
-          - IN
-          - LH
-          - MM
-          - PC
-          - PERCENTAGE
-          - PT
-          - PX
-          - Q
-          - REM
-          - VH
-          - VMAX
-          - VMIN
-          - VW
-        value:
-          type: number
-    RowMetaData:
-      required:
-      - cssClass
-      - styles
-      type: object
-      properties:
-        cssClass:
-          type: string
-          description: The CSS class applied to the row metadata.
-        styles:
-          $ref: '#/components/schemas/Styles'
-    AbTestCreateRequestVNext:
-      required:
-      - contentId
-      - variationName
-      type: object
-      properties:
-        contentId:
-          type: string
-          description: ID of the object to test.
-        variationName:
-          type: string
-          description: Name of A/B test variation.
-    AbTestEndRequestVNext:
-      required:
-      - abTestId
-      - winnerId
-      type: object
-      properties:
-        abTestId:
-          type: string
-          description: ID of the test to end.
-        winnerId:
-          type: string
-          description: ID of the object to designate as the test winner.
     ContentLanguageVariation:
       required:
       - archivedInDashboard
@@ -1839,13 +1580,132 @@ components:
           type: string
           description: The date and time when the content language variation was last updated.
           format: date-time
-    ColorStop:
+    PublicAccessRule:
+      type: object
+      properties: {}
+    Error:
       required:
-      - color
+      - category
+      - correlationId
+      - message
       type: object
       properties:
-        color:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    Size:
+      required:
+      - units
+      - value
+      type: object
+      properties:
+        units:
+          type: string
+          enum:
+          - CH
+          - CM
+          - EM
+          - EX
+          - IN
+          - LH
+          - MM
+          - PC
+          - PERCENTAGE
+          - PT
+          - PX
+          - Q
+          - REM
+          - VH
+          - VMAX
+          - VMIN
+          - VW
+        value:
+          type: number
+    Styles:
+      required:
+      - backgroundColor
+      - backgroundGradient
+      - backgroundImage
+      - flexboxPositioning
+      - forceFullWidthSection
+      - maxWidthSectionCentering
+      - verticalAlignment
+      type: object
+      properties:
+        backgroundColor:
           $ref: '#/components/schemas/RGBAColor'
+        backgroundGradient:
+          $ref: '#/components/schemas/Gradient'
+        backgroundImage:
+          $ref: '#/components/schemas/BackgroundImage'
+        breakpointStyles:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/BreakpointStyles'
+        flexboxPositioning:
+          type: string
+          description: Indicates whether flexbox positioning is enabled for the section.
+          enum:
+          - BOTTOM_CENTER
+          - BOTTOM_LEFT
+          - BOTTOM_RIGHT
+          - MIDDLE_CENTER
+          - MIDDLE_LEFT
+          - MIDDLE_RIGHT
+          - TOP_CENTER
+          - TOP_LEFT
+          - TOP_RIGHT
+        forceFullWidthSection:
+          type: boolean
+          description: Determines if the section should be forced to full width.
+        maxWidthSectionCentering:
+          type: integer
+          description: Defines the maximum width for centering the section.
+          format: int32
+        verticalAlignment:
+          type: string
+          description: Specifies the vertical alignment of elements within the section.
+          enum:
+          - BOTTOM
+          - MIDDLE
+          - TOP
     BreakpointStyles:
       required:
       - hidden
@@ -1859,9 +1719,149 @@ components:
           $ref: '#/components/schemas/Margin'
         padding:
           $ref: '#/components/schemas/Padding'
-    PublicAccessRule:
+    Gradient:
+      required:
+      - angle
+      - colors
+      - sideOrCorner
       type: object
-      properties: {}
+      properties:
+        angle:
+          $ref: '#/components/schemas/Angle'
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ColorStop'
+        sideOrCorner:
+          $ref: '#/components/schemas/SideOrCorner'
+    AbTestCreateRequestVNext:
+      required:
+      - contentId
+      - variationName
+      type: object
+      properties:
+        contentId:
+          type: string
+          description: ID of the object to test.
+        variationName:
+          type: string
+          description: Name of A/B test variation.
+    LayoutSection:
+      required:
+      - cells
+      - cssClass
+      - cssId
+      - cssStyle
+      - label
+      - name
+      - params
+      - rowMetaData
+      - rows
+      - styles
+      - type
+      - w
+      - x
+      type: object
+      properties:
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/LayoutSection'
+        cssClass:
+          type: string
+          description: The CSS class applied to the layout section.
+        cssId:
+          type: string
+          description: The CSS ID applied to the layout section.
+        cssStyle:
+          type: string
+          description: Custom CSS styles applied to the layout section.
+        label:
+          type: string
+          description: The label for the layout section.
+        name:
+          type: string
+          description: The internal name of the page.
+        params:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: Parameters associated with the layout section.
+        rowMetaData:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowMetaData'
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/LayoutSection'
+        styles:
+          $ref: '#/components/schemas/Styles'
+        type:
+          type: string
+          description: The type of the layout section.
+        w:
+          type: integer
+          description: The width of the layout section.
+          format: int32
+        x:
+          type: integer
+          description: The x-coordinate position of the layout section.
+          format: int32
+    RGBAColor:
+      required:
+      - a
+      - b
+      - g
+      - r
+      type: object
+      properties:
+        a:
+          type: number
+          description: Alpha.
+        b:
+          type: integer
+          description: Blue.
+          format: int32
+        g:
+          type: integer
+          description: Green.
+          format: int32
+        r:
+          type: integer
+          description: Red.
+          format: int32
+    AbTestEndRequestVNext:
+      required:
+      - abTestId
+      - winnerId
+      type: object
+      properties:
+        abTestId:
+          type: string
+          description: ID of the test to end.
+        winnerId:
+          type: string
+          description: ID of the object to designate as the test winner.
+    Padding:
+      required:
+      - bottom
+      - left
+      - right
+      - top
+      type: object
+      properties:
+        bottom:
+          $ref: '#/components/schemas/Size'
+        left:
+          $ref: '#/components/schemas/Size'
+        right:
+          $ref: '#/components/schemas/Size'
+        top:
+          $ref: '#/components/schemas/Size'
     Angle:
       required:
       - units

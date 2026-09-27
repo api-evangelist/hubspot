@@ -108,6 +108,46 @@ paths:
         - crm.objects.marketing_events.write
 components:
   schemas:
+    BatchInputMarketingEventSubscriber:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          description: List of HubSpot contacts to subscribe to the marketing event
+          items:
+            $ref: '#/components/schemas/MarketingEventSubscriber'
+    BatchInputMarketingEventEmailSubscriber:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          description: List of marketing event details to create or update
+          items:
+            $ref: '#/components/schemas/MarketingEventEmailSubscriber'
+    MarketingEventSubscriber:
+      required:
+      - interactionDateTime
+      - properties
+      - vid
+      type: object
+      properties:
+        interactionDateTime:
+          type: integer
+          description: Timestamp in milliseconds at which the contact subscribed to the event.
+          format: int64
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: The key-value set of the properties of the contact
+        vid:
+          type: integer
+          description: The ID of the contact in HubSpot
+          format: int64
     ErrorDetail:
       required:
       - message
@@ -134,26 +174,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    BatchInputMarketingEventEmailSubscriber:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          description: List of marketing event details to create or update
-          items:
-            $ref: '#/components/schemas/MarketingEventEmailSubscriber'
-    BatchInputMarketingEventSubscriber:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          description: List of HubSpot contacts to subscribe to the marketing event
-          items:
-            $ref: '#/components/schemas/MarketingEventSubscriber'
     Error:
       required:
       - category
@@ -226,26 +246,6 @@ components:
           additionalProperties:
             type: string
           description: The key-value set that contains properties of the marketing event.
-    MarketingEventSubscriber:
-      required:
-      - interactionDateTime
-      - properties
-      - vid
-      type: object
-      properties:
-        interactionDateTime:
-          type: integer
-          description: Timestamp in milliseconds at which the contact subscribed to the event.
-          format: int64
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          description: The key-value set of the properties of the contact
-        vid:
-          type: integer
-          description: The ID of the contact in HubSpot
-          format: int64
   responses:
     Error:
       description: An error occurred.

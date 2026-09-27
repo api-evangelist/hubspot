@@ -40,6 +40,13 @@ paths:
       - oauth2:
         - settings.users.teams.read
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     ErrorDetail:
       required:
@@ -67,30 +74,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicTeam:
-      required:
-      - id
-      - name
-      - secondaryUserIds
-      - userIds
-      type: object
-      properties:
-        id:
-          type: string
-          description: The team's unique ID
-        name:
-          type: string
-          description: The team's name
-        secondaryUserIds:
-          type: array
-          description: Secondary or additional members of this team
-          items:
-            type: string
-        userIds:
-          type: array
-          description: Primary members of this team
-          items:
-            type: string
     Error:
       required:
       - category
@@ -147,13 +130,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PublicTeam'
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+    PublicTeam:
+      required:
+      - id
+      - name
+      - secondaryUserIds
+      - userIds
+      type: object
+      properties:
+        id:
+          type: string
+          description: The team's unique ID
+        name:
+          type: string
+          description: The team's name
+        secondaryUserIds:
+          type: array
+          description: Secondary or additional members of this team
+          items:
+            type: string
+        userIds:
+          type: array
+          description: Primary members of this team
+          items:
+            type: string
   securitySchemes:
     developer_hapikey:
       type: apiKey

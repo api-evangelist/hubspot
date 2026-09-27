@@ -263,209 +263,6 @@ paths:
         - price-book-write
 components:
   schemas:
-    CollectionResponsePriceBookItemResponseForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          description: An array of price book items, each represented by a PriceBookItemResponse object.
-          items:
-            $ref: '#/components/schemas/PriceBookItemResponse'
-    PricingUpdateRequest:
-      required:
-      - prices
-      type: object
-      properties:
-        prices:
-          type: array
-          description: An array of PriceUpdateEntry objects, each representing the pricing details for a product, including the currency code and amount.
-          items:
-            $ref: '#/components/schemas/PriceUpdateEntry'
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition, which may include additional information such as missing scopes or invalid property names.
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate. This is a required property.
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error.
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    ForwardPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
-    Pricing:
-      required:
-      - prices
-      - pricingModel
-      type: object
-      properties:
-        prices:
-          type: array
-          description: An array of price entries, each detailing the amount and currency for a specific pricing tier.
-          items:
-            $ref: '#/components/schemas/PriceEntry'
-        pricingModel:
-          type: string
-          description: 'The type of pricing model applied, which can be one of the following: ''FLAT'', ''GRADUATED'', ''STAIRSTEP'', or ''VOLUME''.'
-          enum:
-          - FLAT
-          - GRADUATED
-          - STAIRSTEP
-          - VOLUME
-    PriceBookItemUpdateRequest:
-      required:
-      - billingFrequency
-      - billingPeriod
-      - customProperties
-      - status
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: A boolean indicating whether the price book item is archived.
-        billingFrequency:
-          type: object
-          properties: {}
-          description: An object specifying the frequency at which billing occurs for the price book item.
-        billingPeriod:
-          type: object
-          properties: {}
-          description: An object specifying the period over which billing occurs for the price book item.
-        customProperties:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of custom property names to their values, allowing for additional customization of the price book item.
-        pricing:
-          $ref: '#/components/schemas/PricingUpdateRequest'
-        status:
-          type: object
-          properties: {}
-          description: An object indicating the current status of the price book item.
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category, represented as a string.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: An object providing context about the error condition. It contains additional properties, each being an array of strings.
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request, represented as a UUID string. Include this value with any error reports or support tickets.
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: An array providing further information about the error, with each item being an ErrorDetail object.
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: An object that maps link names to associated URIs containing documentation about the error or recommended remediation steps. Each property is a string.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate. It is a string.
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error, represented as a string.
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    PriceBookAddProductRequest:
-      required:
-      - productId
-      type: object
-      properties:
-        productId:
-          type: string
-          description: The unique identifier of the product to be added to the price book. It is a string and is required.
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A string token used as a cursor for pagination to retrieve the next set of results.
-        link:
-          type: string
-          description: A string URL that provides a direct link to the next page of results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PriceEntry:
-      required:
-      - currencyCode
-      - price
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: A string representing the currency in which the price is denominated.
-        maxQuantity:
-          type: integer
-          description: A string specifying the maximum quantity for which this pricing entry is applicable.
-          format: int32
-        price:
-          type: number
-          description: A number indicating the price of the product or service.
-    PriceUpdateEntry:
-      required:
-      - currencyCode
-      - price
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: The currency code for the price, represented as a string.
-        maxQuantity:
-          type: integer
-          description: The maximum quantity applicable for this price, represented as a string.
-          format: int32
-        price:
-          type: object
-          properties: {}
-          description: An object representing the price details for the entry. The specific structure of this object is not detailed in the specification.
     PriceBookItemResponse:
       required:
       - customProperties
@@ -568,6 +365,209 @@ components:
         url:
           type: string
           description: A URL associated with the price book item.
+    CollectionResponsePriceBookItemResponseForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          description: An array of price book items, each represented by a PriceBookItemResponse object.
+          items:
+            $ref: '#/components/schemas/PriceBookItemResponse'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A string token used as a cursor for pagination to retrieve the next set of results.
+        link:
+          type: string
+          description: A string URL that provides a direct link to the next page of results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    PriceBookAddProductRequest:
+      required:
+      - productId
+      type: object
+      properties:
+        productId:
+          type: string
+          description: The unique identifier of the product to be added to the price book. It is a string and is required.
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition, which may include additional information such as missing scopes or invalid property names.
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate. This is a required property.
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error.
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PriceUpdateEntry:
+      required:
+      - currencyCode
+      - price
+      type: object
+      properties:
+        currencyCode:
+          type: string
+          description: The currency code for the price, represented as a string.
+        maxQuantity:
+          type: integer
+          description: The maximum quantity applicable for this price, represented as a string.
+          format: int32
+        price:
+          type: object
+          properties: {}
+          description: An object representing the price details for the entry. The specific structure of this object is not detailed in the specification.
+    PriceBookItemUpdateRequest:
+      required:
+      - billingFrequency
+      - billingPeriod
+      - customProperties
+      - status
+      type: object
+      properties:
+        archived:
+          type: boolean
+          description: A boolean indicating whether the price book item is archived.
+        billingFrequency:
+          type: object
+          properties: {}
+          description: An object specifying the frequency at which billing occurs for the price book item.
+        billingPeriod:
+          type: object
+          properties: {}
+          description: An object specifying the period over which billing occurs for the price book item.
+        customProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of custom property names to their values, allowing for additional customization of the price book item.
+        pricing:
+          $ref: '#/components/schemas/PricingUpdateRequest'
+        status:
+          type: object
+          properties: {}
+          description: An object indicating the current status of the price book item.
+    PricingUpdateRequest:
+      required:
+      - prices
+      type: object
+      properties:
+        prices:
+          type: array
+          description: An array of PriceUpdateEntry objects, each representing the pricing details for a product, including the currency code and amount.
+          items:
+            $ref: '#/components/schemas/PriceUpdateEntry'
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category, represented as a string.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: An object providing context about the error condition. It contains additional properties, each being an array of strings.
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request, represented as a UUID string. Include this value with any error reports or support tickets.
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: An array providing further information about the error, with each item being an ErrorDetail object.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: An object that maps link names to associated URIs containing documentation about the error or recommended remediation steps. Each property is a string.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate. It is a string.
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error, represented as a string.
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    Pricing:
+      required:
+      - prices
+      - pricingModel
+      type: object
+      properties:
+        prices:
+          type: array
+          description: An array of price entries, each detailing the amount and currency for a specific pricing tier.
+          items:
+            $ref: '#/components/schemas/PriceEntry'
+        pricingModel:
+          type: string
+          description: 'The type of pricing model applied, which can be one of the following: ''FLAT'', ''GRADUATED'', ''STAIRSTEP'', or ''VOLUME''.'
+          enum:
+          - FLAT
+          - GRADUATED
+          - STAIRSTEP
+          - VOLUME
+    PriceEntry:
+      required:
+      - currencyCode
+      - price
+      type: object
+      properties:
+        currencyCode:
+          type: string
+          description: A string representing the currency in which the price is denominated.
+        maxQuantity:
+          type: integer
+          description: A string specifying the maximum quantity for which this pricing entry is applicable.
+          format: int32
+        price:
+          type: number
+          description: A number indicating the price of the product or service.
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
   responses:
     Error:
       description: An error occurred.

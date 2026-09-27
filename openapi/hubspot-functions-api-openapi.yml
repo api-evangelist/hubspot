@@ -387,27 +387,14 @@ paths:
       - oauth2:
         - developers-write
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    PublicActionFunction:
-      required:
-      - functionSource
-      - functionType
-      type: object
-      properties:
-        functionSource:
-          type: string
-          description: The source code or script that defines the function's behavior.
-        functionType:
-          type: string
-          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
-          enum:
-          - POST_ACTION_EXECUTION
-          - POST_FETCH_OPTIONS
-          - PRE_ACTION_EXECUTION
-          - PRE_FETCH_OPTIONS
-        id:
-          type: string
-          description: The unique identifier for the action function.
     ErrorDetail:
       required:
       - message
@@ -434,6 +421,15 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    CollectionResponsePublicActionFunctionIdentifierNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
     PublicActionFunctionIdentifier:
       required:
       - functionType
@@ -497,22 +493,26 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    CollectionResponsePublicActionFunctionIdentifierNoPaging:
+    PublicActionFunction:
       required:
-      - results
+      - functionSource
+      - functionType
       type: object
       properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+        functionSource:
+          type: string
+          description: The source code or script that defines the function's behavior.
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the action function.
   securitySchemes:
     developer_hapikey:
       type: apiKey

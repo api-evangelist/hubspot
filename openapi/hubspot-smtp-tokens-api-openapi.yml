@@ -190,6 +190,30 @@ paths:
         - transactional-email
 components:
   schemas:
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    SmtpApiTokenRequestEgg:
+      required:
+      - campaignName
+      - createContact
+      type: object
+      properties:
+        campaignName:
+          type: string
+          description: A name for the campaign tied to the SMTP API token.
+        createContact:
+          type: boolean
+          description: Indicates whether a contact should be created for email recipients.
     ErrorDetail:
       required:
       - message
@@ -216,35 +240,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    ForwardPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
-    SmtpApiTokenRequestEgg:
-      required:
-      - campaignName
-      - createContact
-      type: object
-      properties:
-        campaignName:
-          type: string
-          description: A name for the campaign tied to the SMTP API token.
-        createContact:
-          type: boolean
-          description: Indicates whether a contact should be created for email recipients.
-    CollectionResponseSmtpApiTokenViewForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SmtpApiTokenView'
     Error:
       required:
       - category
@@ -292,18 +287,6 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     SmtpApiTokenView:
       required:
       - campaignName
@@ -336,6 +319,23 @@ components:
         password:
           type: string
           description: Password used to log into the HubSpot SMTP server.
+    CollectionResponseSmtpApiTokenViewForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SmtpApiTokenView'
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
   responses:
     Error:
       description: An error occurred.

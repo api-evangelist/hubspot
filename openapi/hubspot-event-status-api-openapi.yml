@@ -96,6 +96,13 @@ paths:
       - oauth2:
         - crm.objects.marketing_events.write
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     MaskedSubstrings:
       required:
@@ -132,54 +139,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    MarketingEventDefaultResponse:
-      required:
-      - customProperties
-      - eventName
-      - eventOrganizer
-      type: object
-      properties:
-        customProperties:
-          type: array
-          description: 'A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account''s definition of the MarketingEvent Object. If they don''t they will be filtered out and not set.
-
-            In order to do this you''ll need to create a new PropertyGroup on the HubSpot account''s MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
-
-            '
-          items:
-            $ref: '#/components/schemas/PropertyValue'
-        endDateTime:
-          type: string
-          description: The end date and time of the marketing event.
-          format: date-time
-        eventCancelled:
-          type: boolean
-          description: Indicates if the marketing event has been cancelled.
-        eventCompleted:
-          type: boolean
-          description: Indicates if the marketing event has been completed.
-        eventDescription:
-          type: string
-          description: The description of the marketing event.
-        eventName:
-          type: string
-          description: The name of the marketing event.
-        eventOrganizer:
-          type: string
-          description: The name of the organizer of the marketing event.
-        eventType:
-          type: string
-          description: The type of the marketing event.
-        eventUrl:
-          type: string
-          description: The URL in the external event application where the marketing event can be managed.
-        objectId:
-          type: string
-          description: The ID of the marketing event CRM object
-        startDateTime:
-          type: string
-          description: The start date and time of the marketing event.
-          format: date-time
     MaskedSubstring:
       required:
       - end
@@ -206,6 +165,53 @@ components:
           type: string
           description: The start date and time of the marketing event in ISO 8601 format
           format: date-time
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
     PropertyValue:
       required:
       - dataSensitivity
@@ -421,60 +427,54 @@ components:
           type: string
           description: Custom property value
       description: Represents a single custom property of a marketing event, storing its name, value, metadata (like source, timestamp, and sensitivity), and related audit information for tracking changes.
-    Error:
+    MarketingEventDefaultResponse:
       required:
-      - category
-      - correlationId
-      - message
+      - customProperties
+      - eventName
+      - eventOrganizer
       type: object
       properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
+        customProperties:
           type: array
-          description: further information about the error
+          description: 'A list of PropertyValues. These can be whatever kind of property names and values you want. However, they must already exist on the HubSpot account''s definition of the MarketingEvent Object. If they don''t they will be filtered out and not set.
+
+            In order to do this you''ll need to create a new PropertyGroup on the HubSpot account''s MarketingEvent object for your specific app and create the Custom Property you want to track on that HubSpot account. Do not create any new default properties on the MarketingEvent object as that will apply to all HubSpot accounts.
+
+            '
           items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
+            $ref: '#/components/schemas/PropertyValue'
+        endDateTime:
           type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
+          description: The end date and time of the marketing event.
+          format: date-time
+        eventCancelled:
+          type: boolean
+          description: Indicates if the marketing event has been cancelled.
+        eventCompleted:
+          type: boolean
+          description: Indicates if the marketing event has been completed.
+        eventDescription:
           type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+          description: The description of the marketing event.
+        eventName:
+          type: string
+          description: The name of the marketing event.
+        eventOrganizer:
+          type: string
+          description: The name of the organizer of the marketing event.
+        eventType:
+          type: string
+          description: The type of the marketing event.
+        eventUrl:
+          type: string
+          description: The URL in the external event application where the marketing event can be managed.
+        objectId:
+          type: string
+          description: The ID of the marketing event CRM object
+        startDateTime:
+          type: string
+          description: The start date and time of the marketing event.
+          format: date-time
   securitySchemes:
     developer_hapikey:
       type: apiKey

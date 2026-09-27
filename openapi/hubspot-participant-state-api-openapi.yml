@@ -275,48 +275,56 @@ paths:
         - crm.objects.marketing_events.read
 components:
   schemas:
-    AttendanceCounters:
+    ParticipationProperties:
       required:
-      - attended
-      - cancelled
-      - noShows
-      - registered
+      - attendanceState
+      - occurredAt
       type: object
       properties:
-        attended:
+        attendanceDurationSeconds:
           type: integer
-          description: Number of attended contact records of a marketing event
+          description: The number of seconds the participation lasted
           format: int32
-        cancelled:
+        attendancePercentage:
+          type: string
+          description: Percentage of the participation duration relative to the event duration
+        attendanceState:
+          type: string
+          description: The state of the participation
+          enum:
+          - ATTENDED
+          - CANCELLED
+          - EMPTY
+          - NO_SHOW
+          - REGISTERED
+        occurredAt:
           type: integer
-          description: Number of cancelled contact records of a marketing event
-          format: int32
-        noShows:
-          type: integer
-          description: Number of no-show contact records of a marketing event
-          format: int32
-        registered:
-          type: integer
-          description: Number of registered contact records of a marketing event
-          format: int32
-    MarketingEventAssociation:
+          description: Timestamp of when the participation occurred
+          format: int64
+    PreviousPage:
       required:
-      - marketingEventId
-      - name
+      - before
       type: object
       properties:
-        externalAccountId:
+        before:
           type: string
-          description: The account ID that is associated with this marketing event in the external event application
-        externalEventId:
+          description: A paging cursor token for retrieving previous pages.
+        link:
           type: string
-          description: The event ID that is associated with this marketing event in the external event application
-        marketingEventId:
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
           type: string
-          description: The internal ID of the marketing event in HubSpot
-        name:
+          description: The ID element at the start of the page
+        link:
           type: string
-          description: The name of the marketing event in HubSpot
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     ErrorDetail:
       required:
       - message
@@ -343,28 +351,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    ParticipationAssociations:
-      required:
-      - contact
-      - marketingEvent
-      type: object
-      properties:
-        contact:
-          $ref: '#/components/schemas/ContactAssociation'
-        marketingEvent:
-          $ref: '#/components/schemas/MarketingEventAssociation'
     ContactAssociation:
       required:
       - contactId
@@ -383,20 +369,36 @@ components:
         lastname:
           type: string
           description: The last name of the contact in HubSpot
-    CollectionResponseWithTotalParticipationBreakdown:
-      required:
-      - results
-      - total
+    Paging:
       type: object
       properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParticipationBreakdown'
-        total:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    AttendanceCounters:
+      required:
+      - attended
+      - cancelled
+      - noShows
+      - registered
+      type: object
+      properties:
+        attended:
           type: integer
+          description: Number of attended contact records of a marketing event
+          format: int32
+        cancelled:
+          type: integer
+          description: Number of cancelled contact records of a marketing event
+          format: int32
+        noShows:
+          type: integer
+          description: Number of no-show contact records of a marketing event
+          format: int32
+        registered:
+          type: integer
+          description: Number of registered contact records of a marketing event
           format: int32
     Error:
       required:
@@ -445,18 +447,49 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
+    ParticipationAssociations:
       required:
-      - after
+      - contact
+      - marketingEvent
       type: object
       properties:
-        after:
+        contact:
+          $ref: '#/components/schemas/ContactAssociation'
+        marketingEvent:
+          $ref: '#/components/schemas/MarketingEventAssociation'
+    CollectionResponseWithTotalParticipationBreakdown:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationBreakdown'
+        total:
+          type: integer
+          format: int32
+    MarketingEventAssociation:
+      required:
+      - marketingEventId
+      - name
+      type: object
+      properties:
+        externalAccountId:
           type: string
-          description: The ID element at the start of the page
-        link:
+          description: The account ID that is associated with this marketing event in the external event application
+        externalEventId:
           type: string
-          description: Link to the next page
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+          description: The event ID that is associated with this marketing event in the external event application
+        marketingEventId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot
+        name:
+          type: string
+          description: The name of the marketing event in HubSpot
     ParticipationBreakdown:
       required:
       - associations
@@ -476,39 +509,6 @@ components:
           description: The internal ID of the target marketing event
         properties:
           $ref: '#/components/schemas/ParticipationProperties'
-    ParticipationProperties:
-      required:
-      - attendanceState
-      - occurredAt
-      type: object
-      properties:
-        attendanceDurationSeconds:
-          type: integer
-          description: The number of seconds the participation lasted
-          format: int32
-        attendancePercentage:
-          type: string
-          description: Percentage of the participation duration relative to the event duration
-        attendanceState:
-          type: string
-          description: The state of the participation
-          enum:
-          - ATTENDED
-          - CANCELLED
-          - EMPTY
-          - NO_SHOW
-          - REGISTERED
-        occurredAt:
-          type: integer
-          description: Timestamp of when the participation occurred
-          format: int64
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
   responses:
     Error:
       description: An error occurred.

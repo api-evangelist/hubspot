@@ -198,6 +198,18 @@ paths:
         - marketing.campaigns.write
 components:
   schemas:
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A string token used as a cursor to retrieve the next page of results.
+        link:
+          type: string
+          description: A string URL that provides the link to the next page of results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     ErrorDetail:
       required:
       - message
@@ -224,24 +236,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    CollectionResponsePublicCampaignAssetForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          description: An array of public campaign assets. Each item in the array is a reference to a PublicCampaignAsset object.
-          items:
-            $ref: '#/components/schemas/PublicCampaignAsset'
-    ForwardPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
     PublicCampaignAsset:
       required:
       - id
@@ -258,6 +252,18 @@ components:
         name:
           type: string
           description: The name of the campaign asset.
+    CollectionResponsePublicCampaignAssetForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          description: An array of public campaign assets. Each item in the array is a reference to a PublicCampaignAsset object.
+          items:
+            $ref: '#/components/schemas/PublicCampaignAsset'
     Error:
       required:
       - category
@@ -305,18 +311,12 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    NextPage:
-      required:
-      - after
+    ForwardPaging:
       type: object
       properties:
-        after:
-          type: string
-          description: A string token used as a cursor to retrieve the next page of results.
-        link:
-          type: string
-          description: A string URL that provides the link to the next page of results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
   responses:
     Error:
       description: An error occurred.

@@ -813,66 +813,65 @@ paths:
         - files.write
 components:
   schemas:
-    FileUpdateInput:
+    PreviousPage:
       required:
-      - clearExpires
+      - before
       type: object
       properties:
-        access:
+        before:
           type: string
-          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
-          enum:
-          - HIDDEN_INDEXABLE
-          - HIDDEN_NOT_INDEXABLE
-          - HIDDEN_PRIVATE
-          - HIDDEN_SENSITIVE
-          - PRIVATE
-          - PUBLIC_INDEXABLE
-          - PUBLIC_NOT_INDEXABLE
-          - SENSITIVE
-        clearExpires:
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    Folder:
+      required:
+      - archived
+      - createdAt
+      - id
+      - updatedAt
+      type: object
+      properties:
+        archived:
           type: boolean
-        expiresAt:
+          description: Marks whether the folder is deleted or not.
+        archivedAt:
           type: string
+          description: Timestamp of folder deletion.
           format: date-time
-        isUsableInContent:
-          type: boolean
-          description: Mark whether the file should be used in new content or not.
+        createdAt:
+          type: string
+          description: Timestamp of folder creation.
+          format: date-time
+        id:
+          type: string
+          description: ID of the folder.
         name:
           type: string
-          description: New name for the file.
+          description: Name of the folder.
         parentFolderId:
           type: string
-          description: FolderId where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
-        parentFolderPath:
+          description: ID of the parent folder.
+        path:
           type: string
-          description: Folder path where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
+          description: Path of the folder in the file manager.
+        updatedAt:
           type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+          description: Timestamp of the latest update to the folder.
+          format: date-time
     ImportFromUrlInput:
       required:
       - access
@@ -928,66 +927,120 @@ components:
         url:
           type: string
           description: URL to download the new file from.
-    PreviousPage:
+    ErrorDetail:
       required:
-      - before
+      - message
       type: object
       properties:
-        before:
+        code:
           type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
           type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    SignedUrl:
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    FileActionResponse:
       required:
-      - expiresAt
-      - url
+      - completedAt
+      - startedAt
+      - status
+      - taskId
       type: object
       properties:
+        completedAt:
+          type: string
+          description: Time of completion of task.
+          format: date-time
+        errors:
+          type: array
+          description: Descriptive error messages.
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Link to check the status of the requested task.
+        numErrors:
+          type: integer
+          description: Number of errors resulting from the task.
+          format: int32
+        requestedAt:
+          type: string
+          description: Timestamp of when the task was requested.
+          format: date-time
+        result:
+          $ref: '#/components/schemas/File'
+        startedAt:
+          type: string
+          description: Timestamp of when the task was started.
+          format: date-time
+        status:
+          type: string
+          description: Current status of the task.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+        taskId:
+          type: string
+          description: ID of the requested task.
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    FileUpdateInput:
+      required:
+      - clearExpires
+      type: object
+      properties:
+        access:
+          type: string
+          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
+          enum:
+          - HIDDEN_INDEXABLE
+          - HIDDEN_NOT_INDEXABLE
+          - HIDDEN_PRIVATE
+          - HIDDEN_SENSITIVE
+          - PRIVATE
+          - PUBLIC_INDEXABLE
+          - PUBLIC_NOT_INDEXABLE
+          - SENSITIVE
+        clearExpires:
+          type: boolean
         expiresAt:
           type: string
-          description: Timestamp of when the URL will no longer grant access to the file.
           format: date-time
-        extension:
-          type: string
-          description: Extension of the requested file.
-        height:
-          type: integer
-          description: For image and video files. The height of the file.
-          format: int32
+        isUsableInContent:
+          type: boolean
+          description: Mark whether the file should be used in new content or not.
         name:
           type: string
-          description: Name of the requested file.
-        size:
-          type: integer
-          description: Size in bytes of the requested file.
-          format: int64
-        type:
-          type: string
-          description: Type of the file. Can be IMG, DOCUMENT, AUDIO, MOVIE, or OTHER.
-        url:
-          type: string
-          description: Signed URL with access to the specified file. Anyone with this URL will be able to access the file until it expires.
-        width:
-          type: integer
-          description: For image and video files. The width of the file.
-          format: int32
-    FolderInput:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Desired name for the folder.
+          description: New name for the file.
         parentFolderId:
           type: string
-          description: FolderId of the parent of the created folder. If not specified, the folder will be created at the root level. parentFolderId and parentFolderPath cannot be set at the same time.
-        parentPath:
+          description: FolderId where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
+        parentFolderPath:
           type: string
-          description: Path of the parent of the created folder. If not specified the folder will be created at the root level. parentFolderPath and parentFolderId cannot be set at the same time.
+          description: Folder path where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
     File:
       required:
       - archived
@@ -1079,128 +1132,6 @@ components:
           type: integer
           description: For image and video files, the width of the content.
           format: int32
-    StandardError:
-      required:
-      - category
-      - context
-      - errors
-      - links
-      - message
-      - status
-      type: object
-      properties:
-        category:
-          type: string
-          description: The main category of the error.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Additional context-specific information related to the error.
-        errors:
-          type: array
-          description: The detailed error objects.
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        id:
-          type: string
-          description: A unique ID for the error instance.
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: URLs linking to documentation or resources associated with the error.
-        message:
-          type: string
-          description: A human-readable string describing the error and possible remediation steps.
-        status:
-          type: string
-          description: The HTTP status code associated with the error.
-        subCategory:
-          type: object
-          properties: {}
-          description: A more specific error category within each main category.
-      description: Ye olde error
-    FileStat:
-      type: object
-      properties:
-        file:
-          $ref: '#/components/schemas/File'
-        folder:
-          $ref: '#/components/schemas/Folder'
-    CollectionResponseFile:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/File'
-    ImportFromUrlTaskLocator:
-      required:
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID of the task
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
-    Folder:
-      required:
-      - archived
-      - createdAt
-      - id
-      - updatedAt
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Marks whether the folder is deleted or not.
-        archivedAt:
-          type: string
-          description: Timestamp of folder deletion.
-          format: date-time
-        createdAt:
-          type: string
-          description: Timestamp of folder creation.
-          format: date-time
-        id:
-          type: string
-          description: ID of the folder.
-        name:
-          type: string
-          description: Name of the folder.
-        parentFolderId:
-          type: string
-          description: ID of the parent folder.
-        path:
-          type: string
-          description: Path of the folder in the file manager.
-        updatedAt:
-          type: string
-          description: Timestamp of the latest update to the folder.
-          format: date-time
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     Error:
       required:
       - category
@@ -1248,60 +1179,129 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    FileActionResponse:
+    FolderInput:
       required:
-      - completedAt
-      - startedAt
-      - status
-      - taskId
+      - name
       type: object
       properties:
-        completedAt:
+        name:
           type: string
-          description: Time of completion of task.
-          format: date-time
-        errors:
-          type: array
-          description: Descriptive error messages.
-          items:
-            $ref: '#/components/schemas/StandardError'
+          description: Desired name for the folder.
+        parentFolderId:
+          type: string
+          description: FolderId of the parent of the created folder. If not specified, the folder will be created at the root level. parentFolderId and parentFolderPath cannot be set at the same time.
+        parentPath:
+          type: string
+          description: Path of the parent of the created folder. If not specified the folder will be created at the root level. parentFolderPath and parentFolderId cannot be set at the same time.
+    ImportFromUrlTaskLocator:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the task
         links:
           type: object
           additionalProperties:
             type: string
-          description: Link to check the status of the requested task.
-        numErrors:
-          type: integer
-          description: Number of errors resulting from the task.
-          format: int32
-        requestedAt:
-          type: string
-          description: Timestamp of when the task was requested.
-          format: date-time
-        result:
-          $ref: '#/components/schemas/File'
-        startedAt:
-          type: string
-          description: Timestamp of when the task was started.
-          format: date-time
-        status:
-          type: string
-          description: Current status of the task.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-        taskId:
-          type: string
-          description: ID of the requested task.
-    Paging:
+          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
+    SignedUrl:
+      required:
+      - expiresAt
+      - url
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
+        expiresAt:
+          type: string
+          description: Timestamp of when the URL will no longer grant access to the file.
+          format: date-time
+        extension:
+          type: string
+          description: Extension of the requested file.
+        height:
+          type: integer
+          description: For image and video files. The height of the file.
+          format: int32
+        name:
+          type: string
+          description: Name of the requested file.
+        size:
+          type: integer
+          description: Size in bytes of the requested file.
+          format: int64
+        type:
+          type: string
+          description: Type of the file. Can be IMG, DOCUMENT, AUDIO, MOVIE, or OTHER.
+        url:
+          type: string
+          description: Signed URL with access to the specified file. Anyone with this URL will be able to access the file until it expires.
+        width:
+          type: integer
+          description: For image and video files. The width of the file.
+          format: int32
+    StandardError:
+      required:
+      - category
+      - context
+      - errors
+      - links
+      - message
+      - status
+      type: object
+      properties:
+        category:
+          type: string
+          description: The main category of the error.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Additional context-specific information related to the error.
+        errors:
+          type: array
+          description: The detailed error objects.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        id:
+          type: string
+          description: A unique ID for the error instance.
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: URLs linking to documentation or resources associated with the error.
+        message:
+          type: string
+          description: A human-readable string describing the error and possible remediation steps.
+        status:
+          type: string
+          description: The HTTP status code associated with the error.
+        subCategory:
+          type: object
+          properties: {}
+          description: A more specific error category within each main category.
+      description: Ye olde error
+    CollectionResponseFile:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    FileStat:
+      type: object
+      properties:
+        file:
+          $ref: '#/components/schemas/File'
+        folder:
+          $ref: '#/components/schemas/Folder'
   responses:
     Error:
       description: An error occurred.

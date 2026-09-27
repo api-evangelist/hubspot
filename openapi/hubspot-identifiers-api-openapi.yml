@@ -88,6 +88,30 @@ paths:
         - crm.objects.marketing_events.read
 components:
   schemas:
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: The ID element at the start of the page
+        link:
+          type: string
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     ErrorDetail:
       required:
       - message
@@ -114,39 +138,28 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PreviousPage:
-      required:
-      - before
+    Paging:
       type: object
       properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    MarketingEventIdentifiersResponse:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    CollectionResponseWithTotalMarketingEventIdentifiersResponse:
       required:
-      - externalEventId
-      - marketingEventName
-      - objectId
+      - results
+      - total
       type: object
       properties:
-        appInfo:
-          $ref: '#/components/schemas/AppInfo'
-        externalAccountId:
-          type: string
-          description: The accountId that is associated with this marketing event in the external event application
-        externalEventId:
-          type: string
-          description: The ID that is associated with this marketing event in the external event application
-        marketingEventName:
-          type: string
-          description: The name of the marketing event
-        objectId:
-          type: string
-          description: The internal ID of the marketing event in HubSpot CRM
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketingEventIdentifiersResponse'
+        total:
+          type: integer
+          format: int32
     Error:
       required:
       - category
@@ -206,33 +219,6 @@ components:
         name:
           type: string
           description: The name of the application
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: The ID element at the start of the page
-        link:
-          type: string
-          description: Link to the next page
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    CollectionResponseWithTotalMarketingEventIdentifiersResponse:
-      required:
-      - results
-      - total
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketingEventIdentifiersResponse'
-        total:
-          type: integer
-          format: int32
     CollectionResponseSearchPublicResponseWrapperNoPaging:
       required:
       - results
@@ -242,6 +228,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SearchPublicResponseWrapper'
+    MarketingEventIdentifiersResponse:
+      required:
+      - externalEventId
+      - marketingEventName
+      - objectId
+      type: object
+      properties:
+        appInfo:
+          $ref: '#/components/schemas/AppInfo'
+        externalAccountId:
+          type: string
+          description: The accountId that is associated with this marketing event in the external event application
+        externalEventId:
+          type: string
+          description: The ID that is associated with this marketing event in the external event application
+        marketingEventName:
+          type: string
+          description: The name of the marketing event
+        objectId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot CRM
     SearchPublicResponseWrapper:
       required:
       - appId
@@ -263,13 +270,6 @@ components:
         objectId:
           type: string
           description: The internal ID of the marketing event in HubSpot
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
   responses:
     Error:
       description: An error occurred.
