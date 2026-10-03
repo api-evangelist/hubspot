@@ -392,7 +392,26 @@ paths:
     servers:
     - url: https://api.hubapi.com
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     PublicDeliveryIdentifier:
       required:
       - type
@@ -410,95 +429,13 @@ components:
         value:
           type: string
           description: A string representation of the PublicDeliveryIdentifier, either an an E.164 phone number, an email address, or a channel-specific identifier.
-    PreviousPage:
-      required:
-      - before
+    Paging:
       type: object
       properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicChannelAccount:
-      required:
-      - active
-      - archived
-      - authorized
-      - channelId
-      - createdAt
-      - id
-      - inboxId
-      - name
-      type: object
-      properties:
-        active:
-          type: boolean
-          description: Whether the channel account is turned on.
-        archived:
-          type: boolean
-        archivedAt:
-          type: string
-          format: date-time
-        authorized:
-          type: boolean
-        channelId:
-          type: string
-          description: The ID of the channel that the channel account is an instance of.
-        createdAt:
-          type: string
-          format: date-time
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier'
-        id:
-          type: string
-          description: The ID of the channel account.
-        inboxId:
-          type: string
-          description: The ID of the conversations inbox that contains the channel account.
-        name:
-          type: string
-          description: The name of the channel account.
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
     Error:
       required:
       - category
@@ -546,6 +483,83 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicChannelAccount:
+      required:
+      - active
+      - archived
+      - authorized
+      - channelId
+      - createdAt
+      - id
+      - inboxId
+      - name
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: Whether the channel account is turned on.
+        archived:
+          type: boolean
+        archivedAt:
+          type: string
+          format: date-time
+        authorized:
+          type: boolean
+        channelId:
+          type: string
+          description: The ID of the channel that the channel account is an instance of.
+        createdAt:
+          type: string
+          format: date-time
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier'
+        id:
+          type: string
+          description: The ID of the channel account.
+        inboxId:
+          type: string
+          description: The ID of the conversations inbox that contains the channel account.
+        name:
+          type: string
+          description: The name of the channel account.
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     CollectionResponseWithTotalPublicChannelAccount:
       required:
       - results
@@ -561,13 +575,6 @@ components:
         total:
           type: integer
           format: int32
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
     PublicDeliveryIdentifier_2:
       required:
       - type
@@ -583,13 +590,6 @@ components:
           - HS_SHORT_CODE
         value:
           type: string
-    PublicChannelAccountStagingTokenUpdateRequest:
-      type: object
-      properties:
-        accountName:
-          type: string
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
     PublicChannelAccount_2:
       required:
       - active
@@ -624,21 +624,6 @@ components:
           type: string
         name:
           type: string
-    PublicChannelAccountEgg:
-      required:
-      - authorized
-      - inboxId
-      - name
-      type: object
-      properties:
-        authorized:
-          type: boolean
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
-        inboxId:
-          type: string
-        name:
-          type: string
     PublicChannelAccountStagingToken:
       required:
       - accountToken
@@ -666,6 +651,28 @@ components:
         userId:
           type: integer
           format: int32
+    PublicChannelAccountEgg:
+      required:
+      - authorized
+      - inboxId
+      - name
+      type: object
+      properties:
+        authorized:
+          type: boolean
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
+        inboxId:
+          type: string
+        name:
+          type: string
+    PublicChannelAccountStagingTokenUpdateRequest:
+      type: object
+      properties:
+        accountName:
+          type: string
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier_2'
     PublicChannelAccountUpdateRequest:
       type: object
       properties:
@@ -673,13 +680,6 @@ components:
           type: boolean
         name:
           type: string
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     developer_hapikey:
       type: apiKey

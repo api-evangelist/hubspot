@@ -400,6 +400,120 @@ paths:
         internalOnly: false
 components:
   schemas:
+    PublicSender:
+      type: object
+      properties:
+        actorId:
+          type: string
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier'
+        name:
+          type: string
+        senderField:
+          type: string
+    PublicFile:
+      title: FILE
+      required:
+      - fileId
+      - fileUsageType
+      - type
+      type: object
+      properties:
+        fileId:
+          type: string
+        fileUsageType:
+          type: string
+          enum:
+          - AUDIO
+          - IMAGE
+          - OTHER
+          - STICKER
+          - VOICE_RECORDING
+        name:
+          type: string
+        type:
+          type: string
+          default: FILE
+          enum:
+          - FILE
+        url:
+          type: string
+      x-hubspot-sub-type-impl: true
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicMessageFailureDetails:
+      required:
+      - errorMessageTokens
+      type: object
+      properties:
+        errorMessage:
+          type: string
+        errorMessageTokens:
+          type: object
+          additionalProperties:
+            type: string
+    PublicMessageHeader:
+      title: MESSAGE_HEADER
+      required:
+      - type
+      type: object
+      properties:
+        fileId:
+          type: integer
+          format: int64
+        text:
+          type: string
+        type:
+          type: string
+          default: MESSAGE_HEADER
+          enum:
+          - MESSAGE_HEADER
+      x-hubspot-sub-type-impl: true
     NextPage:
       required:
       - after
@@ -412,375 +526,21 @@ components:
           type: string
           description: A URL that can be used to retrieve the next page results.
       description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PublicQuickReplies:
-      title: QUICK_REPLIES
+    PublicSocialMediaEgg:
+      title: SOCIAL_MEDIA_METADATA
       required:
-      - allowMultiSelect
-      - allowUserInput
-      - quickReplies
+      - socialMetadata
       - type
       type: object
       properties:
-        allowMultiSelect:
-          type: boolean
-        allowUserInput:
-          type: boolean
-        quickReplies:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuickReply'
+        socialMetadata:
+          $ref: '#/components/schemas/SocialMetadata'
         type:
           type: string
-          default: QUICK_REPLIES
+          default: SOCIAL_MEDIA_METADATA
           enum:
-          - QUICK_REPLIES
+          - SOCIAL_MEDIA_METADATA
       x-hubspot-sub-type-impl: true
-    PublicLocation:
-      title: LOCATION
-      required:
-      - latitude
-      - longitude
-      - type
-      type: object
-      properties:
-        address:
-          type: string
-        latitude:
-          type: number
-        longitude:
-          type: number
-        name:
-          type: string
-        type:
-          type: string
-          default: LOCATION
-          enum:
-          - LOCATION
-        url:
-          type: string
-      x-hubspot-sub-type-impl: true
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicThreadInboxChange:
-      required:
-      - archived
-      - client
-      - conversationsThreadId
-      - createdAt
-      - createdBy
-      - fromInboxId
-      - id
-      - recipients
-      - senders
-      - toInboxId
-      - type
-      type: object
-      properties:
-        archived:
-          type: boolean
-        client:
-          $ref: '#/components/schemas/PublicClient'
-        conversationsThreadId:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-        fromInboxId:
-          type: string
-        id:
-          type: string
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicRecipient'
-        senders:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicSender'
-        toInboxId:
-          type: string
-        type:
-          type: string
-          default: THREAD_INBOX_CHANGE
-          enum:
-          - THREAD_INBOX_CHANGE
-        updatedAt:
-          type: string
-          format: date-time
-      x-hubspot-sub-type-impl: true
-    QuickReply:
-      required:
-      - value
-      - valueType
-      type: object
-      properties:
-        label:
-          type: string
-        value:
-          type: string
-        valueType:
-          type: string
-          enum:
-          - TEXT
-          - URL
-    ContactProfile:
-      required:
-      - addresses
-      - emails
-      - phones
-      - urls
-      type: object
-      properties:
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactAddress'
-        emails:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactEmail'
-        name:
-          $ref: '#/components/schemas/ContactName'
-        org:
-          $ref: '#/components/schemas/ContactOrg'
-        phones:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactPhone'
-        urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContactUrl'
-    ContactName:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        middleName:
-          type: string
-        prefix:
-          type: string
-        suffix:
-          type: string
-    PublicThreadAssociations:
-      type: object
-      properties:
-        associatedTicketId:
-          type: string
-    SocialMetadata:
-      required:
-      - mediaType
-      type: object
-      properties:
-        description:
-          type: string
-        id:
-          type: string
-        mediaTitle:
-          type: string
-        mediaType:
-          type: string
-          enum:
-          - ARTICLE
-          - AUDIO
-          - CAROUSEL
-          - DOCUMENT
-          - GIF
-          - LINK
-          - NONE
-          - PHOTO
-          - POLL
-          - STORY
-          - VIDEO
-        mediaUrl:
-          type: string
-        mediaUrlString:
-          type: string
-        thumbnailUrl:
-          type: string
-    PublicWelcomeMessage:
-      required:
-      - archived
-      - channelAccountId
-      - channelId
-      - client
-      - conversationsThreadId
-      - createdAt
-      - createdBy
-      - id
-      - recipients
-      - senders
-      - text
-      - type
-      type: object
-      properties:
-        archived:
-          type: boolean
-        channelAccountId:
-          type: string
-        channelId:
-          type: string
-        client:
-          $ref: '#/components/schemas/PublicClient'
-        conversationsThreadId:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-        id:
-          type: string
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicRecipient'
-        richText:
-          type: string
-        senders:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicSender'
-        text:
-          type: string
-        type:
-          type: string
-          default: WELCOME_MESSAGE
-          enum:
-          - WELCOME_MESSAGE
-        updatedAt:
-          type: string
-          format: date-time
-      x-hubspot-sub-type-impl: true
-    PublicThreadStatusChange:
-      required:
-      - archived
-      - client
-      - conversationsThreadId
-      - createdAt
-      - createdBy
-      - id
-      - newStatus
-      - recipients
-      - senders
-      - type
-      type: object
-      properties:
-        archived:
-          type: boolean
-        client:
-          $ref: '#/components/schemas/PublicClient'
-        conversationsThreadId:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        createdBy:
-          type: string
-        id:
-          type: string
-        newStatus:
-          type: string
-          enum:
-          - CLOSED
-          - OPEN
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicRecipient'
-        senders:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicSender'
-        type:
-          type: string
-          default: THREAD_STATUS_CHANGE
-          enum:
-          - THREAD_STATUS_CHANGE
-        updatedAt:
-          type: string
-          format: date-time
-      x-hubspot-sub-type-impl: true
-    PublicQuickRepliesEgg:
-      title: QUICK_REPLIES
-      required:
-      - quickReplies
-      - type
-      type: object
-      properties:
-        quickReplies:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuickReply'
-        type:
-          type: string
-          default: QUICK_REPLIES
-          enum:
-          - QUICK_REPLIES
-      x-hubspot-sub-type-impl: true
-    PublicMessage:
-      properties: {}
-      oneOf:
-      - $ref: '#/components/schemas/PublicConversationsMessage'
-      - $ref: '#/components/schemas/PublicComment'
-      - $ref: '#/components/schemas/PublicWelcomeMessage'
-      - $ref: '#/components/schemas/PublicAssignmentMessage'
-      - $ref: '#/components/schemas/PublicThreadStatusChange'
-      - $ref: '#/components/schemas/PublicThreadInboxChange'
-    ContactPhone:
-      required:
-      - phone
-      type: object
-      properties:
-        phone:
-          type: string
-        type:
-          type: string
-          enum:
-          - CELL
-          - HOME
-          - MAIN
-          - WORK
-    ContactUrl:
-      required:
-      - url
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - HOME
-          - WORK
-        url:
-          type: string
     PublicComment:
       required:
       - archived
@@ -843,7 +603,100 @@ components:
           type: string
           format: date-time
       x-hubspot-sub-type-impl: true
-    PublicSender:
+    QuickReply:
+      required:
+      - value
+      - valueType
+      type: object
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+        valueType:
+          type: string
+          enum:
+          - TEXT
+          - URL
+    ContactName:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        middleName:
+          type: string
+        prefix:
+          type: string
+        suffix:
+          type: string
+    PublicMessageStatus:
+      required:
+      - statusType
+      type: object
+      properties:
+        failureDetails:
+          $ref: '#/components/schemas/PublicMessageFailureDetails'
+        statusType:
+          type: string
+          enum:
+          - FAILED
+          - READ
+          - RECEIVED
+          - SENT
+    PublicThreadInboxChange:
+      required:
+      - archived
+      - client
+      - conversationsThreadId
+      - createdAt
+      - createdBy
+      - fromInboxId
+      - id
+      - recipients
+      - senders
+      - toInboxId
+      - type
+      type: object
+      properties:
+        archived:
+          type: boolean
+        client:
+          $ref: '#/components/schemas/PublicClient'
+        conversationsThreadId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        fromInboxId:
+          type: string
+        id:
+          type: string
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicRecipient'
+        senders:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicSender'
+        toInboxId:
+          type: string
+        type:
+          type: string
+          default: THREAD_INBOX_CHANGE
+          enum:
+          - THREAD_INBOX_CHANGE
+        updatedAt:
+          type: string
+          format: date-time
+      x-hubspot-sub-type-impl: true
+    PublicRecipient:
+      required:
+      - deliveryIdentifier
       type: object
       properties:
         actorId:
@@ -852,127 +705,62 @@ components:
           $ref: '#/components/schemas/PublicDeliveryIdentifier'
         name:
           type: string
-        senderField:
+        recipientField:
           type: string
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
+    ForwardPaging:
       type: object
       properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    PublicCommentEgg:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    CollectionResponsePublicMessageForwardPaging:
       required:
-      - attachments
-      - text
-      - type
+      - results
       type: object
       properties:
-        attachments:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
           type: array
           items:
             oneOf:
-            - $ref: '#/components/schemas/PublicFileEgg'
-            - $ref: '#/components/schemas/PublicQuickRepliesEgg'
-            - $ref: '#/components/schemas/PublicSocialMediaEgg'
-        richText:
+            - $ref: '#/components/schemas/PublicConversationsMessage'
+            - $ref: '#/components/schemas/PublicComment'
+            - $ref: '#/components/schemas/PublicWelcomeMessage'
+            - $ref: '#/components/schemas/PublicAssignmentMessage'
+            - $ref: '#/components/schemas/PublicThreadStatusChange'
+            - $ref: '#/components/schemas/PublicThreadInboxChange'
+    ContactAddress:
+      type: object
+      properties:
+        city:
           type: string
-        text:
+        country:
+          type: string
+        countryCode:
+          type: string
+        state:
+          type: string
+        street:
           type: string
         type:
           type: string
-          default: COMMENT
           enum:
-          - COMMENT
-      x-hubspot-sub-type-impl: true
-    PublicDeliveryIdentifier:
+          - HOME
+          - WORK
+        zip:
+          type: string
+    PublicUnsupportedContent:
+      title: UNSUPPORTED_CONTENT
       required:
       - type
-      - value
       type: object
       properties:
         type:
           type: string
-          description: The type of identifier. HS_EMAIL_ADDRESS for email addresses; HS_PHONE_NUMBER for a phone number; CHANNEL_SPECIFIC_OPAQUE_ID for channels that use their own proprietary identifiers, like Facebook Messenger or LiveChat.
+          default: UNSUPPORTED_CONTENT
           enum:
-          - CHANNEL_SPECIFIC_OPAQUE_ID
-          - HS_EMAIL_ADDRESS
-          - HS_PHONE_NUMBER
-          - HS_SHORT_CODE
-        value:
-          type: string
-          description: A string representation of the PublicDeliveryIdentifier, either an an E.164 phone number, an email address, or a channel-specific identifier.
-    PublicWhatsAppTemplateMetadata:
-      title: WHATSAPP_TEMPLATE_METADATA
-      required:
-      - crmObjectIds
-      - parameters
-      - type
-      type: object
-      properties:
-        contentId:
-          type: integer
-          format: int64
-        crmObjectIds:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
-        mappedTemplateId:
-          type: integer
-          format: int64
-        parameters:
-          type: object
-          additionalProperties:
-            type: string
-        rootMicId:
-          type: integer
-          format: int64
-        type:
-          type: string
-          default: WHATSAPP_TEMPLATE_METADATA
-          enum:
-          - WHATSAPP_TEMPLATE_METADATA
+          - UNSUPPORTED_CONTENT
       x-hubspot-sub-type-impl: true
     PublicConversationsMessage:
       required:
@@ -1060,6 +848,114 @@ components:
           type: string
           format: date-time
       x-hubspot-sub-type-impl: true
+    PublicThreadAssociations:
+      type: object
+      properties:
+        associatedTicketId:
+          type: string
+    PublicRecipientEgg:
+      required:
+      - deliveryIdentifiers
+      type: object
+      properties:
+        actorId:
+          type: string
+        deliveryIdentifier:
+          $ref: '#/components/schemas/PublicDeliveryIdentifier'
+        deliveryIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicDeliveryIdentifier'
+        name:
+          type: string
+        recipientField:
+          type: string
+    ContactProfile:
+      required:
+      - addresses
+      - emails
+      - phones
+      - urls
+      type: object
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactAddress'
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactEmail'
+        name:
+          $ref: '#/components/schemas/ContactName'
+        org:
+          $ref: '#/components/schemas/ContactOrg'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactPhone'
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactUrl'
+    ContactUrl:
+      required:
+      - url
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - HOME
+          - WORK
+        url:
+          type: string
+    SocialMetadata:
+      required:
+      - mediaType
+      type: object
+      properties:
+        description:
+          type: string
+        id:
+          type: string
+        mediaTitle:
+          type: string
+        mediaType:
+          type: string
+          enum:
+          - ARTICLE
+          - AUDIO
+          - CAROUSEL
+          - DOCUMENT
+          - GIF
+          - LINK
+          - NONE
+          - PHOTO
+          - POLL
+          - STORY
+          - VIDEO
+        mediaUrl:
+          type: string
+        mediaUrlString:
+          type: string
+        thumbnailUrl:
+          type: string
+    PublicFileEgg:
+      title: FILE
+      required:
+      - fileId
+      - type
+      type: object
+      properties:
+        fileId:
+          type: string
+        type:
+          type: string
+          default: FILE
+          enum:
+          - FILE
+      x-hubspot-sub-type-impl: true
     PublicThreadUpdateRequest:
       type: object
       properties:
@@ -1072,20 +968,61 @@ components:
           enum:
           - CLOSED
           - OPEN
-    PublicSocialMediaEgg:
-      title: SOCIAL_MEDIA_METADATA
+    PublicCommentEgg:
       required:
-      - socialMetadata
+      - attachments
+      - text
       - type
       type: object
       properties:
-        socialMetadata:
-          $ref: '#/components/schemas/SocialMetadata'
+        attachments:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PublicFileEgg'
+            - $ref: '#/components/schemas/PublicQuickRepliesEgg'
+            - $ref: '#/components/schemas/PublicSocialMediaEgg'
+        richText:
+          type: string
+        text:
+          type: string
         type:
           type: string
-          default: SOCIAL_MEDIA_METADATA
+          default: COMMENT
           enum:
-          - SOCIAL_MEDIA_METADATA
+          - COMMENT
+      x-hubspot-sub-type-impl: true
+    PublicWhatsAppTemplateMetadata:
+      title: WHATSAPP_TEMPLATE_METADATA
+      required:
+      - crmObjectIds
+      - parameters
+      - type
+      type: object
+      properties:
+        contentId:
+          type: integer
+          format: int64
+        crmObjectIds:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        mappedTemplateId:
+          type: integer
+          format: int64
+        parameters:
+          type: object
+          additionalProperties:
+            type: string
+        rootMicId:
+          type: integer
+          format: int64
+        type:
+          type: string
+          default: WHATSAPP_TEMPLATE_METADATA
+          enum:
+          - WHATSAPP_TEMPLATE_METADATA
       x-hubspot-sub-type-impl: true
     PublicAssignmentMessage:
       required:
@@ -1134,239 +1071,6 @@ components:
           type: string
           format: date-time
       x-hubspot-sub-type-impl: true
-    PublicRecipient:
-      required:
-      - deliveryIdentifier
-      type: object
-      properties:
-        actorId:
-          type: string
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier'
-        name:
-          type: string
-        recipientField:
-          type: string
-    PublicMessageStatus:
-      required:
-      - statusType
-      type: object
-      properties:
-        failureDetails:
-          $ref: '#/components/schemas/PublicMessageFailureDetails'
-        statusType:
-          type: string
-          enum:
-          - FAILED
-          - READ
-          - RECEIVED
-          - SENT
-    PublicMessageFailureDetails:
-      required:
-      - errorMessageTokens
-      type: object
-      properties:
-        errorMessage:
-          type: string
-        errorMessageTokens:
-          type: object
-          additionalProperties:
-            type: string
-    PublicMessageEgg:
-      properties: {}
-      oneOf:
-      - $ref: '#/components/schemas/PublicConversationsMessageEgg'
-      - $ref: '#/components/schemas/PublicCommentEgg'
-    PublicContact:
-      title: CONTACT
-      required:
-      - contactProfile
-      - type
-      type: object
-      properties:
-        contactProfile:
-          $ref: '#/components/schemas/ContactProfile'
-        type:
-          type: string
-          default: CONTACT
-          enum:
-          - CONTACT
-      x-hubspot-sub-type-impl: true
-    PublicConversationsMessageEgg:
-      required:
-      - attachments
-      - channelAccountId
-      - channelId
-      - recipients
-      - senderActorId
-      - text
-      - type
-      type: object
-      properties:
-        attachments:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PublicFileEgg'
-            - $ref: '#/components/schemas/PublicQuickRepliesEgg'
-            - $ref: '#/components/schemas/PublicSocialMediaEgg'
-        channelAccountId:
-          type: string
-        channelId:
-          type: string
-        recipients:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicRecipientEgg'
-        richText:
-          type: string
-        senderActorId:
-          type: string
-        subject:
-          type: string
-        text:
-          type: string
-        type:
-          type: string
-          default: MESSAGE
-          enum:
-          - MESSAGE
-      x-hubspot-sub-type-impl: true
-    ContactAddress:
-      type: object
-      properties:
-        city:
-          type: string
-        country:
-          type: string
-        countryCode:
-          type: string
-        state:
-          type: string
-        street:
-          type: string
-        type:
-          type: string
-          enum:
-          - HOME
-          - WORK
-        zip:
-          type: string
-    PublicRecipientEgg:
-      required:
-      - deliveryIdentifiers
-      type: object
-      properties:
-        actorId:
-          type: string
-        deliveryIdentifier:
-          $ref: '#/components/schemas/PublicDeliveryIdentifier'
-        deliveryIdentifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicDeliveryIdentifier'
-        name:
-          type: string
-        recipientField:
-          type: string
-    PublicUnsupportedContent:
-      title: UNSUPPORTED_CONTENT
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          default: UNSUPPORTED_CONTENT
-          enum:
-          - UNSUPPORTED_CONTENT
-      x-hubspot-sub-type-impl: true
-    ContactOrg:
-      type: object
-      properties:
-        company:
-          type: string
-        department:
-          type: string
-        title:
-          type: string
-    PublicClient:
-      required:
-      - clientType
-      type: object
-      properties:
-        clientType:
-          type: string
-          description: The type of the client.
-          enum:
-          - HUBSPOT
-          - INTEGRATION
-          - SYSTEM
-          - UNKNOWN
-        integrationAppId:
-          type: integer
-          description: The ID of the client if the client is an integration.
-          format: int32
-    PublicMessageHeader:
-      title: MESSAGE_HEADER
-      required:
-      - type
-      type: object
-      properties:
-        fileId:
-          type: integer
-          format: int64
-        text:
-          type: string
-        type:
-          type: string
-          default: MESSAGE_HEADER
-          enum:
-          - MESSAGE_HEADER
-      x-hubspot-sub-type-impl: true
-    CollectionResponsePublicThreadForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicThread'
-    PublicSocialMetadataAttachment:
-      title: SOCIAL_MEDIA_METADATA
-      required:
-      - socialMetadata
-      - type
-      type: object
-      properties:
-        socialMetadata:
-          $ref: '#/components/schemas/SocialMetadata'
-        type:
-          type: string
-          default: SOCIAL_MEDIA_METADATA
-          enum:
-          - SOCIAL_MEDIA_METADATA
-      x-hubspot-sub-type-impl: true
-    CollectionResponsePublicMessageForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PublicConversationsMessage'
-            - $ref: '#/components/schemas/PublicComment'
-            - $ref: '#/components/schemas/PublicWelcomeMessage'
-            - $ref: '#/components/schemas/PublicAssignmentMessage'
-            - $ref: '#/components/schemas/PublicThreadStatusChange'
-            - $ref: '#/components/schemas/PublicThreadInboxChange'
     PublicThread:
       required:
       - archived
@@ -1429,6 +1133,123 @@ components:
           - OPEN
         threadAssociations:
           $ref: '#/components/schemas/PublicThreadAssociations'
+    PublicConversationsMessageEgg:
+      required:
+      - attachments
+      - channelAccountId
+      - channelId
+      - recipients
+      - senderActorId
+      - text
+      - type
+      type: object
+      properties:
+        attachments:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PublicFileEgg'
+            - $ref: '#/components/schemas/PublicQuickRepliesEgg'
+            - $ref: '#/components/schemas/PublicSocialMediaEgg'
+        channelAccountId:
+          type: string
+        channelId:
+          type: string
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicRecipientEgg'
+        richText:
+          type: string
+        senderActorId:
+          type: string
+        subject:
+          type: string
+        text:
+          type: string
+        type:
+          type: string
+          default: MESSAGE
+          enum:
+          - MESSAGE
+      x-hubspot-sub-type-impl: true
+    PublicQuickReplies:
+      title: QUICK_REPLIES
+      required:
+      - allowMultiSelect
+      - allowUserInput
+      - quickReplies
+      - type
+      type: object
+      properties:
+        allowMultiSelect:
+          type: boolean
+        allowUserInput:
+          type: boolean
+        quickReplies:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuickReply'
+        type:
+          type: string
+          default: QUICK_REPLIES
+          enum:
+          - QUICK_REPLIES
+      x-hubspot-sub-type-impl: true
+    PublicWelcomeMessage:
+      required:
+      - archived
+      - channelAccountId
+      - channelId
+      - client
+      - conversationsThreadId
+      - createdAt
+      - createdBy
+      - id
+      - recipients
+      - senders
+      - text
+      - type
+      type: object
+      properties:
+        archived:
+          type: boolean
+        channelAccountId:
+          type: string
+        channelId:
+          type: string
+        client:
+          $ref: '#/components/schemas/PublicClient'
+        conversationsThreadId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        id:
+          type: string
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicRecipient'
+        richText:
+          type: string
+        senders:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicSender'
+        text:
+          type: string
+        type:
+          type: string
+          default: WELCOME_MESSAGE
+          enum:
+          - WELCOME_MESSAGE
+        updatedAt:
+          type: string
+          format: date-time
+      x-hubspot-sub-type-impl: true
     ContactEmail:
       required:
       - email
@@ -1441,55 +1262,234 @@ components:
           enum:
           - HOME
           - WORK
-    PublicFile:
-      title: FILE
+    PublicMessage:
+      properties: {}
+      oneOf:
+      - $ref: '#/components/schemas/PublicConversationsMessage'
+      - $ref: '#/components/schemas/PublicComment'
+      - $ref: '#/components/schemas/PublicWelcomeMessage'
+      - $ref: '#/components/schemas/PublicAssignmentMessage'
+      - $ref: '#/components/schemas/PublicThreadStatusChange'
+      - $ref: '#/components/schemas/PublicThreadInboxChange'
+    ContactOrg:
+      type: object
+      properties:
+        company:
+          type: string
+        department:
+          type: string
+        title:
+          type: string
+    PublicQuickRepliesEgg:
+      title: QUICK_REPLIES
       required:
-      - fileId
-      - fileUsageType
+      - quickReplies
       - type
       type: object
       properties:
-        fileId:
+        quickReplies:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuickReply'
+        type:
           type: string
-        fileUsageType:
-          type: string
+          default: QUICK_REPLIES
           enum:
-          - AUDIO
-          - IMAGE
-          - OTHER
-          - STICKER
-          - VOICE_RECORDING
+          - QUICK_REPLIES
+      x-hubspot-sub-type-impl: true
+    PublicSocialMetadataAttachment:
+      title: SOCIAL_MEDIA_METADATA
+      required:
+      - socialMetadata
+      - type
+      type: object
+      properties:
+        socialMetadata:
+          $ref: '#/components/schemas/SocialMetadata'
+        type:
+          type: string
+          default: SOCIAL_MEDIA_METADATA
+          enum:
+          - SOCIAL_MEDIA_METADATA
+      x-hubspot-sub-type-impl: true
+    PublicDeliveryIdentifier:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of identifier. HS_EMAIL_ADDRESS for email addresses; HS_PHONE_NUMBER for a phone number; CHANNEL_SPECIFIC_OPAQUE_ID for channels that use their own proprietary identifiers, like Facebook Messenger or LiveChat.
+          enum:
+          - CHANNEL_SPECIFIC_OPAQUE_ID
+          - HS_EMAIL_ADDRESS
+          - HS_PHONE_NUMBER
+          - HS_SHORT_CODE
+        value:
+          type: string
+          description: A string representation of the PublicDeliveryIdentifier, either an an E.164 phone number, an email address, or a channel-specific identifier.
+    PublicContact:
+      title: CONTACT
+      required:
+      - contactProfile
+      - type
+      type: object
+      properties:
+        contactProfile:
+          $ref: '#/components/schemas/ContactProfile'
+        type:
+          type: string
+          default: CONTACT
+          enum:
+          - CONTACT
+      x-hubspot-sub-type-impl: true
+    PublicLocation:
+      title: LOCATION
+      required:
+      - latitude
+      - longitude
+      - type
+      type: object
+      properties:
+        address:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
         name:
           type: string
         type:
           type: string
-          default: FILE
+          default: LOCATION
           enum:
-          - FILE
+          - LOCATION
         url:
           type: string
       x-hubspot-sub-type-impl: true
-    PublicFileEgg:
-      title: FILE
+    PublicMessageEgg:
+      properties: {}
+      oneOf:
+      - $ref: '#/components/schemas/PublicConversationsMessageEgg'
+      - $ref: '#/components/schemas/PublicCommentEgg'
+    CollectionResponsePublicThreadForwardPaging:
       required:
-      - fileId
-      - type
+      - results
       type: object
       properties:
-        fileId:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicThread'
+    ContactPhone:
+      required:
+      - phone
+      type: object
+      properties:
+        phone:
           type: string
         type:
           type: string
-          default: FILE
           enum:
-          - FILE
-      x-hubspot-sub-type-impl: true
-    ForwardPaging:
+          - CELL
+          - HOME
+          - MAIN
+          - WORK
+    PublicThreadStatusChange:
+      required:
+      - archived
+      - client
+      - conversationsThreadId
+      - createdAt
+      - createdBy
+      - id
+      - newStatus
+      - recipients
+      - senders
+      - type
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+        archived:
+          type: boolean
+        client:
+          $ref: '#/components/schemas/PublicClient'
+        conversationsThreadId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        id:
+          type: string
+        newStatus:
+          type: string
+          enum:
+          - CLOSED
+          - OPEN
+        recipients:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicRecipient'
+        senders:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicSender'
+        type:
+          type: string
+          default: THREAD_STATUS_CHANGE
+          enum:
+          - THREAD_STATUS_CHANGE
+        updatedAt:
+          type: string
+          format: date-time
+      x-hubspot-sub-type-impl: true
+    PublicClient:
+      required:
+      - clientType
+      type: object
+      properties:
+        clientType:
+          type: string
+          description: The type of the client.
+          enum:
+          - HUBSPOT
+          - INTEGRATION
+          - SYSTEM
+          - UNKNOWN
+        integrationAppId:
+          type: integer
+          description: The ID of the client if the client is an integration.
+          format: int32
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   responses:
     Error:
       description: An error occurred.

@@ -932,6 +932,72 @@ paths:
     - url: https://api.hubapi.com
 components:
   schemas:
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    BatchInputString:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          description: Strings to input.
+          items:
+            type: string
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    BatchResponseContentFolder:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: Time of batch operation completion.
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Links associated with batch operation.
+        requestedAt:
+          type: string
+          description: Time of batch operation request.
+          format: date-time
+        results:
+          type: array
+          description: Results of batch operation.
+          items:
+            $ref: '#/components/schemas/ContentFolder'
+        startedAt:
+          type: string
+          description: Time of batch operation start.
+          format: date-time
+        status:
+          type: string
+          description: Status of batch operation.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
     CollectionResponseWithTotalContentFolderVersion:
       required:
       - results
@@ -947,6 +1013,29 @@ components:
         total:
           type: integer
           format: int32
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    VersionUser:
+      required:
+      - email
+      - fullName
+      - id
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address of the user.
+        fullName:
+          type: string
+          description: First and last name of the user.
+        id:
+          type: string
+          description: ID of the user.
     ContentFolder:
       required:
       - category
@@ -984,113 +1073,6 @@ components:
           type: string
           description: The timestamp indicating when the content folder was last updated.
           format: date-time
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    BatchInputString:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          description: Strings to input.
-          items:
-            type: string
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    BatchResponseContentFolderWithErrors:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: Time of batch operation completion.
-          format: date-time
-        errors:
-          type: array
-          description: Errors in batch operation.
-          items:
-            $ref: '#/components/schemas/StandardError'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Links associated with batch operation.
-        numErrors:
-          type: integer
-          description: Number of errors.
-          format: int32
-        requestedAt:
-          type: string
-          description: Time of batch operation request.
-          format: date-time
-        results:
-          type: array
-          description: Results of batch operation.
-          items:
-            $ref: '#/components/schemas/ContentFolder'
-        startedAt:
-          type: string
-          description: Time of batch operation start.
-          format: date-time
-        status:
-          type: string
-          description: Status of batch operation.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     Error:
       required:
       - category
@@ -1138,6 +1120,91 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    BatchResponseContentFolderWithErrors:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: Time of batch operation completion.
+          format: date-time
+        errors:
+          type: array
+          description: Errors in batch operation.
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Links associated with batch operation.
+        numErrors:
+          type: integer
+          description: Number of errors.
+          format: int32
+        requestedAt:
+          type: string
+          description: Time of batch operation request.
+          format: date-time
+        results:
+          type: array
+          description: Results of batch operation.
+          items:
+            $ref: '#/components/schemas/ContentFolder'
+        startedAt:
+          type: string
+          description: Time of batch operation start.
+          format: date-time
+        status:
+          type: string
+          description: Status of batch operation.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     CollectionResponseWithTotalContentFolderForwardPaging:
       required:
       - results
@@ -1216,73 +1283,27 @@ components:
           properties: {}
           description: Error subcategory.
       description: Ye olde error
-    Paging:
+    FolderUpdateInput:
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    VersionUser:
+        name:
+          type: string
+          description: New name. If specified the folder's name and fullPath will change. All children of the folder will be updated accordingly.
+        parentFolderId:
+          type: integer
+          description: New parent folderId. If changed, the folder and all it's children will be moved into the specified folder. parentFolderId and parentFolderPath cannot be specified at the same time.
+          format: int64
+    CollectionResponseFolder:
       required:
-      - email
-      - fullName
-      - id
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email address of the user.
-        fullName:
-          type: string
-          description: First and last name of the user.
-        id:
-          type: string
-          description: ID of the user.
-    ForwardPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
-    BatchResponseContentFolder:
-      required:
-      - completedAt
       - results
-      - startedAt
-      - status
       type: object
       properties:
-        completedAt:
-          type: string
-          description: Time of batch operation completion.
-          format: date-time
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Links associated with batch operation.
-        requestedAt:
-          type: string
-          description: Time of batch operation request.
-          format: date-time
+        paging:
+          $ref: '#/components/schemas/Paging'
         results:
           type: array
-          description: Results of batch operation.
           items:
-            $ref: '#/components/schemas/ContentFolder'
-        startedAt:
-          type: string
-          description: Time of batch operation start.
-          format: date-time
-        status:
-          type: string
-          description: Status of batch operation.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
+            $ref: '#/components/schemas/Folder'
     Folder:
       required:
       - archived
@@ -1318,30 +1339,53 @@ components:
           type: string
           description: Timestamp of the latest update to the folder.
           format: date-time
-    CollectionResponseFolder:
+    FolderActionResponse:
       required:
-      - results
+      - completedAt
+      - startedAt
+      - status
+      - taskId
       type: object
       properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Folder'
-    FolderUpdateTaskLocator:
-      required:
-      - id
-      type: object
-      properties:
-        id:
+        completedAt:
           type: string
-          description: ID of the task
+          description: When the requested changes have been completed.
+          format: date-time
+        errors:
+          type: array
+          description: Detailed errors resulting from the task.
+          items:
+            $ref: '#/components/schemas/StandardError_2'
         links:
           type: object
           additionalProperties:
             type: string
-          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
+          description: Link to check the status of the task.
+        numErrors:
+          type: integer
+          description: Number of errors resulting from the requested changes.
+          format: int32
+        requestedAt:
+          type: string
+          description: Timestamp representing when the task was requested.
+          format: date-time
+        result:
+          $ref: '#/components/schemas/Folder'
+        startedAt:
+          type: string
+          description: Timestamp representing when the task was started at.
+          format: date-time
+        status:
+          type: string
+          description: Current status of the task.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+        taskId:
+          type: string
+          description: ID of the task.
     FolderUpdateInputWithId:
       required:
       - id
@@ -1350,16 +1394,6 @@ components:
         id:
           type: string
           description: The unique identifier of the folder to be updated.
-        name:
-          type: string
-          description: New name. If specified the folder's name and fullPath will change. All children of the folder will be updated accordingly.
-        parentFolderId:
-          type: integer
-          description: New parent folderId. If changed, the folder and all it's children will be moved into the specified folder. parentFolderId and parentFolderPath cannot be specified at the same time.
-          format: int64
-    FolderUpdateInput:
-      type: object
-      properties:
         name:
           type: string
           description: New name. If specified the folder's name and fullPath will change. All children of the folder will be updated accordingly.
@@ -1411,53 +1445,19 @@ components:
           properties: {}
           description: A more specific error category within each main category.
       description: Ye olde error
-    FolderActionResponse:
+    FolderUpdateTaskLocator:
       required:
-      - completedAt
-      - startedAt
-      - status
-      - taskId
+      - id
       type: object
       properties:
-        completedAt:
+        id:
           type: string
-          description: When the requested changes have been completed.
-          format: date-time
-        errors:
-          type: array
-          description: Detailed errors resulting from the task.
-          items:
-            $ref: '#/components/schemas/StandardError_2'
+          description: ID of the task
         links:
           type: object
           additionalProperties:
             type: string
-          description: Link to check the status of the task.
-        numErrors:
-          type: integer
-          description: Number of errors resulting from the requested changes.
-          format: int32
-        requestedAt:
-          type: string
-          description: Timestamp representing when the task was requested.
-          format: date-time
-        result:
-          $ref: '#/components/schemas/Folder'
-        startedAt:
-          type: string
-          description: Timestamp representing when the task was started at.
-          format: date-time
-        status:
-          type: string
-          description: Current status of the task.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-        taskId:
-          type: string
-          description: ID of the task.
+          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
   responses:
     Error:
       description: An error occurred.

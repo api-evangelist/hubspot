@@ -268,72 +268,73 @@ paths:
         - crm.objects.marketing_events.write
 components:
   schemas:
-    BatchInputMarketingEventSubscriber:
+    BatchResponseSubscriberVidResponse:
       required:
-      - inputs
+      - completedAt
+      - results
+      - startedAt
+      - status
       type: object
       properties:
-        inputs:
+        completedAt:
+          type: string
+          description: Timestamp that represents when the request finished processing
+          format: date-time
+        errors:
           type: array
-          description: List of HubSpot contacts to subscribe to the marketing event
           items:
-            $ref: '#/components/schemas/MarketingEventSubscriber'
-    BatchInputMarketingEventEmailSubscriber:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          description: List of marketing event details to create or update
-          items:
-            $ref: '#/components/schemas/MarketingEventEmailSubscriber'
-    MarketingEventSubscriber:
-      required:
-      - interactionDateTime
-      - properties
-      - vid
-      type: object
-      properties:
-        interactionDateTime:
-          type: integer
-          description: Timestamp in milliseconds at which the contact subscribed to the event.
-          format: int64
-        properties:
+            $ref: '#/components/schemas/StandardError'
+        links:
           type: object
           additionalProperties:
             type: string
-          description: The key-value set of the properties of the contact
-        vid:
+          description: Result of the request
+        numErrors:
           type: integer
-          description: The ID of the contact in HubSpot
-          format: int64
-    ErrorDetail:
+          description: The number of errors that occurred during the processing
+          format: int32
+        requestedAt:
+          type: string
+          description: Timestamp that represents when the request was made
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriberVidResponse'
+        startedAt:
+          type: string
+          description: Timestamp that represents when the request started processing
+          format: date-time
+        status:
+          type: string
+          description: The status of the request processing
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    SubscriberVidResponse:
       required:
-      - message
+      - vid
       type: object
       properties:
-        code:
+        vid:
+          type: integer
+          description: The internal ID of the contact
+          format: int64
+    SubscriberEmailResponse:
+      required:
+      - email
+      - vid
+      type: object
+      properties:
+        email:
           type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+          description: The email of the contact
+        vid:
+          type: integer
+          description: The internal ID of the contact
+          format: int64
     BatchResponseSubscriberEmailResponse:
       required:
       - completedAt
@@ -426,27 +427,61 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    SubscriberEmailResponse:
+    ErrorDetail:
       required:
-      - email
-      - vid
+      - message
       type: object
       properties:
-        email:
+        code:
           type: string
-          description: The email of the contact
-        vid:
-          type: integer
-          description: The internal ID of the contact
-          format: int64
-    SubscriberVidResponse:
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    BatchInputMarketingEventSubscriber:
       required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          description: List of HubSpot contacts to subscribe to the marketing event
+          items:
+            $ref: '#/components/schemas/MarketingEventSubscriber'
+    MarketingEventSubscriber:
+      required:
+      - interactionDateTime
+      - properties
       - vid
       type: object
       properties:
+        interactionDateTime:
+          type: integer
+          description: Timestamp in milliseconds at which the contact subscribed to the event.
+          format: int64
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: The key-value set of the properties of the contact
         vid:
           type: integer
-          description: The internal ID of the contact
+          description: The ID of the contact in HubSpot
           format: int64
     StandardError:
       required:
@@ -492,51 +527,16 @@ components:
           properties: {}
           description: The Sub-category of the error
       description: Ye olde error
-    BatchResponseSubscriberVidResponse:
+    BatchInputMarketingEventEmailSubscriber:
       required:
-      - completedAt
-      - results
-      - startedAt
-      - status
+      - inputs
       type: object
       properties:
-        completedAt:
-          type: string
-          description: Timestamp that represents when the request finished processing
-          format: date-time
-        errors:
+        inputs:
           type: array
+          description: List of marketing event details to create or update
           items:
-            $ref: '#/components/schemas/StandardError'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Result of the request
-        numErrors:
-          type: integer
-          description: The number of errors that occurred during the processing
-          format: int32
-        requestedAt:
-          type: string
-          description: Timestamp that represents when the request was made
-          format: date-time
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriberVidResponse'
-        startedAt:
-          type: string
-          description: Timestamp that represents when the request started processing
-          format: date-time
-        status:
-          type: string
-          description: The status of the request processing
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
+            $ref: '#/components/schemas/MarketingEventEmailSubscriber'
     MarketingEventEmailSubscriber:
       required:
       - contactProperties

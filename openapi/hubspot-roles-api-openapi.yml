@@ -49,48 +49,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicPermissionSet:
-      required:
-      - id
-      - name
-      - requiresBillingWrite
-      type: object
-      properties:
-        id:
-          type: string
-          description: The role's unique ID
-        name:
-          type: string
-          description: The role's name
-        requiresBillingWrite:
-          type: boolean
-          description: Whether this role has a paid seat and requires the billing-write scope to assign/unassign to users
     Error:
       required:
       - category
@@ -138,6 +96,22 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    PublicPermissionSet:
+      required:
+      - id
+      - name
+      - requiresBillingWrite
+      type: object
+      properties:
+        id:
+          type: string
+          description: The role's unique ID
+        name:
+          type: string
+          description: The role's name
+        requiresBillingWrite:
+          type: boolean
+          description: Whether this role has a paid seat and requires the billing-write scope to assign/unassign to users
     CollectionResponsePublicPermissionSetNoPaging:
       required:
       - results
@@ -147,6 +121,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PublicPermissionSet'
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   securitySchemes:
     developer_hapikey:
       type: apiKey

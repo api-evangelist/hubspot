@@ -293,221 +293,61 @@ paths:
     - url: https://api.hubapi.com
 components:
   schemas:
-    BooleanFieldSchema:
-      title: BOOLEAN
+    IntegerFieldSchema:
+      title: INTEGER
       required:
       - type
       type: object
       properties:
+        maximum:
+          type: integer
+          description: The maximum value allowed for the integer field.
+          format: int32
+        minimum:
+          type: integer
+          description: The minimum value allowed for the integer field.
+          format: int32
         type:
           type: string
-          description: Specifies the field type as BOOLEAN, indicating that the field can hold a true or false value.
-          default: BOOLEAN
+          description: The type of the field, which is set to INTEGER.
+          default: INTEGER
           enum:
-          - BOOLEAN
+          - INTEGER
       x-hubspot-sub-type-impl: true
-    NextPage:
+    Option:
       required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    PublicFieldTypeDefinition:
-      required:
-      - name
-      - options
-      - type
+      - description
+      - displayOrder
+      - doubleData
+      - hidden
+      - label
+      - readOnly
+      - value
       type: object
       properties:
         description:
           type: string
-          description: A detailed explanation of the field's purpose.
-        fieldType:
-          type: string
-          description: The type of field, with accepted values including booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, and textarea.
-          enum:
-          - booleancheckbox
-          - calculation_equation
-          - checkbox
-          - date
-          - file
-          - html
-          - number
-          - phonenumber
-          - radio
-          - select
-          - text
-          - textarea
-        helpText:
-          type: string
-          description: Additional information or guidance about the field.
+          description: A description of the option.
+        displayOrder:
+          type: integer
+          description: The position of the item relative to others in the list.
+          format: int32
+        doubleData:
+          type: number
+          description: A numerical value associated with the option.
+        hidden:
+          type: boolean
+          description: Whether the option is displayed in HubSpot's UI.
         label:
           type: string
-          description: A user-friendly name for the field.
-        name:
-          type: string
-          description: The internal name used to identify the field.
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicOption'
-        optionsUrl:
-          type: string
-          description: A URL that provides options for the field.
-        referencedObjectType:
-          type: string
-          description: The type of object that the field references, with accepted values including OWNER.
-          enum:
-          - OWNER
-        type:
-          type: string
-          description: The data type of the field, with accepted values including bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, and string.
-          enum:
-          - bool
-          - date
-          - datetime
-          - enumeration
-          - json
-          - number
-          - object_coordinates
-          - phone_number
-          - string
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    StringFieldSchema:
-      title: STRING
-      required:
-      - type
-      type: object
-      properties:
-        format:
-          type: string
-          description: 'Specifies the format of the string, with accepted values: DATE, DATE_TIME, OBJECT_COORDINATE, TIME, URI.'
-          enum:
-          - DATE
-          - DATE_TIME
-          - MONTH_AND_DAY
-          - OBJECT_COORDINATE
-          - TIME
-          - URI
-        type:
-          type: string
-          description: Indicates that the type is a string, with the default value being STRING.
-          default: STRING
-          enum:
-          - STRING
-      x-hubspot-sub-type-impl: true
-    PublicInputFieldDefinition:
-      required:
-      - isRequired
-      - typeDefinition
-      type: object
-      properties:
-        isRequired:
+          description: A user-friendly label that identifies the option.
+        readOnly:
           type: boolean
-          description: Indicates whether the input field is mandatory.
-        supportedValueTypes:
-          type: array
-          items:
-            type: string
-            enum:
-            - STATIC_VALUE
-            - OBJECT_PROPERTY
-        typeDefinition:
-          $ref: '#/components/schemas/PublicFieldTypeDefinition'
-    PublicSingleFieldDependency:
-      title: SINGLE_FIELD
-      required:
-      - controllingFieldName
-      - dependencyType
-      - dependentFieldNames
-      type: object
-      properties:
-        controllingFieldName:
+          description: Whether the option is read-only.
+        value:
           type: string
-          description: The name of the field that controls the dependency.
-        dependencyType:
-          type: string
-          description: The type of dependency, with the default value being 'SINGLE_FIELD'.
-          default: SINGLE_FIELD
-          enum:
-          - SINGLE_FIELD
-        dependentFieldNames:
-          type: array
-          items:
-            type: string
-      x-hubspot-sub-type-impl: true
-    PublicConditionalSingleFieldDependency:
-      title: CONDITIONAL_SINGLE_FIELD
-      required:
-      - controllingFieldName
-      - controllingFieldValue
-      - dependencyType
-      - dependentFieldNames
-      type: object
-      properties:
-        controllingFieldName:
-          type: string
-          description: The name of the field that determines the dependency.
-        controllingFieldValue:
-          type: string
-          description: The value of the controlling field that triggers the dependency.
-        dependencyType:
-          type: string
-          description: The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
-          default: CONDITIONAL_SINGLE_FIELD
-          enum:
-          - CONDITIONAL_SINGLE_FIELD
-        dependentFieldNames:
-          type: array
-          items:
-            type: string
-      x-hubspot-sub-type-impl: true
-    PublicExecutionTranslationRule:
-      required:
-      - conditions
-      - labelName
-      type: object
-      properties:
-        conditions:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-          description: Defines the conditions that must be met for the execution rule to apply.
-        labelName:
-          type: string
-          description: Specifies the name of the label associated with the execution rule.
+          description: The actual value of the option.
+      description: A HubSpot property option
     Error:
       required:
       - category
@@ -555,38 +395,239 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    IntegerFieldSchema:
-      title: INTEGER
+    OutputFieldDefinition:
+      required:
+      - typeDefinition
+      type: object
+      properties:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+    CollectionResponsePublicActionRevisionForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionRevision'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    PublicActionLabels:
+      required:
+      - actionName
+      type: object
+      properties:
+        actionCardContent:
+          type: string
+          description: Content displayed on the action card.
+        actionDescription:
+          type: string
+          description: A description of what the action does.
+        actionName:
+          type: string
+          description: The name of the action.
+        appDisplayName:
+          type: string
+          description: The display name of the application associated with the action.
+        executionRules:
+          type: object
+          additionalProperties:
+            type: string
+          description: Rules that govern the execution of the action.
+        inputFieldDescriptions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Descriptions for each input field.
+        inputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the input fields.
+        inputFieldOptionLabels:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+          description: Labels for the options available in input fields.
+        outputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the output fields.
+    PublicConditionalSingleFieldDependency:
+      title: CONDITIONAL_SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - controllingFieldValue
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that determines the dependency.
+        controllingFieldValue:
+          type: string
+          description: The value of the controlling field that triggers the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
+          default: CONDITIONAL_SINGLE_FIELD
+          enum:
+          - CONDITIONAL_SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
+      x-hubspot-sub-type-impl: true
+    PublicActionFunctionIdentifier:
+      required:
+      - functionType
+      type: object
+      properties:
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the function.
+    PublicActionDefinition:
+      required:
+      - actionUrl
+      - functions
+      - id
+      - inputFields
+      - labels
+      - objectTypes
+      - published
+      - revisionId
+      type: object
+      properties:
+        actionUrl:
+          type: string
+        archivedAt:
+          type: integer
+          format: int64
+        executionRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicExecutionTranslationRule'
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+        id:
+          type: string
+        inputFieldDependencies:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PublicSingleFieldDependency'
+            - $ref: '#/components/schemas/PublicConditionalSingleFieldDependency'
+        inputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicInputFieldDefinition'
+        labels:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PublicActionLabels'
+        objectRequestOptions:
+          $ref: '#/components/schemas/PublicObjectRequestOptions'
+        objectTypes:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputFieldDefinition'
+        published:
+          type: boolean
+        revisionId:
+          type: string
+    PublicInputFieldDefinition:
+      required:
+      - isRequired
+      - typeDefinition
+      type: object
+      properties:
+        isRequired:
+          type: boolean
+          description: Indicates whether the input field is mandatory.
+        supportedValueTypes:
+          type: array
+          items:
+            type: string
+            enum:
+            - STATIC_VALUE
+            - OBJECT_PROPERTY
+        typeDefinition:
+          $ref: '#/components/schemas/PublicFieldTypeDefinition'
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    ObjectFieldSchema:
+      title: OBJECT
+      required:
+      - properties
+      - type
+      type: object
+      properties:
+        properties:
+          type: object
+          properties: {}
+          description: Contains the properties of the object.
+        type:
+          type: string
+          description: Specifies the type of the field, which is 'OBJECT' by default.
+          default: OBJECT
+          enum:
+          - OBJECT
+      x-hubspot-sub-type-impl: true
+    LongFieldSchema:
+      title: LONG
       required:
       - type
       type: object
       properties:
         maximum:
           type: integer
-          description: The maximum value allowed for the integer field.
-          format: int32
+          description: The maximum value allowed for the long field.
+          format: int64
         minimum:
           type: integer
-          description: The minimum value allowed for the integer field.
-          format: int32
+          description: The minimum value allowed for the long field.
+          format: int64
         type:
           type: string
-          description: The type of the field, which is set to INTEGER.
-          default: INTEGER
+          description: The type of the field, which is LONG by default.
+          default: LONG
           enum:
-          - INTEGER
-      x-hubspot-sub-type-impl: true
-    UnknownFieldSchema:
-      title: UNKNOWN
-      required:
-      - type
-      type: object
-      properties:
-        type:
-          type: string
-          default: UNKNOWN
-          enum:
-          - UNKNOWN
+          - LONG
       x-hubspot-sub-type-impl: true
     FieldTypeDefinition:
       required:
@@ -837,121 +878,6 @@ components:
         useChirp:
           type: boolean
           description: Specifies whether the field uses the Chirp feature.
-    DoubleFieldSchema:
-      title: DOUBLE
-      required:
-      - type
-      type: object
-      properties:
-        maximum:
-          type: number
-          description: The maximum allowable value for the double field.
-        minimum:
-          type: number
-          description: The minimum allowable value for the double field.
-        type:
-          type: string
-          description: Indicates the field type as DOUBLE.
-          default: DOUBLE
-          enum:
-          - DOUBLE
-      x-hubspot-sub-type-impl: true
-    PublicActionLabels:
-      required:
-      - actionName
-      type: object
-      properties:
-        actionCardContent:
-          type: string
-          description: Content displayed on the action card.
-        actionDescription:
-          type: string
-          description: A description of what the action does.
-        actionName:
-          type: string
-          description: The name of the action.
-        appDisplayName:
-          type: string
-          description: The display name of the application associated with the action.
-        executionRules:
-          type: object
-          additionalProperties:
-            type: string
-          description: Rules that govern the execution of the action.
-        inputFieldDescriptions:
-          type: object
-          additionalProperties:
-            type: string
-          description: Descriptions for each input field.
-        inputFieldLabels:
-          type: object
-          additionalProperties:
-            type: string
-          description: Labels for the input fields.
-        inputFieldOptionLabels:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties:
-              type: string
-          description: Labels for the options available in input fields.
-        outputFieldLabels:
-          type: object
-          additionalProperties:
-            type: string
-          description: Labels for the output fields.
-    PublicActionFunctionIdentifier:
-      required:
-      - functionType
-      type: object
-      properties:
-        functionType:
-          type: string
-          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
-          enum:
-          - POST_ACTION_EXECUTION
-          - POST_FETCH_OPTIONS
-          - PRE_ACTION_EXECUTION
-          - PRE_FETCH_OPTIONS
-        id:
-          type: string
-          description: The unique identifier for the function.
-    OutputFieldDefinition:
-      required:
-      - typeDefinition
-      type: object
-      properties:
-        typeDefinition:
-          $ref: '#/components/schemas/FieldTypeDefinition'
-    ObjectFieldSchema:
-      title: OBJECT
-      required:
-      - properties
-      - type
-      type: object
-      properties:
-        properties:
-          type: object
-          properties: {}
-          description: Contains the properties of the object.
-        type:
-          type: string
-          description: Specifies the type of the field, which is 'OBJECT' by default.
-          default: OBJECT
-          enum:
-          - OBJECT
-      x-hubspot-sub-type-impl: true
-    CollectionResponsePublicActionRevisionForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionRevision'
     ArrayFieldSchema:
       title: ARRAY
       required:
@@ -977,6 +903,190 @@ components:
           enum:
           - ARRAY
       x-hubspot-sub-type-impl: true
+    PublicFieldTypeDefinition:
+      required:
+      - name
+      - options
+      - type
+      type: object
+      properties:
+        description:
+          type: string
+          description: A detailed explanation of the field's purpose.
+        fieldType:
+          type: string
+          description: The type of field, with accepted values including booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, and textarea.
+          enum:
+          - booleancheckbox
+          - calculation_equation
+          - checkbox
+          - date
+          - file
+          - html
+          - number
+          - phonenumber
+          - radio
+          - select
+          - text
+          - textarea
+        helpText:
+          type: string
+          description: Additional information or guidance about the field.
+        label:
+          type: string
+          description: A user-friendly name for the field.
+        name:
+          type: string
+          description: The internal name used to identify the field.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicOption'
+        optionsUrl:
+          type: string
+          description: A URL that provides options for the field.
+        referencedObjectType:
+          type: string
+          description: The type of object that the field references, with accepted values including OWNER.
+          enum:
+          - OWNER
+        type:
+          type: string
+          description: The data type of the field, with accepted values including bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, and string.
+          enum:
+          - bool
+          - date
+          - datetime
+          - enumeration
+          - json
+          - number
+          - object_coordinates
+          - phone_number
+          - string
+    StringFieldSchema:
+      title: STRING
+      required:
+      - type
+      type: object
+      properties:
+        format:
+          type: string
+          description: 'Specifies the format of the string, with accepted values: DATE, DATE_TIME, OBJECT_COORDINATE, TIME, URI.'
+          enum:
+          - DATE
+          - DATE_TIME
+          - MONTH_AND_DAY
+          - OBJECT_COORDINATE
+          - TIME
+          - URI
+        type:
+          type: string
+          description: Indicates that the type is a string, with the default value being STRING.
+          default: STRING
+          enum:
+          - STRING
+      x-hubspot-sub-type-impl: true
+    PublicOption:
+      required:
+      - label
+      - value
+      type: object
+      properties:
+        description:
+          type: string
+          description: A description of the option.
+        displayOrder:
+          type: integer
+          description: The position of the option relative to others in the list.
+          format: int32
+        label:
+          type: string
+          description: A user-friendly label that identifies the option.
+        value:
+          type: string
+          description: The actual value of the option.
+    PublicObjectRequestOptions:
+      required:
+      - properties
+      type: object
+      properties:
+        properties:
+          type: array
+          items:
+            type: string
+    BooleanFieldSchema:
+      title: BOOLEAN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Specifies the field type as BOOLEAN, indicating that the field can hold a true or false value.
+          default: BOOLEAN
+          enum:
+          - BOOLEAN
+      x-hubspot-sub-type-impl: true
+    UnknownFieldSchema:
+      title: UNKNOWN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          default: UNKNOWN
+          enum:
+          - UNKNOWN
+      x-hubspot-sub-type-impl: true
+    PublicSingleFieldDependency:
+      title: SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that controls the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being 'SINGLE_FIELD'.
+          default: SINGLE_FIELD
+          enum:
+          - SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
+      x-hubspot-sub-type-impl: true
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     PublicActionRevision:
       required:
       - createdAt
@@ -997,174 +1107,59 @@ components:
         revisionId:
           type: string
           description: The unique identifier for the specific revision of the action.
-    PublicObjectRequestOptions:
-      required:
-      - properties
-      type: object
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-    Option:
-      required:
-      - description
-      - displayOrder
-      - doubleData
-      - hidden
-      - label
-      - readOnly
-      - value
-      type: object
-      properties:
-        description:
-          type: string
-          description: A description of the option.
-        displayOrder:
-          type: integer
-          description: The position of the item relative to others in the list.
-          format: int32
-        doubleData:
-          type: number
-          description: A numerical value associated with the option.
-        hidden:
-          type: boolean
-          description: Whether the option is displayed in HubSpot's UI.
-        label:
-          type: string
-          description: A user-friendly label that identifies the option.
-        readOnly:
-          type: boolean
-          description: Whether the option is read-only.
-        value:
-          type: string
-          description: The actual value of the option.
-      description: A HubSpot property option
-    LongFieldSchema:
-      title: LONG
+    DoubleFieldSchema:
+      title: DOUBLE
       required:
       - type
       type: object
       properties:
         maximum:
-          type: integer
-          description: The maximum value allowed for the long field.
-          format: int64
+          type: number
+          description: The maximum allowable value for the double field.
         minimum:
-          type: integer
-          description: The minimum value allowed for the long field.
-          format: int64
+          type: number
+          description: The minimum allowable value for the double field.
         type:
           type: string
-          description: The type of the field, which is LONG by default.
-          default: LONG
+          description: Indicates the field type as DOUBLE.
+          default: DOUBLE
           enum:
-          - LONG
+          - DOUBLE
       x-hubspot-sub-type-impl: true
-    PublicActionDefinition:
+    PublicExecutionTranslationRule:
       required:
-      - actionUrl
-      - functions
-      - id
-      - inputFields
-      - labels
-      - objectTypes
-      - published
-      - revisionId
+      - conditions
+      - labelName
       type: object
       properties:
-        actionUrl:
-          type: string
-        archivedAt:
-          type: integer
-          format: int64
-        executionRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicExecutionTranslationRule'
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
-        id:
-          type: string
-        inputFieldDependencies:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PublicSingleFieldDependency'
-            - $ref: '#/components/schemas/PublicConditionalSingleFieldDependency'
-        inputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicInputFieldDefinition'
-        labels:
+        conditions:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/PublicActionLabels'
-        objectRequestOptions:
-          $ref: '#/components/schemas/PublicObjectRequestOptions'
-        objectTypes:
-          type: array
-          items:
-            type: string
-        outputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/OutputFieldDefinition'
-        published:
-          type: boolean
-        revisionId:
+            type: object
+            properties: {}
+          description: Defines the conditions that must be met for the execution rule to apply.
+        labelName:
           type: string
-    ForwardPaging:
+          description: Specifies the name of the label associated with the execution rule.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    Paging:
       type: object
       properties:
         next:
           $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
-    PublicOption:
-      required:
-      - label
-      - value
-      type: object
-      properties:
-        description:
-          type: string
-          description: A description of the option.
-        displayOrder:
-          type: integer
-          description: The position of the option relative to others in the list.
-          format: int32
-        label:
-          type: string
-          description: A user-friendly label that identifies the option.
-        value:
-          type: string
-          description: The actual value of the option.
-    BlogPostVersion:
-      required:
-      - id
-      - object
-      - updatedAt
-      - user
-      type: object
-      properties:
-        id:
-          type: string
-        object:
-          $ref: '#/components/schemas/BlogPost'
-        updatedAt:
-          type: string
-          format: date-time
-        user:
-          $ref: '#/components/schemas/VersionUser'
-    ColorStop:
-      required:
-      - color
-      type: object
-      properties:
-        color:
-          $ref: '#/components/schemas/RGBAColor'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
     BlogPost:
       required:
       - abStatus
@@ -2410,52 +2405,6 @@ components:
             type: object
             properties: {}
           description: A data structure containing the data for all the modules for this page.
-    SideOrCorner:
-      required:
-      - horizontalSide
-      - verticalSide
-      type: object
-      properties:
-        horizontalSide:
-          type: string
-          description: Specifies the horizontal side of an element.
-          enum:
-          - CENTER
-          - LEFT
-          - RIGHT
-        verticalSide:
-          type: string
-          description: Specifies the vertical side of an element.
-          enum:
-          - BOTTOM
-          - MIDDLE
-          - TOP
-    BackgroundImage:
-      required:
-      - backgroundPosition
-      - backgroundSize
-      - imageUrl
-      type: object
-      properties:
-        backgroundPosition:
-          type: string
-          description: Defines the position of the background image.
-        backgroundSize:
-          type: string
-          description: Specifies the size of the background image.
-        imageUrl:
-          type: string
-          description: The URL of the background image.
-    Margin:
-      required:
-      - bottom
-      - top
-      type: object
-      properties:
-        bottom:
-          $ref: '#/components/schemas/Size'
-        top:
-          $ref: '#/components/schemas/Size'
     VersionUser:
       required:
       - email
@@ -2472,6 +2421,157 @@ components:
         id:
           type: string
           description: The unique ID of the User.
+    Size:
+      required:
+      - units
+      - value
+      type: object
+      properties:
+        units:
+          type: string
+          enum:
+          - CH
+          - CM
+          - EM
+          - EX
+          - IN
+          - LH
+          - MM
+          - PC
+          - PERCENTAGE
+          - PT
+          - PX
+          - Q
+          - REM
+          - VH
+          - VMAX
+          - VMIN
+          - VW
+        value:
+          type: number
+    CollectionResponseWithTotalBlogPostVersion:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionBlogPost'
+        total:
+          type: integer
+          format: int32
+    RowMetaData:
+      required:
+      - cssClass
+      - styles
+      type: object
+      properties:
+        cssClass:
+          type: string
+          description: The CSS class applied to the row.
+        styles:
+          $ref: '#/components/schemas/Styles'
+    Padding:
+      required:
+      - bottom
+      - left
+      - right
+      - top
+      type: object
+      properties:
+        bottom:
+          $ref: '#/components/schemas/Size'
+        left:
+          $ref: '#/components/schemas/Size'
+        right:
+          $ref: '#/components/schemas/Size'
+        top:
+          $ref: '#/components/schemas/Size'
+    Angle:
+      required:
+      - units
+      - value
+      type: object
+      properties:
+        units:
+          type: string
+          description: The unit of measurement for the angle.
+          enum:
+          - DEGREES
+          - GRADIANS
+          - RADIANS
+          - TURNS
+        value:
+          type: number
+          description: The numerical representation of the angle.
+    LayoutSection:
+      required:
+      - cells
+      - cssClass
+      - cssId
+      - cssStyle
+      - label
+      - name
+      - params
+      - rowMetaData
+      - rows
+      - styles
+      - type
+      - w
+      - x
+      type: object
+      properties:
+        cells:
+          type: array
+          items:
+            $ref: '#/components/schemas/LayoutSection'
+        cssClass:
+          type: string
+          description: The CSS class applied to the layout section.
+        cssId:
+          type: string
+          description: The CSS ID applied to the layout section.
+        cssStyle:
+          type: string
+          description: Custom CSS styles applied to the layout section.
+        label:
+          type: string
+          description: The label for the layout section.
+        name:
+          type: string
+          description: The name assigned to the layout section.
+        params:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        rowMetaData:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowMetaData'
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/LayoutSection'
+        styles:
+          $ref: '#/components/schemas/Styles'
+        type:
+          type: string
+          description: The type of the layout section.
+        w:
+          type: integer
+          description: The width of the layout section.
+          format: int32
+        x:
+          type: integer
+          description: The x-coordinate position of the layout section.
+          format: int32
     VersionBlogPost:
       required:
       - id
@@ -2491,17 +2591,6 @@ components:
           format: date-time
         user:
           $ref: '#/components/schemas/VersionUser'
-    RowMetaData:
-      required:
-      - cssClass
-      - styles
-      type: object
-      properties:
-        cssClass:
-          type: string
-          description: The CSS class applied to the row.
-        styles:
-          $ref: '#/components/schemas/Styles'
     ContentLanguageVariation:
       required:
       - archivedInDashboard
@@ -2575,52 +2664,45 @@ components:
           type: string
           description: The timestamp (ISO8601 format) when this Blog Post was updated.
           format: date-time
-    PublicAccessRule:
-      type: object
-      properties: {}
-    CollectionResponseWithTotalBlogPostVersion:
+    BackgroundImage:
       required:
-      - results
-      - total
+      - backgroundPosition
+      - backgroundSize
+      - imageUrl
       type: object
       properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/VersionBlogPost'
-        total:
-          type: integer
-          format: int32
-    Size:
-      required:
-      - units
-      - value
-      type: object
-      properties:
-        units:
+        backgroundPosition:
           type: string
-          enum:
-          - CH
-          - CM
-          - EM
-          - EX
-          - IN
-          - LH
-          - MM
-          - PC
-          - PERCENTAGE
-          - PT
-          - PX
-          - Q
-          - REM
-          - VH
-          - VMAX
-          - VMIN
-          - VW
-        value:
+          description: Defines the position of the background image.
+        backgroundSize:
+          type: string
+          description: Specifies the size of the background image.
+        imageUrl:
+          type: string
+          description: The URL of the background image.
+    RGBAColor:
+      required:
+      - a
+      - b
+      - g
+      - r
+      type: object
+      properties:
+        a:
           type: number
+          description: Alpha.
+        b:
+          type: integer
+          description: Blue.
+          format: int32
+        g:
+          type: integer
+          description: Green.
+          format: int32
+        r:
+          type: integer
+          description: Red.
+          format: int32
     Styles:
       required:
       - backgroundColor
@@ -2670,20 +2752,36 @@ components:
           - BOTTOM
           - MIDDLE
           - TOP
-    BreakpointStyles:
+    ColorStop:
       required:
-      - hidden
-      - margin
-      - padding
+      - color
       type: object
       properties:
-        hidden:
-          type: boolean
-          description: Boolean indicating if the breakpoint is visible.
-        margin:
-          $ref: '#/components/schemas/Margin'
-        padding:
-          $ref: '#/components/schemas/Padding'
+        color:
+          $ref: '#/components/schemas/RGBAColor'
+    PublicAccessRule:
+      type: object
+      properties: {}
+    SideOrCorner:
+      required:
+      - horizontalSide
+      - verticalSide
+      type: object
+      properties:
+        horizontalSide:
+          type: string
+          description: Specifies the horizontal side of an element.
+          enum:
+          - CENTER
+          - LEFT
+          - RIGHT
+        verticalSide:
+          type: string
+          description: Specifies the vertical side of an element.
+          enum:
+          - BOTTOM
+          - MIDDLE
+          - TOP
     Gradient:
       required:
       - angle
@@ -2699,145 +2797,47 @@ components:
             $ref: '#/components/schemas/ColorStop'
         sideOrCorner:
           $ref: '#/components/schemas/SideOrCorner'
-    PreviousPage:
+    BreakpointStyles:
       required:
-      - before
+      - hidden
+      - margin
+      - padding
       type: object
       properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    LayoutSection:
+        hidden:
+          type: boolean
+          description: Boolean indicating if the breakpoint is visible.
+        margin:
+          $ref: '#/components/schemas/Margin'
+        padding:
+          $ref: '#/components/schemas/Padding'
+    BlogPostVersion:
       required:
-      - cells
-      - cssClass
-      - cssId
-      - cssStyle
-      - label
-      - name
-      - params
-      - rowMetaData
-      - rows
-      - styles
-      - type
-      - w
-      - x
+      - id
+      - object
+      - updatedAt
+      - user
       type: object
       properties:
-        cells:
-          type: array
-          items:
-            $ref: '#/components/schemas/LayoutSection'
-        cssClass:
+        id:
           type: string
-          description: The CSS class applied to the layout section.
-        cssId:
+        object:
+          $ref: '#/components/schemas/BlogPost'
+        updatedAt:
           type: string
-          description: The CSS ID applied to the layout section.
-        cssStyle:
-          type: string
-          description: Custom CSS styles applied to the layout section.
-        label:
-          type: string
-          description: The label for the layout section.
-        name:
-          type: string
-          description: The name assigned to the layout section.
-        params:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-        rowMetaData:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowMetaData'
-        rows:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              $ref: '#/components/schemas/LayoutSection'
-        styles:
-          $ref: '#/components/schemas/Styles'
-        type:
-          type: string
-          description: The type of the layout section.
-        w:
-          type: integer
-          description: The width of the layout section.
-          format: int32
-        x:
-          type: integer
-          description: The x-coordinate position of the layout section.
-          format: int32
-    RGBAColor:
-      required:
-      - a
-      - b
-      - g
-      - r
-      type: object
-      properties:
-        a:
-          type: number
-          description: Alpha.
-        b:
-          type: integer
-          description: Blue.
-          format: int32
-        g:
-          type: integer
-          description: Green.
-          format: int32
-        r:
-          type: integer
-          description: Red.
-          format: int32
-    Padding:
+          format: date-time
+        user:
+          $ref: '#/components/schemas/VersionUser'
+    Margin:
       required:
       - bottom
-      - left
-      - right
       - top
       type: object
       properties:
         bottom:
           $ref: '#/components/schemas/Size'
-        left:
-          $ref: '#/components/schemas/Size'
-        right:
-          $ref: '#/components/schemas/Size'
         top:
           $ref: '#/components/schemas/Size'
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    Angle:
-      required:
-      - units
-      - value
-      type: object
-      properties:
-        units:
-          type: string
-          description: The unit of measurement for the angle.
-          enum:
-          - DEGREES
-          - GRADIANS
-          - RADIANS
-          - TURNS
-        value:
-          type: number
-          description: The numerical representation of the angle.
   responses:
     Error:
       description: An error occurred.

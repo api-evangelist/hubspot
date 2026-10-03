@@ -111,6 +111,62 @@ components:
         centralExchangeRatesEnabled:
           type: boolean
           description: Indicates if central exchange rates is enabled for the portal or not.
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    CollectionResponseCurrencyCodeInfoNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyCodeInfo'
     ErrorDetail:
       required:
       - message
@@ -137,212 +193,6 @@ components:
           type: string
           description: A specific category that contains more specific detail about the error
       description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    CollectionResponseCurrencyCodeInfoNoPaging:
-      required:
-      - results
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CurrencyCodeInfo'
-    CurrencyCreateRequest:
-      required:
-      - currencyCode
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: The currency code being added to the HubSpot portal for use with central exchange rates.
-          enum:
-          - AED
-          - AFN
-          - ALL
-          - AMD
-          - ANG
-          - AOA
-          - ARS
-          - AUD
-          - AWG
-          - AZN
-          - BAM
-          - BBD
-          - BDT
-          - BGN
-          - BHD
-          - BIF
-          - BMD
-          - BND
-          - BOB
-          - BOV
-          - BRL
-          - BSD
-          - BTN
-          - BWP
-          - BYN
-          - BZD
-          - CAD
-          - CDF
-          - CHE
-          - CHF
-          - CHW
-          - CLF
-          - CLP
-          - CNY
-          - COP
-          - COU
-          - CRC
-          - CUC
-          - CUP
-          - CVE
-          - CZK
-          - DJF
-          - DKK
-          - DOP
-          - DZD
-          - EGP
-          - ERN
-          - ETB
-          - EUR
-          - FJD
-          - FKP
-          - GBP
-          - GEL
-          - GHS
-          - GIP
-          - GMD
-          - GNF
-          - GTQ
-          - GYD
-          - HKD
-          - HNL
-          - HRK
-          - HTG
-          - HUF
-          - IDR
-          - ILS
-          - INR
-          - IQD
-          - IRR
-          - ISK
-          - JMD
-          - JOD
-          - JPY
-          - KES
-          - KGS
-          - KHR
-          - KMF
-          - KPW
-          - KRW
-          - KWD
-          - KYD
-          - KZT
-          - LAK
-          - LBP
-          - LKR
-          - LRD
-          - LSL
-          - LYD
-          - MAD
-          - MDL
-          - MGA
-          - MKD
-          - MMK
-          - MNT
-          - MOP
-          - MRU
-          - MUR
-          - MVR
-          - MWK
-          - MXN
-          - MXV
-          - MYR
-          - MZN
-          - NAD
-          - NGN
-          - NIO
-          - NOK
-          - NPR
-          - NZD
-          - OMR
-          - PAB
-          - PEN
-          - PGK
-          - PHP
-          - PKR
-          - PLN
-          - PYG
-          - QAR
-          - RON
-          - RSD
-          - RUB
-          - RWF
-          - SAR
-          - SBD
-          - SCR
-          - SDG
-          - SEK
-          - SGD
-          - SHP
-          - SLL
-          - SOS
-          - SRD
-          - SSP
-          - STN
-          - SVC
-          - SYP
-          - SZL
-          - THB
-          - TJS
-          - TMT
-          - TND
-          - TOP
-          - TRY
-          - TTD
-          - TWD
-          - TZS
-          - UAH
-          - UGX
-          - USD
-          - USN
-          - UYI
-          - UYU
-          - UZS
-          - VEF
-          - VND
-          - VUV
-          - WST
-          - XAF
-          - XAG
-          - XAU
-          - XBA
-          - XBB
-          - XBC
-          - XBD
-          - XCD
-          - XDR
-          - XOF
-          - XPD
-          - XPF
-          - XPT
-          - XSU
-          - XUA
-          - YER
-          - ZAR
-          - ZMW
-          - ZWL
-    CurrencyCodeInfo:
-      required:
-      - currencyCode
-      - currencyName
-      type: object
-      properties:
-        currencyCode:
-          type: string
-          description: The three-letter code representing a specific currency (ex. USD).
-        currencyName:
-          type: string
-          description: The full name of the currency (ex. US Dollar).
     ExchangeRate:
       required:
       - conversionRate
@@ -736,53 +586,203 @@ components:
         visibleInUI:
           type: boolean
           description: This indicates if the exchange rate is shown in the MultiCurrency settings page.
-    Error:
+    CurrencyCreateRequest:
       required:
-      - category
-      - correlationId
-      - message
+      - currencyCode
       type: object
       properties:
-        category:
+        currencyCode:
           type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
+          description: The currency code being added to the HubSpot portal for use with central exchange rates.
+          enum:
+          - AED
+          - AFN
+          - ALL
+          - AMD
+          - ANG
+          - AOA
+          - ARS
+          - AUD
+          - AWG
+          - AZN
+          - BAM
+          - BBD
+          - BDT
+          - BGN
+          - BHD
+          - BIF
+          - BMD
+          - BND
+          - BOB
+          - BOV
+          - BRL
+          - BSD
+          - BTN
+          - BWP
+          - BYN
+          - BZD
+          - CAD
+          - CDF
+          - CHE
+          - CHF
+          - CHW
+          - CLF
+          - CLP
+          - CNY
+          - COP
+          - COU
+          - CRC
+          - CUC
+          - CUP
+          - CVE
+          - CZK
+          - DJF
+          - DKK
+          - DOP
+          - DZD
+          - EGP
+          - ERN
+          - ETB
+          - EUR
+          - FJD
+          - FKP
+          - GBP
+          - GEL
+          - GHS
+          - GIP
+          - GMD
+          - GNF
+          - GTQ
+          - GYD
+          - HKD
+          - HNL
+          - HRK
+          - HTG
+          - HUF
+          - IDR
+          - ILS
+          - INR
+          - IQD
+          - IRR
+          - ISK
+          - JMD
+          - JOD
+          - JPY
+          - KES
+          - KGS
+          - KHR
+          - KMF
+          - KPW
+          - KRW
+          - KWD
+          - KYD
+          - KZT
+          - LAK
+          - LBP
+          - LKR
+          - LRD
+          - LSL
+          - LYD
+          - MAD
+          - MDL
+          - MGA
+          - MKD
+          - MMK
+          - MNT
+          - MOP
+          - MRU
+          - MUR
+          - MVR
+          - MWK
+          - MXN
+          - MXV
+          - MYR
+          - MZN
+          - NAD
+          - NGN
+          - NIO
+          - NOK
+          - NPR
+          - NZD
+          - OMR
+          - PAB
+          - PEN
+          - PGK
+          - PHP
+          - PKR
+          - PLN
+          - PYG
+          - QAR
+          - RON
+          - RSD
+          - RUB
+          - RWF
+          - SAR
+          - SBD
+          - SCR
+          - SDG
+          - SEK
+          - SGD
+          - SHP
+          - SLL
+          - SOS
+          - SRD
+          - SSP
+          - STN
+          - SVC
+          - SYP
+          - SZL
+          - THB
+          - TJS
+          - TMT
+          - TND
+          - TOP
+          - TRY
+          - TTD
+          - TWD
+          - TZS
+          - UAH
+          - UGX
+          - USD
+          - USN
+          - UYI
+          - UYU
+          - UZS
+          - VEF
+          - VND
+          - VUV
+          - WST
+          - XAF
+          - XAG
+          - XAU
+          - XBA
+          - XBB
+          - XBC
+          - XBD
+          - XCD
+          - XDR
+          - XOF
+          - XPD
+          - XPF
+          - XPT
+          - XSU
+          - XUA
+          - YER
+          - ZAR
+          - ZMW
+          - ZWL
+    CurrencyCodeInfo:
+      required:
+      - currencyCode
+      - currencyName
+      type: object
+      properties:
+        currencyCode:
           type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
+          description: The three-letter code representing a specific currency (ex. USD).
+        currencyName:
           type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+          description: The full name of the currency (ex. US Dollar).
   responses:
     Error:
       description: An error occurred.

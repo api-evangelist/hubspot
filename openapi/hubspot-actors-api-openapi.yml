@@ -99,15 +99,6 @@ paths:
         - conversations.read
 components:
   schemas:
-    BatchInputString:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            type: string
     LlmActor:
       required:
       - id
@@ -126,94 +117,21 @@ components:
           enum:
           - LLM
       x-hubspot-sub-type-impl: true
-    BatchResponsePublicActor:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          format: date-time
-        links:
-          type: object
-          additionalProperties:
-            type: string
-        requestedAt:
-          type: string
-          format: date-time
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActor'
-        startedAt:
-          type: string
-          format: date-time
-        status:
-          type: string
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    IntegratorActor:
+    SystemActor:
       required:
       - id
-      - name
       - type
       type: object
       properties:
-        avatar:
-          type: string
         id:
-          type: string
-        name:
           type: string
         type:
           type: string
-          default: INTEGRATOR
+          default: SYSTEM
           enum:
-          - INTEGRATOR
+          - SYSTEM
       x-hubspot-sub-type-impl: true
-    PublicActor:
-      properties: {}
-      oneOf:
-      - $ref: '#/components/schemas/AgentActor'
-      - $ref: '#/components/schemas/BotActor'
-      - $ref: '#/components/schemas/IntegratorActor'
-      - $ref: '#/components/schemas/SystemActor'
-      - $ref: '#/components/schemas/VisitorActor'
-      - $ref: '#/components/schemas/EmailActor'
-      - $ref: '#/components/schemas/LlmActor'
-    VisitorActor:
+    AgentActor:
       required:
       - id
       - type
@@ -229,10 +147,19 @@ components:
           type: string
         type:
           type: string
-          default: VISITOR
+          default: AGENT
           enum:
-          - VISITOR
+          - AGENT
       x-hubspot-sub-type-impl: true
+    BatchInputString:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            type: string
     BatchResponsePublicActorWithErrors:
       required:
       - completedAt
@@ -272,6 +199,16 @@ components:
           - COMPLETE
           - PENDING
           - PROCESSING
+    PublicActor:
+      properties: {}
+      oneOf:
+      - $ref: '#/components/schemas/AgentActor'
+      - $ref: '#/components/schemas/BotActor'
+      - $ref: '#/components/schemas/IntegratorActor'
+      - $ref: '#/components/schemas/SystemActor'
+      - $ref: '#/components/schemas/VisitorActor'
+      - $ref: '#/components/schemas/EmailActor'
+      - $ref: '#/components/schemas/LlmActor'
     Error:
       required:
       - category
@@ -319,6 +256,26 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    VisitorActor:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        avatar:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          default: VISITOR
+          enum:
+          - VISITOR
+      x-hubspot-sub-type-impl: true
     EmailActor:
       required:
       - email
@@ -336,15 +293,40 @@ components:
           enum:
           - EMAIL
       x-hubspot-sub-type-impl: true
-    AgentActor:
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    IntegratorActor:
       required:
       - id
+      - name
       - type
       type: object
       properties:
         avatar:
-          type: string
-        email:
           type: string
         id:
           type: string
@@ -352,9 +334,27 @@ components:
           type: string
         type:
           type: string
-          default: AGENT
+          default: INTEGRATOR
           enum:
-          - AGENT
+          - INTEGRATOR
+      x-hubspot-sub-type-impl: true
+    BotActor:
+      required:
+      - id
+      - type
+      type: object
+      properties:
+        avatar:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          default: BOT
+          enum:
+          - BOT
       x-hubspot-sub-type-impl: true
     StandardError:
       required:
@@ -400,38 +400,38 @@ components:
           properties: {}
           description: A specific category that contains more specific detail about the error
       description: Represents a standard error response in the HubSpot API, providing detailed information about an error that occurred during an API request.
-    BotActor:
+    BatchResponsePublicActor:
       required:
-      - id
-      - type
+      - completedAt
+      - results
+      - startedAt
+      - status
       type: object
       properties:
-        avatar:
+        completedAt:
           type: string
-        id:
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+        requestedAt:
           type: string
-        name:
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActor'
+        startedAt:
           type: string
-        type:
+          format: date-time
+        status:
           type: string
-          default: BOT
           enum:
-          - BOT
-      x-hubspot-sub-type-impl: true
-    SystemActor:
-      required:
-      - id
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-        type:
-          type: string
-          default: SYSTEM
-          enum:
-          - SYSTEM
-      x-hubspot-sub-type-impl: true
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
   responses:
     Error:
       description: An error occurred.

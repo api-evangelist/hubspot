@@ -714,7 +714,7 @@ paths:
         - hubdb.rows.write
 components:
   schemas:
-    BatchInputHubDbTableRowBatchCloneRequest:
+    BatchInputString:
       required:
       - inputs
       type: object
@@ -722,192 +722,55 @@ components:
         inputs:
           type: array
           items:
-            $ref: '#/components/schemas/HubDbTableRowBatchCloneRequest'
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    BatchResponseHubDbTableRowV3WithErrors:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: The timestamp indicating when the batch processing was completed.
-          format: date-time
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StandardError'
-        links:
-          type: object
-          additionalProperties:
             type: string
-          description: A collection of related links associated with the batch response.
-        numErrors:
-          type: integer
-          description: The number of errors encountered during the batch operation.
-          format: int32
-        requestedAt:
-          type: string
-          description: The timestamp indicating when the batch request was made.
-          format: date-time
+    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
+      required:
+      - results
+      - total
+      - type
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/BoundedPaging'
         results:
           type: array
           items:
-            $ref: '#/components/schemas/HubDbTableRowV3'
-        startedAt:
+            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
+        total:
+          type: integer
+          description: The total number of rows available in the collection.
+          format: int32
+        type:
           type: string
-          description: The timestamp indicating when the batch processing began.
-          format: date-time
-        status:
-          type: string
-          description: 'The current status of the batch operation, with possible values: CANCELED, COMPLETE, PENDING, PROCESSING.'
+          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
+          default: RANDOM_ACCESS
           enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    HubDbTableRowBatchCloneRequest:
+          - RANDOM_ACCESS
+      x-hubspot-sub-type-impl: true
+    PreviousPage:
       required:
-      - id
+      - before
       type: object
       properties:
-        id:
+        before:
           type: string
-          description: The ID of the row to be cloned.
-        name:
+          description: A paging cursor token for retrieving previous pages.
+        link:
           type: string
-          description: The name for the cloned row.
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     UnifiedCollectionResponseWithTotalBaseHubDbTableRowV3:
       properties: {}
       oneOf:
       - $ref: '#/components/schemas/RandomAccessCollectionResponseWithTotalHubDbTableRowV3'
       - $ref: '#/components/schemas/StreamingCollectionResponseWithTotalHubDbTableRowV3'
-    Variant:
-      type: object
-      properties: {}
-    HubDbTableRowV3:
-      required:
-      - childTableId
-      - createdAt
-      - id
-      - name
-      - path
-      - publishedAt
-      - updatedAt
-      - values
+    Paging:
       type: object
       properties:
-        childTableId:
-          type: string
-          description: Specifies the value for the column child table id
-        createdAt:
-          type: string
-          description: Timestamp at which the row is created
-          format: date-time
-        id:
-          type: string
-          description: The id of the table row
-        name:
-          type: string
-          description: Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
-        path:
-          type: string
-          description: Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
-        publishedAt:
-          type: string
-          description: The timestamp indicating when the row was last published, in date-time format.
-          format: date-time
-        updatedAt:
-          type: string
-          description: Timestamp at which the row is updated last time
-          format: date-time
-        values:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-          description: List of key value pairs with the column name and column value
-    HubDbTableRowV3BatchUpdateRequest:
-      required:
-      - childTableId
-      - displayIndex
-      - values
-      type: object
-      properties:
-        childTableId:
-          type: integer
-          description: Specifies the value for the column child table id
-          format: int64
-        displayIndex:
-          type: integer
-          description: The index position for displaying the row within the table.
-          format: int32
-        id:
-          type: string
-          description: The id of the table row
-        name:
-          type: string
-          description: Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
-        path:
-          type: string
-          description: Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
-        values:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Variant'
-          description: List of key value pairs with the column name and column value
-    BoundedNextPage:
-      required:
-      - offset
-      type: object
-      properties:
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next set of results.
-        offset:
-          type: integer
-          description: The offset value indicating the starting point for the next set of results.
-          format: int32
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
     Error:
       required:
       - category
@@ -955,7 +818,68 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    HubDbTableRowV3Request:
+    BoundedNextPage:
+      required:
+      - offset
+      type: object
+      properties:
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next set of results.
+        offset:
+          type: integer
+          description: The offset value indicating the starting point for the next set of results.
+          format: int32
+    BatchResponseHubDbTableRowV3:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: The timestamp indicating when the batch processing was completed.
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A collection of related links associated with the batch response.
+        requestedAt:
+          type: string
+          description: The timestamp indicating when the batch request was made.
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3'
+        startedAt:
+          type: string
+          description: The timestamp indicating when the batch processing began.
+          format: date-time
+        status:
+          type: string
+          description: 'The current status of the batch operation, with possible values: CANCELED, COMPLETE, PENDING, PROCESSING.'
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    HubDbTableRowV3BatchUpdateRequest:
       required:
       - childTableId
       - displayIndex
@@ -970,6 +894,9 @@ components:
           type: integer
           description: The index position for displaying the row within the table.
           format: int32
+        id:
+          type: string
+          description: The id of the table row
         name:
           type: string
           description: Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
@@ -981,6 +908,31 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/Variant'
           description: List of key value pairs with the column name and column value
+    BoundedPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/BoundedNextPage'
+    BatchInputHubDbTableRowV3Request:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3Request'
+    HubDbTableRowBatchCloneRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the row to be cloned.
+        name:
+          type: string
+          description: The name for the cloned row.
     StandardError:
       required:
       - category
@@ -1025,109 +977,6 @@ components:
           properties: {}
           description: Identifies the subcategory of the error, providing more specific context within the main category.
       description: Ye olde error
-    BatchResponseHubDbTableRowV3:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: The timestamp indicating when the batch processing was completed.
-          format: date-time
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A collection of related links associated with the batch response.
-        requestedAt:
-          type: string
-          description: The timestamp indicating when the batch request was made.
-          format: date-time
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3'
-        startedAt:
-          type: string
-          description: The timestamp indicating when the batch processing began.
-          format: date-time
-        status:
-          type: string
-          description: 'The current status of the batch operation, with possible values: CANCELED, COMPLETE, PENDING, PROCESSING.'
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    BatchInputHubDbTableRowV3Request:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Request'
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
-      required:
-      - results
-      - total
-      - type
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/BoundedPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
-        total:
-          type: integer
-          description: The total number of rows available in the collection.
-          format: int32
-        type:
-          type: string
-          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
-          default: RANDOM_ACCESS
-          enum:
-          - RANDOM_ACCESS
-      x-hubspot-sub-type-impl: true
-    BoundedPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/BoundedNextPage'
-    BatchInputString:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            type: string
     BatchInputHubDbTableRowV3BatchUpdateRequest:
       required:
       - inputs
@@ -1161,6 +1010,157 @@ components:
           enum:
           - STREAMING
       x-hubspot-sub-type-impl: true
+    HubDbTableRowV3Request:
+      required:
+      - childTableId
+      - displayIndex
+      - values
+      type: object
+      properties:
+        childTableId:
+          type: integer
+          description: Specifies the value for the column child table id
+          format: int64
+        displayIndex:
+          type: integer
+          description: The index position for displaying the row within the table.
+          format: int32
+        name:
+          type: string
+          description: Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
+        path:
+          type: string
+          description: Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
+        values:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Variant'
+          description: List of key value pairs with the column name and column value
+    BatchInputHubDbTableRowBatchCloneRequest:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowBatchCloneRequest'
+    BatchResponseHubDbTableRowV3WithErrors:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: The timestamp indicating when the batch processing was completed.
+          format: date-time
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A collection of related links associated with the batch response.
+        numErrors:
+          type: integer
+          description: The number of errors encountered during the batch operation.
+          format: int32
+        requestedAt:
+          type: string
+          description: The timestamp indicating when the batch request was made.
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3'
+        startedAt:
+          type: string
+          description: The timestamp indicating when the batch processing began.
+          format: date-time
+        status:
+          type: string
+          description: 'The current status of the batch operation, with possible values: CANCELED, COMPLETE, PENDING, PROCESSING.'
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    HubDbTableRowV3:
+      required:
+      - childTableId
+      - createdAt
+      - id
+      - name
+      - path
+      - publishedAt
+      - updatedAt
+      - values
+      type: object
+      properties:
+        childTableId:
+          type: string
+          description: Specifies the value for the column child table id
+        createdAt:
+          type: string
+          description: Timestamp at which the row is created
+          format: date-time
+        id:
+          type: string
+          description: The id of the table row
+        name:
+          type: string
+          description: Specifies the value for `hs_name` column, which will be used as title in the dynamic pages
+        path:
+          type: string
+          description: Specifies the value for `hs_path` column, which will be used as slug in the dynamic pages
+        publishedAt:
+          type: string
+          description: The timestamp indicating when the row was last published, in date-time format.
+          format: date-time
+        updatedAt:
+          type: string
+          description: Timestamp at which the row is updated last time
+          format: date-time
+        values:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: List of key value pairs with the column name and column value
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    Variant:
+      type: object
+      properties: {}
   responses:
     Error:
       description: An error occurred.

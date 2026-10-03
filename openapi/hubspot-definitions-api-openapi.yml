@@ -417,282 +417,61 @@ paths:
     - url: https://api.hubapi.com
 components:
   schemas:
-    BooleanFieldSchema:
-      title: BOOLEAN
+    IntegerFieldSchema:
+      title: INTEGER
       required:
       - type
       type: object
       properties:
+        maximum:
+          type: integer
+          description: The maximum value allowed for the integer field.
+          format: int32
+        minimum:
+          type: integer
+          description: The minimum value allowed for the integer field.
+          format: int32
         type:
           type: string
-          description: Specifies the field type as BOOLEAN, indicating that the field can hold a true or false value.
-          default: BOOLEAN
+          description: The type of the field, which is set to INTEGER.
+          default: INTEGER
           enum:
-          - BOOLEAN
+          - INTEGER
       x-hubspot-sub-type-impl: true
-    PublicFieldTypeDefinition:
+    Option:
       required:
-      - name
-      - options
-      - type
+      - description
+      - displayOrder
+      - doubleData
+      - hidden
+      - label
+      - readOnly
+      - value
       type: object
       properties:
         description:
           type: string
-          description: A detailed explanation of the field's purpose.
-        fieldType:
-          type: string
-          description: The type of field, with accepted values including booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, and textarea.
-          enum:
-          - booleancheckbox
-          - calculation_equation
-          - checkbox
-          - date
-          - file
-          - html
-          - number
-          - phonenumber
-          - radio
-          - select
-          - text
-          - textarea
-        helpText:
-          type: string
-          description: Additional information or guidance about the field.
+          description: A description of the option.
+        displayOrder:
+          type: integer
+          description: The position of the item relative to others in the list.
+          format: int32
+        doubleData:
+          type: number
+          description: A numerical value associated with the option.
+        hidden:
+          type: boolean
+          description: Whether the option is displayed in HubSpot's UI.
         label:
           type: string
-          description: A user-friendly name for the field.
-        name:
-          type: string
-          description: The internal name used to identify the field.
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicOption'
-        optionsUrl:
-          type: string
-          description: A URL that provides options for the field.
-        referencedObjectType:
-          type: string
-          description: The type of object that the field references, with accepted values including OWNER.
-          enum:
-          - OWNER
-        type:
-          type: string
-          description: The data type of the field, with accepted values including bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, and string.
-          enum:
-          - bool
-          - date
-          - datetime
-          - enumeration
-          - json
-          - number
-          - object_coordinates
-          - phone_number
-          - string
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    StringFieldSchema:
-      title: STRING
-      required:
-      - type
-      type: object
-      properties:
-        format:
-          type: string
-          description: 'Specifies the format of the string, with accepted values: DATE, DATE_TIME, OBJECT_COORDINATE, TIME, URI.'
-          enum:
-          - DATE
-          - DATE_TIME
-          - MONTH_AND_DAY
-          - OBJECT_COORDINATE
-          - TIME
-          - URI
-        type:
-          type: string
-          description: Indicates that the type is a string, with the default value being STRING.
-          default: STRING
-          enum:
-          - STRING
-      x-hubspot-sub-type-impl: true
-    PublicInputFieldDefinition:
-      required:
-      - isRequired
-      - typeDefinition
-      type: object
-      properties:
-        isRequired:
+          description: A user-friendly label that identifies the option.
+        readOnly:
           type: boolean
-          description: Indicates whether the input field is mandatory.
-        supportedValueTypes:
-          type: array
-          items:
-            type: string
-            enum:
-            - STATIC_VALUE
-            - OBJECT_PROPERTY
-        typeDefinition:
-          $ref: '#/components/schemas/PublicFieldTypeDefinition'
-    PublicSingleFieldDependency:
-      title: SINGLE_FIELD
-      required:
-      - controllingFieldName
-      - dependencyType
-      - dependentFieldNames
-      type: object
-      properties:
-        controllingFieldName:
+          description: Whether the option is read-only.
+        value:
           type: string
-          description: The name of the field that controls the dependency.
-        dependencyType:
-          type: string
-          description: The type of dependency, with the default value being 'SINGLE_FIELD'.
-          default: SINGLE_FIELD
-          enum:
-          - SINGLE_FIELD
-        dependentFieldNames:
-          type: array
-          items:
-            type: string
-      x-hubspot-sub-type-impl: true
-    PublicConditionalSingleFieldDependency:
-      title: CONDITIONAL_SINGLE_FIELD
-      required:
-      - controllingFieldName
-      - controllingFieldValue
-      - dependencyType
-      - dependentFieldNames
-      type: object
-      properties:
-        controllingFieldName:
-          type: string
-          description: The name of the field that determines the dependency.
-        controllingFieldValue:
-          type: string
-          description: The value of the controlling field that triggers the dependency.
-        dependencyType:
-          type: string
-          description: The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
-          default: CONDITIONAL_SINGLE_FIELD
-          enum:
-          - CONDITIONAL_SINGLE_FIELD
-        dependentFieldNames:
-          type: array
-          items:
-            type: string
-      x-hubspot-sub-type-impl: true
-    PublicExecutionTranslationRule:
-      required:
-      - conditions
-      - labelName
-      type: object
-      properties:
-        conditions:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-          description: Defines the conditions that must be met for the execution rule to apply.
-        labelName:
-          type: string
-          description: Specifies the name of the label associated with the execution rule.
-    PublicActionDefinitionRequiresObjectRequest:
-      required:
-      - requiresObject
-      type: object
-      properties:
-        requiresObject:
-          type: boolean
-          description: Indicates whether a custom action definition requires an associated object.
-    PublicActionDefinitionEgg:
-      required:
-      - actionUrl
-      - functions
-      - inputFields
-      - labels
-      - objectTypes
-      - published
-      type: object
-      properties:
-        actionUrl:
-          type: string
-          description: The URL endpoint where the action is executed.
-        archivedAt:
-          type: integer
-          description: The timestamp indicating when the action was archived.
-          format: int64
-        executionRules:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicExecutionTranslationRule'
-        functions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionFunction'
-        inputFieldDependencies:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/PublicSingleFieldDependency'
-            - $ref: '#/components/schemas/PublicConditionalSingleFieldDependency'
-        inputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicInputFieldDefinition'
-        labels:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/PublicActionLabels'
-          description: Holds various labels associated with the action, including names and descriptions.
-        objectRequestOptions:
-          $ref: '#/components/schemas/PublicObjectRequestOptions'
-        objectTypes:
-          type: array
-          items:
-            type: string
-        outputFields:
-          type: array
-          items:
-            $ref: '#/components/schemas/OutputFieldDefinition'
-        published:
-          type: boolean
-          description: Indicates whether the action is published and available for use.
+          description: The actual value of the option.
+      description: A HubSpot property option
     Error:
       required:
       - category
@@ -740,37 +519,138 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    IntegerFieldSchema:
-      title: INTEGER
+    OutputFieldDefinition:
       required:
-      - type
+      - typeDefinition
       type: object
       properties:
-        maximum:
-          type: integer
-          description: The maximum value allowed for the integer field.
-          format: int32
-        minimum:
-          type: integer
-          description: The minimum value allowed for the integer field.
-          format: int32
-        type:
+        typeDefinition:
+          $ref: '#/components/schemas/FieldTypeDefinition'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
           type: string
-          description: The type of the field, which is set to INTEGER.
-          default: INTEGER
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    PublicActionLabels:
+      required:
+      - actionName
+      type: object
+      properties:
+        actionCardContent:
+          type: string
+          description: Content displayed on the action card.
+        actionDescription:
+          type: string
+          description: A description of what the action does.
+        actionName:
+          type: string
+          description: The name of the action.
+        appDisplayName:
+          type: string
+          description: The display name of the application associated with the action.
+        executionRules:
+          type: object
+          additionalProperties:
+            type: string
+          description: Rules that govern the execution of the action.
+        inputFieldDescriptions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Descriptions for each input field.
+        inputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the input fields.
+        inputFieldOptionLabels:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+          description: Labels for the options available in input fields.
+        outputFieldLabels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Labels for the output fields.
+    PublicConditionalSingleFieldDependency:
+      title: CONDITIONAL_SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - controllingFieldValue
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that determines the dependency.
+        controllingFieldValue:
+          type: string
+          description: The value of the controlling field that triggers the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being CONDITIONAL_SINGLE_FIELD.
+          default: CONDITIONAL_SINGLE_FIELD
           enum:
-          - INTEGER
+          - CONDITIONAL_SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
       x-hubspot-sub-type-impl: true
-    PublicActionDefinitionPatch:
+    PublicActionFunctionIdentifier:
+      required:
+      - functionType
+      type: object
+      properties:
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the function.
+    PublicActionDefinition:
+      required:
+      - actionUrl
+      - functions
+      - id
+      - inputFields
+      - labels
+      - objectTypes
+      - published
+      - revisionId
       type: object
       properties:
         actionUrl:
           type: string
-          description: The URL endpoint where the action is executed.
+        archivedAt:
+          type: integer
+          format: int64
         executionRules:
           type: array
           items:
             $ref: '#/components/schemas/PublicExecutionTranslationRule'
+        functions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+        id:
+          type: string
         inputFieldDependencies:
           type: array
           items:
@@ -785,7 +665,6 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/PublicActionLabels'
-          description: Contains labels for the action, including names and descriptions.
         objectRequestOptions:
           $ref: '#/components/schemas/PublicObjectRequestOptions'
         objectTypes:
@@ -798,18 +677,97 @@ components:
             $ref: '#/components/schemas/OutputFieldDefinition'
         published:
           type: boolean
-          description: Indicates whether the action is published and available for use.
-    UnknownFieldSchema:
-      title: UNKNOWN
+        revisionId:
+          type: string
+    PublicInputFieldDefinition:
+      required:
+      - isRequired
+      - typeDefinition
+      type: object
+      properties:
+        isRequired:
+          type: boolean
+          description: Indicates whether the input field is mandatory.
+        supportedValueTypes:
+          type: array
+          items:
+            type: string
+            enum:
+            - STATIC_VALUE
+            - OBJECT_PROPERTY
+        typeDefinition:
+          $ref: '#/components/schemas/PublicFieldTypeDefinition'
+    ForwardPaging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+    ObjectFieldSchema:
+      title: OBJECT
+      required:
+      - properties
+      - type
+      type: object
+      properties:
+        properties:
+          type: object
+          properties: {}
+          description: Contains the properties of the object.
+        type:
+          type: string
+          description: Specifies the type of the field, which is 'OBJECT' by default.
+          default: OBJECT
+          enum:
+          - OBJECT
+      x-hubspot-sub-type-impl: true
+    CollectionResponsePublicActionDefinitionForwardPaging:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/ForwardPaging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionDefinition'
+    PublicActionDefinitionRequiresObjectRequest:
+      required:
+      - requiresObject
+      type: object
+      properties:
+        requiresObject:
+          type: boolean
+          description: Indicates whether a custom action definition requires an associated object.
+    PublicActionDefinitionRequiresObjectResponse:
+      required:
+      - requiresObject
+      type: object
+      properties:
+        requiresObject:
+          type: boolean
+          description: Indicates whether a custom action definition requires an object.
+    LongFieldSchema:
+      title: LONG
       required:
       - type
       type: object
       properties:
+        maximum:
+          type: integer
+          description: The maximum value allowed for the long field.
+          format: int64
+        minimum:
+          type: integer
+          description: The minimum value allowed for the long field.
+          format: int64
         type:
           type: string
-          default: UNKNOWN
+          description: The type of the field, which is LONG by default.
+          default: LONG
           enum:
-          - UNKNOWN
+          - LONG
       x-hubspot-sub-type-impl: true
     FieldTypeDefinition:
       required:
@@ -1060,149 +1018,6 @@ components:
         useChirp:
           type: boolean
           description: Specifies whether the field uses the Chirp feature.
-    PublicActionDefinitionRequiresObjectResponse:
-      required:
-      - requiresObject
-      type: object
-      properties:
-        requiresObject:
-          type: boolean
-          description: Indicates whether a custom action definition requires an object.
-    DoubleFieldSchema:
-      title: DOUBLE
-      required:
-      - type
-      type: object
-      properties:
-        maximum:
-          type: number
-          description: The maximum allowable value for the double field.
-        minimum:
-          type: number
-          description: The minimum allowable value for the double field.
-        type:
-          type: string
-          description: Indicates the field type as DOUBLE.
-          default: DOUBLE
-          enum:
-          - DOUBLE
-      x-hubspot-sub-type-impl: true
-    PublicActionLabels:
-      required:
-      - actionName
-      type: object
-      properties:
-        actionCardContent:
-          type: string
-          description: Content displayed on the action card.
-        actionDescription:
-          type: string
-          description: A description of what the action does.
-        actionName:
-          type: string
-          description: The name of the action.
-        appDisplayName:
-          type: string
-          description: The display name of the application associated with the action.
-        executionRules:
-          type: object
-          additionalProperties:
-            type: string
-          description: Rules that govern the execution of the action.
-        inputFieldDescriptions:
-          type: object
-          additionalProperties:
-            type: string
-          description: Descriptions for each input field.
-        inputFieldLabels:
-          type: object
-          additionalProperties:
-            type: string
-          description: Labels for the input fields.
-        inputFieldOptionLabels:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties:
-              type: string
-          description: Labels for the options available in input fields.
-        outputFieldLabels:
-          type: object
-          additionalProperties:
-            type: string
-          description: Labels for the output fields.
-    PublicActionFunctionIdentifier:
-      required:
-      - functionType
-      type: object
-      properties:
-        functionType:
-          type: string
-          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
-          enum:
-          - POST_ACTION_EXECUTION
-          - POST_FETCH_OPTIONS
-          - PRE_ACTION_EXECUTION
-          - PRE_FETCH_OPTIONS
-        id:
-          type: string
-          description: The unique identifier for the function.
-    CollectionResponsePublicActionDefinitionForwardPaging:
-      required:
-      - results
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/ForwardPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionDefinition'
-    OutputFieldDefinition:
-      required:
-      - typeDefinition
-      type: object
-      properties:
-        typeDefinition:
-          $ref: '#/components/schemas/FieldTypeDefinition'
-    PublicActionFunction:
-      required:
-      - functionSource
-      - functionType
-      type: object
-      properties:
-        functionSource:
-          type: string
-          description: The source code or script that defines the function's behavior.
-        functionType:
-          type: string
-          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
-          enum:
-          - POST_ACTION_EXECUTION
-          - POST_FETCH_OPTIONS
-          - PRE_ACTION_EXECUTION
-          - PRE_FETCH_OPTIONS
-        id:
-          type: string
-          description: The unique identifier for the action function.
-    ObjectFieldSchema:
-      title: OBJECT
-      required:
-      - properties
-      - type
-      type: object
-      properties:
-        properties:
-          type: object
-          properties: {}
-          description: Contains the properties of the object.
-        type:
-          type: string
-          description: Specifies the type of the field, which is 'OBJECT' by default.
-          default: OBJECT
-          enum:
-          - OBJECT
-      x-hubspot-sub-type-impl: true
     ArrayFieldSchema:
       title: ARRAY
       required:
@@ -1228,86 +1043,82 @@ components:
           enum:
           - ARRAY
       x-hubspot-sub-type-impl: true
-    PublicObjectRequestOptions:
+    PublicFieldTypeDefinition:
       required:
-      - properties
-      type: object
-      properties:
-        properties:
-          type: array
-          items:
-            type: string
-    Option:
-      required:
-      - description
-      - displayOrder
-      - doubleData
-      - hidden
-      - label
-      - readOnly
-      - value
+      - name
+      - options
+      - type
       type: object
       properties:
         description:
           type: string
-          description: A description of the option.
-        displayOrder:
-          type: integer
-          description: The position of the item relative to others in the list.
-          format: int32
-        doubleData:
-          type: number
-          description: A numerical value associated with the option.
-        hidden:
-          type: boolean
-          description: Whether the option is displayed in HubSpot's UI.
+          description: A detailed explanation of the field's purpose.
+        fieldType:
+          type: string
+          description: The type of field, with accepted values including booleancheckbox, calculation_equation, checkbox, date, file, html, number, phonenumber, radio, select, text, and textarea.
+          enum:
+          - booleancheckbox
+          - calculation_equation
+          - checkbox
+          - date
+          - file
+          - html
+          - number
+          - phonenumber
+          - radio
+          - select
+          - text
+          - textarea
+        helpText:
+          type: string
+          description: Additional information or guidance about the field.
         label:
           type: string
-          description: A user-friendly label that identifies the option.
-        readOnly:
-          type: boolean
-          description: Whether the option is read-only.
-        value:
+          description: A user-friendly name for the field.
+        name:
           type: string
-          description: The actual value of the option.
-      description: A HubSpot property option
-    LongFieldSchema:
-      title: LONG
-      required:
-      - type
-      type: object
-      properties:
-        maximum:
-          type: integer
-          description: The maximum value allowed for the long field.
-          format: int64
-        minimum:
-          type: integer
-          description: The minimum value allowed for the long field.
-          format: int64
+          description: The internal name used to identify the field.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicOption'
+        optionsUrl:
+          type: string
+          description: A URL that provides options for the field.
+        referencedObjectType:
+          type: string
+          description: The type of object that the field references, with accepted values including OWNER.
+          enum:
+          - OWNER
         type:
           type: string
-          description: The type of the field, which is LONG by default.
-          default: LONG
+          description: The data type of the field, with accepted values including bool, date, datetime, enumeration, json, number, object_coordinates, phone_number, and string.
           enum:
-          - LONG
-      x-hubspot-sub-type-impl: true
-    PublicActionDefinition:
+          - bool
+          - date
+          - datetime
+          - enumeration
+          - json
+          - number
+          - object_coordinates
+          - phone_number
+          - string
+    PublicActionDefinitionEgg:
       required:
       - actionUrl
       - functions
-      - id
       - inputFields
       - labels
       - objectTypes
       - published
-      - revisionId
       type: object
       properties:
         actionUrl:
           type: string
+          description: The URL endpoint where the action is executed.
         archivedAt:
           type: integer
+          description: The timestamp indicating when the action was archived.
           format: int64
         executionRules:
           type: array
@@ -1316,9 +1127,7 @@ components:
         functions:
           type: array
           items:
-            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
-        id:
-          type: string
+            $ref: '#/components/schemas/PublicActionFunction'
         inputFieldDependencies:
           type: array
           items:
@@ -1333,6 +1142,7 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/PublicActionLabels'
+          description: Holds various labels associated with the action, including names and descriptions.
         objectRequestOptions:
           $ref: '#/components/schemas/PublicObjectRequestOptions'
         objectTypes:
@@ -1345,14 +1155,30 @@ components:
             $ref: '#/components/schemas/OutputFieldDefinition'
         published:
           type: boolean
-        revisionId:
-          type: string
-    ForwardPaging:
+          description: Indicates whether the action is published and available for use.
+    StringFieldSchema:
+      title: STRING
+      required:
+      - type
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+        format:
+          type: string
+          description: 'Specifies the format of the string, with accepted values: DATE, DATE_TIME, OBJECT_COORDINATE, TIME, URI.'
+          enum:
+          - DATE
+          - DATE_TIME
+          - MONTH_AND_DAY
+          - OBJECT_COORDINATE
+          - TIME
+          - URI
+        type:
+          type: string
+          description: Indicates that the type is a string, with the default value being STRING.
+          default: STRING
+          enum:
+          - STRING
+      x-hubspot-sub-type-impl: true
     PublicOption:
       required:
       - label
@@ -1372,53 +1198,180 @@ components:
         value:
           type: string
           description: The actual value of the option.
-    ActionResponseWithResultsSubscriptionDefinition:
+    PublicObjectRequestOptions:
       required:
-      - completedAt
-      - results
-      - startedAt
-      - status
+      - properties
       type: object
       properties:
-        completedAt:
-          type: string
-          description: The date and time when the operation was completed.
-          format: date-time
-        errors:
+        properties:
           type: array
-          description: An array of errors that occurred during the operation.
           items:
-            $ref: '#/components/schemas/StandardError'
-        links:
+            type: string
+    BooleanFieldSchema:
+      title: BOOLEAN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Specifies the field type as BOOLEAN, indicating that the field can hold a true or false value.
+          default: BOOLEAN
+          enum:
+          - BOOLEAN
+      x-hubspot-sub-type-impl: true
+    UnknownFieldSchema:
+      title: UNKNOWN
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          default: UNKNOWN
+          enum:
+          - UNKNOWN
+      x-hubspot-sub-type-impl: true
+    PublicActionFunction:
+      required:
+      - functionSource
+      - functionType
+      type: object
+      properties:
+        functionSource:
+          type: string
+          description: The source code or script that defines the function's behavior.
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the action function.
+    PublicSingleFieldDependency:
+      title: SINGLE_FIELD
+      required:
+      - controllingFieldName
+      - dependencyType
+      - dependentFieldNames
+      type: object
+      properties:
+        controllingFieldName:
+          type: string
+          description: The name of the field that controls the dependency.
+        dependencyType:
+          type: string
+          description: The type of dependency, with the default value being 'SINGLE_FIELD'.
+          default: SINGLE_FIELD
+          enum:
+          - SINGLE_FIELD
+        dependentFieldNames:
+          type: array
+          items:
+            type: string
+      x-hubspot-sub-type-impl: true
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
           type: object
           additionalProperties:
-            type: string
-          description: A collection of related links associated with the operation.
-        numErrors:
-          type: integer
-          description: The number of errors encountered during the operation.
-          format: int32
-        requestedAt:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
           type: string
-          description: The date and time when the operation was requested.
-          format: date-time
-        results:
-          type: array
-          description: An array containing the results of the operation.
-          items:
-            $ref: '#/components/schemas/SubscriptionDefinition'
-        startedAt:
+          description: The name of the field or parameter in which the error was found.
+        message:
           type: string
-          description: The date and time when the operation started.
-          format: date-time
-        status:
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
           type: string
-          description: The current status of the operation, which can be PENDING, PROCESSING, CANCELED, or COMPLETE.
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    DoubleFieldSchema:
+      title: DOUBLE
+      required:
+      - type
+      type: object
+      properties:
+        maximum:
+          type: number
+          description: The maximum allowable value for the double field.
+        minimum:
+          type: number
+          description: The minimum allowable value for the double field.
+        type:
+          type: string
+          description: Indicates the field type as DOUBLE.
+          default: DOUBLE
           enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
+          - DOUBLE
+      x-hubspot-sub-type-impl: true
+    PublicActionDefinitionPatch:
+      type: object
+      properties:
+        actionUrl:
+          type: string
+          description: The URL endpoint where the action is executed.
+        executionRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicExecutionTranslationRule'
+        inputFieldDependencies:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/PublicSingleFieldDependency'
+            - $ref: '#/components/schemas/PublicConditionalSingleFieldDependency'
+        inputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicInputFieldDefinition'
+        labels:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PublicActionLabels'
+          description: Contains labels for the action, including names and descriptions.
+        objectRequestOptions:
+          $ref: '#/components/schemas/PublicObjectRequestOptions'
+        objectTypes:
+          type: array
+          items:
+            type: string
+        outputFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputFieldDefinition'
+        published:
+          type: boolean
+          description: Indicates whether the action is published and available for use.
+    PublicExecutionTranslationRule:
+      required:
+      - conditions
+      - labelName
+      type: object
+      properties:
+        conditions:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: Defines the conditions that must be met for the execution rule to apply.
+        labelName:
+          type: string
+          description: Specifies the name of the label associated with the execution rule.
     ActionResponseWithResultsPublicStatus:
       required:
       - completedAt
@@ -1466,50 +1419,53 @@ components:
           - COMPLETE
           - PENDING
           - PROCESSING
-    StandardError:
+    ActionResponseWithResultsSubscriptionDefinition:
       required:
-      - category
-      - context
-      - errors
-      - links
-      - message
+      - completedAt
+      - results
+      - startedAt
       - status
       type: object
       properties:
-        category:
+        completedAt:
           type: string
-          description: A string that categorizes the type of error.
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: An object containing additional context about the error condition, with keys as context names and values as arrays of strings.
+          description: The date and time when the operation was completed.
+          format: date-time
         errors:
           type: array
-          description: An array of ErrorDetail objects providing further information about the error.
+          description: An array of errors that occurred during the operation.
           items:
-            $ref: '#/components/schemas/ErrorDetail'
-        id:
-          type: string
-          description: A string representing the unique identifier of the error.
+            $ref: '#/components/schemas/StandardError'
         links:
           type: object
           additionalProperties:
             type: string
-          description: An object mapping link names to associated URIs that contain documentation about the error or recommended remediation steps.
-        message:
+          description: A collection of related links associated with the operation.
+        numErrors:
+          type: integer
+          description: The number of errors encountered during the operation.
+          format: int32
+        requestedAt:
           type: string
-          description: A string containing a human-readable message describing the error.
+          description: The date and time when the operation was requested.
+          format: date-time
+        results:
+          type: array
+          description: An array containing the results of the operation.
+          items:
+            $ref: '#/components/schemas/SubscriptionDefinition'
+        startedAt:
+          type: string
+          description: The date and time when the operation started.
+          format: date-time
         status:
           type: string
-          description: A string indicating the status of the error.
-        subCategory:
-          type: object
-          properties: {}
-          description: An object providing more specific categorization of the error.
-      description: Ye olde error
+          description: The current status of the operation, which can be PENDING, PROCESSING, CANCELED, or COMPLETE.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
     PublicSubscriptionTranslation:
       required:
       - createdAt
@@ -1606,6 +1562,50 @@ components:
           type: string
           description: The date and time when the subscription status was last updated.
           format: date-time
+    StandardError:
+      required:
+      - category
+      - context
+      - errors
+      - links
+      - message
+      - status
+      type: object
+      properties:
+        category:
+          type: string
+          description: A string that categorizes the type of error.
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: An object containing additional context about the error condition, with keys as context names and values as arrays of strings.
+        errors:
+          type: array
+          description: An array of ErrorDetail objects providing further information about the error.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        id:
+          type: string
+          description: A string representing the unique identifier of the error.
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: An object mapping link names to associated URIs that contain documentation about the error or recommended remediation steps.
+        message:
+          type: string
+          description: A string containing a human-readable message describing the error.
+        status:
+          type: string
+          description: A string indicating the status of the error.
+        subCategory:
+          type: object
+          properties: {}
+          description: An object providing more specific categorization of the error.
+      description: Ye olde error
     SubscriptionDefinition:
       required:
       - createdAt

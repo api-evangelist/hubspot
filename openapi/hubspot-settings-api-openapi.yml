@@ -82,40 +82,20 @@ paths:
       - oauth2:
         - developers-write
 components:
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    ErrorDetail:
+    EventDetailSettings:
       required:
-      - message
+      - appId
+      - eventDetailsUrl
       type: object
       properties:
-        code:
+        appId:
+          type: integer
+          description: The id of the application the settings are for
+          format: int32
+        eventDetailsUrl:
           type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+          description: The url that will be used to fetch marketing event details by id
     Error:
       required:
       - category
@@ -163,19 +143,32 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    EventDetailSettings:
+    ErrorDetail:
       required:
-      - appId
-      - eventDetailsUrl
+      - message
       type: object
       properties:
-        appId:
-          type: integer
-          description: The id of the application the settings are for
-          format: int32
-        eventDetailsUrl:
+        code:
           type: string
-          description: The url that will be used to fetch marketing event details by id
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     EventDetailSettingsUrl:
       required:
       - eventDetailsUrl
@@ -184,6 +177,13 @@ components:
         eventDetailsUrl:
           type: string
           description: 'The url that will be used to fetch marketing event details by id. Must contain a `%s` character sequence that will be substituted with the event id. For example: `https://my.event.app/events/%s`'
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     developer_hapikey:
       type: apiKey

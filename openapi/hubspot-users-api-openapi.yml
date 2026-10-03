@@ -146,80 +146,14 @@ paths:
       - oauth2:
         - settings.users.write
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    PublicUserMarch2026:
-      required:
-      - email
-      - id
-      - roleIds
-      - superAdmin
-      type: object
-      properties:
-        email:
-          type: string
-        firstName:
-          type: string
-        id:
-          type: string
-        lastName:
-          type: string
-        primaryTeamId:
-          type: string
-        roleId:
-          type: string
-        roleIds:
-          type: array
-          items:
-            type: string
-        secondaryTeamIds:
-          type: array
-          items:
-            type: string
-        sendWelcomeEmail:
-          type: boolean
-        superAdmin:
-          type: boolean
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    PublicUserUpdateMarch2026:
-      type: object
-      properties:
-        firstName:
-          type: string
-        lastName:
-          type: string
-        primaryTeamId:
-          type: string
-        roleId:
-          type: string
-        secondaryTeamIds:
-          type: array
-          items:
-            type: string
     Error:
       required:
       - category
@@ -267,13 +201,79 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PublicUserMarch2026:
+      required:
+      - email
+      - id
+      - roleIds
+      - superAdmin
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        id:
+          type: string
+        lastName:
+          type: string
+        primaryTeamId:
+          type: string
+        roleId:
+          type: string
+        roleIds:
+          type: array
+          items:
+            type: string
+        secondaryTeamIds:
+          type: array
+          items:
+            type: string
+        sendWelcomeEmail:
+          type: boolean
+        superAdmin:
+          type: boolean
+    PublicUserUpdateMarch2026:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        primaryTeamId:
+          type: string
+        roleId:
+          type: string
+        secondaryTeamIds:
+          type: array
+          items:
+            type: string
   securitySchemes:
     developer_hapikey:
       type: apiKey

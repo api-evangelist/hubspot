@@ -190,66 +190,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    PublicSpendItem:
-      required:
-      - amount
-      - createdAt
-      - id
-      - name
-      - order
-      - updatedAt
-      type: object
-      properties:
-        amount:
-          type: number
-          description: The monetary value associated with the spend item.
-        createdAt:
-          type: integer
-          description: The timestamp indicating when the spend item was created.
-          format: int64
-        description:
-          type: string
-          description: A detailed explanation or notes about the spend item.
-        id:
-          type: string
-          description: Unique identifier for the spend item.
-        name:
-          type: string
-          description: The name assigned to the spend item.
-        order:
-          type: integer
-          description: The sequence order of the spend item, where 0 is the oldest.
-          format: int32
-        updatedAt:
-          type: integer
-          description: The timestamp indicating when the spend item was last updated.
-          format: int64
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     Error:
       required:
       - category
@@ -317,6 +257,66 @@ components:
           type: integer
           description: The sequence number indicating the order of the spend item.
           format: int32
+    PublicSpendItem:
+      required:
+      - amount
+      - createdAt
+      - id
+      - name
+      - order
+      - updatedAt
+      type: object
+      properties:
+        amount:
+          type: number
+          description: The monetary value associated with the spend item.
+        createdAt:
+          type: integer
+          description: The timestamp indicating when the spend item was created.
+          format: int64
+        description:
+          type: string
+          description: A detailed explanation or notes about the spend item.
+        id:
+          type: string
+          description: Unique identifier for the spend item.
+        name:
+          type: string
+          description: The name assigned to the spend item.
+        order:
+          type: integer
+          description: The sequence order of the spend item, where 0 is the oldest.
+          format: int32
+        updatedAt:
+          type: integer
+          description: The timestamp indicating when the spend item was last updated.
+          format: int64
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   securitySchemes:
     developer_hapikey:
       type: apiKey

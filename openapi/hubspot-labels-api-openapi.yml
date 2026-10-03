@@ -819,63 +819,6 @@ paths:
       - ten-secondly
 components:
   schemas:
-    PublicAssociationDefinitionCreateRequest:
-      required:
-      - label
-      - name
-      type: object
-      properties:
-        inverseLabel:
-          type: string
-          description: An optional descriptor that clarifies the reverse relationship in the association.
-        label:
-          type: string
-          description: A descriptor that provides context about the relationship between two associated CRM objects.
-        name:
-          type: string
-          description: The unique identifier for the association definition.
-    PublicAssociationDefinitionUpdateRequest:
-      required:
-      - associationTypeId
-      - label
-      type: object
-      properties:
-        associationTypeId:
-          type: integer
-          description: The unique identifier for the association type.
-          format: int32
-        inverseLabel:
-          type: string
-          description: An optional descriptor for the inverse relationship between associated records.
-        label:
-          type: string
-          description: A descriptor that provides context about the relationship between associated records.
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     AssociationSpecWithLabel:
       required:
       - category
@@ -902,6 +845,22 @@ components:
           description: An integer value used to uniquely identify a specific association type within its Association Category.
           format: int32
       description: Defines the type, direction, and details of the relationship between two CRM objects.
+    PublicAssociationDefinitionUpdateRequest:
+      required:
+      - associationTypeId
+      - label
+      type: object
+      properties:
+        associationTypeId:
+          type: integer
+          description: The unique identifier for the association type.
+          format: int32
+        inverseLabel:
+          type: string
+          description: An optional descriptor for the inverse relationship between associated records.
+        label:
+          type: string
+          description: A descriptor that provides context about the relationship between associated records.
     Error:
       required:
       - category
@@ -949,6 +908,32 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     CollectionResponseAssociationSpecWithLabelNoPaging:
       required:
       - results
@@ -958,6 +943,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AssociationSpecWithLabel'
+    PublicAssociationDefinitionCreateRequest:
+      required:
+      - label
+      - name
+      type: object
+      properties:
+        inverseLabel:
+          type: string
+          description: An optional descriptor that clarifies the reverse relationship in the association.
+        label:
+          type: string
+          description: A descriptor that provides context about the relationship between two associated CRM objects.
+        name:
+          type: string
+          description: The unique identifier for the association definition.
   responses:
     Error:
       description: An error occurred.

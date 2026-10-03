@@ -274,33 +274,14 @@ paths:
       - oauth2:
         - crm.objects.marketing_events.read
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ParticipationProperties:
-      required:
-      - attendanceState
-      - occurredAt
-      type: object
-      properties:
-        attendanceDurationSeconds:
-          type: integer
-          description: The number of seconds the participation lasted
-          format: int32
-        attendancePercentage:
-          type: string
-          description: Percentage of the participation duration relative to the event duration
-        attendanceState:
-          type: string
-          description: The state of the participation
-          enum:
-          - ATTENDED
-          - CANCELLED
-          - EMPTY
-          - NO_SHOW
-          - REGISTERED
-        occurredAt:
-          type: integer
-          description: Timestamp of when the participation occurred
-          format: int64
     PreviousPage:
       required:
       - before
@@ -313,93 +294,35 @@ components:
           type: string
           description: A URL that can be used to retrieve the previous pages' results.
       description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
+    ParticipationBreakdown:
       required:
-      - after
+      - associations
+      - createdAt
+      - id
+      - properties
       type: object
       properties:
-        after:
+        associations:
+          $ref: '#/components/schemas/ParticipationAssociations'
+        createdAt:
           type: string
-          description: The ID element at the start of the page
-        link:
+          description: The creation time and date of the target marketing event
+          format: date-time
+        id:
           type: string
-          description: Link to the next page
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
+          description: The internal ID of the target marketing event
+        properties:
+          $ref: '#/components/schemas/ParticipationProperties'
+    ParticipationAssociations:
       required:
-      - message
+      - contact
+      - marketingEvent
       type: object
       properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    ContactAssociation:
-      required:
-      - contactId
-      - email
-      type: object
-      properties:
-        contactId:
-          type: string
-          description: The internal ID of the contact in HubSpot
-        email:
-          type: string
-          description: The email of the contact in HubSpot
-        firstname:
-          type: string
-          description: The first name of the contact in HubSpot
-        lastname:
-          type: string
-          description: The last name of the contact in HubSpot
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    AttendanceCounters:
-      required:
-      - attended
-      - cancelled
-      - noShows
-      - registered
-      type: object
-      properties:
-        attended:
-          type: integer
-          description: Number of attended contact records of a marketing event
-          format: int32
-        cancelled:
-          type: integer
-          description: Number of cancelled contact records of a marketing event
-          format: int32
-        noShows:
-          type: integer
-          description: Number of no-show contact records of a marketing event
-          format: int32
-        registered:
-          type: integer
-          description: Number of registered contact records of a marketing event
-          format: int32
+        contact:
+          $ref: '#/components/schemas/ContactAssociation'
+        marketingEvent:
+          $ref: '#/components/schemas/MarketingEventAssociation'
     Error:
       required:
       - category
@@ -447,31 +370,57 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    ParticipationAssociations:
-      required:
-      - contact
-      - marketingEvent
+    Paging:
       type: object
       properties:
-        contact:
-          $ref: '#/components/schemas/ContactAssociation'
-        marketingEvent:
-          $ref: '#/components/schemas/MarketingEventAssociation'
-    CollectionResponseWithTotalParticipationBreakdown:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    ContactAssociation:
       required:
-      - results
-      - total
+      - contactId
+      - email
       type: object
       properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ParticipationBreakdown'
-        total:
+        contactId:
+          type: string
+          description: The internal ID of the contact in HubSpot
+        email:
+          type: string
+          description: The email of the contact in HubSpot
+        firstname:
+          type: string
+          description: The first name of the contact in HubSpot
+        lastname:
+          type: string
+          description: The last name of the contact in HubSpot
+    ParticipationProperties:
+      required:
+      - attendanceState
+      - occurredAt
+      type: object
+      properties:
+        attendanceDurationSeconds:
           type: integer
+          description: The number of seconds the participation lasted
           format: int32
+        attendancePercentage:
+          type: string
+          description: Percentage of the participation duration relative to the event duration
+        attendanceState:
+          type: string
+          description: The state of the participation
+          enum:
+          - ATTENDED
+          - CANCELLED
+          - EMPTY
+          - NO_SHOW
+          - REGISTERED
+        occurredAt:
+          type: integer
+          description: Timestamp of when the participation occurred
+          format: int64
     MarketingEventAssociation:
       required:
       - marketingEventId
@@ -490,32 +439,83 @@ components:
         name:
           type: string
           description: The name of the marketing event in HubSpot
-    ParticipationBreakdown:
+    NextPage:
       required:
-      - associations
-      - createdAt
-      - id
-      - properties
+      - after
       type: object
       properties:
-        associations:
-          $ref: '#/components/schemas/ParticipationAssociations'
-        createdAt:
+        after:
           type: string
-          description: The creation time and date of the target marketing event
-          format: date-time
-        id:
+          description: The ID element at the start of the page
+        link:
           type: string
-          description: The internal ID of the target marketing event
-        properties:
-          $ref: '#/components/schemas/ParticipationProperties'
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    AttendanceCounters:
+      required:
+      - attended
+      - cancelled
+      - noShows
+      - registered
+      type: object
+      properties:
+        attended:
+          type: integer
+          description: Number of attended contact records of a marketing event
+          format: int32
+        cancelled:
+          type: integer
+          description: Number of cancelled contact records of a marketing event
+          format: int32
+        noShows:
+          type: integer
+          description: Number of no-show contact records of a marketing event
+          format: int32
+        registered:
+          type: integer
+          description: Number of registered contact records of a marketing event
+          format: int32
+    CollectionResponseWithTotalParticipationBreakdown:
+      required:
+      - results
+      - total
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipationBreakdown'
+        total:
+          type: integer
+          format: int32
   securitySchemes:
     developer_hapikey:
       type: apiKey

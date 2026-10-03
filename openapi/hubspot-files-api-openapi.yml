@@ -813,234 +813,6 @@ paths:
         - files.write
 components:
   schemas:
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    Folder:
-      required:
-      - archived
-      - createdAt
-      - id
-      - updatedAt
-      type: object
-      properties:
-        archived:
-          type: boolean
-          description: Marks whether the folder is deleted or not.
-        archivedAt:
-          type: string
-          description: Timestamp of folder deletion.
-          format: date-time
-        createdAt:
-          type: string
-          description: Timestamp of folder creation.
-          format: date-time
-        id:
-          type: string
-          description: ID of the folder.
-        name:
-          type: string
-          description: Name of the folder.
-        parentFolderId:
-          type: string
-          description: ID of the parent folder.
-        path:
-          type: string
-          description: Path of the folder in the file manager.
-        updatedAt:
-          type: string
-          description: Timestamp of the latest update to the folder.
-          format: date-time
-    ImportFromUrlInput:
-      required:
-      - access
-      - duplicateValidationScope
-      - duplicateValidationStrategy
-      - overwrite
-      type: object
-      properties:
-        access:
-          type: string
-          description: 'PUBLIC_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines can index the file. PUBLIC_NOT_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines *can''t* index the file. PRIVATE: File is NOT publicly accessible. Requires a signed URL to see content. Search engines *can''t* index the file.'
-          enum:
-          - HIDDEN_INDEXABLE
-          - HIDDEN_NOT_INDEXABLE
-          - HIDDEN_PRIVATE
-          - HIDDEN_SENSITIVE
-          - PRIVATE
-          - PUBLIC_INDEXABLE
-          - PUBLIC_NOT_INDEXABLE
-          - SENSITIVE
-        duplicateValidationScope:
-          type: string
-          description: 'ENTIRE_PORTAL: Look for a duplicate file in the entire account. EXACT_FOLDER: Look for a duplicate file in the provided folder.'
-          enum:
-          - ENTIRE_PORTAL
-          - EXACT_FOLDER
-        duplicateValidationStrategy:
-          type: string
-          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
-          enum:
-          - NONE
-          - REJECT
-          - RETURN_EXISTING
-        expiresAt:
-          type: string
-          description: Specifies the date and time when the file will expire.
-          format: date-time
-        folderId:
-          type: string
-          description: One of folderId or folderPath is required. Destination folderId for the uploaded file.
-        folderPath:
-          type: string
-          description: One of folderPath or folderId is required. Destination folder path for the uploaded file. If the folder path does not exist, there will be an attempt to create the folder path.
-        name:
-          type: string
-          description: Name to give the resulting file in the file manager.
-        overwrite:
-          type: boolean
-          description: If true, will overwrite existing file if one with the same name and extension exists in the given folder. The overwritten file will be deleted and the uploaded file will take its place with a new ID. If unset or set as false, the new file's name will be updated to prevent colliding with existing file if one exists with the same path, name, and extension
-        ttl:
-          type: string
-          description: Time to live. If specified the file will be deleted after the given time frame. If left unset, the file will exist indefinitely
-        url:
-          type: string
-          description: URL to download the new file from.
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    FileActionResponse:
-      required:
-      - completedAt
-      - startedAt
-      - status
-      - taskId
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: Time of completion of task.
-          format: date-time
-        errors:
-          type: array
-          description: Descriptive error messages.
-          items:
-            $ref: '#/components/schemas/StandardError'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: Link to check the status of the requested task.
-        numErrors:
-          type: integer
-          description: Number of errors resulting from the task.
-          format: int32
-        requestedAt:
-          type: string
-          description: Timestamp of when the task was requested.
-          format: date-time
-        result:
-          $ref: '#/components/schemas/File'
-        startedAt:
-          type: string
-          description: Timestamp of when the task was started.
-          format: date-time
-        status:
-          type: string
-          description: Current status of the task.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-        taskId:
-          type: string
-          description: ID of the requested task.
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    FileUpdateInput:
-      required:
-      - clearExpires
-      type: object
-      properties:
-        access:
-          type: string
-          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
-          enum:
-          - HIDDEN_INDEXABLE
-          - HIDDEN_NOT_INDEXABLE
-          - HIDDEN_PRIVATE
-          - HIDDEN_SENSITIVE
-          - PRIVATE
-          - PUBLIC_INDEXABLE
-          - PUBLIC_NOT_INDEXABLE
-          - SENSITIVE
-        clearExpires:
-          type: boolean
-        expiresAt:
-          type: string
-          format: date-time
-        isUsableInContent:
-          type: boolean
-          description: Mark whether the file should be used in new content or not.
-        name:
-          type: string
-          description: New name for the file.
-        parentFolderId:
-          type: string
-          description: FolderId where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
-        parentFolderPath:
-          type: string
-          description: Folder path where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
     File:
       required:
       - archived
@@ -1132,6 +904,39 @@ components:
           type: integer
           description: For image and video files, the width of the content.
           format: int32
+    FolderInput:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Desired name for the folder.
+        parentFolderId:
+          type: string
+          description: FolderId of the parent of the created folder. If not specified, the folder will be created at the root level. parentFolderId and parentFolderPath cannot be set at the same time.
+        parentPath:
+          type: string
+          description: Path of the parent of the created folder. If not specified the folder will be created at the root level. parentFolderPath and parentFolderId cannot be set at the same time.
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
     Error:
       required:
       - category
@@ -1179,33 +984,79 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    FolderInput:
+    Folder:
       required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: Desired name for the folder.
-        parentFolderId:
-          type: string
-          description: FolderId of the parent of the created folder. If not specified, the folder will be created at the root level. parentFolderId and parentFolderPath cannot be set at the same time.
-        parentPath:
-          type: string
-          description: Path of the parent of the created folder. If not specified the folder will be created at the root level. parentFolderPath and parentFolderId cannot be set at the same time.
-    ImportFromUrlTaskLocator:
-      required:
+      - archived
+      - createdAt
       - id
+      - updatedAt
       type: object
       properties:
+        archived:
+          type: boolean
+          description: Marks whether the folder is deleted or not.
+        archivedAt:
+          type: string
+          description: Timestamp of folder deletion.
+          format: date-time
+        createdAt:
+          type: string
+          description: Timestamp of folder creation.
+          format: date-time
         id:
           type: string
-          description: ID of the task
-        links:
+          description: ID of the folder.
+        name:
+          type: string
+          description: Name of the folder.
+        parentFolderId:
+          type: string
+          description: ID of the parent folder.
+        path:
+          type: string
+          description: Path of the folder in the file manager.
+        updatedAt:
+          type: string
+          description: Timestamp of the latest update to the folder.
+          format: date-time
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
           type: object
           additionalProperties:
-            type: string
-          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     SignedUrl:
       required:
       - expiresAt
@@ -1240,6 +1091,51 @@ components:
           type: integer
           description: For image and video files. The width of the file.
           format: int32
+    FileUpdateInput:
+      required:
+      - clearExpires
+      type: object
+      properties:
+        access:
+          type: string
+          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
+          enum:
+          - HIDDEN_INDEXABLE
+          - HIDDEN_NOT_INDEXABLE
+          - HIDDEN_PRIVATE
+          - HIDDEN_SENSITIVE
+          - PRIVATE
+          - PUBLIC_INDEXABLE
+          - PUBLIC_NOT_INDEXABLE
+          - SENSITIVE
+        clearExpires:
+          type: boolean
+        expiresAt:
+          type: string
+          format: date-time
+        isUsableInContent:
+          type: boolean
+          description: Mark whether the file should be used in new content or not.
+        name:
+          type: string
+          description: New name for the file.
+        parentFolderId:
+          type: string
+          description: FolderId where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
+        parentFolderPath:
+          type: string
+          description: Folder path where the file should be moved to. folderId and folderPath parameters cannot be set at the same time.
+    CollectionResponseFile:
+      required:
+      - results
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
     StandardError:
       required:
       - category
@@ -1284,17 +1180,121 @@ components:
           properties: {}
           description: A more specific error category within each main category.
       description: Ye olde error
-    CollectionResponseFile:
+    FileActionResponse:
       required:
-      - results
+      - completedAt
+      - startedAt
+      - status
+      - taskId
       type: object
       properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
+        completedAt:
+          type: string
+          description: Time of completion of task.
+          format: date-time
+        errors:
           type: array
+          description: Descriptive error messages.
           items:
-            $ref: '#/components/schemas/File'
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Link to check the status of the requested task.
+        numErrors:
+          type: integer
+          description: Number of errors resulting from the task.
+          format: int32
+        requestedAt:
+          type: string
+          description: Timestamp of when the task was requested.
+          format: date-time
+        result:
+          $ref: '#/components/schemas/File'
+        startedAt:
+          type: string
+          description: Timestamp of when the task was started.
+          format: date-time
+        status:
+          type: string
+          description: Current status of the task.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+        taskId:
+          type: string
+          description: ID of the requested task.
+    ImportFromUrlTaskLocator:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the task
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: Links for where to check information related to the task. The `status` link gives the URL for where to check the status of the task.
+    ImportFromUrlInput:
+      required:
+      - access
+      - duplicateValidationScope
+      - duplicateValidationStrategy
+      - overwrite
+      type: object
+      properties:
+        access:
+          type: string
+          description: 'PUBLIC_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines can index the file. PUBLIC_NOT_INDEXABLE: File is publicly accessible by anyone who has the URL. Search engines *can''t* index the file. PRIVATE: File is NOT publicly accessible. Requires a signed URL to see content. Search engines *can''t* index the file.'
+          enum:
+          - HIDDEN_INDEXABLE
+          - HIDDEN_NOT_INDEXABLE
+          - HIDDEN_PRIVATE
+          - HIDDEN_SENSITIVE
+          - PRIVATE
+          - PUBLIC_INDEXABLE
+          - PUBLIC_NOT_INDEXABLE
+          - SENSITIVE
+        duplicateValidationScope:
+          type: string
+          description: 'ENTIRE_PORTAL: Look for a duplicate file in the entire account. EXACT_FOLDER: Look for a duplicate file in the provided folder.'
+          enum:
+          - ENTIRE_PORTAL
+          - EXACT_FOLDER
+        duplicateValidationStrategy:
+          type: string
+          description: 'NONE: Do not run any duplicate validation. REJECT: Reject the upload if a duplicate is found. RETURN_EXISTING: If a duplicate file is found, do not upload a new file and return the found duplicate instead.'
+          enum:
+          - NONE
+          - REJECT
+          - RETURN_EXISTING
+        expiresAt:
+          type: string
+          description: Specifies the date and time when the file will expire.
+          format: date-time
+        folderId:
+          type: string
+          description: One of folderId or folderPath is required. Destination folderId for the uploaded file.
+        folderPath:
+          type: string
+          description: One of folderPath or folderId is required. Destination folder path for the uploaded file. If the folder path does not exist, there will be an attempt to create the folder path.
+        name:
+          type: string
+          description: Name to give the resulting file in the file manager.
+        overwrite:
+          type: boolean
+          description: If true, will overwrite existing file if one with the same name and extension exists in the given folder. The overwritten file will be deleted and the uploaded file will take its place with a new ID. If unset or set as false, the new file's name will be updated to prevent colliding with existing file if one exists with the same path, name, and extension
+        ttl:
+          type: string
+          description: Time to live. If specified the file will be deleted after the given time frame. If left unset, the file will exist indefinitely
+        url:
+          type: string
+          description: URL to download the new file from.
     FileStat:
       type: object
       properties:

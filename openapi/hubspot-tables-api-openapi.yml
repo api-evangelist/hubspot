@@ -898,205 +898,115 @@ paths:
         - hubdb.tables.write
 components:
   schemas:
-    NextPage:
+    SimpleUser:
       required:
-      - after
+      - email
+      - firstName
+      - id
+      - lastName
       type: object
       properties:
-        after:
+        email:
           type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
+          description: The email address of the user.
+        firstName:
           type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
+          description: The first name of the user.
+        id:
+          type: string
+          description: The unique identifier for the user.
+        lastName:
+          type: string
+          description: The last name of the user.
+    Option:
       required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    ColumnRequest:
-      required:
+      - createdAt
       - id
       - label
       - name
-      - options
+      - order
+      - type
+      - updatedAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: The timestamp when the option was created, in ISO 8601 format.
+          format: date-time
+        createdBy:
+          $ref: '#/components/schemas/SimpleUser'
+        createdByUserId:
+          type: integer
+          description: The ID of the user who created the option.
+          format: int32
+        id:
+          type: string
+          description: The unique ID of the option.
+        label:
+          type: string
+          description: A user-friendly label that identifies the option.
+        name:
+          type: string
+          description: An internal name assigned to the option, distinct from the label.
+        order:
+          type: integer
+          description: The order in which the option appears, represented as an integer.
+          format: int32
+        type:
+          type: string
+          description: Indicates the category or data type of the option (e.g., string, number).
+        updatedAt:
+          type: string
+          description: The timestamp when the option was last updated, in ISO 8601 format.
+          format: date-time
+        updatedBy:
+          $ref: '#/components/schemas/SimpleUser'
+        updatedByUserId:
+          type: integer
+          description: The ID of the user who last updated the option.
+          format: int32
+      description: A HubSpot property option
+    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
+      required:
+      - results
+      - total
       - type
       type: object
       properties:
-        foreignColumnId:
-          type: integer
-          description: The id of the column from another table to which the column refers/points to.
-          format: int32
-        foreignTableId:
-          type: integer
-          description: The id of another table to which the column refers/points to.
-          format: int64
-        id:
-          type: integer
-          description: Column Id
-          format: int32
-        label:
-          type: string
-          description: Label of the column
-        maxNumberOfCharacters:
-          type: integer
-          description: Defines the maximum number of characters allowed in the column.
-          format: int32
-        maxNumberOfOptions:
-          type: integer
-          description: Specifies the maximum number of options that can be set for select and multi-select columns.
-          format: int32
-        name:
-          type: string
-          description: Name of the column
-        options:
+        paging:
+          $ref: '#/components/schemas/BoundedPaging'
+        results:
           type: array
-          description: Options to choose for select and multi-select columns
           items:
-            $ref: '#/components/schemas/Option'
+            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
+        total:
+          type: integer
+          description: The total number of rows available in the collection.
+          format: int32
         type:
           type: string
-          description: Type of the column
+          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
+          default: RANDOM_ACCESS
           enum:
-          - BOOLEAN
-          - CODE
-          - COMPOSITE
-          - CTA
-          - CURRENCY
-          - DATE
-          - DATETIME
-          - EMBED
-          - FILE
-          - FOREIGN_ID
-          - HUBSPOT_VIDEO
-          - IMAGE
-          - JSON
-          - LOCATION
-          - MULTISELECT
-          - 'NULL'
-          - NUMBER
-          - RICHTEXT
-          - SELECT
-          - TEXT
-          - URL
-          - VIDEO
+          - RANDOM_ACCESS
+      x-hubspot-sub-type-impl: true
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
     UnifiedCollectionResponseWithTotalBaseHubDbTableRowV3:
       properties: {}
       oneOf:
       - $ref: '#/components/schemas/RandomAccessCollectionResponseWithTotalHubDbTableRowV3'
       - $ref: '#/components/schemas/StreamingCollectionResponseWithTotalHubDbTableRowV3'
-    HubDbTableV3:
-      required:
-      - allowChildTables
-      - allowPublicApiAccess
-      - columnCount
-      - columns
-      - createdAt
-      - deleted
-      - deletedAt
-      - dynamicMetaTags
-      - enableChildTablePages
-      - id
-      - label
-      - name
-      - published
-      - publishedAt
-      - rowCount
-      - updatedAt
-      - useForPages
-      type: object
-      properties:
-        allowChildTables:
-          type: boolean
-          description: Specifies whether child tables can be created
-        allowPublicApiAccess:
-          type: boolean
-          description: Specifies whether the table can be read by public without authorization
-        columnCount:
-          type: integer
-          description: Number of columns including deleted
-          format: int64
-        columns:
-          type: array
-          description: List of columns in the table
-          items:
-            $ref: '#/components/schemas/Column'
-        createdAt:
-          type: string
-          description: Timestamp at which the table is created
-          format: date-time
-        createdBy:
-          $ref: '#/components/schemas/SimpleUser'
-        deleted:
-          type: boolean
-          description: Specifies whether the table is marked as deleted.
-        deletedAt:
-          type: string
-          description: The timestamp indicating when the table was deleted.
-          format: date-time
-        dynamicMetaTags:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int32
-          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
-        enableChildTablePages:
-          type: boolean
-          description: Specifies creation of multi-level dynamic pages using child tables
-        id:
-          type: string
-          description: Id of the table
-        isOrderedManually:
-          type: boolean
-          description: Indicates whether the table rows are ordered manually.
-        label:
-          type: string
-          description: Label of the table
-        name:
-          type: string
-          description: Name of the table
-        published:
-          type: boolean
-          description: Indicates whether the table is currently published.
-        publishedAt:
-          type: string
-          description: Timestamp at which the table is published recently
-          format: date-time
-        rowCount:
-          type: integer
-          description: Number of rows in the table
-          format: int32
-        updatedAt:
-          type: string
-          description: Timestamp at which the table is updated recently
-          format: date-time
-        updatedBy:
-          $ref: '#/components/schemas/SimpleUser'
-        useForPages:
-          type: boolean
-          description: Specifies whether the table can be used for creation of dynamic pages
     CollectionResponseWithTotalHubDbTableV3:
       required:
       - results
@@ -1112,6 +1022,84 @@ components:
         total:
           type: integer
           format: int32
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    Error:
+      required:
+      - category
+      - correlationId
+      - message
+      type: object
+      properties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    BoundedNextPage:
+      required:
+      - offset
+      type: object
+      properties:
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next set of results.
+        offset:
+          type: integer
+          description: The offset value indicating the starting point for the next set of results.
+          format: int32
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
     Column:
       required:
       - deleted
@@ -1219,77 +1207,209 @@ components:
           type: integer
           description: Column width for HubDB UI
           format: int32
-    BoundedNextPage:
+    ColumnRequest:
       required:
-      - offset
+      - id
+      - label
+      - name
+      - options
+      - type
       type: object
       properties:
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next set of results.
-        offset:
+        foreignColumnId:
           type: integer
-          description: The offset value indicating the starting point for the next set of results.
+          description: The id of the column from another table to which the column refers/points to.
           format: int32
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
+        foreignTableId:
+          type: integer
+          description: The id of another table to which the column refers/points to.
+          format: int64
+        id:
+          type: integer
+          description: Column Id
+          format: int32
+        label:
           type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
+          description: Label of the column
+        maxNumberOfCharacters:
+          type: integer
+          description: Defines the maximum number of characters allowed in the column.
+          format: int32
+        maxNumberOfOptions:
+          type: integer
+          description: Specifies the maximum number of options that can be set for select and multi-select columns.
+          format: int32
+        name:
           type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
+          description: Name of the column
+        options:
           type: array
-          description: further information about the error
+          description: Options to choose for select and multi-select columns
           items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
+            $ref: '#/components/schemas/Option'
+        type:
           type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    PreviousPage:
-      required:
-      - before
+          description: Type of the column
+          enum:
+          - BOOLEAN
+          - CODE
+          - COMPOSITE
+          - CTA
+          - CURRENCY
+          - DATE
+          - DATETIME
+          - EMBED
+          - FILE
+          - FOREIGN_ID
+          - HUBSPOT_VIDEO
+          - IMAGE
+          - JSON
+          - LOCATION
+          - MULTISELECT
+          - 'NULL'
+          - NUMBER
+          - RICHTEXT
+          - SELECT
+          - TEXT
+          - URL
+          - VIDEO
+    BoundedPaging:
       type: object
       properties:
-        before:
+        next:
+          $ref: '#/components/schemas/BoundedNextPage'
+    HubDbTableCloneRequest:
+      required:
+      - copyRows
+      - isHubspotDefined
+      type: object
+      properties:
+        copyRows:
+          type: boolean
+          description: Specifies whether to copy the rows during clone
+        isHubspotDefined:
+          type: boolean
+          description: Indicates whether the table is defined by HubSpot.
+        newLabel:
           type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
+          description: The new label for the cloned table
+        newName:
           type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+          description: The new name for the cloned table
+    StreamingCollectionResponseWithTotalHubDbTableRowV3:
+      required:
+      - results
+      - total
+      - type
+      type: object
+      properties:
+        paging:
+          $ref: '#/components/schemas/Paging'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
+        total:
+          type: integer
+          description: The total number of rows available in the collection.
+          format: int32
+        type:
+          type: string
+          description: Indicates the type of response, which is 'STREAMING' by default.
+          default: STREAMING
+          enum:
+          - STREAMING
+      x-hubspot-sub-type-impl: true
+    HubDbTableV3:
+      required:
+      - allowChildTables
+      - allowPublicApiAccess
+      - columnCount
+      - columns
+      - createdAt
+      - deleted
+      - deletedAt
+      - dynamicMetaTags
+      - enableChildTablePages
+      - id
+      - label
+      - name
+      - published
+      - publishedAt
+      - rowCount
+      - updatedAt
+      - useForPages
+      type: object
+      properties:
+        allowChildTables:
+          type: boolean
+          description: Specifies whether child tables can be created
+        allowPublicApiAccess:
+          type: boolean
+          description: Specifies whether the table can be read by public without authorization
+        columnCount:
+          type: integer
+          description: Number of columns including deleted
+          format: int64
+        columns:
+          type: array
+          description: List of columns in the table
+          items:
+            $ref: '#/components/schemas/Column'
+        createdAt:
+          type: string
+          description: Timestamp at which the table is created
+          format: date-time
+        createdBy:
+          $ref: '#/components/schemas/SimpleUser'
+        deleted:
+          type: boolean
+          description: Specifies whether the table is marked as deleted.
+        deletedAt:
+          type: string
+          description: The timestamp indicating when the table was deleted.
+          format: date-time
+        dynamicMetaTags:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
+        enableChildTablePages:
+          type: boolean
+          description: Specifies creation of multi-level dynamic pages using child tables
+        id:
+          type: string
+          description: Id of the table
+        isOrderedManually:
+          type: boolean
+          description: Indicates whether the table rows are ordered manually.
+        label:
+          type: string
+          description: Label of the table
+        name:
+          type: string
+          description: Name of the table
+        published:
+          type: boolean
+          description: Indicates whether the table is currently published.
+        publishedAt:
+          type: string
+          description: Timestamp at which the table is published recently
+          format: date-time
+        rowCount:
+          type: integer
+          description: Number of rows in the table
+          format: int32
+        updatedAt:
+          type: string
+          description: Timestamp at which the table is updated recently
+          format: date-time
+        updatedBy:
+          $ref: '#/components/schemas/SimpleUser'
+        useForPages:
+          type: boolean
+          description: Specifies whether the table can be used for creation of dynamic pages
     ForeignId:
       required:
       - id
@@ -1347,152 +1467,6 @@ components:
         useForPages:
           type: boolean
           description: Specifies whether the table can be used for creation of dynamic pages
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    RandomAccessCollectionResponseWithTotalHubDbTableRowV3:
-      required:
-      - results
-      - total
-      - type
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/BoundedPaging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
-        total:
-          type: integer
-          description: The total number of rows available in the collection.
-          format: int32
-        type:
-          type: string
-          description: Indicates the type of response, which is 'RANDOM_ACCESS' by default.
-          default: RANDOM_ACCESS
-          enum:
-          - RANDOM_ACCESS
-      x-hubspot-sub-type-impl: true
-    BoundedPaging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/BoundedNextPage'
-    HubDbTableCloneRequest:
-      required:
-      - copyRows
-      - isHubspotDefined
-      type: object
-      properties:
-        copyRows:
-          type: boolean
-          description: Specifies whether to copy the rows during clone
-        isHubspotDefined:
-          type: boolean
-          description: Indicates whether the table is defined by HubSpot.
-        newLabel:
-          type: string
-          description: The new label for the cloned table
-        newName:
-          type: string
-          description: The new name for the cloned table
-    StreamingCollectionResponseWithTotalHubDbTableRowV3:
-      required:
-      - results
-      - total
-      - type
-      type: object
-      properties:
-        paging:
-          $ref: '#/components/schemas/Paging'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HubDbTableRowV3Wrapper'
-        total:
-          type: integer
-          description: The total number of rows available in the collection.
-          format: int32
-        type:
-          type: string
-          description: Indicates the type of response, which is 'STREAMING' by default.
-          default: STREAMING
-          enum:
-          - STREAMING
-      x-hubspot-sub-type-impl: true
-    Option:
-      required:
-      - createdAt
-      - id
-      - label
-      - name
-      - order
-      - type
-      - updatedAt
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: The timestamp when the option was created, in ISO 8601 format.
-          format: date-time
-        createdBy:
-          $ref: '#/components/schemas/SimpleUser'
-        createdByUserId:
-          type: integer
-          description: The ID of the user who created the option.
-          format: int32
-        id:
-          type: string
-          description: The unique ID of the option.
-        label:
-          type: string
-          description: A user-friendly label that identifies the option.
-        name:
-          type: string
-          description: An internal name assigned to the option, distinct from the label.
-        order:
-          type: integer
-          description: The order in which the option appears, represented as an integer.
-          format: int32
-        type:
-          type: string
-          description: Indicates the category or data type of the option (e.g., string, number).
-        updatedAt:
-          type: string
-          description: The timestamp when the option was last updated, in ISO 8601 format.
-          format: date-time
-        updatedBy:
-          $ref: '#/components/schemas/SimpleUser'
-        updatedByUserId:
-          type: integer
-          description: The ID of the user who last updated the option.
-          format: int32
-      description: A HubSpot property option
-    SimpleUser:
-      required:
-      - email
-      - firstName
-      - id
-      - lastName
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email address of the user.
-        firstName:
-          type: string
-          description: The first name of the user.
-        id:
-          type: string
-          description: The unique identifier for the user.
-        lastName:
-          type: string
-          description: The last name of the user.
     ImportResult:
       required:
       - duplicateRows
@@ -1517,6 +1491,32 @@ components:
           type: integer
           description: Specifies number of rows imported
           format: int32
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   responses:
     Error:
       description: An error occurred.

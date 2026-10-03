@@ -57,64 +57,53 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    PublicSingleSendRequestEgg:
+    Error:
       required:
-      - contactProperties
-      - customProperties
-      - emailId
+      - category
+      - correlationId
       - message
       type: object
       properties:
-        contactProperties:
+        category:
+          type: string
+          description: The error category
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
           type: object
           additionalProperties:
             type: string
-          description: The contactProperties field is a map of contact property values. Each contact property value contains a name and value property. Each property will get set on the contact record and will be visible in the template under {{ contact.NAME }}. Use these properties when you want to set a contact property while you’re sending the email. For example, when sending a reciept you may want to set a last_paid_date property, as the sending of the receipt will have information about the last payment.
-        customProperties:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-          description: 'The customProperties field is a map of property values. Each property value contains a name and value property. Each property will be visible in the template under {{ custom.NAME }}.
-
-            Note: Custom properties do not currently support arrays. To provide a listing in an email, one workaround is to build an HTML list (either with tables or ul) and specify it as a custom property.'
-        emailId:
-          type: integer
-          description: The content ID for the transactional email, which can be found in email tool UI.
-          format: int64
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
         message:
-          $ref: '#/components/schemas/PublicSingleSendEmail'
-    PublicSingleSendEmail:
-      required:
-      - bcc
-      - cc
-      - replyTo
-      type: object
-      properties:
-        bcc:
-          type: array
-          description: List of email addresses to send as Bcc.
-          items:
-            type: string
-        cc:
-          type: array
-          description: List of email addresses to send as Cc.
-          items:
-            type: string
-        from:
           type: string
-          description: The From header for the email.
-        replyTo:
-          type: array
-          description: List of Reply-To header values for the email.
-          items:
-            type: string
-        sendId:
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        subCategory:
           type: string
-          description: ID for a particular send. No more than one email will be sent per sendId.
-        to:
-          type: string
-          description: The recipient of the email.
+          description: A specific category that contains more specific detail about the error
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
     ErrorDetail:
       required:
       - message
@@ -230,53 +219,6 @@ components:
         statusId:
           type: string
           description: Identifier used to query the status of the send.
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
     EventIdView:
       required:
       - created
@@ -291,6 +233,64 @@ components:
           type: string
           description: Identifier of event.
           format: uuid
+    PublicSingleSendEmail:
+      required:
+      - bcc
+      - cc
+      - replyTo
+      type: object
+      properties:
+        bcc:
+          type: array
+          description: List of email addresses to send as Bcc.
+          items:
+            type: string
+        cc:
+          type: array
+          description: List of email addresses to send as Cc.
+          items:
+            type: string
+        from:
+          type: string
+          description: The From header for the email.
+        replyTo:
+          type: array
+          description: List of Reply-To header values for the email.
+          items:
+            type: string
+        sendId:
+          type: string
+          description: ID for a particular send. No more than one email will be sent per sendId.
+        to:
+          type: string
+          description: The recipient of the email.
+    PublicSingleSendRequestEgg:
+      required:
+      - contactProperties
+      - customProperties
+      - emailId
+      - message
+      type: object
+      properties:
+        contactProperties:
+          type: object
+          additionalProperties:
+            type: string
+          description: The contactProperties field is a map of contact property values. Each contact property value contains a name and value property. Each property will get set on the contact record and will be visible in the template under {{ contact.NAME }}. Use these properties when you want to set a contact property while you’re sending the email. For example, when sending a reciept you may want to set a last_paid_date property, as the sending of the receipt will have information about the last payment.
+        customProperties:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+          description: 'The customProperties field is a map of property values. Each property value contains a name and value property. Each property will be visible in the template under {{ custom.NAME }}.
+
+            Note: Custom properties do not currently support arrays. To provide a listing in an email, one workaround is to build an HTML list (either with tables or ul) and specify it as a custom property.'
+        emailId:
+          type: integer
+          description: The content ID for the transactional email, which can be found in email tool UI.
+          format: int64
+        message:
+          $ref: '#/components/schemas/PublicSingleSendEmail'
   securitySchemes:
     developer_hapikey:
       type: apiKey

@@ -72,47 +72,62 @@ paths:
       - oauth2:
         - automation
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    TestRequestContext:
-      title: TEST
+    ActionExecutionIndexIdentifier:
       required:
-      - source
+      - actionExecutionIndex
+      - enrollmentId
       type: object
       properties:
-        source:
-          type: string
-          description: Indicates the source of the test request, with the only accepted value being 'TEST'.
-          default: TEST
-          enum:
-          - TEST
-      x-hubspot-sub-type-impl: true
-    StandaloneRequestContext:
-      title: STANDALONE
+        actionExecutionIndex:
+          type: integer
+          description: The index number representing the execution order of the action.
+          format: int32
+        enrollmentId:
+          type: integer
+          description: The ID associated with the enrollment process.
+          format: int64
+    WorkflowsRequestContext:
+      title: WORKFLOWS
       required:
-      - chirpAiContextObject
       - source
+      - workflowId
       type: object
       properties:
-        chirpAiContextObject:
-          $ref: '#/components/schemas/ChirpAiContextObject'
+        actionExecutionIndexIdentifier:
+          $ref: '#/components/schemas/ActionExecutionIndexIdentifier'
+        actionId:
+          type: integer
+          description: The ID of the action within the workflow context.
+          format: int64
         source:
           type: string
-          description: Indicates the source of the request, with the default value being 'STANDALONE'.
-          default: STANDALONE
+          description: Indicates the source of the request, with the default value being WORKFLOWS.
+          default: WORKFLOWS
           enum:
-          - STANDALONE
-        trajectoryId:
-          type: string
-          description: A unique identifier for tracking the trajectory of the request.
+          - WORKFLOWS
+        workflowId:
+          type: integer
+          description: The ID of the workflow associated with the request context.
+          format: int64
       x-hubspot-sub-type-impl: true
-    ErrorDetail:
+    Error:
       required:
+      - category
+      - correlationId
       - message
       type: object
       properties:
-        code:
+        category:
           type: string
-          description: The status code associated with the error detail
+          description: The error category
         context:
           type: object
           additionalProperties:
@@ -120,17 +135,92 @@ components:
             items:
               type: string
           description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
+          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
+        correlationId:
           type: string
-          description: The name of the field or parameter in which the error was found.
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
         message:
           type: string
           description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
         subCategory:
           type: string
           description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    CallbackCompletionRequest:
+      required:
+      - outputFields
+      - typedOutputs
+      type: object
+      properties:
+        failureReasonType:
+          type: string
+          description: Indicates the reason for the failure of a callback completion.
+        outputFields:
+          type: object
+          additionalProperties:
+            type: string
+          description: Contains the output fields associated with the callback, with each field represented as a key-value pair.
+        requestContext:
+          description: Specifies the context in which the request is made, which can be one of several predefined contexts.
+          oneOf:
+          - $ref: '#/components/schemas/WorkflowsRequestContext'
+          - $ref: '#/components/schemas/AgentRequestContext'
+          - $ref: '#/components/schemas/CopilotRequestContext'
+          - $ref: '#/components/schemas/StandaloneRequestContext'
+          - $ref: '#/components/schemas/TestRequestContext'
+        typedOutputs:
+          type: object
+          properties: {}
+          description: Holds the typed outputs related to the callback, structured as an object.
+    CallbackCompletionBatchRequest:
+      required:
+      - callbackId
+      - outputFields
+      - typedOutputs
+      type: object
+      properties:
+        callbackId:
+          type: string
+          description: The unique identifier for the callback.
+        failureReasonType:
+          type: string
+          description: Specifies the type of failure reason for the callback completion.
+        outputFields:
+          type: object
+          additionalProperties:
+            type: string
+          description: Holds the output fields for the callback completion.
+        requestContext:
+          description: Defines the context of the request, which can be one of several predefined types.
+          oneOf:
+          - $ref: '#/components/schemas/WorkflowsRequestContext'
+          - $ref: '#/components/schemas/AgentRequestContext'
+          - $ref: '#/components/schemas/CopilotRequestContext'
+          - $ref: '#/components/schemas/StandaloneRequestContext'
+          - $ref: '#/components/schemas/TestRequestContext'
+        typedOutputs:
+          type: object
+          properties: {}
+          description: Contains the typed outputs for the callback completion.
     ChirpAiContextObject:
       required:
       - applicationGroup
@@ -199,32 +289,67 @@ components:
             - MANY
             - NOTE
             - DERIVED
-    CallbackCompletionRequest:
+    StandaloneRequestContext:
+      title: STANDALONE
       required:
-      - outputFields
-      - typedOutputs
+      - chirpAiContextObject
+      - source
       type: object
       properties:
-        failureReasonType:
+        chirpAiContextObject:
+          $ref: '#/components/schemas/ChirpAiContextObject'
+        source:
           type: string
-          description: Indicates the reason for the failure of a callback completion.
-        outputFields:
+          description: Indicates the source of the request, with the default value being 'STANDALONE'.
+          default: STANDALONE
+          enum:
+          - STANDALONE
+        trajectoryId:
+          type: string
+          description: A unique identifier for tracking the trajectory of the request.
+      x-hubspot-sub-type-impl: true
+    CopilotRequestContext:
+      title: COPILOT
+      required:
+      - source
+      type: object
+      properties:
+        source:
+          type: string
+          description: Indicates the source of the request, with the default value being 'COPILOT'.
+          default: COPILOT
+          enum:
+          - COPILOT
+        trajectoryId:
+          type: string
+          description: The unique identifier for the trajectory.
+      x-hubspot-sub-type-impl: true
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
           type: object
           additionalProperties:
-            type: string
-          description: Contains the output fields associated with the callback, with each field represented as a key-value pair.
-        requestContext:
-          description: Specifies the context in which the request is made, which can be one of several predefined contexts.
-          oneOf:
-          - $ref: '#/components/schemas/WorkflowsRequestContext'
-          - $ref: '#/components/schemas/AgentRequestContext'
-          - $ref: '#/components/schemas/CopilotRequestContext'
-          - $ref: '#/components/schemas/StandaloneRequestContext'
-          - $ref: '#/components/schemas/TestRequestContext'
-        typedOutputs:
-          type: object
-          properties: {}
-          description: Holds the typed outputs related to the callback, structured as an object.
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     BatchInputCallbackCompletionBatchRequest:
       required:
       - inputs
@@ -234,6 +359,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CallbackCompletionBatchRequest'
+    TestRequestContext:
+      title: TEST
+      required:
+      - source
+      type: object
+      properties:
+        source:
+          type: string
+          description: Indicates the source of the test request, with the only accepted value being 'TEST'.
+          default: TEST
+          enum:
+          - TEST
+      x-hubspot-sub-type-impl: true
+    ContactId:
+      required:
+      - portalId
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address of the contact.
+        portalId:
+          type: integer
+          description: The ID of the portal associated with the contact.
+          format: int32
+        vid:
+          type: integer
+          description: The unique identifier for the contact.
+          format: int64
     AgentRequestContext:
       title: AGENTS
       required:
@@ -257,77 +411,6 @@ components:
         trajectoryId:
           type: string
           description: The unique identifier for the trajectory associated with the agent request.
-      x-hubspot-sub-type-impl: true
-    Error:
-      required:
-      - category
-      - correlationId
-      - message
-      type: object
-      properties:
-        category:
-          type: string
-          description: The error category
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{invalidPropertyName=[propertyValue], missingScopes=[scope1, scope2]}'
-        correlationId:
-          type: string
-          description: A unique identifier for the request. Include this value with any error reports or support tickets
-          format: uuid
-          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        errors:
-          type: array
-          description: further information about the error
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-          example: An error occurred
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
-      example:
-        message: Invalid input (details will vary based on the error)
-        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
-        category: VALIDATION_ERROR
-        links:
-          knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    WorkflowsRequestContext:
-      title: WORKFLOWS
-      required:
-      - source
-      - workflowId
-      type: object
-      properties:
-        actionExecutionIndexIdentifier:
-          $ref: '#/components/schemas/ActionExecutionIndexIdentifier'
-        actionId:
-          type: integer
-          description: The ID of the action within the workflow context.
-          format: int64
-        source:
-          type: string
-          description: Indicates the source of the request, with the default value being WORKFLOWS.
-          default: WORKFLOWS
-          enum:
-          - WORKFLOWS
-        workflowId:
-          type: integer
-          description: The ID of the workflow associated with the request context.
-          format: int64
       x-hubspot-sub-type-impl: true
     ComplianceIds:
       required:
@@ -359,89 +442,6 @@ components:
           items:
             type: integer
             format: int32
-    CopilotRequestContext:
-      title: COPILOT
-      required:
-      - source
-      type: object
-      properties:
-        source:
-          type: string
-          description: Indicates the source of the request, with the default value being 'COPILOT'.
-          default: COPILOT
-          enum:
-          - COPILOT
-        trajectoryId:
-          type: string
-          description: The unique identifier for the trajectory.
-      x-hubspot-sub-type-impl: true
-    ActionExecutionIndexIdentifier:
-      required:
-      - actionExecutionIndex
-      - enrollmentId
-      type: object
-      properties:
-        actionExecutionIndex:
-          type: integer
-          description: The index number representing the execution order of the action.
-          format: int32
-        enrollmentId:
-          type: integer
-          description: The ID associated with the enrollment process.
-          format: int64
-    CallbackCompletionBatchRequest:
-      required:
-      - callbackId
-      - outputFields
-      - typedOutputs
-      type: object
-      properties:
-        callbackId:
-          type: string
-          description: The unique identifier for the callback.
-        failureReasonType:
-          type: string
-          description: Specifies the type of failure reason for the callback completion.
-        outputFields:
-          type: object
-          additionalProperties:
-            type: string
-          description: Holds the output fields for the callback completion.
-        requestContext:
-          description: Defines the context of the request, which can be one of several predefined types.
-          oneOf:
-          - $ref: '#/components/schemas/WorkflowsRequestContext'
-          - $ref: '#/components/schemas/AgentRequestContext'
-          - $ref: '#/components/schemas/CopilotRequestContext'
-          - $ref: '#/components/schemas/StandaloneRequestContext'
-          - $ref: '#/components/schemas/TestRequestContext'
-        typedOutputs:
-          type: object
-          properties: {}
-          description: Contains the typed outputs for the callback completion.
-    ContactId:
-      required:
-      - portalId
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email address of the contact.
-        portalId:
-          type: integer
-          description: The ID of the portal associated with the contact.
-          format: int32
-        vid:
-          type: integer
-          description: The unique identifier for the contact.
-          format: int64
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     developer_hapikey:
       type: apiKey

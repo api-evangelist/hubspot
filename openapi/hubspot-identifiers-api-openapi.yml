@@ -88,63 +88,6 @@ paths:
         - crm.objects.marketing_events.read
 components:
   schemas:
-    PreviousPage:
-      required:
-      - before
-      type: object
-      properties:
-        before:
-          type: string
-          description: A paging cursor token for retrieving previous pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the previous pages' results.
-      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: The ID element at the start of the page
-        link:
-          type: string
-          description: Link to the next page
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
     CollectionResponseWithTotalMarketingEventIdentifiersResponse:
       required:
       - results
@@ -160,6 +103,39 @@ components:
         total:
           type: integer
           format: int32
+    PreviousPage:
+      required:
+      - before
+      type: object
+      properties:
+        before:
+          type: string
+          description: A paging cursor token for retrieving previous pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the previous pages' results.
+      description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
+    SearchPublicResponseWrapper:
+      required:
+      - appId
+      - externalAccountId
+      - externalEventId
+      - objectId
+      type: object
+      properties:
+        appId:
+          type: integer
+          description: The ID of the source application of the marketing event
+          format: int32
+        externalAccountId:
+          type: string
+          description: The account ID associated with this marketing event in the external application
+        externalEventId:
+          type: string
+          description: The ID of the marketing event in the external event application
+        objectId:
+          type: string
+          description: The internal ID of the marketing event in HubSpot
     Error:
       required:
       - category
@@ -207,6 +183,51 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: The ID element at the start of the page
+        link:
+          type: string
+          description: Link to the next page
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
     AppInfo:
       required:
       - id
@@ -249,27 +270,6 @@ components:
         objectId:
           type: string
           description: The internal ID of the marketing event in HubSpot CRM
-    SearchPublicResponseWrapper:
-      required:
-      - appId
-      - externalAccountId
-      - externalEventId
-      - objectId
-      type: object
-      properties:
-        appId:
-          type: integer
-          description: The ID of the source application of the marketing event
-          format: int32
-        externalAccountId:
-          type: string
-          description: The account ID associated with this marketing event in the external application
-        externalEventId:
-          type: string
-          description: The ID of the marketing event in the external event application
-        objectId:
-          type: string
-          description: The internal ID of the marketing event in HubSpot
   responses:
     Error:
       description: An error occurred.

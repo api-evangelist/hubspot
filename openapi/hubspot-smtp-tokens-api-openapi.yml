@@ -190,56 +190,12 @@ paths:
         - transactional-email
 components:
   schemas:
-    NextPage:
-      required:
-      - after
+    ForwardPaging:
       type: object
       properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    SmtpApiTokenRequestEgg:
-      required:
-      - campaignName
-      - createContact
-      type: object
-      properties:
-        campaignName:
-          type: string
-          description: A name for the campaign tied to the SMTP API token.
-        createContact:
-          type: boolean
-          description: Indicates whether a contact should be created for email recipients.
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+        next:
+          $ref: '#/components/schemas/NextPage'
+      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
     Error:
       required:
       - category
@@ -330,12 +286,56 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SmtpApiTokenView'
-    ForwardPaging:
+    SmtpApiTokenRequestEgg:
+      required:
+      - campaignName
+      - createContact
       type: object
       properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-      description: Paging information for forward-only pagination. Contains the next page reference when more results are available; omitted or empty on the last page.
+        campaignName:
+          type: string
+          description: A name for the campaign tied to the SMTP API token.
+        createContact:
+          type: boolean
+          description: Indicates whether a contact should be created for email recipients.
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
   responses:
     Error:
       description: An error occurred.

@@ -244,6 +244,13 @@ paths:
     servers:
     - url: https://api.hubapi.com
 components:
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     PreviousPage:
       required:
@@ -257,63 +264,6 @@ components:
           type: string
           description: A URL that can be used to retrieve the previous pages' results.
       description: specifies the paging information needed to retrieve the previous set of results in a paginated API response
-    NextPage:
-      required:
-      - after
-      type: object
-      properties:
-        after:
-          type: string
-          description: A paging cursor token for retrieving subsequent pages.
-        link:
-          type: string
-          description: A URL that can be used to retrieve the next page results.
-      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    Paging:
-      type: object
-      properties:
-        next:
-          $ref: '#/components/schemas/NextPage'
-        prev:
-          $ref: '#/components/schemas/PreviousPage'
-    PublicChannel:
-      required:
-      - id
-      - name
-      type: object
-      properties:
-        id:
-          type: string
-          description: The ID of the channel.
-        name:
-          type: string
-          description: The name of the channel.
     Error:
       required:
       - category
@@ -361,6 +311,13 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+        prev:
+          $ref: '#/components/schemas/PreviousPage'
     CollectionResponseWithTotalPublicChannel:
       required:
       - results
@@ -376,6 +333,86 @@ components:
         total:
           type: integer
           format: int32
+    NextPage:
+      required:
+      - after
+      type: object
+      properties:
+        after:
+          type: string
+          description: A paging cursor token for retrieving subsequent pages.
+        link:
+          type: string
+          description: A URL that can be used to retrieve the next page results.
+      description: Specifies the paging information needed to retrieve the next set of results in a paginated API response
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    PublicChannel:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the channel.
+        name:
+          type: string
+          description: The name of the channel.
+    PublicChannelIntegrationChannelPatch:
+      required:
+      - capabilities
+      - channelAccountConnectionRedirectUrl
+      - channelDescription
+      - channelLogoUrl
+      - name
+      - webhookUrl
+      type: object
+      properties:
+        capabilities:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        channelAccountConnectionRedirectUrl:
+          type: object
+          properties: {}
+        channelDescription:
+          type: object
+          properties: {}
+        channelLogoUrl:
+          type: object
+          properties: {}
+        name:
+          type: object
+          properties: {}
+        webhookUrl:
+          type: object
+          properties: {}
     PublicDeliveryIdentifier:
       required:
       - type
@@ -453,43 +490,6 @@ components:
           type: string
         webhookUrl:
           type: string
-    PublicChannelIntegrationChannelPatch:
-      required:
-      - capabilities
-      - channelAccountConnectionRedirectUrl
-      - channelDescription
-      - channelLogoUrl
-      - name
-      - webhookUrl
-      type: object
-      properties:
-        capabilities:
-          type: object
-          additionalProperties:
-            type: object
-            properties: {}
-        channelAccountConnectionRedirectUrl:
-          type: object
-          properties: {}
-        channelDescription:
-          type: object
-          properties: {}
-        channelLogoUrl:
-          type: object
-          properties: {}
-        name:
-          type: object
-          properties: {}
-        webhookUrl:
-          type: object
-          properties: {}
-  responses:
-    Error:
-      description: An error occurred.
-      content:
-        '*/*':
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     developer_hapikey:
       type: apiKey

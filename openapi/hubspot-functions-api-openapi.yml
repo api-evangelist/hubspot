@@ -395,57 +395,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    CollectionResponsePublicActionFunctionIdentifierNoPaging:
-      required:
-      - results
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
-    PublicActionFunctionIdentifier:
-      required:
-      - functionType
-      type: object
-      properties:
-        functionType:
-          type: string
-          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
-          enum:
-          - POST_ACTION_EXECUTION
-          - POST_FETCH_OPTIONS
-          - PRE_ACTION_EXECUTION
-          - PRE_FETCH_OPTIONS
-        id:
-          type: string
-          description: The unique identifier for the function.
     Error:
       required:
       - category
@@ -513,6 +462,57 @@ components:
         id:
           type: string
           description: The unique identifier for the action function.
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    CollectionResponsePublicActionFunctionIdentifierNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicActionFunctionIdentifier'
+    PublicActionFunctionIdentifier:
+      required:
+      - functionType
+      type: object
+      properties:
+        functionType:
+          type: string
+          description: 'The type of function, with accepted values: POST_ACTION_EXECUTION, POST_FETCH_OPTIONS, PRE_ACTION_EXECUTION, PRE_FETCH_OPTIONS.'
+          enum:
+          - POST_ACTION_EXECUTION
+          - POST_FETCH_OPTIONS
+          - PRE_ACTION_EXECUTION
+          - PRE_FETCH_OPTIONS
+        id:
+          type: string
+          description: The unique identifier for the function.
   securitySchemes:
     developer_hapikey:
       type: apiKey

@@ -1017,6 +1017,107 @@ paths:
       - ten-secondly
 components:
   schemas:
+    PublicAssociationSpec:
+      required:
+      - category
+      - typeId
+      type: object
+      properties:
+        category:
+          type: string
+          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
+        typeId:
+          type: integer
+          description: A unique integer identifier for the specific association type within its category.
+          format: int32
+    CollectionResponsePublicAssociationDefinitionUserConfigurationNoPaging:
+      required:
+      - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
+    BatchInputPublicAssociationDefinitionConfigurationUpdateRequest:
+      required:
+      - inputs
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationUpdateRequest'
+    PublicAssociationDefinitionUserConfiguration:
+      required:
+      - category
+      - typeId
+      type: object
+      properties:
+        category:
+          type: string
+          description: The category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
+          enum:
+          - HUBSPOT_DEFINED
+          - INTEGRATOR_DEFINED
+          - USER_DEFINED
+          - WORK
+        label:
+          type: string
+          description: A descriptor providing context about the relationship between associated records.
+        typeId:
+          type: integer
+          description: A unique integer identifier for the association type within its category.
+          format: int32
+        userEnforcedMaxToObjectIds:
+          type: integer
+          description: The maximum number of target object IDs that a user can enforce in an association.
+          format: int32
+    PublicAssociationDefinitionConfigurationUpdateRequest:
+      required:
+      - category
+      - maxToObjectIds
+      - typeId
+      type: object
+      properties:
+        category:
+          type: string
+          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
+          enum:
+          - HUBSPOT_DEFINED
+          - INTEGRATOR_DEFINED
+          - USER_DEFINED
+          - WORK
+        maxToObjectIds:
+          type: integer
+          description: Defines the maximum number of target object IDs that can be associated.
+          format: int32
+        typeId:
+          type: integer
+          description: A unique identifier for the association type.
+          format: int32
+    PublicAssociationDefinitionConfigurationUpdateResult:
+      required:
+      - category
+      - typeId
+      type: object
+      properties:
+        category:
+          type: string
+          description: The category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
+          enum:
+          - HUBSPOT_DEFINED
+          - INTEGRATOR_DEFINED
+          - USER_DEFINED
+          - WORK
+        typeId:
+          type: integer
+          description: An integer value used to uniquely identify a specific association type within its Association Category.
+          format: int32
+        userEnforcedMaxToObjectIds:
+          type: integer
+          description: The maximum number of object IDs that a user can enforce for associations.
+          format: int32
     BatchResponsePublicAssociationDefinitionConfigurationUpdateResult:
       required:
       - completedAt
@@ -1054,204 +1155,6 @@ components:
           - COMPLETE
           - PENDING
           - PROCESSING
-    BatchResponsePublicAssociationDefinitionConfigurationUpdateResultWithErrors:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          format: date-time
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/StandardError'
-        links:
-          type: object
-          additionalProperties:
-            type: string
-        numErrors:
-          type: integer
-          format: int32
-        requestedAt:
-          type: string
-          format: date-time
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationUpdateResult'
-        startedAt:
-          type: string
-          format: date-time
-        status:
-          type: string
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    BatchInputPublicAssociationDefinitionConfigurationUpdateRequest:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationUpdateRequest'
-    BatchInputPublicAssociationSpec:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationSpec'
-    CollectionResponsePublicAssociationDefinitionUserConfigurationNoPaging:
-      required:
-      - results
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
-    PublicAssociationSpec:
-      required:
-      - category
-      - typeId
-      type: object
-      properties:
-        category:
-          type: string
-          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
-        typeId:
-          type: integer
-          description: A unique integer identifier for the specific association type within its category.
-          format: int32
-    ErrorDetail:
-      required:
-      - message
-      type: object
-      properties:
-        code:
-          type: string
-          description: The status code associated with the error detail
-        context:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: Context about the error condition
-          example: '{missingScopes=[scope1, scope2]}'
-        in:
-          type: string
-          description: The name of the field or parameter in which the error was found.
-        message:
-          type: string
-          description: A human readable message describing the error along with remediation steps where appropriate
-        subCategory:
-          type: string
-          description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
-    BatchInputPublicAssociationDefinitionConfigurationCreateRequest:
-      required:
-      - inputs
-      type: object
-      properties:
-        inputs:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationCreateRequest'
-    PublicAssociationDefinitionConfigurationUpdateResult:
-      required:
-      - category
-      - typeId
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
-          enum:
-          - HUBSPOT_DEFINED
-          - INTEGRATOR_DEFINED
-          - USER_DEFINED
-          - WORK
-        typeId:
-          type: integer
-          description: An integer value used to uniquely identify a specific association type within its Association Category.
-          format: int32
-        userEnforcedMaxToObjectIds:
-          type: integer
-          description: The maximum number of object IDs that a user can enforce for associations.
-          format: int32
-    BatchResponsePublicAssociationDefinitionUserConfiguration:
-      required:
-      - completedAt
-      - results
-      - startedAt
-      - status
-      type: object
-      properties:
-        completedAt:
-          type: string
-          description: The date and time when the batch operation was completed.
-          format: date-time
-        links:
-          type: object
-          additionalProperties:
-            type: string
-          description: A collection of URLs linking to related documentation or resources associated with the batch operation.
-        requestedAt:
-          type: string
-          description: The date and time when the batch operation was requested.
-          format: date-time
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
-        startedAt:
-          type: string
-          description: The date and time when the batch operation started.
-          format: date-time
-        status:
-          type: string
-          description: The current status of the batch operation, which can be CANCELED, COMPLETE, PENDING, or PROCESSING.
-          enum:
-          - CANCELED
-          - COMPLETE
-          - PENDING
-          - PROCESSING
-    PublicAssociationDefinitionUserConfiguration:
-      required:
-      - category
-      - typeId
-      type: object
-      properties:
-        category:
-          type: string
-          description: The category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
-          enum:
-          - HUBSPOT_DEFINED
-          - INTEGRATOR_DEFINED
-          - USER_DEFINED
-          - WORK
-        label:
-          type: string
-          description: A descriptor providing context about the relationship between associated records.
-        typeId:
-          type: integer
-          description: A unique integer identifier for the association type within its category.
-          format: int32
-        userEnforcedMaxToObjectIds:
-          type: integer
-          description: The maximum number of target object IDs that a user can enforce in an association.
-          format: int32
     Error:
       required:
       - category
@@ -1299,7 +1202,93 @@ components:
         category: VALIDATION_ERROR
         links:
           knowledge-base: https://www.hubspot.com/products/service/knowledge-base
-    BatchResponsePublicAssociationDefinitionUserConfigurationWithErrors:
+    BatchResponsePublicAssociationDefinitionUserConfiguration:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          description: The date and time when the batch operation was completed.
+          format: date-time
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A collection of URLs linking to related documentation or resources associated with the batch operation.
+        requestedAt:
+          type: string
+          description: The date and time when the batch operation was requested.
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
+        startedAt:
+          type: string
+          description: The date and time when the batch operation started.
+          format: date-time
+        status:
+          type: string
+          description: The current status of the batch operation, which can be CANCELED, COMPLETE, PENDING, or PROCESSING.
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    PublicAssociationDefinitionConfigurationCreateRequest:
+      required:
+      - category
+      - maxToObjectIds
+      - typeId
+      type: object
+      properties:
+        category:
+          type: string
+          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
+          enum:
+          - HUBSPOT_DEFINED
+          - INTEGRATOR_DEFINED
+          - USER_DEFINED
+          - WORK
+        maxToObjectIds:
+          type: integer
+          description: The maximum number of target object IDs that can be associated with a single source object.
+          format: int32
+        typeId:
+          type: integer
+          description: An integer used to uniquely identify a specific association type within its category.
+          format: int32
+    ErrorDetail:
+      required:
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: The status code associated with the error detail
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example: '{missingScopes=[scope1, scope2]}'
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+    BatchResponse:
       required:
       - completedAt
       - results
@@ -1327,7 +1316,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
+            type: object
+            properties: {}
         startedAt:
           type: string
           format: date-time
@@ -1382,53 +1372,25 @@ components:
           properties: {}
           description: A more specific error category within each main category.
       description: Represents a standard error response in the HubSpot API, providing detailed information about an error that occurred during an API request.
-    PublicAssociationDefinitionConfigurationUpdateRequest:
+    BatchInputPublicAssociationSpec:
       required:
-      - category
-      - maxToObjectIds
-      - typeId
+      - inputs
       type: object
       properties:
-        category:
-          type: string
-          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
-          enum:
-          - HUBSPOT_DEFINED
-          - INTEGRATOR_DEFINED
-          - USER_DEFINED
-          - WORK
-        maxToObjectIds:
-          type: integer
-          description: Defines the maximum number of target object IDs that can be associated.
-          format: int32
-        typeId:
-          type: integer
-          description: A unique identifier for the association type.
-          format: int32
-    PublicAssociationDefinitionConfigurationCreateRequest:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationSpec'
+    BatchInputPublicAssociationDefinitionConfigurationCreateRequest:
       required:
-      - category
-      - maxToObjectIds
-      - typeId
+      - inputs
       type: object
       properties:
-        category:
-          type: string
-          description: Specifies the category of the association, which can be HUBSPOT_DEFINED, INTEGRATOR_DEFINED, or USER_DEFINED.
-          enum:
-          - HUBSPOT_DEFINED
-          - INTEGRATOR_DEFINED
-          - USER_DEFINED
-          - WORK
-        maxToObjectIds:
-          type: integer
-          description: The maximum number of target object IDs that can be associated with a single source object.
-          format: int32
-        typeId:
-          type: integer
-          description: An integer used to uniquely identify a specific association type within its category.
-          format: int32
-    BatchResponse:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationCreateRequest'
+    BatchResponsePublicAssociationDefinitionUserConfigurationWithErrors:
       required:
       - completedAt
       - results
@@ -1456,8 +1418,46 @@ components:
         results:
           type: array
           items:
-            type: object
-            properties: {}
+            $ref: '#/components/schemas/PublicAssociationDefinitionUserConfiguration'
+        startedAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - CANCELED
+          - COMPLETE
+          - PENDING
+          - PROCESSING
+    BatchResponsePublicAssociationDefinitionConfigurationUpdateResultWithErrors:
+      required:
+      - completedAt
+      - results
+      - startedAt
+      - status
+      type: object
+      properties:
+        completedAt:
+          type: string
+          format: date-time
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardError'
+        links:
+          type: object
+          additionalProperties:
+            type: string
+        numErrors:
+          type: integer
+          format: int32
+        requestedAt:
+          type: string
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicAssociationDefinitionConfigurationUpdateResult'
         startedAt:
           type: string
           format: date-time
