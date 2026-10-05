@@ -12,7 +12,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 18
+edge_count: 26
 edges:
 - tag: Application Feature Flags
   spec_file: hubspot-application-feature-flags-api-openapi.yml
@@ -69,6 +69,17 @@ edges:
   evidence: POST /cms/v3/pages/landing-pages  createLandingPage  Create a Landing Page
   reason: Creating, listing and deleting marketing landing pages is web/digital marketing asset management;
     landing pages are the canonical demand-capture web asset managed under digital marketing.
+- tag: Website pages
+  spec_file: hubspot-website-pages-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.8
+  evidence: '"Create a website page", "Schedule a website page to be published", "Publish website page
+    draft" on /cms/pages/2026-09/site-pages'
+  reason: CMS authoring, drafting, scheduling and publishing of website/landing pages is web content delivery
+    for marketing — Digital Marketing Management (web). Could overlap Content Marketing, but the operations
+    are page/web publishing mechanics.
 - tag: Batch Portal Operations
   spec_file: hubspot-batch-portal-operations-api-openapi.yml
   capability_id: BC-4210.50
@@ -88,6 +99,17 @@ edges:
   evidence: POST /cms/v3/blogs/posts "Create a Blog Post"; schema BlogPost, BlogPostInput
   reason: Authoring and lifecycle of blog content in the CMS maps to content production/distribution under
     Content Marketing Management.
+- tag: Budget
+  spec_file: hubspot-budget-api-openapi.yml
+  capability_id: BC-400.50
+  capability_id_l1: BC-400
+  capability_name: Marketing Operations Management
+  confidence: 0.78
+  evidence: POST /marketing/campaigns/2026-03/{campaignGuid}/budget — "Add budget item"; schemas "PublicSpendItem",
+    "PublicBudgetTotals"
+  reason: Operations create, read and total budget/spend items attached to marketing campaigns — marketing
+    budget administration, which sits under Marketing Operations Management. Not corporate budgeting (BC-230.10)
+    since the scope is explicitly campaign spend.
 - tag: Companies
   spec_file: hubspot-companies-api-openapi.yml
   capability_id: BC-420.10
@@ -98,6 +120,24 @@ edges:
     Companies"
   reason: CRUD and search over CRM company records is customer/account master data maintenance in the
     CRM, i.e. Customer Data Management.
+- tag: Items
+  spec_file: hubspot-items-api-openapi.yml
+  capability_id: BC-440.20
+  capability_id_l1: BC-440
+  capability_name: Price List Management
+  confidence: 0.78
+  evidence: '"List price book items", "Update price book item"; schemas PriceBookItemResponse, PricingUpdateRequest'
+  reason: Operations create, read, update and delete items within commerce price books, including price
+    entries — this is price book / price list maintenance rather than any CRM or billing function.
+- tag: Roles
+  spec_file: hubspot-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.76
+  evidence: '"Retrieves the roles on an account"; schemas PublicPermissionSet, CollectionResponsePublicPermissionSetNoPaging'
+  reason: User provisioning surface exposing account roles and permission sets, which is access/role administration.
+    Single read-only operation keeps confidence moderate.
 - tag: Lists
   spec_file: hubspot-lists-api-openapi.yml
   capability_id: BC-420.20
@@ -107,6 +147,17 @@ edges:
   evidence: POST /crm/v3/lists  createList  Create a List
   reason: HubSpot CRM lists are the segmentation construct over the customer record (the vendor description
     cites 'lists and segments'), so list creation/retrieval realises customer segmentation management.
+- tag: Spend
+  spec_file: hubspot-spend-api-openapi.yml
+  capability_id: BC-400.50
+  capability_id_l1: BC-400
+  capability_name: Marketing Operations Management
+  confidence: 0.75
+  evidence: '"Create campaign spend item" on /marketing/campaigns/2026-03/{campaignGuid}/spend'
+  reason: 'Operations create, read, update and delete spend items attached to marketing campaigns — i.e.
+    tracking marketing budget/spend against campaigns, which is Marketing Operations Management (marketing
+    budget and measurement). Not a procurement or AP surface: spend is recorded per campaign, not as invoices
+    or POs.'
 - tag: Tickets
   spec_file: hubspot-tickets-api-openapi.yml
   capability_id: BC-430.10
@@ -117,6 +168,16 @@ edges:
   reason: Support ticket objects created, updated, searched and archived — customer service case handling.
     L2 between Inquiry Management and Complaints & Issue Management is not fully determinable, so confidence
     is moderate on the chosen L2.
+- tag: A/B Tests
+  spec_file: hubspot-a-b-tests-api-openapi.yml
+  capability_id: BC-400.60
+  capability_id_l1: BC-400
+  capability_name: Digital Marketing Management
+  confidence: 0.7
+  evidence: POST /cms/pages/2026-09/landing-pages/ab-test/create-variation  Create a new A/B test variation
+  reason: Operations create, end and rerun A/B tests on CMS landing pages and site pages — web/digital
+    marketing optimisation. Could arguably be experimentation (BC-4280.50), but the subject is marketing
+    landing pages on a CMS, so digital marketing management fits better.
 - tag: Associations
   spec_file: hubspot-associations-api-openapi.yml
   capability_id: BC-420.10
@@ -176,6 +237,16 @@ edges:
   reason: Reading and sending messages within conversation threads (with MessageRecipient, Actor, MessageStatus
     schemas) is inbound/outbound customer contact handling in the conversations inbox, i.e. customer inquiry
     management; some chance it is better read as generic omnichannel messaging plumbing.
+- tag: Metrics
+  spec_file: hubspot-metrics-api-openapi.yml
+  capability_id: BC-400.50
+  capability_id_l1: BC-400
+  capability_name: Marketing Operations Management
+  confidence: 0.7
+  evidence: '"Get Campaign Metrics", "Fetch revenue"; schemas MetricsCounters, RevenueAttributionAggregate'
+  reason: Reports campaign performance metrics and revenue attribution for marketing campaigns — marketing
+    measurement, which sits in marketing operations management. Slight ambiguity versus demand generation
+    reporting.
 - tag: Publishing and Scheduling
   spec_file: hubspot-publishing-and-scheduling-api-openapi.yml
   capability_id: BC-400.70
@@ -185,3 +256,12 @@ edges:
   evidence: POST /cms/v3/blogs/posts/schedule  scheduleBlogPost  Hubspot Schedule a Blog Post
   reason: Schedules publication of a blog post — editorial scheduling and content distribution. Despite
     the misleading spec title about Analytics Events, the operation is CMS blog publishing.
+- tag: Users
+  spec_file: hubspot-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '"Retrieves a user", "Modifies a user", "Removes a user" under /settings/users/2026-03/{userId}'
+  reason: 'Lifecycle CRUD over platform user accounts (provisioning and de-provisioning) is Identity &
+    Access Management, not an HR employee record: the objects are application users in account settings.'
