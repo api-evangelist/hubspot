@@ -26,7 +26,8 @@ paths:
       parameters:
       - name: after
         in: query
-        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property
+          of a paged response containing more results.
         required: false
         style: form
         explode: true
@@ -189,7 +190,8 @@ paths:
       parameters:
       - name: after
         in: query
-        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property
+          of a paged response containing more results.
         required: false
         style: form
         explode: true
@@ -312,10 +314,12 @@ paths:
       tags:
       - Tables
       summary: Get details of a published table
-      description: 'Returns the details for the published version of the specified table. This will include the definitions for the columns in the table and the number of rows in the table.
+      description: 'Returns the details for the published version of the specified table. This will include the definitions for the columns in
+        the table and the number of rows in the table.
 
 
-        **Note:** This endpoint can be accessed without any authentication if the table is set to be allowed for public access. To do so, you''ll need to include the HubSpot account ID in a `portalId` query parameter.'
+        **Note:** This endpoint can be accessed without any authentication if the table is set to be allowed for public access. To do so, you''ll
+        need to include the HubSpot account ID in a `portalId` query parameter.'
       operationId: get-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}_getTableDetails
       parameters:
       - name: tableIdOrName
@@ -397,7 +401,8 @@ paths:
       tags:
       - Tables
       summary: Get details for a draft table
-      description: Get the details for the draft version of a specific HubDB table. This will include the definitions for the columns in the table and the number of rows in the table.
+      description: Get the details for the draft version of a specific HubDB table. This will include the definitions for the columns in the table
+        and the number of rows in the table.
       operationId: get-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft_getDraftTableDetailsById
       parameters:
       - name: tableIdOrName
@@ -451,9 +456,12 @@ paths:
       tags:
       - Tables
       summary: Update an existing table
-      description: 'Update an existing HubDB table. You can use this endpoint to add or remove columns to the table as well as restore an archived table. Tables updated using the endpoint will only modify the draft verion of the table. Use the `/publish` endpoint to push all the changes to the published version. To restore a table, include the query parameter `archived=true` and `"archived": false` in the json body.
+      description: 'Update an existing HubDB table. You can use this endpoint to add or remove columns to the table as well as restore an archived
+        table. Tables updated using the endpoint will only modify the draft verion of the table. Use the `/publish` endpoint to push all the changes
+        to the published version. To restore a table, include the query parameter `archived=true` and `"archived": false` in the json body.
 
-        **Note:** You need to include all the columns in the input when you are adding/removing/updating a column. If you do not include an already existing column in the request, it will be deleted.'
+        **Note:** You need to include all the columns in the input when you are adding/removing/updating a column. If you do not include an already
+        existing column in the request, it will be deleted.'
       operationId: patch-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft_updateDraftTable
       parameters:
       - name: tableIdOrName
@@ -514,7 +522,8 @@ paths:
       tags:
       - Tables
       summary: Clone a table
-      description: Clone an existing HubDB table. The `newName` and `newLabel` of the new table can be sent as JSON in the request body. This will create the cloned table as a draft.
+      description: Clone an existing HubDB table. The `newName` and `newLabel` of the new table can be sent as JSON in the request body. This
+        will create the cloned table as a draft.
       operationId: post-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft/clone_cloneDraftTable
       parameters:
       - name: tableIdOrName
@@ -584,9 +593,12 @@ paths:
       tags:
       - Tables
       summary: Import data into draft table
-      description: 'Import the contents of a CSV file into an existing HubDB table. The data will always be imported into the draft version of the table. Use the `/publish` endpoint to push these changes to the published version.
+      description: 'Import the contents of a CSV file into an existing HubDB table. The data will always be imported into the draft version of
+        the table. Use the `/publish` endpoint to push these changes to the published version.
 
-        This endpoint takes a multi-part POST request. The first part will be a set of JSON-formatted options for the import and you can specify this with the name as `config`. The second part will be the CSV file you want to import and you can specify this with the name as `file`. Refer the overview section to check the details and format of the JSON-formatted options for the import.'
+        This endpoint takes a multi-part POST request. The first part will be a set of JSON-formatted options for the import and you can specify
+        this with the name as `config`. The second part will be the CSV file you want to import and you can specify this with the name as `file`.
+        Refer the overview section to check the details and format of the JSON-formatted options for the import.'
       operationId: post-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft/import_importDraftTable
       parameters:
       - name: tableIdOrName
@@ -628,7 +640,8 @@ paths:
       tags:
       - Tables
       summary: Publish a table from draft
-      description: Publishes the table by copying the data and table schema changes from draft version to the published version, meaning any website pages using data from the table will be updated.
+      description: Publishes the table by copying the data and table schema changes from draft version to the published version, meaning any website
+        pages using data from the table will be updated.
       operationId: post-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft/publish_publishDraftTable
       parameters:
       - name: tableIdOrName
@@ -667,7 +680,8 @@ paths:
       tags:
       - Tables
       summary: Reset a draft table
-      description: Replaces the data in the draft version of the table with values from the published version. Any unpublished changes in the draft will be lost after this call is made.
+      description: Replaces the data in the draft version of the table with values from the published version. Any unpublished changes in the
+        draft will be lost after this call is made.
       operationId: post-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/draft/reset_resetDraftTable
       parameters:
       - name: tableIdOrName
@@ -739,7 +753,10 @@ paths:
       tags:
       - Tables
       summary: Get rows from draft table
-      description: Returns rows in the draft version of the specified table. Row results can be filtered and sorted. Filtering and sorting options will be sent as query parameters to the API request. For example, by adding the query parameters `column1__gt=5&sort=-column1`, API returns the rows with values for column `column1` greater than 5 and in the descending order of `column1` values. Refer to the overview section for detailed filtering and sorting options.
+      description: Returns rows in the draft version of the specified table. Row results can be filtered and sorted. Filtering and sorting options
+        will be sent as query parameters to the API request. For example, by adding the query parameters `column1__gt=5&sort=-column1`, API returns
+        the rows with values for column `column1` greater than 5 and in the descending order of `column1` values. Refer to the overview section
+        for detailed filtering and sorting options.
       operationId: get-/cms/v3/hubdb/2026-09/tables/{tableIdOrName}/rows/draft_readDraftTableRows
       parameters:
       - name: tableIdOrName
@@ -752,7 +769,8 @@ paths:
           type: string
       - name: after
         in: query
-        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results.
+        description: The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property
+          of a paged response containing more results.
         required: false
         style: form
         explode: true
@@ -1069,7 +1087,8 @@ components:
         subCategory:
           type: string
           description: A specific category that contains more specific detail about the error
-      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide detailed information about the error encountered.
+      description: Represents an error response returned by the API when an operation fails. This component is used in various endpoints to provide
+        detailed information about the error encountered.
       example:
         message: Invalid input (details will vary based on the error)
         correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
@@ -1374,7 +1393,8 @@ components:
           additionalProperties:
             type: integer
             format: int32
-          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
+          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages)
+            with the associated column IDs.
         enableChildTablePages:
           type: boolean
           description: Specifies creation of multi-level dynamic pages using child tables
@@ -1454,7 +1474,8 @@ components:
           additionalProperties:
             type: integer
             format: int32
-          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages) with the associated column IDs.
+          description: Specifies the key value pairs of the [metadata fields](https://developers.hubspot.com/docs/cms/guides/dynamic-pages/hubdb#dynamic-pages)
+            with the associated column IDs.
         enableChildTablePages:
           type: boolean
           description: Specifies creation of multi-level dynamic pages using child tables
@@ -1516,7 +1537,13 @@ components:
         subCategory:
           type: string
           description: A specific category that contains more specific detail about the error
-      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context and specifics about errors, typically as part of an error response.
+      description: Represents detailed information about an error that occurred in the API. This component is used to provide additional context
+        and specifics about errors, typically as part of an error response.
+    HubDbTableRowV3Wrapper:
+      type: object
+      description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder so the document resolves;
+        the shape is unknown and is NOT a claim about the API.
+      x-ae-placeholder: true
   responses:
     Error:
       description: An error occurred.

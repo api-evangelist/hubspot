@@ -1,0 +1,112 @@
+arazzo: 1.0.1
+info:
+  title: Add new HubSpot contacts to Google Ads customer lists
+  summary: Read HubSpot contacts and add them to a Google Ads Customer Match list through an offline user data job.
+  description: 'Recreates the Zapier template "Add new HubSpot contacts to Google Ads customer lists": read contacts, create a Customer Match offline user data job for the user list, add the hashed email,
+    then run the job.'
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
+  type: openapi
+- name: googleAdsOfflineJobsApi
+  url: https://raw.githubusercontent.com/api-evangelist/google-ads/refs/heads/main/openapi/google-ads-customers-offlineuserdatajobs-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-google-ads-contacts-to-customer-list
+  summary: Read HubSpot contacts and add them to a Google Ads Customer Match list through an offline user data job.
+  description: 'Recreates the Zapier template "Add new HubSpot contacts to Google Ads customer lists": read contacts, create a Customer Match offline user data job for the user list, add the hashed email,
+    then run the job.'
+  inputs:
+    type: object
+    properties:
+      limit:
+        type: string
+        description: Number of HubSpot contacts to read.
+      customerId:
+        type: string
+        description: Google Ads customer id.
+      userListResourceName:
+        type: string
+        description: Resource name of the Customer Match user list.
+      hashedEmail:
+        type: string
+        description: SHA-256 of the normalized email, as Customer Match requires.
+  steps:
+  - stepId: list-hubspot-contacts
+    description: 'Read a page of HubSpot contacts with the email, firstname and lastname properties (the trigger side: new contacts).'
+    operationId: $sourceDescriptions.hubspotCrmApi.get-/crm/objects/2026-03/contacts_getPage
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    - name: properties
+      in: query
+      value: email,firstname,lastname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      email: $response.body#/results/0/properties/email
+      firstname: $response.body#/results/0/properties/firstname
+      lastname: $response.body#/results/0/properties/lastname
+  - stepId: create-offline-job
+    description: Create a Customer Match offline user data job.
+    operationId: $sourceDescriptions.googleAdsOfflineJobsApi.googleads_customers_offlineUserDataJobs_create
+    parameters:
+    - name: customersId
+      in: path
+      value: $inputs.customerId
+    requestBody:
+      contentType: application/json
+      payload:
+        job:
+          type: CUSTOMER_MATCH_USER_LIST
+          customerMatchUserListMetadata:
+            userList: $inputs.userListResourceName
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      jobResourceName: $response.body#/resourceName
+  - stepId: add-operations
+    description: Add the contact's hashed email to the job.
+    operationId: $sourceDescriptions.googleAdsOfflineJobsApi.googleads_customers_offlineUserDataJobs_addOperations
+    parameters:
+    - name: customersId
+      in: path
+      value: $inputs.customerId
+    - name: offlineUserDataJobsId
+      in: path
+      value: $steps.create-offline-job.outputs.jobResourceName
+    requestBody:
+      contentType: application/json
+      payload:
+        operations:
+        - create:
+            userIdentifiers:
+            - hashedEmail: $inputs.hashedEmail
+    successCriteria:
+    - condition: $statusCode == 200
+  - stepId: run-job
+    description: Run the offline user data job.
+    operationId: $sourceDescriptions.googleAdsOfflineJobsApi.googleads_customers_offlineUserDataJobs_run
+    parameters:
+    - name: customersId
+      in: path
+      value: $inputs.customerId
+    - name: offlineUserDataJobsId
+      in: path
+      value: $steps.create-offline-job.outputs.jobResourceName
+    successCriteria:
+    - condition: $statusCode == 200
+x-integration:
+  partner: google-ads
+  template: https://zapier.com/apps/google-ads/integrations/hubspot/78005/add-new-hubspot-contacts-to-google-ads-customer-lists
+  edge_evidence: https://zapier.com/apps/google-ads/integrations/hubspot/78005/add-new-hubspot-contacts-to-google-ads-customer-lists
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps:
+  - step: add-operations
+    cause: partner-contract
+    why: Google Ads returns a full resource name while the path wants the job id segment; the email must be SHA-256 hashed, which Arazzo cannot do, so it is an input.

@@ -1,0 +1,78 @@
+arazzo: 1.0.1
+info:
+  title: Register offline conversions in Google Ads from HubSpot contacts
+  summary: Read HubSpot contacts carrying a Google click id and upload them as Google Ads click conversions.
+  description: 'Recreates the Zapier template "Register offline conversions in Google Ads when new contacts are updated in HubSpot": read contacts with the hs_google_click_id property, then upload a click
+    conversion for the conversion action.'
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
+  type: openapi
+- name: googleAdsCustomersApi
+  url: https://raw.githubusercontent.com/api-evangelist/google-ads/refs/heads/main/openapi/google-ads-customers-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-google-ads-offline-conversions
+  summary: Read HubSpot contacts carrying a Google click id and upload them as Google Ads click conversions.
+  description: 'Recreates the Zapier template "Register offline conversions in Google Ads when new contacts are updated in HubSpot": read contacts with the hs_google_click_id property, then upload a click
+    conversion for the conversion action.'
+  inputs:
+    type: object
+    properties:
+      limit:
+        type: string
+        description: Number of HubSpot contacts to read.
+      customerId:
+        type: string
+        description: Google Ads customer id.
+      conversionAction:
+        type: string
+        description: Resource name of the conversion action.
+      conversionDateTime:
+        type: string
+        description: Conversion time, yyyy-mm-dd hh:mm:ss+|-hh:mm.
+  steps:
+  - stepId: list-hubspot-contacts
+    description: Read contacts with the Google click id property.
+    operationId: $sourceDescriptions.hubspotCrmApi.get-/crm/objects/2026-03/contacts_getPage
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    - name: properties
+      in: query
+      value: email,hs_google_click_id
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      gclid: $response.body#/results/0/properties/hs_google_click_id
+  - stepId: upload-click-conversion
+    description: Upload the click conversion.
+    operationId: $sourceDescriptions.googleAdsCustomersApi.googleads_customers_uploadClickConversions
+    parameters:
+    - name: customersId
+      in: path
+      value: $inputs.customerId
+    requestBody:
+      contentType: application/json
+      payload:
+        conversions:
+        - gclid: $steps.list-hubspot-contacts.outputs.gclid
+          conversionAction: $inputs.conversionAction
+          conversionDateTime: $inputs.conversionDateTime
+        partialFailure: true
+    successCriteria:
+    - condition: $statusCode == 200
+x-integration:
+  partner: google-ads
+  template: https://zapier.com/apps/google-ads/integrations/hubspot/78275/register-offline-conversions-in-google-ads-when-new-contacts-are-updated-in-hubspot
+  edge_evidence: https://zapier.com/apps/google-ads/integrations/hubspot/78275/register-offline-conversions-in-google-ads-when-new-contacts-are-updated-in-hubspot
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps:
+  - step: list-hubspot-contacts
+    cause: provider-contract
+    why: hs_google_click_id is a HubSpot default property named in HubSpot docs, but the contract does not enumerate contact properties; "updated" filtering is not available on the list operation.

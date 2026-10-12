@@ -1,15 +1,17 @@
 ---
-name: Import or upsert HubSpot contacts in bulk
+name: hubspot-upsert-contacts-in-bulk
+title: Import or upsert HubSpot contacts in bulk
 description: Load many contacts into HubSpot safely using the batch endpoints, deduplicating on email rather than on HubSpot object id.
 api: openapi/hubspot-batch-api-openapi.yml
 generated: '2026-08-13'
 method: generated
 source: openapi/hubspot-batch-api-openapi.yml, openapi/hubspot-contacts-api-openapi.yml, arazzo/hubspot-batch-import-contacts-workflow.yml, arazzo/hubspot-upsert-contact-workflow.yml
 operations:
-  - batchReadContacts
-  - batchCreateContacts
-  - batchUpdateContacts
-  - searchContacts
+  - 'post-/crm/objects/2026-03/contacts/batch/read_read'
+  - 'post-/crm/objects/2026-03/contacts/batch/create_create'
+  - 'post-/crm/objects/2026-03/contacts/batch/update_update'
+  - 'post-/crm/objects/2026-03/contacts/search_doSearch'
+x-remapped: '2026-10-12: operationIds repointed to the current refined specs (the original ids were renamed by refine-openapis)'
 ---
 
 # Import or upsert HubSpot contacts in bulk
@@ -19,7 +21,7 @@ Base URL: `https://api.hubapi.com`
 ## Why batch, not a loop
 
 HubSpot's rate budget is per app per portal, and the secondly burst ceiling is
-low relative to the daily ceiling. A loop of single `createContact` calls will
+low relative to the daily ceiling. A loop of single `post-/crm/objects/2026-03/contacts_create` calls will
 hit `429` long before it exhausts the daily quota. Batch endpoints move up to
 100 objects per request, so a 10,000-contact import is ~100 requests instead of
 10,000.
@@ -27,8 +29,8 @@ hit `429` long before it exhausts the daily quota. Batch endpoints move up to
 ## Before you start
 
 - `Authorization: Bearer <token>`; scope `crm.objects.contacts.write`.
-- **No idempotency key exists.** Re-running `batchCreateContacts` on the same
-  input creates duplicates. Deduplicate with `batchReadContacts` using
+- **No idempotency key exists.** Re-running `post-/crm/objects/2026-03/contacts/batch/create_create` on the same
+  input creates duplicates. Deduplicate with `post-/crm/objects/2026-03/contacts/batch/read_read` using
   `idProperty` before you write — that is the only replay protection HubSpot
   offers on this path.
 
@@ -37,22 +39,22 @@ hit `429` long before it exhausts the daily quota. Batch endpoints move up to
 1. **Chunk your input into batches of 100.** This is the documented ceiling for
    the batch endpoints.
 
-2. **Resolve which contacts already exist** — `batchReadContacts`
+2. **Resolve which contacts already exist** — `post-/crm/objects/2026-03/contacts/batch/read_read`
    `POST /crm/v3/objects/contacts/batch/read` with
    `{"idProperty": "email", "inputs": [{"id": "person@example.com"}, ...],
      "properties": ["email","firstname","lastname"]}`.
    Setting `idProperty` is what makes HubSpot match on the unique email property
    instead of the internal object id.
 
-3. **Create the ones that came back missing** — `batchCreateContacts`
+3. **Create the ones that came back missing** — `post-/crm/objects/2026-03/contacts/batch/create_create`
    `POST /crm/v3/objects/contacts/batch/create` with an `inputs` array of
    `{properties: {...}}`.
 
-4. **Update the ones that already existed** — `batchUpdateContacts`
+4. **Update the ones that already existed** — `post-/crm/objects/2026-03/contacts/batch/update_update`
    `POST /crm/v3/objects/contacts/batch/update` with `inputs` of
    `{id, properties}`. Send only the properties you are changing.
 
-5. **Verify anything ambiguous** — `searchContacts` for records that failed to
+5. **Verify anything ambiguous** — `post-/crm/objects/2026-03/contacts/search_doSearch` for records that failed to
    resolve by email (blank email, or two records sharing one).
 
 ## Handling the response

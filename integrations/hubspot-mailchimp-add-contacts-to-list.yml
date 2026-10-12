@@ -1,0 +1,74 @@
+arazzo: 1.0.1
+info:
+  title: Add new HubSpot contacts to Mailchimp lists
+  summary: Read new HubSpot contacts and subscribe each one to a Mailchimp audience.
+  description: 'Recreates the Zapier template "Add new HubSpot contacts to Mailchimp lists": read HubSpot contacts, then add the contact to a Mailchimp list as a member with merge fields.'
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
+  type: openapi
+- name: mailchimpListsApi
+  url: https://raw.githubusercontent.com/api-evangelist/mailchimp/refs/heads/main/openapi/mailchimp-lists-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-mailchimp-add-contacts-to-list
+  summary: Read new HubSpot contacts and subscribe each one to a Mailchimp audience.
+  description: 'Recreates the Zapier template "Add new HubSpot contacts to Mailchimp lists": read HubSpot contacts, then add the contact to a Mailchimp list as a member with merge fields.'
+  inputs:
+    type: object
+    properties:
+      limit:
+        type: string
+        description: Number of HubSpot contacts to read.
+      listId:
+        type: string
+        description: Mailchimp audience (list) id.
+  steps:
+  - stepId: list-hubspot-contacts
+    description: 'Read a page of HubSpot contacts with the email, firstname and lastname properties (the trigger side: new contacts).'
+    operationId: $sourceDescriptions.hubspotCrmApi.get-/crm/objects/2026-03/contacts_getPage
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    - name: properties
+      in: query
+      value: email,firstname,lastname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      email: $response.body#/results/0/properties/email
+      firstname: $response.body#/results/0/properties/firstname
+      lastname: $response.body#/results/0/properties/lastname
+  - stepId: add-mailchimp-member
+    description: Add the contact to the Mailchimp list.
+    operationId: $sourceDescriptions.mailchimpListsApi.postListsIdMembers
+    parameters:
+    - name: list_id
+      in: path
+      value: $inputs.listId
+    requestBody:
+      contentType: application/json
+      payload:
+        email_address: $steps.list-hubspot-contacts.outputs.email
+        status: subscribed
+        merge_fields:
+          FNAME: $steps.list-hubspot-contacts.outputs.firstname
+          LNAME: $steps.list-hubspot-contacts.outputs.lastname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberId: $response.body#/id
+x-integration:
+  partner: mailchimp
+  template: https://zapier.com/apps/hubspot/integrations/mailchimp/1785/add-new-hubspot-contacts-to-mailchimp-lists
+  edge_evidence: https://zapier.com/apps/hubspot/integrations/mailchimp/1785/add-new-hubspot-contacts-to-mailchimp-lists
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps:
+  - step: list-hubspot-contacts
+    cause: provider-contract
+    why: HubSpot exposes no "new contacts since" filter on the list operation; newness is approximated by paging (a webhook subscription is the real trigger).

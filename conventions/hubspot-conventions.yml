@@ -1,12 +1,13 @@
 generated: '2026-08-13'
 method: searched
-source: >-
-  https://developers.hubspot.com/docs/reference/api/other-resources/error-handling,
-  https://developers.hubspot.com/docs/api-reference/latest/overview, and derived
-  from the 56 OpenAPI documents in openapi/
+source: https://developers.hubspot.com/docs/reference/api/other-resources/error-handling, https://developers.hubspot.com/docs/api-reference/latest/overview, and derived from the 56 OpenAPI documents in
+  openapi/
 base_url: https://api.hubapi.com
 authentication:
-  styles: [oauth2-authorization-code, private-app-access-token, api-key-legacy]
+  styles:
+  - oauth2-authorization-code
+  - private-app-access-token
+  - api-key-legacy
   primary: OAuth 2.0 authorization code
   header: 'Authorization: Bearer <token>'
   authorization_url: https://app.hubspot.com/oauth/authorize
@@ -16,23 +17,23 @@ authentication:
 idempotency:
   key_header: null
   supported: false
-  detail: >-
-    HubSpot publishes NO idempotency-key contract. No `Idempotency-Key` header,
-    parameter or extension appears anywhere in the 56 harvested OpenAPI
-    documents, and none is documented on a publicly reachable HubSpot page. A
-    retried POST creates a second record.
+  detail: HubSpot publishes NO idempotency-key contract. No `Idempotency-Key` header, parameter or extension appears anywhere in the 56 harvested OpenAPI documents, and none is documented on a publicly
+    reachable HubSpot page. A retried POST creates a second record.
   partial_mitigation:
     mechanism: idProperty upsert
-    description: >-
-      Several CRM batch endpoints accept an `idProperty` so a write is matched
-      to an existing record by a unique property (e.g. email) instead of by
-      HubSpot object id, which makes those specific writes replay-safe. Named
-      upsert operations found in the specs: upsertActionFunction,
-      upsertApplicationFeatureFlag, upsertSourceCodeFile,
-      batchUpsertPortalFlagStates.
-    note: >-
-      This is upsert semantics on selected endpoints, NOT a general idempotency
-      key. It is deliberately NOT wired as an `Idempotency` pointer in apis.yml.
+    description: 'Several CRM batch endpoints accept an `idProperty` so a write is matched to an existing record by a unique property (e.g. email) instead of by HubSpot object id, which makes those specific
+      writes replay-safe. Named upsert operations found in the specs: upsertActionFunction, upsertApplicationFeatureFlag, upsertSourceCodeFile, batchUpsertPortalFlagStates.'
+    note: This is upsert semantics on selected endpoints, NOT a general idempotency key. It is deliberately NOT wired as an `Idempotency` pointer in apis.yml.
+  coverage: partial
+  scope:
+  - post-/crm/objects/2026-03/contacts/batch/upsert_upsert
+  - post-/crm/objects/2026-03/companies/batch/upsert_upsert
+  - post-/crm/objects/2026-03/0-3/batch/upsert_upsert
+  - post-/crm/objects/2026-03/tickets/batch/upsert_upsert
+  - post-/crm/objects/2026-03/{objectType}/batch/upsert_/crm/objects/v3/{objectType}/batch/upsert
+  - post-/marketing/marketing-events/2026-09/events/upsert_upsert
+  coverage_note: No Idempotency-Key header exists; replay safety is limited to the batch upsert operations (idProperty match), listed in scope (representative CRM object upserts; every /crm/objects/2026-03/<object>/batch/upsert
+    operation behaves the same way).
 pagination:
   style: cursor
   request_params:
@@ -48,69 +49,60 @@ pagination:
       next:
         after: cursor for the next page
         link: absolute URL for the next page
-  schemas: [Paging, NextPage]
+  schemas:
+  - Paging
+  - NextPage
   example_cursor: NTI1Cg%3D%3D
-  note: >-
-    `after`/`limit` appear as declared parameters in 31 of the harvested
-    documents and the Paging/NextPage schemas are reused provider-wide.
-    Termination condition: `paging.next` is absent on the last page.
+  note: '`after`/`limit` appear as declared parameters in 31 of the harvested documents and the Paging/NextPage schemas are reused provider-wide. Termination condition: `paging.next` is absent on the last
+    page.'
 field_selection:
   mechanism: properties query parameter
-  description: >-
-    CRM read endpoints take a `properties` list naming which object properties
-    to return; unnamed properties are omitted. `propertiesWithHistory` returns
-    versioned values.
+  description: CRM read endpoints take a `properties` list naming which object properties to return; unnamed properties are omitted. `propertiesWithHistory` returns versioned values.
   expansion: associations
-  expansion_description: >-
-    `associations` on a CRM read returns linked object ids inline rather than
-    requiring a second call to the associations API.
+  expansion_description: '`associations` on a CRM read returns linked object ids inline rather than requiring a second call to the associations API.'
 metadata:
   mechanism: custom properties
-  description: >-
-    HubSpot has no generic `metadata` bag. Arbitrary key/value data is modelled
-    as CRM custom properties defined through the Properties API, or as custom
-    objects.
+  description: HubSpot has no generic `metadata` bag. Arbitrary key/value data is modelled as CRM custom properties defined through the Properties API, or as custom objects.
 request_tracing:
   response_header: x-hubspot-correlation-id
   response_field: correlationId
   method: probed
-  description: >-
-    HubSpot returns the same uuid trace id in BOTH places: an
-    `x-hubspot-correlation-id` response header and a `correlationId` field in
-    the error body. Observed live on 2026-08-13 against
-    GET https://api.hubapi.com/crm/v3/objects/contacts?limit=1 (HTTP 401),
-    which returned x-hubspot-correlation-id: 019ffb23-56ec-7628-bae3-e022b229c69f
-    matching the body field. An auth failure additionally sets
-    `x-hubspot-auth-failure: 401 Unauthorized`.
+  description: 'HubSpot returns the same uuid trace id in BOTH places: an `x-hubspot-correlation-id` response header and a `correlationId` field in the error body. Observed live on 2026-08-13 against GET
+    https://api.hubapi.com/crm/v3/objects/contacts?limit=1 (HTTP 401), which returned x-hubspot-correlation-id: 019ffb23-56ec-7628-bae3-e022b229c69f matching the body field. An auth failure additionally
+    sets `x-hubspot-auth-failure: 401 Unauthorized`.'
 versioning:
   scheme: date-based-uri-path
-  current: '2026-03'
+  current: 2026-03
   pattern: /api-name/{YYYY-MM}/resource
   legacy: numeric path versions (/crm/v3/, /cms/v3/)
   detail: lifecycle/hubspot-lifecycle.yml
 error_envelope:
   media_type: application/json
   rfc9457: false
-  fields: [status, message, category, correlationId, errors, context, links]
+  fields:
+  - status
+  - message
+  - category
+  - correlationId
+  - errors
+  - context
+  - links
   detail: errors/hubspot-problem-types.yml
 rate_limit_signalling:
-  headers: [X-HubSpot-RateLimit-Daily, X-HubSpot-RateLimit-Daily-Remaining, X-HubSpot-RateLimit-Secondly,
-    X-HubSpot-RateLimit-Secondly-Remaining]
+  headers:
+  - X-HubSpot-RateLimit-Daily
+  - X-HubSpot-RateLimit-Daily-Remaining
+  - X-HubSpot-RateLimit-Secondly
+  - X-HubSpot-RateLimit-Secondly-Remaining
   exhausted_status: 429
   observed: false
-  observed_note: >-
-    An unauthenticated request to api.hubapi.com returns 401 with NO
-    X-HubSpot-RateLimit-* headers — HubSpot's budget is per app per portal, so
-    the headers only appear on authenticated responses. The header names are
-    carried forward from the existing rate-limits artifact and could not be
-    re-verified because the usage-details doc is behind a login redirect.
+  observed_note: An unauthenticated request to api.hubapi.com returns 401 with NO X-HubSpot-RateLimit-* headers — HubSpot's budget is per app per portal, so the headers only appear on authenticated responses.
+    The header names are carried forward from the existing rate-limits artifact and could not be re-verified because the usage-details doc is behind a login redirect.
   detail: rate-limits/hubspot-rate-limits.yml
 batching:
   mechanism: /batch/ sub-resources
-  description: >-
-    Most CRM object APIs expose batch create/read/update/archive/upsert
-    endpoints. With multi-status error handling enabled a batch returns HTTP 207
-    with per-item results rather than failing the whole call.
+  description: Most CRM object APIs expose batch create/read/update/archive/upsert endpoints. With multi-status error handling enabled a batch returns HTTP 207 with per-item results rather than failing
+    the whole call.
   partial_failure_status: 207
 events:
   mechanism: webhooks

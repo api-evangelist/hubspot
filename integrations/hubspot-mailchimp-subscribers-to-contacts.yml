@@ -1,0 +1,74 @@
+arazzo: 1.0.1
+info:
+  title: Create or update HubSpot contacts from new Mailchimp subscribers
+  summary: Read new Mailchimp subscribers and upsert them as HubSpot contacts keyed by email.
+  description: 'Recreates the Zapier template "Create or update HubSpot contacts from new Mailchimp subscribers": list subscribed members changed since a timestamp, then batch-upsert into HubSpot with email
+    as the idProperty.'
+  version: 1.0.0
+sourceDescriptions:
+- name: mailchimpListsApi
+  url: https://raw.githubusercontent.com/api-evangelist/mailchimp/refs/heads/main/openapi/mailchimp-lists-api-openapi.yml
+  type: openapi
+- name: hubspotBatchApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-batch-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-mailchimp-subscribers-to-contacts
+  summary: Read new Mailchimp subscribers and upsert them as HubSpot contacts keyed by email.
+  description: 'Recreates the Zapier template "Create or update HubSpot contacts from new Mailchimp subscribers": list subscribed members changed since a timestamp, then batch-upsert into HubSpot with email
+    as the idProperty.'
+  inputs:
+    type: object
+    properties:
+      listId:
+        type: string
+        description: Mailchimp audience (list) id.
+      since:
+        type: string
+        description: ISO 8601 timestamp; only members changed after it are read.
+  steps:
+  - stepId: list-mailchimp-members
+    description: List subscribed members changed since the timestamp.
+    operationId: $sourceDescriptions.mailchimpListsApi.getListsIdMembers
+    parameters:
+    - name: list_id
+      in: path
+      value: $inputs.listId
+    - name: status
+      in: query
+      value: subscribed
+    - name: since_last_changed
+      in: query
+      value: $inputs.since
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      email: $response.body#/members/0/email_address
+      fname: $response.body#/members/0/merge_fields/FNAME
+      lname: $response.body#/members/0/merge_fields/LNAME
+  - stepId: upsert-hubspot-contact
+    description: Create or update the HubSpot contact by email.
+    operationId: $sourceDescriptions.hubspotBatchApi.post-/crm/objects/2026-03/contacts/batch/upsert_upsert
+    requestBody:
+      contentType: application/json
+      payload:
+        inputs:
+        - id: $steps.list-mailchimp-members.outputs.email
+          idProperty: email
+          properties:
+            email: $steps.list-mailchimp-members.outputs.email
+            firstname: $steps.list-mailchimp-members.outputs.fname
+            lastname: $steps.list-mailchimp-members.outputs.lname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactId: $response.body#/results/0/id
+x-integration:
+  partner: mailchimp
+  template: https://zapier.com/apps/hubspot/integrations/mailchimp/1783/create-or-update-hubspot-contacts-from-new-mailchimp-subscribers
+  edge_evidence: https://zapier.com/apps/hubspot/integrations/mailchimp/1783/create-or-update-hubspot-contacts-from-new-mailchimp-subscribers
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps: []

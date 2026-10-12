@@ -10,13 +10,13 @@ info:
   version: 1.0.0
 sourceDescriptions:
   - name: hubspotContactsApi
-    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
     type: openapi
   - name: sendgridContactsApi
-    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/tsg_mc_contacts_v3.yaml
+    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/sendgrid-contacts-api-openapi.yml
     type: openapi
   - name: sendgridMailApi
-    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/tsg_mail_v3.yaml
+    url: https://raw.githubusercontent.com/api-evangelist/sendgrid/refs/heads/main/openapi/sendgrid-mail-send-api-openapi.yml
     type: openapi
 workflows:
   - workflowId: hubspot-contact-to-sendgrid-onboard
@@ -41,7 +41,7 @@ workflows:
     steps:
       - stepId: create-contact
         description: Create the contact record in HubSpot CRM.
-        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        operationId: $sourceDescriptions.hubspotContactsApi.post-/crm/objects/2026-03/contacts_create
         requestBody:
           contentType: application/json
           payload:

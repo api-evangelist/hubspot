@@ -1,15 +1,17 @@
 ---
-name: Receive and process HubSpot webhook events
+name: hubspot-handle-webhook-events
+title: Receive and process HubSpot webhook events
 description: Consume HubSpot's CRM webhook deliveries safely — verify the signature, treat the payload as a notification rather than data, and re-read the object before acting.
 api: asyncapi/hubspot-webhooks-asyncapi.yml
 generated: '2026-08-13'
 method: generated
 source: asyncapi/hubspot-webhooks-asyncapi.yml, openapi/hubspot-contacts-api-openapi.yml, openapi/hubspot-deals-api-openapi.yml
 operations:
-  - getContact
-  - getCompany
-  - getDeal
-  - getTicket
+  - 'get-/crm/objects/2026-03/contacts/{contactId}_getById'
+  - 'get-/crm/objects/2026-03/companies/{companyId}_getById'
+  - 'get-/crm/objects/2026-03/0-3/{dealId}_getById'
+  - 'get-/crm/objects/2026-03/tickets/{ticketId}_getById'
+x-remapped: '2026-10-12: operationIds repointed to the current refined specs (the original ids were renamed by refine-openapis)'
 ---
 
 # Receive and process HubSpot webhook events
@@ -45,8 +47,8 @@ The channel list in the AsyncAPI document is authoritative for this repo.
    the same body out of order; applying them in delivery order can leave you with
    an older value.
 
-5. **Re-read the object before acting** — `getContact`, `getCompany`, `getDeal`,
-   `getTicket`. The payload tells you an object *changed*; it is not a
+5. **Re-read the object before acting** — `get-/crm/objects/2026-03/contacts/{contactId}_getById`, `get-/crm/objects/2026-03/companies/{companyId}_getById`, `get-/crm/objects/2026-03/0-3/{dealId}_getById`,
+   `get-/crm/objects/2026-03/tickets/{ticketId}_getById`. The payload tells you an object *changed*; it is not a
    trustworthy snapshot of the object's current state. Fetch the record and act
    on what the API returns.
 

@@ -1,0 +1,80 @@
+arazzo: 1.0.1
+info:
+  title: Add new HubSpot contacts to Mailchimp (upsert)
+  summary: Read HubSpot contacts and add-or-update each as a Mailchimp member.
+  description: Recreates the Zapier template "Add new HubSpot contacts to Mailchimp" using Mailchimp's add-or-update member operation so re-runs do not duplicate members.
+  version: 1.0.0
+sourceDescriptions:
+- name: hubspotCrmApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
+  type: openapi
+- name: mailchimpListsApi
+  url: https://raw.githubusercontent.com/api-evangelist/mailchimp/refs/heads/main/openapi/mailchimp-lists-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-mailchimp-upsert-contact
+  summary: Read HubSpot contacts and add-or-update each as a Mailchimp member.
+  description: Recreates the Zapier template "Add new HubSpot contacts to Mailchimp" using Mailchimp's add-or-update member operation so re-runs do not duplicate members.
+  inputs:
+    type: object
+    properties:
+      limit:
+        type: string
+        description: Number of HubSpot contacts to read.
+      listId:
+        type: string
+        description: Mailchimp audience (list) id.
+      subscriberHash:
+        type: string
+        description: MD5 hash of the lowercase email address, as Mailchimp requires.
+  steps:
+  - stepId: list-hubspot-contacts
+    description: 'Read a page of HubSpot contacts with the email, firstname and lastname properties (the trigger side: new contacts).'
+    operationId: $sourceDescriptions.hubspotCrmApi.get-/crm/objects/2026-03/contacts_getPage
+    parameters:
+    - name: limit
+      in: query
+      value: $inputs.limit
+    - name: properties
+      in: query
+      value: email,firstname,lastname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      email: $response.body#/results/0/properties/email
+      firstname: $response.body#/results/0/properties/firstname
+      lastname: $response.body#/results/0/properties/lastname
+  - stepId: upsert-mailchimp-member
+    description: Add or update the list member.
+    operationId: $sourceDescriptions.mailchimpListsApi.putListsIdMembersId
+    parameters:
+    - name: list_id
+      in: path
+      value: $inputs.listId
+    - name: subscriber_hash
+      in: path
+      value: $inputs.subscriberHash
+    requestBody:
+      contentType: application/json
+      payload:
+        email_address: $steps.list-hubspot-contacts.outputs.email
+        status_if_new: subscribed
+        merge_fields:
+          FNAME: $steps.list-hubspot-contacts.outputs.firstname
+          LNAME: $steps.list-hubspot-contacts.outputs.lastname
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      memberId: $response.body#/id
+x-integration:
+  partner: mailchimp
+  template: https://zapier.com/apps/hubspot/integrations/mailchimp/1459/add-new-hubspot-contacts-to-mailchimp
+  edge_evidence: https://zapier.com/apps/hubspot/integrations/mailchimp/1459/add-new-hubspot-contacts-to-mailchimp
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps:
+  - step: upsert-mailchimp-member
+    cause: partner-contract
+    why: subscriber_hash must be the MD5 of the email; Arazzo has no hash function, so it is a workflow input.

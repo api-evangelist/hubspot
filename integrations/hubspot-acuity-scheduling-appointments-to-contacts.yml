@@ -1,0 +1,61 @@
+arazzo: 1.0.1
+info:
+  title: Add or update HubSpot contacts from Acuity Scheduling appointments
+  summary: Read Acuity Scheduling appointments and upsert each client as a HubSpot contact.
+  description: 'Recreates the Zapier template "Add or update HubSpot contacts from new Acuity Scheduling appointments": list appointments, then batch-upsert the client into HubSpot keyed by email.'
+  version: 1.0.0
+sourceDescriptions:
+- name: acuityAppointmentsApi
+  url: https://raw.githubusercontent.com/api-evangelist/acuity-scheduling/refs/heads/main/openapi/acuity-scheduling-appointments-api-openapi.yml
+  type: openapi
+- name: hubspotBatchApi
+  url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-batch-api-openapi.yml
+  type: openapi
+workflows:
+- workflowId: hubspot-acuity-scheduling-appointments-to-contacts
+  summary: Read Acuity Scheduling appointments and upsert each client as a HubSpot contact.
+  description: 'Recreates the Zapier template "Add or update HubSpot contacts from new Acuity Scheduling appointments": list appointments, then batch-upsert the client into HubSpot keyed by email.'
+  inputs:
+    type: object
+    properties: {}
+  steps:
+  - stepId: list-acuity-appointments
+    description: List appointments from Acuity Scheduling.
+    operationId: $sourceDescriptions.acuityAppointmentsApi.getAppointments
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      email: $response.body#/0/email
+      firstName: $response.body#/0/firstName
+      lastName: $response.body#/0/lastName
+      phone: $response.body#/0/phone
+  - stepId: upsert-hubspot-contact
+    description: Create or update the HubSpot contact by email.
+    operationId: $sourceDescriptions.hubspotBatchApi.post-/crm/objects/2026-03/contacts/batch/upsert_upsert
+    requestBody:
+      contentType: application/json
+      payload:
+        inputs:
+        - id: $steps.list-acuity-appointments.outputs.email
+          idProperty: email
+          properties:
+            email: $steps.list-acuity-appointments.outputs.email
+            firstname: $steps.list-acuity-appointments.outputs.firstName
+            lastname: $steps.list-acuity-appointments.outputs.lastName
+            phone: $steps.list-acuity-appointments.outputs.phone
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactId: $response.body#/results/0/id
+x-integration:
+  partner: acuity-scheduling
+  template: https://zapier.com/apps/acuity-scheduling/integrations/hubspot/3969/add-or-update-hubspot-contacts-from-new-acuity-scheduling-appointments
+  edge_evidence: https://zapier.com/apps/acuity-scheduling/integrations/hubspot/3969/add-or-update-hubspot-contacts-from-new-acuity-scheduling-appointments
+  edge_type: marketplace
+  method: generated
+  generated: '2026-10-12'
+  generator: claude-opus-5-5 (provider-integrations-arazzo)
+  guessed_steps:
+  - step: list-acuity-appointments
+    cause: partner-contract
+    why: The catalog Acuity spec declares no responses for getAppointments, so the output paths (email, firstName, lastName, phone) are not settled by the contract.

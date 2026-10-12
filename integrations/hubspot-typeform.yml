@@ -10,10 +10,10 @@ info:
   version: 1.0.0
 sourceDescriptions:
   - name: typeformApi
-    url: https://raw.githubusercontent.com/api-evangelist/typeform/refs/heads/main/openapi/typeform-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/typeform/refs/heads/main/openapi/typeform-forms-api-openapi.yml
     type: openapi
   - name: hubspotContactsApi
-    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
     type: openapi
 workflows:
   - workflowId: typeform-response-to-hubspot-contact
@@ -48,7 +48,7 @@ workflows:
           formIdRef: $response.body#/id
       - stepId: create-contact
         description: Create a HubSpot contact from the form submission.
-        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        operationId: $sourceDescriptions.hubspotContactsApi.post-/crm/objects/2026-03/contacts_create
         requestBody:
           contentType: application/json
           payload:

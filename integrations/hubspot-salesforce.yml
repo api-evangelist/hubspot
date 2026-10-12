@@ -10,10 +10,10 @@ info:
   version: 1.0.0
 sourceDescriptions:
   - name: salesforceRestApi
-    url: https://raw.githubusercontent.com/api-evangelist/salesforce/refs/heads/main/openapi/salesforce-rest-api-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/salesforce/refs/heads/main/openapi/salesforce-events-api-openapi.yml
     type: openapi
   - name: hubspotContactsApi
-    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
     type: openapi
 workflows:
   - workflowId: salesforce-to-hubspot-mirror
@@ -34,7 +34,7 @@ workflows:
     steps:
       - stepId: query-salesforce
         description: Query Salesforce for the source contact by email.
-        operationId: $sourceDescriptions.salesforceRestApi.executeQuery
+        operationId: $sourceDescriptions.salesforceRestApi.Listeventrelayfeedbackitems
         parameters:
           - name: q
             in: query
@@ -45,7 +45,7 @@ workflows:
           totalSize: $response.body#/totalSize
       - stepId: create-hubspot-contact
         description: Mirror the contact into HubSpot CRM.
-        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        operationId: $sourceDescriptions.hubspotContactsApi.post-/crm/objects/2026-03/contacts_create
         requestBody:
           contentType: application/json
           payload:

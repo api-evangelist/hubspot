@@ -1,200 +1,88 @@
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+name: HubSpot plans and pricing
 provider: HubSpot
 providerId: hubspot
 created: '2026-05-04'
-modified: '2026-08-13'
-generated: '2026-08-13'
+modified: '2026-10-12'
+generated: '2026-10-12'
 method: searched
-source: https://www.hubspot.com/pricing/marketing
-reconciled: true
-plan_count: 4
-tags:
-  - CRM
-  - Marketing
-  - Sales
-  - Service
-description: >-
-  HubSpot Marketing Hub plans, read from the public pricing page on 2026-08-13.
-  This replaces the 2026-05-04 bulk-sweep version, which was method: generated.
-  HubSpot prices by SEAT plus MARKETING CONTACTS, not by API call — there is no
-  API-metered plan and no per-request price. API access is included with the
-  account; the limits that bind an integration are the per-app-per-portal rate
-  limits in rate-limits/hubspot-rate-limits.yml, which scale with the tier
-  below. Other Hubs (Sales, Service, Content, Operations) carry analogous
-  Free/Starter/Professional/Enterprise tiers at different prices.
-sources:
-  - https://www.hubspot.com/pricing/marketing
-  - https://legal.hubspot.com/hubspot-product-and-services-catalog
+source: https://www.hubspot.com/pricing/
+audience: business-product
+pricing_basis: per-seat
+published: true
+delivery:
+  delivery: managed
 api_metered: false
+plan_count: 4
+description: 'HubSpot platform pricing read 2026-10-12 from the rendered pricing page. https://www.hubspot.com/pricing/marketing now redirects to https://www.hubspot.com/pricing/, a single "Sales. Marketing.
+  Service. All together." platform price list (billed annually) with HubSpot Credits per tier, replacing the per-Hub Marketing Hub tiers recorded 2026-08-13 (USD; Starter $20/mo/seat, Professional $890/mo,
+  Enterprise). The page is geo-priced: this fetch was served EUR (€), so price_text is quoted as served. API access is included with the account; there is no API-metered plan, and the binding integration
+  limits are in rate-limits/hubspot-rate-limits.yml.'
+note: Prices are geo-localised by HubSpot; a US visitor sees USD. Quotes are verbatim from the EUR rendering fetched on 2026-10-12.
+sources:
+- https://www.hubspot.com/pricing/
+- https://legal.hubspot.com/hubspot-product-and-services-catalog
+tags:
+- CRM
+- Marketing
+- Sales
+- Service
 plans:
-  - id: hubspot-marketing-free
-    name: Marketing Hub Free
-    type: freemium
-    price: '0.00'
-    currency: USD
-    timeFrame: month
-    description: Free HubSpot tools, up to 2 users.
-    entries:
-      - label: Users
-        name: users
-        type: quota
-        metric: user
-        limit: 2
-        timeFrame: month
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-  - id: hubspot-marketing-starter
-    name: Marketing Hub Starter
-    type: paid
-    price: '20.00'
-    promotional_price: '7.00'
-    currency: USD
-    timeFrame: month
-    per: seat
-    billing: monthly
-    description: >-
-      Listed as "Starts at $7/mo/seat" promotional, $20/mo/seat regular rate.
-    entries:
-      - label: Marketing contacts included
-        name: marketing_contacts
-        type: quota
-        metric: contact
-        limit: 1000
-        timeFrame: month
-        unit: 1
-        price: '20.00'
-        userMultiplied: true
-  - id: hubspot-marketing-professional
-    name: Marketing Hub Professional
-    type: paid
-    price: '890.00'
-    promotional_price: '800.00'
-    currency: USD
-    timeFrame: month
-    billing: monthly
-    onboarding_fee: '3000.00'
-    description: >-
-      Listed as "Starts at $800/mo" promotional, $890/mo regular rate. Includes
-      3 Core Seats; additional Core Seats $45/mo. One-time Professional
-      Onboarding fee of $3,000.
-    entries:
-      - label: Core seats included
-        name: core_seats
-        type: quota
-        metric: seat
-        limit: 3
-        timeFrame: month
-        unit: 1
-        price: '890.00'
-        userMultiplied: false
-      - label: Additional core seat
-        name: additional_core_seat
-        type: overage
-        metric: seat
-        unit: 1
-        price: '45.00'
-        timeFrame: month
-        userMultiplied: true
-      - label: Marketing contacts included
-        name: marketing_contacts
-        type: quota
-        metric: contact
-        limit: 2000
-        timeFrame: month
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-  - id: hubspot-marketing-enterprise
-    name: Marketing Hub Enterprise
-    type: paid
-    price: '3600.00'
-    currency: USD
-    timeFrame: month
-    billing: monthly
-    onboarding_fee: '7000.00'
-    description: >-
-      Listed as "Starts at $3,600/mo". Includes 5 Core Seats; additional Core
-      Seats $75/mo. One-time Enterprise Onboarding fee of $7,000.
-    entries:
-      - label: Core seats included
-        name: core_seats
-        type: quota
-        metric: seat
-        limit: 5
-        timeFrame: month
-        unit: 1
-        price: '3600.00'
-        userMultiplied: false
-      - label: Additional core seat
-        name: additional_core_seat
-        type: overage
-        metric: seat
-        unit: 1
-        price: '75.00'
-        timeFrame: month
-        userMultiplied: true
-      - label: Marketing contacts included
-        name: marketing_contacts
-        type: quota
-        metric: contact
-        limit: 10000
-        timeFrame: month
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-notes:
-  - >-
-    Marketing-contact overage pricing is quoted in banded tiers on HubSpot's
-    pricing page rather than as a single per-contact rate, so no overage unit
-    price is asserted here.
-  - >-
-    Prices are US list prices read on 2026-08-13 and marked "Starts at"; HubSpot
-    shows a promotional and a regular rate for Starter and Professional. Both
-    are recorded rather than picking one.
-x-canonical:
-  generated: '2026-10-08'
-  vocabulary: all/0-working/economics/plans-canonical.yml
-  models:
-  - free
-  - seat
-  units:
-  - active-user
-  - seat
-  plans:
-  - name: Marketing Hub Free
-    access: freemium
-    model: free
-    model_how: derived
-    units:
-    - seat
-    periods:
-    - month
-  - name: Marketing Hub Starter
-    access: paid
-    model: free
-    model_how: derived
-    units:
-    - active-user
-    periods:
-    - month
-  - name: Marketing Hub Professional
-    access: paid
-    model: seat
-    model_how: derived
-    units:
-    - active-user
-    - seat
-    periods:
-    - month
-  - name: Marketing Hub Enterprise
-    access: paid
-    model: seat
-    model_how: derived
-    units:
-    - active-user
-    - seat
-    periods:
-    - month
+- name: Free
+  description: 'Free CRM tools: unified contacts, companies, deals, activity tracking, Breeze Assistant.'
+  price_text: €0/mo
+  price: 0
+  currency: EUR
+  billing_period: month (billed annually)
+  features:
+  - Breeze Assistant
+  - Get a unified view of your contacts
+  - Organize and manage your companies
+  - Manage and organize your deals
+  limits:
+  - name: users
+    limit_text: Up to 2 users
+- name: Starter
+  description: Starter platform tier, priced per seat.
+  price_text: €7/mo/seat
+  price: 7
+  currency: EUR
+  billing_period: month (billed annually)
+  features: []
+  limits:
+  - name: users
+    limit_text: Up to 10 users
+  - name: HubSpot Credits
+    limit_text: 5,000 / month
+- name: Professional
+  description: Professional platform tier, priced per seat.
+  price_text: €90/mo/seat
+  price: 90
+  currency: EUR
+  billing_period: month (billed annually)
+  features: []
+  limits:
+  - name: users
+    limit_text: Additional seats €90/mo/seat
+  - name: HubSpot Credits
+    limit_text: 10,000 / month
+- name: Enterprise
+  description: 'Enterprise tier: everything in Professional plus team hierarchy, sandbox account, field-level permissions, multi-account connection, approvals.'
+  price_text: €175/mo/seat
+  price: 175
+  currency: EUR
+  billing_period: month (billed annually)
+  features:
+  - Organize teams across levels
+  - Test changes with a sandbox account
+  - Control which data users can access and edit
+  - Connect multiple HubSpot accounts
+  - Set up marketing email approvals
+  - Configure advanced quote approvals
+  limits:
+  - name: users
+    limit_text: Additional seats €175/mo/seat
+  - name: HubSpot Credits
+    limit_text: 15,000 / month

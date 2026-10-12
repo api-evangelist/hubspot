@@ -1,16 +1,18 @@
 ---
-name: Create a HubSpot contact and link it to a company
+name: hubspot-create-contact-with-company
+title: Create a HubSpot contact and link it to a company
 description: Create a CRM contact, create or find its company, and associate the two, using HubSpot's REST API with OAuth or a private-app token.
 api: openapi/hubspot-contacts-api-openapi.yml
 generated: '2026-08-13'
 method: generated
 source: openapi/hubspot-contacts-api-openapi.yml, openapi/hubspot-companies-api-openapi.yml, openapi/hubspot-associations-api-openapi.yml, arazzo/hubspot-create-contact-with-company-workflow.yml
 operations:
-  - searchContacts
-  - createContact
-  - searchCompanies
-  - createCompany
-  - createContactAssociation
+  - 'post-/crm/objects/2026-03/contacts/search_doSearch'
+  - 'post-/crm/objects/2026-03/contacts_create'
+  - 'post-/crm/objects/2026-03/companies/search_doSearch'
+  - 'post-/crm/objects/2026-03/companies_create'
+  - 'put-/crm/objects/2026-03/{fromObjectType}/{fromObjectId}/associations/default/{toObjectType}/{toObjectId}_/crm/objects/2026-03/{fromObjectType}/{fromObjectId}/associations/default/{toObjectType}/{toObjectId}'
+x-remapped: '2026-10-12: operationIds repointed to the current refined specs (the original ids were renamed by refine-openapis)'
 ---
 
 # Create a HubSpot contact and link it to a company
@@ -27,29 +29,29 @@ Base URL: `https://api.hubapi.com`
 - Required scopes: `crm.objects.contacts.write` and `crm.objects.companies.write`.
   See `scopes/hubspot-scopes.yml`.
 - **There is no idempotency key.** HubSpot publishes no `Idempotency-Key`
-  contract, so a retried `createContact` creates a SECOND contact. Search first
+  contract, so a retried `post-/crm/objects/2026-03/contacts_create` creates a SECOND contact. Search first
   (step 1) and treat that search as your deduplication, or use the batch upsert
   path with `idProperty: email`. See `conventions/hubspot-conventions.yml`.
 
 ## Steps
 
-1. **Look for an existing contact** — `searchContacts`
+1. **Look for an existing contact** — `post-/crm/objects/2026-03/contacts/search_doSearch`
    `POST /crm/v3/objects/contacts/search` with a `filterGroups` filter on
    `email` using operator `EQ`. If `results` is non-empty, skip step 2 and reuse
    `results[0].id`.
 
-2. **Create the contact** — `createContact`
+2. **Create the contact** — `post-/crm/objects/2026-03/contacts_create`
    `POST /crm/v3/objects/contacts` with a `properties` object
    (`email`, `firstname`, `lastname`, `phone`). Keep the returned `id`.
 
-3. **Look for the company** — `searchCompanies`
+3. **Look for the company** — `post-/crm/objects/2026-03/companies/search_doSearch`
    `POST /crm/v3/objects/companies/search` filtering on `domain` with `EQ`.
 
-4. **Create the company if it is missing** — `createCompany`
+4. **Create the company if it is missing** — `post-/crm/objects/2026-03/companies_create`
    `POST /crm/v3/objects/companies` with `properties.name` and
    `properties.domain`. Keep the returned `id`.
 
-5. **Associate them** — `createContactAssociation`
+5. **Associate them** — `put-/crm/objects/2026-03/{fromObjectType}/{fromObjectId}/associations/default/{toObjectType}/{toObjectId}_/crm/objects/2026-03/{fromObjectType}/{fromObjectId}/associations/default/{toObjectType}/{toObjectId}`
    HubSpot does not store the link as a field on either object; it is a typed
    edge created through the Associations API. Use the contact id from step 1/2 as
    the from-object and the company id from step 3/4 as the to-object.

@@ -1,82 +1,133 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+name: HubSpot API rate limits
 provider: HubSpot
 providerId: hubspot
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - Rate Limiting
-  - CRM
-description: HubSpot REST API rate limits per app per portal. Limits scale with tier; Enterprise has higher
-  daily caps.
+modified: '2026-10-12'
+generated: '2026-10-12'
+method: searched
+source: https://developers.hubspot.com/docs/developer-tooling/platform/usage-guidelines
 sources:
-  - https://www.hubspot.com/pricing/marketing
-  - https://developers.hubspot.com/docs/guides/apps/api-usage/usage-details
+- https://developers.hubspot.com/docs/developer-tooling/platform/usage-guidelines
+- https://legal.hubspot.com/hubspot-product-and-services-catalog
+description: HubSpot API usage guidelines and limits, read from the developer docs on 2026-10-12 (replaces the 2026-05-04 bulk-sweep version, method generated). Burst limits apply per app per 10 seconds;
+  daily limits are shared across all privately distributed apps in an account and reset at midnight in the account time zone. The CRM Search, Associations and GraphQL APIs carry their own stricter limits.
 headers:
   dailyLimit: X-HubSpot-RateLimit-Daily
   dailyRemaining: X-HubSpot-RateLimit-Daily-Remaining
-  secondLimit: X-HubSpot-RateLimit-Secondly
-  secondRemaining: X-HubSpot-RateLimit-Secondly-Remaining
+  interval: X-HubSpot-RateLimit-Interval-Milliseconds
+  max: X-HubSpot-RateLimit-Max
+  remaining: X-HubSpot-RateLimit-Remaining
+  deprecated:
+  - X-HubSpot-RateLimit-Secondly
+  - X-HubSpot-RateLimit-Secondly-Remaining
+  note: Daily headers are not returned on OAuth-authorized requests; search API responses carry none of the rate-limit headers.
 responseCodes:
   throttled: 429
+error_envelope:
+  errorType: RATE_LIMIT
+  policyName: DAILY or TEN_SECONDLY_ROLLING
+  fields:
+  - status
+  - message
+  - errorType
+  - correlationId
+  - policyName
+  - requestId
+limit_count: 13
 limits:
-  - name: Free / Starter
-    scope: app/portal
-    metric: requests_per_day
-    limit: 250000
-    timeFrame: day
-  - name: Free / Starter (burst)
-    scope: app/portal
-    metric: requests_per_10s
-    limit: 100
-    timeFrame: 10 seconds
-  - name: Professional / Enterprise
-    scope: app/portal
-    metric: requests_per_day
-    limit: 500000
-    timeFrame: day
-  - name: Professional / Enterprise (burst)
-    scope: app/portal
-    metric: requests_per_10s
-    limit: 150
-    timeFrame: 10 seconds
-  - name: Search API
-    scope: app/portal
-    metric: requests_per_second
-    limit: 4
-    timeFrame: second
-  - name: Batch endpoints
-    scope: app/portal
-    metric: objects_per_request
-    limit: 100
-    timeFrame: request
-
-# --- Verification pass 2026-08-13 (enrichment pipeline) ---
-verification:
-  checked: '2026-08-13'
-  docs_url: https://developers.hubspot.com/docs/guides/apps/api-usage/usage-details
-  docs_status: gated
-  docs_detail: >-
-    HubSpot's API usage/limits reference 307-redirects to
-    https://app.hubspot.com/myaccounts (a HubSpot login), so the tier numbers
-    above could NOT be re-verified against the provider and remain
-    method: generated rather than being promoted to searched.
-  live_probe:
-    url: https://api.hubapi.com/crm/v3/objects/contacts?limit=1
-    http_status: 401
-    rate_limit_headers_present: false
-    note: >-
-      HubSpot's budget is scoped per app per portal, so X-HubSpot-RateLimit-*
-      headers are only emitted on authenticated responses. Their absence on an
-      anonymous 401 is expected and is not evidence the headers do not exist.
-  exhausted_status: 429
-  retry_after:
-    header: Retry-After
-    documented_for: >-
-      HTTP 477 (migration in progress), per the public error-handling reference.
-      Not documented for 429.
+- name: Publicly distributed OAuth apps
+  limit_text: each HubSpot account that installs your app is limited to 110 requests every 10 seconds
+  scope: per installing account
+  max: 110
+  limit: 110
+  window: 10 seconds
+  kind: burst
+- name: Private apps, Free and Starter, burst
+  limit_text: 100 / app
+  scope: per app
+  max: 100
+  limit: 100
+  window: 10 seconds
+  plan: Free and Starter
+  kind: burst
+- name: Private apps, Free and Starter, daily
+  limit_text: 250,000 / account
+  scope: per account
+  max: 250000
+  limit: 250000
+  window: day
+  plan: Free and Starter
+- name: Private apps, Professional, burst
+  limit_text: 190 / app
+  scope: per app
+  max: 190
+  limit: 190
+  window: 10 seconds
+  plan: Professional
+  kind: burst
+- name: Private apps, Professional, daily
+  limit_text: 625,000 / account
+  scope: per account
+  max: 625000
+  limit: 625000
+  window: day
+  plan: Professional
+- name: Private apps, Enterprise, burst
+  limit_text: 190 / app
+  scope: per app
+  max: 190
+  limit: 190
+  window: 10 seconds
+  plan: Enterprise
+  kind: burst
+- name: Private apps, Enterprise, daily
+  limit_text: 1,000,000 / account
+  scope: per account
+  max: 1000000
+  limit: 1000000
+  window: day
+  plan: Enterprise
+- name: Private apps with API Limit Increase, burst
+  limit_text: 250 / app
+  scope: per app
+  max: 250
+  limit: 250
+  window: 10 seconds
+  plan: API Limit Increase add-on
+  kind: burst
+- name: Private apps with API Limit Increase, daily
+  limit_text: 1,000,000 / account on top of your base subscription, for each limit increase
+  scope: per account
+  max: 1000000
+  limit: 1000000
+  window: day
+  plan: API Limit Increase add-on
+- name: Webhook subscriptions per app
+  limit_text: You can create up to 1,000 webhook subscriptions per app.
+  scope: per app
+  max: 1000
+  limit: 1000
+- name: Custom event definitions
+  limit_text: There is a limit of 500 unique event definitions per account.
+  scope: per account
+  max: 500
+  limit: 500
+- name: Custom event completions
+  limit_text: There is a limit of 30 million event completions per month.
+  scope: per account
+  max: 30000000
+  limit: 30000000
+  window: month
+- name: Send custom event completions
+  limit_text: The send custom event completions endpoint supports up to 1250 requests per second.
+  scope: per endpoint
+  max: 1250
+  limit: 1250
+  window: 1 second
+  endpoint: send custom event completions
+tags:
+- Rate Limiting
+- CRM

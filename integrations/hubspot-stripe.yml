@@ -14,7 +14,7 @@ sourceDescriptions:
     url: https://raw.githubusercontent.com/api-evangelist/stripe/refs/heads/main/openapi/stripe-customers-api-openapi.yml
     type: openapi
   - name: hubspotContactsApi
-    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml
+    url: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-basic-api-openapi.yml
     type: openapi
 workflows:
   - workflowId: stripe-customer-to-hubspot-contact
@@ -32,7 +32,7 @@ workflows:
     steps:
       - stepId: create-stripe-customer
         description: Create a customer record in Stripe.
-        operationId: $sourceDescriptions.stripeCustomersApi.postCustomers
+        operationId: $sourceDescriptions.stripeCustomersApi.PostCustomers
         requestBody:
           contentType: application/x-www-form-urlencoded
           payload:
@@ -44,7 +44,7 @@ workflows:
           stripeCustomerId: $response.body#/id
       - stepId: create-hubspot-contact
         description: Create/sync the contact in HubSpot with the Stripe customer id.
-        operationId: $sourceDescriptions.hubspotContactsApi.createContact
+        operationId: $sourceDescriptions.hubspotContactsApi.post-/crm/objects/2026-03/contacts_create
         requestBody:
           contentType: application/json
           payload:
