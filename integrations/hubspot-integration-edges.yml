@@ -6,10 +6,12 @@ source:
 - https://composio.dev/toolkits/hubspot
 checked:
 - docusign/integrations/docusign-integration-edges.yml
+- https://api.nuget.org/v3
 - https://aws.amazon.com/marketplace/
 - https://composio.dev/toolkits/hubspot
 - https://connectors.airbyte.com/files/registries/v0/cloud_registry.json
 - https://connectors.airbyte.com/files/registries/v0/oss_registry.json
+- https://crates.io/api/v1
 - https://ecosystem.hubspot.com/marketplace/apps
 - https://ecosystem.hubspot.com/marketplace/explore?eco_PRODUCT_TYPE=APP&sortBy=INSTALLS
 - https://fivetran.com/docs-sitemap.xml
@@ -22,6 +24,11 @@ checked:
 - https://github.com/rudderlabs/rudder-integrations-config/tree/main/src/configurations/destinations/hs
 - https://monid.ai/tools/hubspot
 - https://n8n.io/integrations/hubspot/
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - https://www.twilio.com/docs/segment/connections/destinations/catalog/actions-hubspot-cloud
 - https://zapier.com/api/v4/apps/
 - https://zapier.com/apps/hubspot/integrations
@@ -2294,6 +2301,114 @@ edges:
     - unknown
     builder: 'community (Meltano Hub variant maintainers: airbyte, anthonyp, cdchan, hotgluexyz, meltanolabs)'
   detected_by: sweep-data-integration.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@hubspot/api-client
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@hubspot/api-client'
+      version: 14.0.1
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@hubspot/api-client
+      repo_leg: github-org:hubspot
+      publisher_leg: email:hubspot.com
+      matched_by: domain
+    - name: '@hubspot/cli'
+      version: 8.16.0
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@hubspot/cli
+      repo_leg: github-org:hubspot
+      publisher_leg: email:hubspot.com
+      matched_by: domain
+    - name: '@hubspot/local-dev-lib'
+      version: 5.12.0
+      released: '2026-10-13'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@hubspot/local-dev-lib
+      repo_leg: github-org:hubspot
+      publisher_leg: email:hubspot.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: PyPI
+  partner: pypi
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Python)
+  evidence: https://pypi.org/project/hubspot-api-client/
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: PyPI (public registry JSON)
+    spec_file: null
+    language: Python
+    packages:
+    - name: hubspot-api-client
+      version: 12.0.0
+      released: '2025-05-07'
+      released_field: upload_time
+      lapsed: false
+      page: https://pypi.org/project/hubspot-api-client/
+      repo_leg: github-org:hubspot
+      publisher_leg: email:hubspot.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: RubyGems
+  partner: rubygems
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (Ruby)
+  evidence: https://rubygems.org/gems/hubspot-api-client
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: RubyGems (public registry JSON)
+    spec_file: null
+    language: Ruby
+    packages:
+    - name: hubspot-api-client
+      version: 20.0.0
+      released: '2025-05-08'
+      released_field: version_created_at
+      lapsed: false
+      page: https://rubygems.org/gems/hubspot-api-client
+      repo_leg: github-org:hubspot
+      publisher_leg: email:hubspot.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
 templates:
 - title: Create contacts in HubSpot for new leads from Google Ads
