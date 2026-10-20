@@ -72,6 +72,8 @@
   source: curated
   status: arazzo
   broken_reason: 'source url->missing local spec: https://raw.githubusercontent.com/api-evangelist/hubspot/refs/heads/main/openapi/hubspot-crm-contacts-api-openapi.yml'
+  evidence: https://zapier.com/apps/hubspot/integrations/google-sheets
+  type: marketplace
 - slug: hubspot-zendesk
   label: Open Zendesk support tickets for HubSpot contacts
   partner: zendesk
@@ -105,6 +107,7 @@
   related_arazzo:
   - hubspot-google-ads-contacts-to-customer-list.yml
   - hubspot-google-ads-offline-conversions.yml
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: hubspot-add-new-hubspot-contacts-to-google-ads-customer-lists
@@ -121,6 +124,7 @@
   source: template
   related_arazzo:
   - hubspot-google-ads-offline-conversions.yml
+  relationship: ipaas-bridge
   arazzo: hubspot-google-ads-contacts-to-customer-list.yml
   status: arazzo
 - slug: hubspot-add-new-hubspot-contacts-to-mailchimp-lists
@@ -139,6 +143,7 @@
   - hubspot-mailchimp-subscribers-to-contacts.yml
   - hubspot-mailchimp-upsert-contact.yml
   - hubspot-mailchimp.yml
+  relationship: ipaas-bridge
   arazzo: hubspot-mailchimp-add-contacts-to-list.yml
   status: arazzo
 - slug: hubspot-add-new-hubspot-contacts-to-mailchimp
@@ -157,6 +162,7 @@
   - hubspot-mailchimp-add-contacts-to-list.yml
   - hubspot-mailchimp-subscribers-to-contacts.yml
   - hubspot-mailchimp.yml
+  relationship: ipaas-bridge
   arazzo: hubspot-mailchimp-upsert-contact.yml
   status: arazzo
 - slug: hubspot-get-slack-notifications-for-new-hubspot-form-submissions
@@ -173,6 +179,24 @@
   source: template
   related_arazzo:
   - hubspot-slack.yml
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-save-new-hubspot-form-submissions-to-google-sheets-rows
+  label: Save new HubSpot form submissions to Google Sheets rows
+  partner: google-sheets
+  partner_name: Google Sheets
+  category: Google
+  use_case: Save new HubSpot form submissions to Google Sheets rows
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/google-sheets/integrations/hubspot/1758/save-new-hubspot-form-submissions-to-google-sheets-rows
+  template: https://zapier.com/apps/google-sheets/integrations/hubspot/1758/save-new-hubspot-form-submissions-to-google-sheets-rows
+  source: template
+  related_arazzo:
+  - hubspot-google-sheets.yml
+  relationship: ipaas-bridge
   status: pending-generation
   arazzo: null
 - slug: hubspot-create-or-update-hubspot-contacts-from-new-mailchimp-subscribers
@@ -191,6 +215,7 @@
   - hubspot-mailchimp-add-contacts-to-list.yml
   - hubspot-mailchimp-upsert-contact.yml
   - hubspot-mailchimp.yml
+  relationship: ipaas-bridge
   arazzo: hubspot-mailchimp-subscribers-to-contacts.yml
   status: arazzo
 - slug: hubspot-register-offline-conversions-in-google-ads-when-new-contacts-are-updated-in-hubspo
@@ -207,6 +232,7 @@
   source: template
   related_arazzo:
   - hubspot-google-ads-contacts-to-customer-list.yml
+  relationship: ipaas-bridge
   arazzo: hubspot-google-ads-offline-conversions.yml
   status: arazzo
 - slug: hubspot-add-or-update-hubspot-contacts-from-new-acuity-scheduling-appointments
@@ -221,302 +247,34 @@
   evidence: https://zapier.com/apps/acuity-scheduling/integrations/hubspot/3969/add-or-update-hubspot-contacts-from-new-acuity-scheduling-appointments
   template: https://zapier.com/apps/acuity-scheduling/integrations/hubspot/3969/add-or-update-hubspot-contacts-from-new-acuity-scheduling-appointments
   source: template
+  relationship: ipaas-bridge
   arazzo: hubspot-acuity-scheduling-appointments-to-contacts.yml
   status: arazzo
-- slug: hubspot-airtable
-  label: Airtable
-  partner: airtable
-  partner_name: Airtable
-  category: Databases
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/airtable
-  source: edge
-  status: pending-generation
-  arazzo: null
 - slug: hubspot-gmail
   label: Gmail
   partner: gmail
   partner_name: Gmail
-  category: Email
+  use_case: Bring HubSpot to your inbox with the HubSpot integration for Gmail.
   type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/gmail
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/gmail
   source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-zoom
-  label: Zoom
-  partner: zoom
-  partner_name: Zoom
-  category: Video Conferencing
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/zoom
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-pandadoc
-  label: PandaDoc
-  partner: pandadoc
-  partner_name: PandaDoc
-  category: Documents
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/pandadoc
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-google-forms
-  label: Google Forms
-  partner: google-forms
-  partner_name: Google Forms
-  category: Forms & Surveys
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/google-forms
-  source: edge
-  status: pending-generation
+  relationship: platform-app
+  status: not-a-workflow
   arazzo: null
 - slug: hubspot-google-calendar
   label: Google Calendar
   partner: google-calendar
   partner_name: Google Calendar
-  category: Calendar
+  use_case: Book meetings quickly and easily with HubSpot and Google Calendar.
   type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/google-calendar
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/google-calendar
   source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-clickfunnels-classic
-  label: ClickFunnels Classic
-  partner: clickfunnels
-  partner_name: ClickFunnels Classic
-  category: Marketing Automation
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/clickfunnels-classic
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-monday-com
-  label: monday.com
-  partner_name: monday.com
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/monday
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-microsoft-outlook
-  label: Microsoft Outlook
-  partner: microsoft-outlook
-  partner_name: Microsoft Outlook
-  category: Calendar
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/microsoft-outlook
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-facebook-conversions
-  label: Facebook Conversions
-  partner_name: Facebook Conversions
-  category: Ads & Conversion
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/facebook-conversions
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-gravity-forms
-  label: Gravity Forms
-  partner: gravity-forms
-  partner_name: Gravity Forms
-  category: Forms & Surveys
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/gravity-forms
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-linkedin-ads
-  label: LinkedIn Ads
-  partner_name: LinkedIn Ads
-  category: Ads & Conversion
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/linkedin-ads
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-facebook-lead-ads
-  label: Facebook Lead Ads
-  partner: facebook-lead-ads
-  partner_name: Facebook Lead Ads
-  category: Ads & Conversion
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/facebook-lead-ads
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-kajabi
-  label: Kajabi
-  partner: kajabi
-  partner_name: Kajabi
-  category: eCommerce
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/kajabi
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-instantly
-  label: Instantly
-  partner: instantly-ai
-  partner_name: Instantly
-  category: Email
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/instantly
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-microsoft-excel
-  label: Microsoft Excel
-  partner_name: Microsoft Excel
-  category: Microsoft
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/excel
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-clickup
-  label: ClickUp
-  partner: clickup
-  partner_name: ClickUp
-  category: Project Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/clickup
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-notion
-  label: Notion
-  partner: notion
-  partner_name: Notion
-  category: Task Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/notion
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-squarespace-forms
-  label: Squarespace Forms
-  partner: squarespace
-  partner_name: Squarespace Forms
-  category: Forms & Surveys
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/squarespace-forms
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-oncehub
-  label: OnceHub
-  partner_name: OnceHub
-  category: Scheduling & Booking
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/oncehub
-  source: edge
-  status: pending-partner-spec
-  arazzo: null
-- slug: hubspot-woocommerce
-  label: WooCommerce
-  partner: woocommerce
-  partner_name: WooCommerce
-  category: eCommerce
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/woocommerce
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-eventbrite
-  label: Eventbrite
-  partner: eventbrite
-  partner_name: Eventbrite
-  category: Event Management
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/eventbrite
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-pipedrive
-  label: Pipedrive
-  partner: pipedrive
-  partner_name: Pipedrive
-  category: CRM (Customer Relationship Management)
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/pipedrive
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-unbounce
-  label: Unbounce
-  partner: unbounce
-  partner_name: Unbounce
-  category: Forms & Surveys
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/unbounce
-  source: edge
-  status: pending-generation
-  arazzo: null
-- slug: hubspot-shopify
-  label: Shopify
-  partner: shopify
-  partner_name: Shopify
-  category: eCommerce
-  type: marketplace
-  marketplace: zapier
-  channel: ipaas-usage
-  evidence: https://zapier.com/apps/hubspot/integrations/shopify
-  source: edge
-  status: pending-generation
+  relationship: platform-app
+  status: not-a-workflow
   arazzo: null
 - slug: hubspot-outlook
   label: Outlook
@@ -611,6 +369,32 @@
   marketplace: own
   channel: partner-built
   evidence: https://ecosystem.hubspot.com/marketplace/listing/linkedin-sales-navigator
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: hubspot-zoom
+  label: Zoom
+  partner: zoom
+  partner_name: Zoom
+  use_case: Use Zoom with HubSpot meetings, workflows, contact records and more.
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/zoom
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: hubspot-linkedin-ads
+  label: LinkedIn Ads
+  partner: linkedin-ads
+  partner_name: LinkedIn Ads
+  use_case: Create, manage, optimize, and report on LinkedIn ads—all from HubSpot.
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/linkedin-ads
   source: edge
   relationship: platform-app
   status: not-a-workflow
@@ -866,6 +650,19 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: hubspot-gravity-forms
+  label: Gravity Forms
+  partner: gravity-forms
+  partner_name: Gravity Forms
+  use_case: Launch WordPress forms, polls, quizzes, surveys and more in minutes.
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/gravity-forms
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: hubspot-hubspot-payments
   label: HubSpot Payments
   partner_name: HubSpot Payments
@@ -874,6 +671,19 @@
   marketplace: own
   channel: partner-built
   evidence: https://ecosystem.hubspot.com/marketplace/listing/hubspot-payments
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: hubspot-pandadoc
+  label: PandaDoc
+  partner: pandadoc
+  partner_name: PandaDoc
+  use_case: Create, track, and eSign sales proposals & contracts inside HubSpot.
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/pandadoc
   source: edge
   relationship: platform-app
   status: not-a-workflow
@@ -905,6 +715,19 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
+- slug: hubspot-eventbrite
+  label: Eventbrite
+  partner: eventbrite
+  partner_name: Eventbrite
+  use_case: Use Eventbrite data for email lists, workflows, and more in HubSpot.
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/eventbrite
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
 - slug: hubspot-aircall
   label: Aircall
   partner: aircall
@@ -927,6 +750,19 @@
   marketplace: own
   channel: partner-built
   evidence: https://ecosystem.hubspot.com/marketplace/listing/webflow-1710584
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: hubspot-shopify
+  label: Shopify
+  partner: shopify
+  partner_name: Shopify
+  use_case: Sync Shopify and HubSpot data; Works with data studio in Data Hub
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://ecosystem.hubspot.com/marketplace/listing/shopify-data-sync
   source: edge
   relationship: platform-app
   status: not-a-workflow
@@ -1480,4 +1316,223 @@
     detected_by: sweep-compliance-assurance.py
     detected: '2026-10-20'
   status: not-a-workflow
+  arazzo: null
+- slug: hubspot-airtable
+  label: Airtable
+  partner: airtable
+  partner_name: Airtable
+  category: Databases
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/airtable
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-google-forms
+  label: Google Forms
+  partner: google-forms
+  partner_name: Google Forms
+  category: Forms & Surveys
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/google-forms
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-clickfunnels-classic
+  label: ClickFunnels Classic
+  partner: clickfunnels
+  partner_name: ClickFunnels Classic
+  category: Marketing Automation
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/clickfunnels-classic
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-monday-com
+  label: monday.com
+  partner: monday-com
+  partner_name: monday.com
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/monday
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-microsoft-outlook
+  label: Microsoft Outlook
+  partner: microsoft-outlook
+  partner_name: Microsoft Outlook
+  category: Calendar
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/microsoft-outlook
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-facebook-conversions
+  label: Facebook Conversions
+  partner: facebook
+  partner_name: Facebook Conversions
+  category: Ads & Conversion
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/facebook-conversions
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-facebook-lead-ads
+  label: Facebook Lead Ads
+  partner: facebook-lead-ads
+  partner_name: Facebook Lead Ads
+  category: Ads & Conversion
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/facebook-lead-ads
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-kajabi
+  label: Kajabi
+  partner: kajabi
+  partner_name: Kajabi
+  category: eCommerce
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/kajabi
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-instantly
+  label: Instantly
+  partner: instantly-ai
+  partner_name: Instantly
+  category: Email
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/instantly
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-microsoft-excel
+  label: Microsoft Excel
+  partner_name: Microsoft Excel
+  category: Microsoft
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/excel
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: hubspot-clickup
+  label: ClickUp
+  partner: clickup
+  partner_name: ClickUp
+  category: Project Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/clickup
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-notion
+  label: Notion
+  partner: notion
+  partner_name: Notion
+  category: Task Management
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/notion
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-squarespace-forms
+  label: Squarespace Forms
+  partner: squarespace
+  partner_name: Squarespace Forms
+  category: Forms & Surveys
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/squarespace-forms
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-oncehub
+  label: OnceHub
+  partner_name: OnceHub
+  category: Scheduling & Booking
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/oncehub
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-partner-spec
+  arazzo: null
+- slug: hubspot-woocommerce
+  label: WooCommerce
+  partner: woocommerce
+  partner_name: WooCommerce
+  category: eCommerce
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/woocommerce
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-unbounce
+  label: Unbounce
+  partner: unbounce
+  partner_name: Unbounce
+  category: Forms & Surveys
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/unbounce
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null
+- slug: hubspot-intercom
+  label: Intercom
+  partner: intercom
+  partner_name: Intercom
+  category: Customer Support
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/hubspot/integrations/intercom
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
   arazzo: null
